@@ -29,7 +29,7 @@ import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.List;
+import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.ChoiceGroup;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -56,8 +56,8 @@ import de.enough.polish.util.Debug;
  */
 public class Dominion extends MIDlet implements CommandListener {
 	
-	ChoiceGroup group;
-	List menuScreen;
+	ChoiceGroup group = null;
+	Form mainForm = null;
 	Command startGameCmd = new Command( Locale.get( "cmd.StartGame" ), Command.ITEM, 8 );
 	Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
 	//#ifdef polish.debugEnabled
@@ -74,8 +74,9 @@ public class Dominion extends MIDlet implements CommandListener {
 		//#else
 			String title = "J2ME Polish";
 		//#endif
+		this.mainForm = new Form(title);
 		//#style horizontalChoice
-		this.group = new ChoiceGroup("Limit search to:", ChoiceGroup.POPUP, style );
+		this.group = new ChoiceGroup("Limit search to:", ChoiceGroup.POPUP, null );
 		//#style choiceItem
 		this.group.append( "All", null );
 		//#style choiceItem
@@ -86,12 +87,13 @@ public class Dominion extends MIDlet implements CommandListener {
 		this.group.append( "Cinema", null );
 		//#style choiceItem
 		this.group.append( "Plays", null );
-		this.group.setCommandListener(this);
-		this.group.addCommand( this.startGameCmd ); 
-		this.group.addCommand( this.quitCmd );
+		this.mainForm.setCommandListener(this);
+		this.mainForm.addCommand( this.startGameCmd ); 
+		this.mainForm.addCommand( this.quitCmd );
 		//#ifdef polish.debugEnabled
-			this.group.addCommand( this.showLogCmd );
+			this.mainForm.addCommand( this.showLogCmd );
 		//#endif
+		this.mainForm.append(this.group); 
 		/*
 		//#style mainScreen
 		this.menuScreen = new List(title, List.IMPLICIT);
@@ -131,7 +133,8 @@ public class Dominion extends MIDlet implements CommandListener {
 		/*
 		this.display.setCurrent( this.menuScreen );
 		*/
-		this.display.setCurrent( this.group );
+		
+		this.display.setCurrent( this.mainForm );
 		//#debug
 		System.out.println("sample application is up and running.");
 	}
@@ -145,19 +148,19 @@ public class Dominion extends MIDlet implements CommandListener {
 	}
 	
 	public void commandAction(Command cmd, Displayable screen) {		
-		if (screen == this.menuScreen | screen == this.group) {
+		if (screen == this.mainForm) {
 			//#ifdef polish.debugEnabled
 				if (cmd == this.showLogCmd ) {
 					Debug.showLog(this.display);
 					return;
 				}
 			//#endif
-			if (cmd == List.SELECT_COMMAND) {
-				int selectedItem = this.menuScreen.getSelectedIndex();
+			if (cmd == ChoiceGroup.MARK_COMMAND) {
+				int selectedItem = this.group.getSelectedIndex();
 				if (selectedItem == 5) { //quit has been selected
 					quit();
 				} else {
-					showAlert( this.menuScreen.getString(selectedItem) );
+					showAlert( this.group.getString(selectedItem) );
 				}
 			} else if (cmd == this.startGameCmd) {
 				startGame();
@@ -183,7 +186,7 @@ public class Dominion extends MIDlet implements CommandListener {
 		//#style messageAlert
 		//#= alert = new Alert( "Welcome", Locale.get( "messages.welcome", "${user.name}" ), null, AlertType.INFO );
 		alert.setTimeout( Alert.FOREVER );
-		this.display.setCurrent( alert, this.menuScreen );
+		this.display.setCurrent( alert, this.mainForm );
 	}
 	
 	private void quit() {
