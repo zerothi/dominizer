@@ -129,12 +129,12 @@ focused {
 	fisheyeview-remove-text: true;		
 	view-type: horizontal-gray-out;
 	*/
-	view-type: fisheye;
-	fisheyeview-scale-start: 70%;
-	fisheyeview-scale-end: 40%;
+	view-type: carousel;
+	fisheyeview-scale-start: 75%;
+	fisheyeview-scale-end: 50%;
 	fisheyeview-alpha-start: 200;
 	fisheyeview-alpha-end: 80;
-	fisheyeview-remove-text: true;		
+	fisheyeview-remove-text: false;
 	/* 
 	fisheyeview-max-visible: 3;
 	*/
@@ -152,10 +152,12 @@ focused {
   */
 .mainCommand {
 	padding: 0;
-	padding-vertical: 0;
+	padding-vertical: 5;
+	/*
 	icon-image: url( iconlarge%INDEX%.png );
 	icon-image-align: top;
-	layout: center | vertical-center;
+	*/
+	layout: center | vertical-center | newline-after;
 	min-height: 30%;
 }
 
@@ -167,6 +169,8 @@ focused {
 }
 
 .mainCommand:pressed {
+	background-color: #f26522;
+	font-color: #333;
 	view-type: particle;
 }
 
@@ -365,3 +369,36 @@ menuItem:hover {
 }
 
 */
+
+.horizontalChoice {
+	label-style: choiceGroupLabel;
+	background-type: round-rect;
+	background-color: white;
+	include-label: true;
+	layout: expand;
+	view-type: horizontal-choice;
+	/*
+	horizontalview-left-arrow: url( arrow-left.png );
+	horizontalview-right-arrow: url( arrow-right.png );
+	*/
+}
+
+.horizontalChoice:hover {
+	background-color: white;
+}
+
+.choiceItem {
+	font-color: gray;
+	font-style: bold;
+	text-wrap: false;
+}
+
+.choiceItem:hover {
+	font-color: black;
+}
+
+.choiceGroupLabel {
+	font-style: italic;
+	font-size: small;
+	layout: newline-after;
+}
