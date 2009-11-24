@@ -92,7 +92,7 @@
 			midp2Path="${polish.home}/import/midp-2.0.jar"
 				midlets definition -->
 				<midlets>
-					<midlet class="canvas.Dominion" name="Dominion Randomizer" icon="resources/img/main.png" number="1" />
+					<midlet class="canvas.GameApp" name="Dominion Randomizer" icon="resources/img/main.png" number="1" />
 				</midlets>
 
 				<!-- project-wide variables - used for preprocessing.  -->

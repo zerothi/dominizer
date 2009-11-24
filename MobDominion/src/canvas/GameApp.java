@@ -25,6 +25,8 @@
  */
 package canvas;
 
+import java.util.Vector;
+
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Display;
@@ -41,6 +43,8 @@ import de.enough.polish.util.Locale;
 
 //#ifdef polish.debugEnabled
 import de.enough.polish.util.Debug;
+import dominion.Card;
+import dominion.Dominion;
 //#endif
 	
 /**
@@ -54,7 +58,7 @@ import de.enough.polish.util.Debug;
  * </pre>
  * @author Robert Virkus, j2mepolish@enough.de
  */
-public class Dominion extends MIDlet implements CommandListener {
+public class GameApp extends MIDlet implements CommandListener {
 	
 	ChoiceGroup group = null;
 	Form mainForm = null;
@@ -64,8 +68,9 @@ public class Dominion extends MIDlet implements CommandListener {
 		Command showLogCmd = new Command( Locale.get("cmd.ShowLog"), Command.ITEM, 9 );
 	//#endif
 	Display display;
+	Dominion dominion = null;
 	
-	public Dominion() {
+	public GameApp() {
 		super();
 		//#debug
 		System.out.println("starting Dominion");
@@ -77,6 +82,12 @@ public class Dominion extends MIDlet implements CommandListener {
 		this.mainForm = new Form(title);
 		//#style horizontalChoice
 		this.group = new ChoiceGroup("Limit search to:", ChoiceGroup.POPUP, null );
+		dominion = new Dominion();
+		Vector tmp = dominion.randomizeCards();
+		for (int i = 0; i < tmp.size() ; i++ ) {
+			//#style choiceItem
+			this.group.append( ((Card) tmp.elementAt(i)).getName(), null );			
+		}
 		//#style choiceItem
 		this.group.append( "All", null );
 		//#style choiceItem
