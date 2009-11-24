@@ -32,12 +32,13 @@ public class Dominion {
 		Vector selectedCards = new Vector(selectCards);
 		int totalAvailable = cards.size();
 		int selectedElement = 0;
-		Random selector = new Random();
+		Random selector = new Random(System.currentTimeMillis());
 		for (int i = 0 ; i < selectCards ; i++ ) {
 			selectedElement = (int) ((selector.nextFloat() * (totalAvailable - i)) % (totalAvailable - i));
 			selectedCards.addElement(cards.elementAt(selectedElement));
 			cards.removeElementAt(selectedElement);
 		}
+		selector = null;
 		return selectedCards;
 	}
 	

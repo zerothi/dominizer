@@ -70,7 +70,7 @@ backgrounds {
 title {
 	padding: 2;
 	font-face: proportional;
-	font-size: large;
+	font-size: normal;
 	font-style: bold;
 	font-color: brightFontColor;
 	border: none;
@@ -378,6 +378,7 @@ menuItem:hover {
 	include-label: true;
 	layout: expand;
 	view-type: horizontal-choice;
+	horizontalview-arrow-position: none;
 	/*
 	horizontalview-left-arrow: url( arrow-left.png );
 	horizontalview-right-arrow: url( arrow-right.png );
@@ -392,12 +393,12 @@ menuItem:hover {
 	font-color: gray;
 	font-style: bold;
 	text-wrap: false;
-	text-effect: split;
-	text-split-bottom-color: #ddd;
+	font-size: small;
 }
 
 .choiceItem:hover {
 	font-color: black;
+	font-size: medium;
 }
 
 .choiceItem:pressed {
@@ -406,7 +407,7 @@ menuItem:hover {
 }
 
 .choiceGroupLabel {
-	font-style: italic;
+	font-style: plain;
 	font-size: small;
 	layout: newline-after;
 }

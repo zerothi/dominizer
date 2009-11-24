@@ -59,7 +59,7 @@ public class GameApp extends MIDlet implements CommandListener {
 	
 	ChoiceGroup group = null;
 	Form mainForm = null;
-	Command startGameCmd = new Command( Locale.get( "cmd.StartGame" ), Command.ITEM, 8 );
+	Command reAssignCardCmd = new Command( Locale.get( "cmd.ReAssign" ), Command.ITEM, 8 );
 	Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
 	Command showLogCmd = new Command( Locale.get("cmd.ShowLog"), Command.ITEM, 9 );
 	Display display;
@@ -67,20 +67,17 @@ public class GameApp extends MIDlet implements CommandListener {
 	
 	public GameApp() {
 		super();
+		// Initialize Dominion
+		dominion = new Dominion();
 		//#debug
 		System.out.println("starting Dominion");
 		//#style mainScreen
 		this.mainForm = new Form("Dominion randomizer");
 		//#style horizontalChoice
 		this.group = new ChoiceGroup("Card list", ChoiceGroup.EXCLUSIVE);
-		dominion = new Dominion();
-		Vector tmp = dominion.randomizeCards();
-		for (int i = 0; i < tmp.size() ; i++ ) {
-			//#style choiceItem
-			this.group.append( ((Card) tmp.elementAt(i)).getName(), null );			
-		}
+		this.randomizeCards();
 		this.mainForm.setCommandListener(this);
-		this.mainForm.addCommand( this.startGameCmd ); 
+		this.mainForm.addCommand( this.reAssignCardCmd ); 
 		this.mainForm.addCommand( this.showLogCmd );
 		this.mainForm.addCommand( this.quitCmd );
 		//#ifdef polish.debugEnabled
@@ -129,8 +126,8 @@ public class GameApp extends MIDlet implements CommandListener {
 				} else {
 					showAlert( this.group.getString(selectedItem) );
 				}
-			} else if (cmd == this.startGameCmd) {
-				startGame();
+			} else if (cmd == this.reAssignCardCmd) {
+				randomizeCards();
 			}
 		} 
 		if (cmd == this.quitCmd) {
@@ -148,12 +145,14 @@ public class GameApp extends MIDlet implements CommandListener {
 		this.display.setCurrent( alert );
 	}
 
-	private void startGame() {
-		Alert alert = null;
-		//#style messageAlert
-		//#= alert = new Alert( "Welcome", Locale.get( "messages.welcome", "${user.name}" ), null, AlertType.INFO );
-		alert.setTimeout( Alert.FOREVER );
-		this.display.setCurrent( alert, this.mainForm );
+	private void randomizeCards() {
+		Vector tmp = dominion.randomizeCards();
+		this.group.deleteAll();
+		for (int i = 0; i < tmp.size() ; i++ ) {
+			//#style choiceItem
+			this.group.append( ((Card) tmp.elementAt(i)).getName(), null );			
+		}
+		tmp = null;
 	}
 	
 	private void quit() {
