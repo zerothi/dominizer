@@ -26,14 +26,16 @@ colors {
 	translucentBgColor:  argb(130, 165,190,247);
 	
 	maskColor: red;
+	splitTop: rgb(0,25,50);
+	splitBot: rgb(0,10,25);
 }
 
 backgrounds {
 
 	titleGradient {
 		type: vertical-gradient;
-		top-color: white;
-		bottom-color: blue;
+		top-color: splitTop;
+		bottom-color: splitBot;
 	}
 	
 	maskBackground {
@@ -115,11 +117,12 @@ focused {
 	padding-left: 10;
 	padding-right: 10;
 	background {
-		type: horizontal-stripes;
-		first-top-color: brightBgColor;
-		second-top-color: white;
-		first-bottom-color: blue;
-		second-bottom-color: black;
+		type: round-rect-split;
+		top-color: splitTop;
+		bottom-color: splitBot;
+		split-pos: 50%;
+		arc-width: 8;
+		arc-height: 8;
 	}
 	layout: horizontal-expand | horizontal-center | vertical-center;
 	/*
@@ -128,14 +131,12 @@ focused {
 	fisheyeview-scale-end: 20%;
 	fisheyeview-remove-text: true;		
 	view-type: horizontal-gray-out;
-	*/
 	view-type: carousel;
 	fisheyeview-scale-start: 75%;
 	fisheyeview-scale-end: 50%;
 	fisheyeview-alpha-start: 200;
 	fisheyeview-alpha-end: 80;
 	fisheyeview-remove-text: false;
-	/* 
 	fisheyeview-max-visible: 3;
 	*/
 }
@@ -391,6 +392,8 @@ menuItem:hover {
 	font-color: gray;
 	font-style: bold;
 	text-wrap: false;
+	text-effect: split;
+	text-split-bottom-color: #ddd;
 }
 
 .choiceItem:hover {

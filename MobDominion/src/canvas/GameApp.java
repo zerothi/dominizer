@@ -69,9 +69,10 @@ public class GameApp extends MIDlet implements CommandListener {
 		super();
 		//#debug
 		System.out.println("starting Dominion");
+		//#style mainScreen
 		this.mainForm = new Form("Dominion randomizer");
 		//#style horizontalChoice
-		this.group = new ChoiceGroup("Card list", ChoiceGroup.EXCLUSIVE, null );
+		this.group = new ChoiceGroup("Card list", ChoiceGroup.EXCLUSIVE);
 		dominion = new Dominion();
 		Vector tmp = dominion.randomizeCards();
 		for (int i = 0; i < tmp.size() ; i++ ) {
@@ -121,7 +122,7 @@ public class GameApp extends MIDlet implements CommandListener {
 				Debug.showLog(this.display);
 				return;
 			}
-			if (cmd == ChoiceGroup.MARK_COMMAND) {
+			if (cmd == this.showLogCmd) {
 				int selectedItem = this.group.getSelectedIndex();
 				if (selectedItem == 5) { //quit has been selected
 					quit();
