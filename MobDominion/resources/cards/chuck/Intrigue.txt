@@ -1,0 +1,25 @@
+2 Courtyard
+2 Pawn
+2 Secret Chamber
+3 Great Hall
+3 Masquerade
+3 Shanty Town
+3 Steward
+3 Swindler
+3 Wishing Well
+4 Baron
+4 Bridge
+4 Conspirator
+4 Coppersmith
+4 Ironworks
+4 Mining Village
+4 Scout
+5 Duke
+5 Minion
+5 Saboteur
+5 Torturer
+5 Trading Post
+5 Tribute
+5 Upgrade
+6 Harem
+6 Nobles

@@ -1,0 +1,26 @@
+2 Embargo
+2 Przystań
+2 Latarnia morska
+2 Wioska tubylców
+2 Poszukiwacz pereł
+3 Ambasador
+3 Wioska rybacka
+3 Horyzont
+3 Przemytnicy
+3 Magazyn
+4 Karawana
+4 Kieszonkowiec
+4 Wyspa
+4 Nawigator
+4 Statek piracki
+4 Odzysk mienia
+4 Wiedźma morska
+4 Mapa skarbów
+5 Bazar
+5 Odkrywca
+5 Statek widmo
+5 Statek kupiecki
+5 Przyczółek
+5 Taktyk
+5 Skarbiec
+5 Nabrzeże

@@ -1,0 +1,5 @@
+Base-de|Was für eine Welt
+Intrigue-de|Die Intrige
+Seaside-de|Seaside
+BlackMarket-de|Schwarzmarkt
+Envoy-de|Gesandter

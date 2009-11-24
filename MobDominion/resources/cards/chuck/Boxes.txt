@@ -1,0 +1,5 @@
+Base|Base
+Intrigue|Intrigue
+Seaside|Seaside
+BlackMarket|Black Market
+Envoy|Envoy

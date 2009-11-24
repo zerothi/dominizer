@@ -1,0 +1,5 @@
+Base-pl|Podstawka
+Intrigue-pl|Intryga
+Seaside-pl|Wybrzeże 
+BlackMarket-pl|Czarny rynek
+Envoy-pl|Wysłannik

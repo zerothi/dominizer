@@ -1,0 +1,25 @@
+2 Dziedziniec
+2 Sługa
+2 Sekretna komnata
+3 Sala reprezentacyjna
+3 Maskarada
+3 Dzielnica slumsów
+3 Zarządca
+3 Oszust
+3 Studnia życzeń
+4 Baron
+4 Most
+4 Spiskowiec
+4 Pracownia miedzi
+4 Zakład hutniczy
+4 Wioska górnicza
+4 Zwiadowca
+5 Książe
+5 Faworyt
+5 Sabotażysta
+5 Oprawca
+5 Punkt handlowy
+5 Danina
+5 Rozbudowa
+6 Harem
+6 Szlachta
