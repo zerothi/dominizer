@@ -7,11 +7,16 @@ public class Card {
 	private boolean isSelected = true;
 	private boolean isBMSelected = true;
 	private int cost = 2;
-	private boolean isVictory = false;
 	private boolean isAction = false;
+	private boolean isVictory = false;
 	private boolean isCoin = false;
+	private boolean isAttack = false;
 	private boolean isReaction = false;
-		
+	
+	public Card() {
+		super();
+	}
+	
 	public Card(String name) {
 		super();
 		this.name = name;
@@ -174,5 +179,19 @@ public class Card {
 	 */
 	public void setAction(boolean isAction) {
 		this.isAction = isAction;
+	}
+
+	/**
+	 * @param isAttack the isAttack to set
+	 */
+	public void setAttack(boolean isAttack) {
+		this.isAttack = isAttack;
+	}
+
+	/**
+	 * @return the isAttack
+	 */
+	public boolean isAttack() {
+		return isAttack;
 	}
 }

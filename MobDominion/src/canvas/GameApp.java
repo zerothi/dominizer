@@ -41,9 +41,7 @@ import javax.microedition.midlet.MIDletStateChangeException;
 import de.enough.polish.util.DeviceControl;
 import de.enough.polish.util.Locale;
 
-//#ifdef polish.debugEnabled
 import de.enough.polish.util.Debug;
-//#endif
 import dominion.Card;
 import dominion.Dominion;
 /**
@@ -63,9 +61,7 @@ public class GameApp extends MIDlet implements CommandListener {
 	Form mainForm = null;
 	Command startGameCmd = new Command( Locale.get( "cmd.StartGame" ), Command.ITEM, 8 );
 	Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
-	//#ifdef polish.debugEnabled
-		Command showLogCmd = new Command( Locale.get("cmd.ShowLog"), Command.ITEM, 9 );
-	//#endif
+	Command showLogCmd = new Command( Locale.get("cmd.ShowLog"), Command.ITEM, 9 );
 	Display display;
 	Dominion dominion = null;
 	
@@ -73,62 +69,24 @@ public class GameApp extends MIDlet implements CommandListener {
 		super();
 		//#debug
 		System.out.println("starting Dominion");
-		//#ifdef title:defined
-			//#= String title = "${ title }";
-		//#else
-			String title = "J2ME Polish";
-		//#endif
-		this.mainForm = new Form(title);
+		this.mainForm = new Form("Dominion randomizer");
 		//#style horizontalChoice
-		this.group = new ChoiceGroup("Limit search to:", ChoiceGroup.POPUP, null );
+		this.group = new ChoiceGroup("Card list", ChoiceGroup.EXCLUSIVE, null );
 		dominion = new Dominion();
 		Vector tmp = dominion.randomizeCards();
 		for (int i = 0; i < tmp.size() ; i++ ) {
 			//#style choiceItem
 			this.group.append( ((Card) tmp.elementAt(i)).getName(), null );			
 		}
-		//#style choiceItem
-		this.group.append( "All", null );
-		//#style choiceItem
-		this.group.append( "Events", null );
-		//#style choiceItem
-		this.group.append( "Concerts", null );
-		//#style choiceItem
-		this.group.append( "Cinema", null );
-		//#style choiceItem
-		this.group.append( "Plays", null );
 		this.mainForm.setCommandListener(this);
 		this.mainForm.addCommand( this.startGameCmd ); 
+		this.mainForm.addCommand( this.showLogCmd );
 		this.mainForm.addCommand( this.quitCmd );
 		//#ifdef polish.debugEnabled
 			this.mainForm.addCommand( this.showLogCmd );
 		//#endif
-		this.mainForm.append(this.group); 
-		/*
-		//#style mainScreen
-		this.menuScreen = new List(title, List.IMPLICIT);
-		//#style mainCommand
-		this.menuScreen.append("Chat", null);
-		//#style mainCommand
-		this.menuScreen.append("Mail", null);
-		//#style mainCommand
-		this.menuScreen.append("Settings", null);
-		//#style mainCommand
-		this.menuScreen.append("Applications", null);
-		//#style mainCommand
-		this.menuScreen.append("Help", null);
-		//#style mainCommand
-		this.menuScreen.append("Quit", null);
-		//#style mainCommand
-		this.menuScreen.append("Documents", null);
-		
-		this.menuScreen.setCommandListener(this);
-		this.menuScreen.addCommand( this.startGameCmd ); 
-		this.menuScreen.addCommand( this.quitCmd );
-		//#ifdef polish.debugEnabled
-			this.menuScreen.addCommand( this.showLogCmd );
-		//#endif
-		*/
+		this.mainForm.append(this.group);
+
 		// You can also use further localization features like the following: 
 		//System.out.println("Today is " + Locale.formatDate( System.currentTimeMillis() ));
 		
@@ -159,12 +117,10 @@ public class GameApp extends MIDlet implements CommandListener {
 	
 	public void commandAction(Command cmd, Displayable screen) {		
 		if (screen == this.mainForm) {
-			//#ifdef polish.debugEnabled
-				if (cmd == this.showLogCmd ) {
-					Debug.showLog(this.display);
-					return;
-				}
-			//#endif
+			if (cmd == this.showLogCmd ) {
+				Debug.showLog(this.display);
+				return;
+			}
 			if (cmd == ChoiceGroup.MARK_COMMAND) {
 				int selectedItem = this.group.getSelectedIndex();
 				if (selectedItem == 5) { //quit has been selected

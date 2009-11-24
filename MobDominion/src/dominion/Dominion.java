@@ -1,5 +1,7 @@
 package dominion;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
 import java.util.Vector;
 
@@ -40,33 +42,80 @@ public class Dominion {
 	}
 	
 	private void readCards() {
+		readResource("base");
+		readResource("intrigue");
+	}
+	
+	private Card processCardInformation(String information) {
+		Card card = new Card();
+		int start = 0;
+		int end = information.indexOf(":", start);
+		card.setName(information.substring(start, end));
+		start = end + 1;
+		end = information.indexOf(":", start);
+		card.setGame(information.substring(start, end));
+		start = end + 1;
+		end = information.indexOf(":", start);
+		card.setCost(Integer.parseInt(information.substring(start, end)));
+		start = end + 1;
+		end = information.indexOf(":", start);
+		card.setAction(information.substring(start, end) == "0" ? false : true);
+		start = end + 1;
+		end = information.indexOf(":", start);
+		card.setVictory(information.substring(start, end) == "0" ? false : true);
+		start = end + 1;
+		end = information.indexOf(":", start);
+		card.setCoin(information.substring(start, end) == "0" ? false : true);
+		start = end + 1;
+		end = information.indexOf(":", start);
+		card.setAction(information.substring(start, end) == "0" ? false : true);
+		start = end + 1;
+		end = information.indexOf(";", start);
+		card.setReaction(information.substring(start, end) == "0" ? false : true);
+		return card;
+	}
+	
+	private void readResource(String file) {
+		StringBuffer sb = new StringBuffer();
+		try {
+		InputStream is = this.getClass().getResourceAsStream(file);
+		int len = 0;
+		byte[] data = new byte[64];
+		try {
+			while ( ( len = is.read(data) ) != -1 ) {
+				sb.append(new String(data,0,len));
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//#debug
+			System.out.println("Ioexception");
+		}
+		try {
+			is.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//#debug
+			System.out.println("Ioexception");
+		}
+		} catch (IllegalArgumentException e) {
+			//#debug
+			System.out.println("IllegalArgument" + e.toString());
+		}
 		if ( cards == null )
 			cards = new Vector();
-		cards.ensureCapacity(25);
-		cards.addElement(new Card("Adventurer","Base",6));
-		cards.addElement(new Card("Bureaucrat","Base",4));
-		cards.addElement(new Card("Cellar","Base",2));
-		cards.addElement(new Card("Chancellor","Base",3));
-		cards.addElement(new Card("Chapel","Base",2));
-		cards.addElement(new Card("Council Room","Base",5));
-		cards.addElement(new Card("Feast","Base",4));
-		cards.addElement(new Card("Festival","Base",5));
-		cards.addElement(new Card("Gardens","Base",4));
-		cards.addElement(new Card("Laboratory","Base",5));
-		cards.addElement(new Card("Library","Base",5));
-		cards.addElement(new Card("Market","Base",5));
-		cards.addElement(new Card("Militia","Base",4));
-		cards.addElement(new Card("Mine","Base",5));
-		cards.addElement(new Card("Moat","Base",2));
-		cards.addElement(new Card("Moneylender","Base",4));
-		cards.addElement(new Card("Remodel","Base",4));
-		cards.addElement(new Card("Smithy","Base",4));
-		cards.addElement(new Card("Spy","Base",4));
-		cards.addElement(new Card("Thief","Base",4));
-		cards.addElement(new Card("Throne Room","Base",4));
-		cards.addElement(new Card("Village","Base",3));
-		cards.addElement(new Card("Witch","Base",5));
-		cards.addElement(new Card("Woodcutter","Base",3));
-		cards.addElement(new Card("Workshop","Base",3));
+		String tmp = sb.toString();
+		boolean foundEndLine = true;
+		int start = 0;
+		int end = -2;
+		cards.ensureCapacity(50);
+		while ( foundEndLine ) {
+			if ( tmp.length() - 10 < end )
+				foundEndLine = false;
+			else {
+				start = end + 2;
+				end = tmp.indexOf(";", start);
+				cards.addElement(processCardInformation(tmp.substring(start, end + 1)));
+			}
+		}
 	}
 }

@@ -79,7 +79,7 @@
 			<!-- Generic/midp1 phone, but when the test-property is set to false, -->
 			<!-- the second deviceRequirements will be used instead. -->
 			<deviceRequirements if="test">
-				<requirement name="Identifier" value="${device}" />
+				<requirement name="Identifier" value="${devices}" />
 			</deviceRequirements>
 			<deviceRequirements unless="test">
 				<requirement name="Identifier" value="${devices}" />
@@ -109,6 +109,7 @@
 				<resources dir="${resource.dir}" defaultexcludes="yes" excludes="readme.txt">
 					<root dir="${resource.dir}" />
 					<root dir="${resource.dir}/img" />
+					<root dir="${resource.dir}/cards" />
 					<!--root dir="${resource.dir}/lang"  />
 					<localization locales="da_DK, en_GB" unless="test" />
 					<localization locales="en_GB" if="test" /-->
@@ -117,7 +118,7 @@
 				<!-- obfuscator settings: do not obfuscate when the test-property is true-->
 				<obfuscator name="ProGuard" unless="test or polish.blackberry">
 					<parameter name="optimize" value="true" />
-					<parameter name="optimizationpasses" value="3" />
+					<parameter name="optimizationpasses" value="1" />
 				</obfuscator>
 				<!-- info memory -->
 				<debug if="info" showLogOnError="true" verbose="true" level="info">
@@ -172,4 +173,5 @@
 	<target name="enableMemory" description="Call this target first to skip the obfuscation step, call the emulator and start the debugger, e.g. ant enableDebug j2mepolish">
 		<property name="memory" value="true" />
 	</target>
+	<target name="deviceDebug" description="debugs the project" depends="enableDebug, enableInfo, j2mepolish" />
 </project>

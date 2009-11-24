@@ -397,6 +397,11 @@ menuItem:hover {
 	font-color: black;
 }
 
+.choiceItem:pressed {
+	background-color: #f26522;
+	font-color: #333;
+}
+
 .choiceGroupLabel {
 	font-style: italic;
 	font-size: small;
