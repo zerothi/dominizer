@@ -43,10 +43,9 @@ import de.enough.polish.util.Locale;
 
 //#ifdef polish.debugEnabled
 import de.enough.polish.util.Debug;
+//#endif
 import dominion.Card;
 import dominion.Dominion;
-//#endif
-	
 /**
  * <p>Shows a demonstration of the possibilities of J2ME Polish.</p>
  *
