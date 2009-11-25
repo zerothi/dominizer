@@ -371,12 +371,13 @@ menuItem:hover {
 
 */
 
-.horizontalChoice {
+.choiceGroup {
 	label-style: choiceGroupLabel;
 	background-type: round-rect;
 	background-color: white;
 	include-label: true;
 	layout: expand;
+	align-heights: true;
 	view-type: horizontal-choice;
 	horizontalview-arrow-position: none;
 	/*
@@ -385,7 +386,7 @@ menuItem:hover {
 	*/
 }
 
-.horizontalChoice:hover {
+.choiceGroup:hover {
 	background-color: white;
 }
 
@@ -394,6 +395,8 @@ menuItem:hover {
 	font-style: bold;
 	text-wrap: false;
 	font-size: small;
+	text-layout: center | vertical-center;
+	layout: vertical-center;
 }
 
 .choiceItem:hover {
@@ -404,6 +407,14 @@ menuItem:hover {
 .choiceItem:pressed {
 	background-color: #f26522;
 	font-color: #333;
+	font-size: medium;
+}
+
+.choiceItemChecked {
+	background-type: round-rect;
+	background-color: #f26522;
+	font-color: blue;
+	font-size: medium;
 }
 
 .choiceGroupLabel {

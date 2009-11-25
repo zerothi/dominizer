@@ -35,9 +35,12 @@ import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.ChoiceGroup;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Item;
+import javax.microedition.lcdui.ItemStateListener;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
+import de.enough.polish.ui.Choice;
 import de.enough.polish.util.DeviceControl;
 import de.enough.polish.util.Locale;
 
@@ -55,14 +58,14 @@ import dominion.Dominion;
  * </pre>
  * @author Robert Virkus, j2mepolish@enough.de
  */
-public class GameApp extends MIDlet implements CommandListener {
+public class GameApp extends MIDlet implements CommandListener, ItemStateListener {
 	
 	ChoiceGroup group = null;
 	Form mainForm = null;
 	Command reAssignCardCmd = new Command( Locale.get( "cmd.ReAssign" ), Command.ITEM, 8 );
 	Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
 	Command showLogCmd = new Command( Locale.get("cmd.ShowLog"), Command.ITEM, 9 );
-	Display display;
+	Display display = null;
 	Dominion dominion = null;
 	
 	public GameApp() {
@@ -73,8 +76,8 @@ public class GameApp extends MIDlet implements CommandListener {
 		System.out.println("starting Dominion");
 		//#style mainScreen
 		this.mainForm = new Form("Dominion randomizer");
-		//#style horizontalChoice
-		this.group = new ChoiceGroup("Card list", ChoiceGroup.EXCLUSIVE);
+		//#style choiceGroup
+		this.group = new ChoiceGroup("Card list", Choice.EXCLUSIVE);// doesn't work yet with multiple
 		this.randomizeCards();
 		this.mainForm.setCommandListener(this);
 		this.mainForm.addCommand( this.reAssignCardCmd ); 
@@ -84,6 +87,7 @@ public class GameApp extends MIDlet implements CommandListener {
 			this.mainForm.addCommand( this.showLogCmd );
 		//#endif
 		this.mainForm.append(this.group);
+		this.mainForm.setItemStateListener(this);
 
 		// You can also use further localization features like the following: 
 		//System.out.println("Today is " + Locale.formatDate( System.currentTimeMillis() ));
@@ -92,26 +96,7 @@ public class GameApp extends MIDlet implements CommandListener {
 		System.out.println("initialisation done.");
 	}
 
-	protected void startApp() throws MIDletStateChangeException {
-		//#debug
-		System.out.println("setting display.");
-		this.display = Display.getDisplay(this);
-		/*
-		this.display.setCurrent( this.menuScreen );
-		*/
-		
-		this.display.setCurrent( this.mainForm );
-		//#debug
-		System.out.println("sample application is up and running.");
-	}
 
-	protected void pauseApp() {
-		DeviceControl.lightOff();
-	}
-	
-	protected void destroyApp(boolean unconditional) throws MIDletStateChangeException {
-		// just quit
-	}
 	
 	public void commandAction(Command cmd, Displayable screen) {		
 		if (screen == this.mainForm) {
@@ -135,14 +120,10 @@ public class GameApp extends MIDlet implements CommandListener {
 		}
 	}
 	
-	/**
-	 * @param string
-	 */
-	private void showAlert(String message) {
-		//#style messageAlert
-		Alert alert = new Alert( "Alert", message, null, AlertType.INFO );
-		alert.setTimeout( Alert.FOREVER );
-		this.display.setCurrent( alert );
+	public void itemStateChanged(Item item) {
+		if (item == this.group)	{
+			// TODO: do nothing yet
+	    }
 	}
 
 	private void randomizeCards() {
@@ -154,10 +135,37 @@ public class GameApp extends MIDlet implements CommandListener {
 		}
 		tmp = null;
 	}
-	
-	private void quit() {
-		notifyDestroyed();
+	protected void startApp() throws MIDletStateChangeException {
+		//#debug
+		System.out.println("setting display.");
+		this.display = Display.getDisplay(this);
+		/*
+		this.display.setCurrent( this.menuScreen );
+		*/
+		
+		this.display.setCurrent( this.mainForm );
+		//#debug
+		System.out.println("sample application is up and running.");
+	}
+
+	protected void pauseApp() {
+		DeviceControl.lightOff();
 	}
 	
+	protected void destroyApp(boolean unconditional) throws MIDletStateChangeException {
+		// just quit
+	}
 	
+	/**
+	 * @param string
+	 */
+	private void showAlert(String message) {
+		//#style messageAlert
+		Alert alert = new Alert( "Alert", message, null, AlertType.INFO );
+		alert.setTimeout( Alert.FOREVER );
+		this.display.setCurrent( alert );
+	}
+	private void quit() {
+		notifyDestroyed();
+	}	
 }

@@ -34,7 +34,7 @@ public class Dominion {
 		int selectedElement = 0;
 		Random selector = new Random(System.currentTimeMillis());
 		for (int i = 0 ; i < selectCards ; i++ ) {
-			selectedElement = (int) ((selector.nextFloat() * (totalAvailable - i)) % (totalAvailable - i));
+			selectedElement = selector.nextInt(totalAvailable - i);
 			selectedCards.addElement(cards.elementAt(selectedElement));
 			cards.removeElementAt(selectedElement);
 		}

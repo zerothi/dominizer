@@ -105,6 +105,7 @@
 					-->
 					<variable name="polish.TextField.useDirectInput" value="true" />
 					<variable name="polish.ScreenInfo.enable" value="true" />
+					<variable name="polish.ChoiceGroup.suppressMarkCommands" value="true" />
 				</variables>
 				<resources dir="${resource.dir}" defaultexcludes="yes" excludes="readme.txt">
 					<root dir="${resource.dir}" />
