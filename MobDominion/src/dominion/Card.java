@@ -12,91 +12,105 @@ public class Card {
 	private boolean isTreasure = false;
 	private boolean isAttack = false;
 	private boolean isReaction = false;
-	
+	private boolean isDuration = false;
+
 	public Card() {
 		super();
 	}
-	
+
 	public Card(String name) {
 		super();
 		this.name = name;
 	}
-	
+
 	public Card(String name, String game) {
 		super();
 		this.name = name;
 		this.game = game;
 	}
-	
+
 	public Card(String name, String game, int cost) {
 		super();
 		this.name = name;
 		this.game = game;
 		this.cost = cost;
 	}
-	
+
 	/**
 	 * @return the name
 	 */
 	public String getName() {
 		return name;
 	}
+
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	/**
 	 * @return the game
 	 */
 	public String getGame() {
 		return game;
 	}
+
 	/**
-	 * @param game the game to set
+	 * @param game
+	 *            the game to set
 	 */
 	public void setGame(String game) {
 		this.game = game;
 	}
+
 	/**
 	 * @return the selected
 	 */
 	public boolean isSelected() {
 		return isSelected;
 	}
+
 	/**
-	 * @param selected the selected to set
+	 * @param selected
+	 *            the selected to set
 	 */
 	public void setSelected(boolean selected) {
 		this.isSelected = selected;
 	}
+
 	/**
 	 * @return the bmSelected
 	 */
 	public boolean isBlackMarketSelected() {
 		return isBMSelected;
 	}
+
 	/**
-	 * @param bmSelected the bmSelected to set
+	 * @param bmSelected
+	 *            the bmSelected to set
 	 */
 	public void setBlackMarketSelected(boolean bmSelected) {
 		this.isBMSelected = bmSelected;
 	}
-	
+
 	/**
 	 * @return the cost
 	 */
 	public int getCost() {
 		return cost;
 	}
+
 	/**
-	 * @param cost the cost to set
+	 * @param cost
+	 *            the cost to set
 	 */
 	public void setCost(int cost) {
 		this.cost = cost;
 	}
-	
+
 	/**
 	 * @return the isPlaying
 	 */
@@ -105,7 +119,8 @@ public class Card {
 	}
 
 	/**
-	 * @param isPlaying the isPlaying to set
+	 * @param isPlaying
+	 *            the isPlaying to set
 	 */
 	public void setPlaying(boolean isPlaying) {
 		this.isPlaying = isPlaying;
@@ -119,7 +134,8 @@ public class Card {
 	}
 
 	/**
-	 * @param isBMSelected the isBMSelected to set
+	 * @param isBMSelected
+	 *            the isBMSelected to set
 	 */
 	public void setBMSelected(boolean isBMSelected) {
 		this.isBMSelected = isBMSelected;
@@ -133,7 +149,8 @@ public class Card {
 	}
 
 	/**
-	 * @param isVictory the isVictory to set
+	 * @param isVictory
+	 *            the isVictory to set
 	 */
 	public void setVictory(boolean isVictory) {
 		this.isVictory = isVictory;
@@ -147,7 +164,8 @@ public class Card {
 	}
 
 	/**
-	 * @param isCoin the isCoin to set
+	 * @param isCoin
+	 *            the isCoin to set
 	 */
 	public void setTreasure(boolean isCoin) {
 		this.isTreasure = isCoin;
@@ -161,7 +179,8 @@ public class Card {
 	}
 
 	/**
-	 * @param isReaction the isReaction to set
+	 * @param isReaction
+	 *            the isReaction to set
 	 */
 	public void setReaction(boolean isReaction) {
 		this.isReaction = isReaction;
@@ -175,14 +194,16 @@ public class Card {
 	}
 
 	/**
-	 * @param isAction the isAction to set
+	 * @param isAction
+	 *            the isAction to set
 	 */
 	public void setAction(boolean isAction) {
 		this.isAction = isAction;
 	}
 
 	/**
-	 * @param isAttack the isAttack to set
+	 * @param isAttack
+	 *            the isAttack to set
 	 */
 	public void setAttack(boolean isAttack) {
 		this.isAttack = isAttack;
@@ -193,5 +214,20 @@ public class Card {
 	 */
 	public boolean isAttack() {
 		return isAttack;
+	}
+
+	/**
+	 * @return the isDuration
+	 */
+	public boolean isDuration() {
+		return isDuration;
+	}
+
+	/**
+	 * @param isDuration
+	 *            the isDuration to set
+	 */
+	public void setDuration(boolean isDuration) {
+		this.isDuration = isDuration;
 	}
 }

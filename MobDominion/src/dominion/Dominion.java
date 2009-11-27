@@ -49,6 +49,7 @@ public class Dominion {
 	private void readCards() {
 		readResource("base");
 		readResource("intrigue");
+		readResource("seaside");
 	}
 	
 	private Card processCardInformation(String information) {
@@ -64,21 +65,27 @@ public class Dominion {
 		card.setCost(Integer.parseInt(information.substring(start, end)));
 		start = end + 1;
 		end = information.indexOf(":", start);
-		card.setAction(information.substring(start, end) == "0" ? false : true);
+		card.setAction(isTrue(information.substring(start, end)));
 		start = end + 1;
 		end = information.indexOf(":", start);
-		card.setGame(information.substring(start, end));
-		card.setVictory(information.substring(start, end) == "0" ? false : true);
+		card.setVictory(isTrue(information.substring(start, end)));
 		start = end + 1;
 		end = information.indexOf(":", start);
-		card.setTreasure(information.substring(start, end) == "0" ? false : true);
+		card.setTreasure(isTrue(information.substring(start, end)));
 		start = end + 1;
 		end = information.indexOf(":", start);
-		card.setAction(information.substring(start, end) == "0" ? false : true);
+		card.setAction(isTrue(information.substring(start, end)));
+		start = end + 1;
+		end = information.indexOf(":", start);
+		card.setReaction(isTrue(information.substring(start, end)));
 		start = end + 1;
 		end = information.indexOf(";", start);
-		card.setReaction(information.substring(start, end) == "0" ? false : true);
+		card.setDuration(isTrue(information.substring(start, end)));
 		return card;
+	}
+	
+	private boolean isTrue(String test) {
+		return test.equals("0") ? false : true;
 	}
 	
 	private void readResource(String file) {

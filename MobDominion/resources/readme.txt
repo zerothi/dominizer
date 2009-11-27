@@ -1,1 +1,2 @@
-The Format for cards are "Name:Expansion:Cost:ActionCard?:VictoryCard?:CoinCard?:AttackCard?:ReactionCard?;"
+The Format for cards are 
+Name:Expansion:Cost:ActionCard?:VictoryCard?:CoinCard?:AttackCard?:ReactionCard?:Duration?;
