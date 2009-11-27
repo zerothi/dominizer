@@ -28,7 +28,7 @@ public class Dominion {
 		this.selectCards = selectCards;
 	}
 	
-	public Vector randomizeCards() {
+	public Vector getRandomizedCards() {
 		Vector selectedCards = new Vector(selectCards);
 		int totalAvailable = cards.size();
 		int selectedElement = 0;
@@ -40,6 +40,10 @@ public class Dominion {
 		}
 		selector = null;
 		return selectedCards;
+	}
+	
+	public Vector getAllCards() {
+		return cards;
 	}
 	
 	private void readCards() {
@@ -63,10 +67,11 @@ public class Dominion {
 		card.setAction(information.substring(start, end) == "0" ? false : true);
 		start = end + 1;
 		end = information.indexOf(":", start);
+		card.setGame(information.substring(start, end));
 		card.setVictory(information.substring(start, end) == "0" ? false : true);
 		start = end + 1;
 		end = information.indexOf(":", start);
-		card.setCoin(information.substring(start, end) == "0" ? false : true);
+		card.setTreasure(information.substring(start, end) == "0" ? false : true);
 		start = end + 1;
 		end = information.indexOf(":", start);
 		card.setAction(information.substring(start, end) == "0" ? false : true);

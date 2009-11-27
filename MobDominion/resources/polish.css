@@ -19,11 +19,12 @@
   * can be changed here. 
   */
 colors {
-	bgColor:  rgb(90,121,239);
-	brightBgColor:  rgb(165,190,247);
+	bgColor:  rgb(0,10,25);
+	brightBgColor:  rgb(0,25,50);
 	brightFontColor: white;
 	fontColor: rgb( 66, 85, 148 ); 
 	translucentBgColor:  argb(130, 165,190,247);
+	translucentFontColor:  argb(130, 165,190,247);
 	
 	maskColor: red;
 	splitTop: rgb(0,25,50);
@@ -36,6 +37,10 @@ backgrounds {
 		type: vertical-gradient;
 		top-color: splitTop;
 		bottom-color: splitBot;
+	}
+	
+	tableSelection {
+		color: #ffc;
 	}
 	
 	maskBackground {
@@ -305,7 +310,7 @@ menu {
 		type: round-rect;
 		color: brightBgColor;
 		border-width: 2;
-		border-color: bgColor;
+		border-color: translucentBgColor;
 	}
 	font-color: brightFontColor;
 	font-style: bold;
@@ -421,4 +426,76 @@ menuItem:hover {
 	font-style: plain;
 	font-size: small;
 	layout: newline-after;
+}
+
+
+.defaultTable {
+	padding: 1;
+	padding-vertical: 0;
+	padding-horizontal: 6;
+	font-color: translucentFontColor;
+	font-size: small;
+	table-selected-background: tableSelection;
+	background {
+		type: round-rect;
+		color: brightBgColor;
+	}
+	layout: center;
+}
+
+.defaultTable:hover {
+	padding: 1;
+	padding-vertical: 0;
+	padding-horizontal: 6;
+	border {
+		type: round-rect;
+		width: 2;
+		color: #333;
+	}
+	background {
+		color: bgColor;
+	}
+}
+
+.tableHeading {
+	font-color: translucentFontColor;
+	font-style: bold;
+	font-size: small;
+}
+.tableHeading:hover {
+	font-color: translucentFontColor;
+	font-style: bold;
+	font-size: small;
+	background {
+		color: bgColor;
+	}
+}
+.tableCell {
+	font-color: translucentFontColor;
+	font-style: plain;
+	font-size: small;
+}
+
+.tableCell:hover {
+	font-color: translucentFontColor;
+	font-style: plain;
+	font-size: small;
+	background {
+		color: bgColor;
+	}
+}
+
+
+.tableCellCentered extends tableCell {
+	layout: center;
+}
+
+
+.tableBoolean {
+	padding: 2px;
+	include-label: true;
+	background {
+		type: round-rect;
+		color: silver;
+	}
 }

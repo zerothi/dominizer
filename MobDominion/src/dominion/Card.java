@@ -9,7 +9,7 @@ public class Card {
 	private int cost = 2;
 	private boolean isAction = false;
 	private boolean isVictory = false;
-	private boolean isCoin = false;
+	private boolean isTreasure = false;
 	private boolean isAttack = false;
 	private boolean isReaction = false;
 	
@@ -142,15 +142,15 @@ public class Card {
 	/**
 	 * @return the isCoin
 	 */
-	public boolean isCoin() {
-		return isCoin;
+	public boolean isTreasure() {
+		return isTreasure;
 	}
 
 	/**
 	 * @param isCoin the isCoin to set
 	 */
-	public void setCoin(boolean isCoin) {
-		this.isCoin = isCoin;
+	public void setTreasure(boolean isCoin) {
+		this.isTreasure = isCoin;
 	}
 
 	/**
