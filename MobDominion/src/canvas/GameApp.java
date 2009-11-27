@@ -25,27 +25,23 @@
  */
 package canvas;
 
-import java.util.Vector;
-
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.AlertType;
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.ChoiceGroup;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Item;
-import javax.microedition.lcdui.ItemStateListener;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Form;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
+import canvas.forms.EditCardRandomizationForm;
+import canvas.forms.ShowCardsForm;
 import de.enough.polish.ui.Choice;
+import de.enough.polish.util.Debug;
 import de.enough.polish.util.DeviceControl;
 import de.enough.polish.util.Locale;
-
-import de.enough.polish.util.Debug;
-import dominion.Card;
 import dominion.Dominion;
 /**
  * <p>Shows a demonstration of the possibilities of J2ME Polish.</p>
@@ -58,42 +54,47 @@ import dominion.Dominion;
  * </pre>
  * @author Robert Virkus, j2mepolish@enough.de
  */
-public class GameApp extends MIDlet implements CommandListener, ItemStateListener {
+public class GameApp extends MIDlet implements CommandListener {
 	
-	ChoiceGroup group = null;
+	ChoiceGroup whatToDoCG = null;
 	Form mainForm = null;
-	Command reAssignCardCmd = new Command( Locale.get( "cmd.ReAssign" ), Command.ITEM, 8 );
-	Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
+	Command chooseCmd = new Command("Choose", Command.SCREEN, 2);  
+	Command showRandomizedCardsCmd = new Command( Locale.get( "cmd.Randomize" ), Command.ITEM, 7 );
+	Command showCardsCmd = new Command( Locale.get( "cmd.ShowCards" ), Command.ITEM, 8 );
 	Command showLogCmd = new Command( Locale.get("cmd.ShowLog"), Command.ITEM, 9 );
+	Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
 	Display display = null;
-	Dominion dominion = null;
+	public Dominion dominion = null;
 	
 	public GameApp() {
 		super();
-		// Initialize Dominion
-		dominion = new Dominion();
 		//#debug
 		System.out.println("starting Dominion");
+		dominion = new Dominion();
+		initialize();
+		//#debug
+		System.out.println("initialisation done.");
+	}
+	
+	private void initialize() {
 		//#style mainScreen
 		this.mainForm = new Form("Dominion randomizer");
 		//#style choiceGroup
-		this.group = new ChoiceGroup("Card list", Choice.EXCLUSIVE);// doesn't work yet with multiple
-		this.randomizeCards();
+		this.whatToDoCG = new ChoiceGroup("What to do?", Choice.EXCLUSIVE);// doesn't work yet with multiple
+		//style choiceItem
+		this.whatToDoCG.append("Randomize", null);
+		this.whatToDoCG.append("Settings", null);
 		this.mainForm.setCommandListener(this);
-		this.mainForm.addCommand( this.reAssignCardCmd ); 
-		this.mainForm.addCommand( this.showLogCmd );
-		this.mainForm.addCommand( this.quitCmd );
+		this.mainForm.addCommand(this.showRandomizedCardsCmd); 
+		this.mainForm.addCommand(this.showCardsCmd);
+		this.mainForm.addCommand(this.showLogCmd);
+		this.mainForm.addCommand(this.quitCmd);
 		//#ifdef polish.debugEnabled
-			this.mainForm.addCommand( this.showLogCmd );
+			this.mainForm.addCommand(this.showLogCmd);
 		//#endif
-		this.mainForm.append(this.group);
-		this.mainForm.setItemStateListener(this);
-
+		this.mainForm.append(this.whatToDoCG);
 		// You can also use further localization features like the following: 
 		//System.out.println("Today is " + Locale.formatDate( System.currentTimeMillis() ));
-		
-		//#debug
-		System.out.println("initialisation done.");
 	}
 
 
@@ -104,15 +105,20 @@ public class GameApp extends MIDlet implements CommandListener, ItemStateListene
 				Debug.showLog(this.display);
 				return;
 			}
-			if (cmd == this.showLogCmd) {
-				int selectedItem = this.group.getSelectedIndex();
-				if (selectedItem == 5) { //quit has been selected
-					quit();
-				} else {
-					showAlert( this.group.getString(selectedItem) );
+			if ( cmd == this.chooseCmd ) {
+				int selectedItem = this.whatToDoCG.getSelectedIndex();
+				switch ( selectedItem ) {
+				case 0:
+					this.showRandomizedCards();
+					break;
+				case 1:
+					showAlert( this.whatToDoCG.getString(1));
+					break;
 				}
-			} else if (cmd == this.reAssignCardCmd) {
-				randomizeCards();
+			} else if (cmd == this.showRandomizedCardsCmd) {
+				this.showRandomizedCards();
+			} else if (cmd == this.showCardsCmd) {
+				this.showCardList();
 			}
 		} 
 		if (cmd == this.quitCmd) {
@@ -120,30 +126,32 @@ public class GameApp extends MIDlet implements CommandListener, ItemStateListene
 		}
 	}
 	
-	public void itemStateChanged(Item item) {
-		if (item == this.group)	{
-			// TODO: do nothing yet
-	    }
+	private void showRandomizedCards() {
+		ShowCardsForm scForm = new ShowCardsForm(this, "Randomized Cards");
+		scForm.viewCards(dominion.getRandomizedCards());
+		this.changeToScreen(scForm);
+	}
+	
+	private void showCardList() {
+		EditCardRandomizationForm ecForm = new EditCardRandomizationForm(this, "Randomized Cards");
+		ecForm.viewCards(dominion.getAllCards());
+		this.changeToScreen(ecForm);
+	}
+	
+	public void changeToScreen(Form form) {
+		this.display = Display.getDisplay(this);
+		this.display.setCurrent(form);
+	}
+	
+	public void returnToMainScreen() {
+		this.changeToScreen(this.mainForm);
 	}
 
-	private void randomizeCards() {
-		Vector tmp = dominion.randomizeCards();
-		this.group.deleteAll();
-		for (int i = 0; i < tmp.size() ; i++ ) {
-			//#style choiceItem
-			this.group.append( ((Card) tmp.elementAt(i)).getName(), null );			
-		}
-		tmp = null;
-	}
 	protected void startApp() throws MIDletStateChangeException {
 		//#debug
 		System.out.println("setting display.");
-		this.display = Display.getDisplay(this);
-		/*
-		this.display.setCurrent( this.menuScreen );
-		*/
-		
-		this.display.setCurrent( this.mainForm );
+		this.changeToScreen(this.mainForm);
+		this.showCardList();
 		//#debug
 		System.out.println("sample application is up and running.");
 	}
