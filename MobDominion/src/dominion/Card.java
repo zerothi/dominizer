@@ -2,10 +2,10 @@ package dominion;
 
 public class Card {
 	private String name = null;
-	private String game = null;
+	private String expansion = null;
 	private boolean isPlaying = false;
 	private boolean isSelected = true;
-	private boolean isBMSelected = true;
+	private boolean isBlackMarketSelected = true;
 	private int cost = 2;
 	private boolean isAction = false;
 	private boolean isVictory = false;
@@ -23,16 +23,16 @@ public class Card {
 		this.name = name;
 	}
 
-	public Card(String name, String game) {
+	public Card(String name, String expansion) {
 		super();
 		this.name = name;
-		this.game = game;
+		this.expansion = expansion;
 	}
 
-	public Card(String name, String game, int cost) {
+	public Card(String name, String expansion, int cost) {
 		super();
 		this.name = name;
-		this.game = game;
+		this.expansion = expansion;
 		this.cost = cost;
 	}
 
@@ -54,16 +54,16 @@ public class Card {
 	/**
 	 * @return the game
 	 */
-	public String getGame() {
-		return game;
+	public String getExpansion() {
+		return expansion;
 	}
 
 	/**
 	 * @param game
 	 *            the game to set
 	 */
-	public void setGame(String game) {
-		this.game = game;
+	public void setExpansion(String game) {
+		this.expansion = game;
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class Card {
 	 * @return the bmSelected
 	 */
 	public boolean isBlackMarketSelected() {
-		return isBMSelected;
+		return isBlackMarketSelected;
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class Card {
 	 *            the bmSelected to set
 	 */
 	public void setBlackMarketSelected(boolean bmSelected) {
-		this.isBMSelected = bmSelected;
+		this.isBlackMarketSelected = bmSelected;
 	}
 
 	/**
@@ -124,21 +124,6 @@ public class Card {
 	 */
 	public void setPlaying(boolean isPlaying) {
 		this.isPlaying = isPlaying;
-	}
-
-	/**
-	 * @return the isBMSelected
-	 */
-	public boolean isBMSelected() {
-		return isBMSelected;
-	}
-
-	/**
-	 * @param isBMSelected
-	 *            the isBMSelected to set
-	 */
-	public void setBMSelected(boolean isBMSelected) {
-		this.isBMSelected = isBMSelected;
 	}
 
 	/**

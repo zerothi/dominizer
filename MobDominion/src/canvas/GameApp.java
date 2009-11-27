@@ -36,6 +36,7 @@ import javax.microedition.lcdui.Form;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
+import canvas.forms.EditCardsForm;
 import canvas.forms.TableCardForm;
 import canvas.forms.ShowCardsForm;
 import de.enough.polish.ui.Choice;
@@ -59,7 +60,8 @@ public class GameApp extends MIDlet implements CommandListener {
 	ChoiceGroup whatToDoCG = null;
 	Form mainForm = null;
 	Command chooseCmd = new Command("Choose", Command.SCREEN, 2);  
-	Command showRandomizedCardsCmd = new Command( Locale.get( "cmd.Randomize" ), Command.ITEM, 7 );
+	Command showRandomizedCardsCmd = new Command( Locale.get( "cmd.Randomize" ), Command.ITEM, 5 );
+	Command showEditCardsCmd = new Command( Locale.get( "cmd.EditCards" ), Command.ITEM, 6 );
 	Command showCardsListCmd = new Command( Locale.get( "cmd.ShowCards" ), Command.ITEM, 8 );
 	Command showLogCmd = new Command( Locale.get("cmd.ShowLog"), Command.ITEM, 9 );
 	Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
@@ -85,7 +87,8 @@ public class GameApp extends MIDlet implements CommandListener {
 		this.whatToDoCG.append("Randomize", null);
 		this.whatToDoCG.append("Settings", null);
 		this.mainForm.setCommandListener(this);
-		this.mainForm.addCommand(this.showRandomizedCardsCmd); 
+		this.mainForm.addCommand(this.showRandomizedCardsCmd);
+		this.mainForm.addCommand(this.showEditCardsCmd);
 		this.mainForm.addCommand(this.showCardsListCmd);
 		this.mainForm.addCommand(this.showLogCmd);
 		this.mainForm.addCommand(this.quitCmd);
@@ -117,6 +120,8 @@ public class GameApp extends MIDlet implements CommandListener {
 				}
 			} else if (cmd == this.showRandomizedCardsCmd) {
 				this.showRandomizedCards();
+			} else if (cmd == this.showEditCardsCmd) {
+				this.showEditCards();
 			} else if (cmd == this.showCardsListCmd) {
 				this.showCardListTable();
 			}
@@ -130,6 +135,12 @@ public class GameApp extends MIDlet implements CommandListener {
 		ShowCardsForm scForm = new ShowCardsForm(this, "Randomized Cards");
 		scForm.viewCards(dominion.getRandomizedCards());
 		this.changeToScreen(scForm);
+	}
+	
+	private void showEditCards() {
+		EditCardsForm edForm = new EditCardsForm(this, "Edit Cards");
+		edForm.setCards(dominion.getAllCards());
+		this.changeToScreen(edForm);
 	}
 	
 	private void showCardListTable() {
@@ -151,7 +162,7 @@ public class GameApp extends MIDlet implements CommandListener {
 		//#debug
 		System.out.println("setting display.");
 		this.changeToScreen(this.mainForm);
-		this.showCardListTable();
+		this.showEditCards();
 		//#debug
 		System.out.println("sample application is up and running.");
 	}

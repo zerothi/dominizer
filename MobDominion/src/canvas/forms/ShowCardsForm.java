@@ -15,7 +15,7 @@ import dominion.Card;
 
 public class ShowCardsForm extends Form  implements CommandListener {
 	
-	private GameApp app;
+	private GameApp app = null;
 	private TableItem table = null;
 	private Command goBackCmd = new Command( Locale.get( "cmd.GoBack" ), Command.BACK, 8 );
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
@@ -51,7 +51,7 @@ public class ShowCardsForm extends Form  implements CommandListener {
 			//#style tableCell
 			table.set(0, cardNumber + 1, ( (Card) cards.elementAt(cardNumber)).getName() );
 			//#style tableCell
-			table.set(1, cardNumber + 1, ( (Card) cards.elementAt(cardNumber)).getGame() );
+			table.set(1, cardNumber + 1, ( (Card) cards.elementAt(cardNumber)).getExpansion() );
 			//#style tableCellCentered
 			table.set(2, cardNumber + 1, new Integer(( (Card) cards.elementAt(cardNumber) ).getCost()) );
 		}

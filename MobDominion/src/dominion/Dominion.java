@@ -60,7 +60,7 @@ public class Dominion {
 		card.setName(information.substring(start, end));
 		start = end + 1;
 		end = information.indexOf(":", start);
-		card.setGame(information.substring(start, end));
+		card.setExpansion(information.substring(start, end));
 		start = end + 1;
 		end = information.indexOf(":", start);
 		card.setCost(Integer.parseInt(information.substring(start, end)));
