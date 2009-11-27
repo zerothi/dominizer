@@ -22,6 +22,7 @@ public class ShowCardsForm extends Form  implements CommandListener {
 	
 	
 	public ShowCardsForm(GameApp app, String title) {
+		//#style mainScreen
 		super(title);
 		this.app = app;
 		//#debug

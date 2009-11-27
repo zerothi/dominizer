@@ -12,14 +12,15 @@ import de.enough.polish.ui.TableItem;
 import de.enough.polish.util.Locale;
 import dominion.Card;
 
-public class EditCardRandomizationForm extends Form implements CommandListener {
+public class TableCardForm extends Form implements CommandListener {
 	
 	private GameApp app;
 	private TableItem table = null;
 	private Command goBackCmd = new Command( Locale.get( "cmd.GoBack" ), Command.BACK, 8 );
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
 	
-	public EditCardRandomizationForm(GameApp app, String title) {
+	public TableCardForm(GameApp app, String title) {
+		//#style mainScreen
 		super(title);
 		this.app = app;
 		//#style defaultTable

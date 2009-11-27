@@ -48,6 +48,7 @@ public class Dominion {
 	
 	private void readCards() {
 		readResource("base");
+		readResource("promo");
 		readResource("intrigue");
 		readResource("seaside");
 	}
