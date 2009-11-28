@@ -18,28 +18,31 @@
 <!-- Have fun!                                                -->
 <project name="Mobile Dominion" default="j2mepolish" basedir="..">
 
+	<!-- import user specific properties                          -->
+	<property file="${user.name}.properties" />
+	<property file="ant/project.properties" />
+	<!-- containing the J2ME Polish installation.                 -->
+	<!--property name="polish.home" location="/home/nick/Programs/J2ME-Polish" /-->
 	<!-- import global properties                                 -->
 	<property file="${polish.home}/global.properties" />
 
-	<!-- import user specific properties                          -->
-	<property file="ant/project.properties" />
-
-
-
-
 	<!-- the device for the test mode - you can define it on the command-line
 	     using the -D switch, e.g. ant -Ddevice=Generic/midp2 emulator -->
-	<property name="device" value="Generic/jtwi" />
-	<property name="devices" value="${device},Nokia/Midp2Cldc11" />
+	<!--property name="device" value="Generic/AnyPhone"/-->
+	<property name="device" value="Nokia/Series40E3"/>
+	<property name="devices" value="${device},Generic/jtwi,Generic/Midp2Cldc11,Nokia/Series40E3,Nokia/Series60E2,Nokia/Series60E3,Sony-Ericsson/JavaPlatform7,Sony-Ericsson/JavaPlatform8"/>
+	<!--property name="devices" value="${device},Nokia/Midp2Cldc11" /-->
 
 
 	<!-- Definition of the J2ME Polish task:                      -->
-	<taskdef name="j2mepolish" classname="de.enough.polish.ant.PolishTask" classpath="${polish.classpath}" />
-
+	<taskdef name="j2mepolish" 
+		classname="de.enough.polish.ant.PolishTask"
+		classpath="${polish.home}/lib/enough-j2mepolish-build.jar"
+	/>
 
 	
-
-	<target name="test" description="Call this target first to skip the obfuscation step and call the emulator, e.g. ant test j2mepolish">
+	<!--description="Call this target first to skip the obfuscation step and call the emulator, e.g. ant test j2mepolish"-->
+	<target name="test">
 		<property name="test" value="true" />
 		<property name="dir.work" value="build/test" />
 	</target>
@@ -58,7 +61,9 @@
 	<!--       for which the application is optimized.            -->
 	<!--    3. The build-section controls the actual build        -->
 	<!--       process.                                           -->
-	<target name="j2mepolish" depends="init" description="This is the controller for the J2ME build process.">
+	<target name="j2mepolish" 
+		depends="init" 
+		description="This is the controller for the J2ME build process.">
 		<j2mepolish>
 			<!-- general settings, these settings basically form the JAD-attributes. -->
 			<!-- Have a look at the <jad>-section for setting specialised attributes.
@@ -79,7 +84,7 @@
 			<!-- Generic/midp1 phone, but when the test-property is set to false, -->
 			<!-- the second deviceRequirements will be used instead. -->
 			<deviceRequirements if="test">
-				<requirement name="Identifier" value="${devices}" />
+				<requirement name="Identifier" value="${device}" />
 			</deviceRequirements>
 			<deviceRequirements unless="test">
 				<requirement name="Identifier" value="${devices}" />
@@ -92,7 +97,7 @@
 			midp2Path="${polish.home}/import/midp-2.0.jar"
 				midlets definition -->
 				<midlets>
-					<midlet class="canvas.GameApp" name="Dominion Randomizer" icon="resources/img/main.png" number="1" />
+					<midlet class="GameApp" name="Dominizer" icon="resources/img/main.png" number="0" />
 				</midlets>
 
 				<!-- project-wide variables - used for preprocessing.  -->
@@ -105,7 +110,7 @@
 					-->
 					<variable name="polish.TextField.useDirectInput" value="true" />
 					<variable name="polish.ScreenInfo.enable" value="true" />
-					<variable name="polish.ChoiceGroup.suppressMarkCommands" value="true" />
+					<!--variable name="polish.ChoiceGroup.suppressMarkCommands" value="true" /-->
 				</variables>
 				<resources dir="${resource.dir}" defaultexcludes="yes" excludes="readme.txt">
 					<root dir="${resource.dir}" />
@@ -131,17 +136,22 @@
 			</build>
 
 			<!-- execution of emulator(s) -->
-			<emulator wait="true" securityDomain="trusted" enableProfiler="true" enableMemoryMonitor="true" enableNetworkMonitor="true" if="debug">
-				<!-- this is an example for connecting to a debugger - use the ${polish.debug.port} Ant property
-				     for getting to know the port of the debugger. In this example the 
-				     "connect-debugger" target is also required.
-				-->
-				<!--
-				<debugger name="antcall" target="connect-debugger" port="6001" />
-				-->
+			<emulator 
+				wait="true" 
+				securityDomain="trusted" 
+				enableProfiler="false" 
+				enableMemoryMonitor="false" 
+				enableNetworkMonitor="false" 
+				if="debug">
 			</emulator>
 
-			<emulator wait="true" trace="none" securityDomain="trusted" enableProfiler="false" enableMemoryMonitor="false" enableNetworkMonitor="false" if="test and not debug">
+			<emulator 
+				wait="true" 
+				trace="none" 
+				securityDomain="trusted" 
+				enableProfiler="false" 
+				enableMemoryMonitor="false" 
+				enableNetworkMonitor="false" if="test and not debug">
 			</emulator>
 		</j2mepolish>
 	</target>
@@ -150,7 +160,14 @@
 		<delete dir="build" />
 		<delete dir="dist" includes="**/*" />
 	</target>
-
+	
+	<target name="emulator"
+		depends="test,j2mepolish"
+		description="invokes the emulator">
+	</target>
+	
+	<target name="deviceDebug" description="debugs the project" depends="enableDebug, enableInfo, j2mepolish" />
+	
 	<target name="cleanbuild" description="allows a clean build. You should call [ant cleanbuild] whenever you made changes to devices.xml, vendors.xml or groups.xml" depends="clean, j2mepolish" />
 
 	<target name="debug" description="debugs the project" depends="enableDebug, test, enableInfo, j2mepolish" />
@@ -159,16 +176,20 @@
 	
 	<target name="Memory" description="debugs the project" depends="clean, enableMemory, j2mepolish" />
 
-	<target name="enableDebug" description="Call this target first to skip the obfuscation step, call the emulator and start the debugger, e.g. ant enableDebug j2mepolish">
+	
+	<!-- Call this target first to skip the obfuscation step, call the emulator and start the debugger, e.g. ant enableDebug j2mepolish-->
+	<target name="enableDebug">
 		<property name="debug" value="true" />
 	</target>
-
-	<target name="enableInfo" description="Call this target first to skip the obfuscation step, call the emulator and start the debugger, e.g. ant enableDebug j2mepolish">
+	
+	<!-- Call this target first to skip the obfuscation step, call the emulator and start the debugger, e.g. ant enableDebug j2mepolish-->
+	<target name="enableInfo"> 
 		<property name="info" value="true" />
 	</target>
 	
-	<target name="enableMemory" description="Call this target first to skip the obfuscation step, call the emulator and start the debugger, e.g. ant enableDebug j2mepolish">
+	<!-- Call this target first to skip the obfuscation step, call the emulator and start the debugger, e.g. ant enableDebug j2mepolish-->
+	<target name="enableMemory"> 
 		<property name="memory" value="true" />
 	</target>
-	<target name="deviceDebug" description="debugs the project" depends="enableDebug, enableInfo, j2mepolish" />
+	
 </project>

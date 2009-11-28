@@ -1,4 +1,4 @@
-package dominion;
+
 
 public class Card {
 	private String name = null;

@@ -1,4 +1,4 @@
-package canvas.forms;
+
 
 import java.util.Vector;
 
@@ -10,10 +10,8 @@ import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemStateListener;
 
-import canvas.GameApp;
 import de.enough.polish.ui.Choice;
 import de.enough.polish.util.Locale;
-import dominion.Card;
 
 public class EditCardsForm extends Form implements CommandListener, ItemStateListener {
 	
@@ -82,7 +80,4 @@ public class EditCardsForm extends Form implements CommandListener, ItemStateLis
 		}
 			
 	}
-
-	
-
 }

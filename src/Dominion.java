@@ -1,4 +1,4 @@
-package dominion;
+
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +14,12 @@ public class Dominion {
 		readCards();
 	}
 	
+	public void setExpansionPlayingState(String expansion, boolean isPlaying) {
+		for (int i = 0 ; i < cards.size() ; i++ ) {
+			if ( ( (Card)cards.elementAt(i)).getExpansion().equals(expansion) ) 
+				( (Card)cards.elementAt(i)).setPlaying(isPlaying);
+		}
+	}
 	/**
 	 * @return the selectCards
 	 */
@@ -29,16 +35,25 @@ public class Dominion {
 	}
 	
 	public Vector getRandomizedCards() {
+		Vector selectAbleCards = new Vector(cards.size());
+		for (int i = 0 ; i < cards.size() ; i++ ) {
+			if ( ( (Card)cards.elementAt(i) ).isPlaying() )
+				selectAbleCards.addElement((Card)cards.elementAt(i)); 
+		}
+		selectAbleCards.trimToSize();
 		Vector selectedCards = new Vector(selectCards);
-		int totalAvailable = cards.size();
+		int totalAvailable = selectAbleCards.size();
 		int selectedElement = 0;
 		Random selector = new Random(System.currentTimeMillis());
 		for (int i = 0 ; i < selectCards ; i++ ) {
 			selectedElement = selector.nextInt(totalAvailable - i);
-			selectedCards.addElement(cards.elementAt(selectedElement));
-			cards.removeElementAt(selectedElement);
+			selectedCards.addElement(selectAbleCards.elementAt(selectedElement));
+			selectAbleCards.removeElementAt(selectedElement);
 		}
+		selectAbleCards = null;
 		selector = null;
+		if ( selectedCards.size() < selectCards )
+			return cards;			
 		return selectedCards;
 	}
 	
@@ -47,9 +62,17 @@ public class Dominion {
 	}
 	
 	private void readCards() {
+		//#debug
+		System.out.println("reading base");
 		readResource("base");
+		//#debug
+		System.out.println("reading promo");
 		readResource("promo");
+		//#debug
+		System.out.println("reading intrigue");
 		readResource("intrigue");
+		//#debug
+		System.out.println("reading seaside");
 		readResource("seaside");
 	}
 	

@@ -21,6 +21,7 @@
 colors {
 	bgColor:  rgb(0,10,25);
 	brightBgColor:  rgb(0,25,50);
+	evenBrightColor: rgb(10,45,65);
 	brightFontColor: white;
 	fontColor: rgb( 66, 85, 148 ); 
 	translucentBgColor:  argb(130, 165,190,247);
@@ -384,15 +385,14 @@ menuItem:hover {
 	layout: expand;
 	align-heights: true;
 	view-type: horizontal-choice;
-	horizontalview-arrow-position: none;
-	/*
+	/*horizontalview-arrow-position: none;
 	horizontalview-left-arrow: url( arrow-left.png );
 	horizontalview-right-arrow: url( arrow-right.png );
 	*/
 }
 
 .choiceGroup:hover {
-	background-color: white;
+	background-color: translucentBgColor;
 }
 
 .choiceItem {
@@ -428,6 +428,48 @@ menuItem:hover {
 	layout: newline-after;
 }
 
+.filterCards {
+	padding: 3;
+	padding-left: 5;
+	padding-vertical: 1;
+	include-label: true;
+	layout: left | expand;
+	/** style of the filter-textfield of a FilteredList/FilteredChoiceGroup */
+	filter-style: filterTextFieldStyle;
+	/** style of the popup screen for a FileredChoiceGroup */
+	popup-style: filterPopupStyle;
+	background {
+		type: round-rect;
+		color: white;
+	}
+}
+
+.filterCards:hover {
+	padding: 3;
+	padding-left: 3;
+	background-color: translucentBgColor;
+	layout: left | expand;	
+}
+
+.filterTextFieldStyle {
+	margin-left: 2;
+	margin-right: 2;
+	/*before: url( search.png );*/
+	background {
+		color: white;
+		border-color: black;
+	}
+	layout: expand | left;
+}
+
+.filterPopupStyle {
+	repaint-previous-screen: true;
+	margin: 10;
+	margin-bottom: 0;
+	padding: 5;
+	background-color: bgColor;
+}
+
 
 .defaultTable {
 	padding: 0;
@@ -461,8 +503,8 @@ menuItem:hover {
 	font-color: translucentFontColor;
 	font-style: bold;
 	font-size: small;
-	y-adjust: -1px;
-	max-height: 6px;
+	/*content-y-adjust: -1px;
+	max-height: 7px;*/
 }
 .tableHeading:hover {
 	font-color: translucentFontColor;
@@ -476,8 +518,8 @@ menuItem:hover {
 	font-color: translucentFontColor;
 	font-style: plain;
 	font-size: small;
-	y-adjust: -1px;
-	max-height: 5px;
+	/*content-y-adjust: -1px;
+	max-height: 6px;*/
 }
 
 .tableCell:hover {
@@ -485,7 +527,7 @@ menuItem:hover {
 	font-style: plain;
 	font-size: small;
 	background {
-		color: bgColor;
+		color: evenBrightColor;
 	}
 }
 

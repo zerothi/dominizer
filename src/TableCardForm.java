@@ -1,5 +1,6 @@
-package canvas.forms;
 
+
+import java.util.Locale;
 import java.util.Vector;
 
 import javax.microedition.lcdui.Command;
@@ -7,10 +8,7 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 
-import canvas.GameApp;
 import de.enough.polish.ui.TableItem;
-import de.enough.polish.util.Locale;
-import dominion.Card;
 
 public class TableCardForm extends Form implements CommandListener {
 	
