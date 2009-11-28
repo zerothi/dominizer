@@ -25,10 +25,11 @@ public class TableCardForm extends Form implements CommandListener {
 		this.app = app;
 		//#style defaultTable
 		table = new TableItem();
-		table.addCommand(goBackCmd);
-		table.addCommand(quitCmd);
-		this.append(table);
+		this.addCommand(goBackCmd);
+		this.addCommand(quitCmd);
 		table.setSelectionMode(TableItem.SELECTION_MODE_CELL);
+		this.append(table);
+		this.setCommandListener(this);
 	}
 	
 	public void viewCards(Vector cards) {

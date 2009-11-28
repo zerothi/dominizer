@@ -162,7 +162,7 @@ public class GameApp extends MIDlet implements CommandListener {
 		//#debug
 		System.out.println("setting display.");
 		this.changeToScreen(this.mainForm);
-		this.showEditCards();
+		this.showRandomizedCards();
 		//#debug
 		System.out.println("sample application is up and running.");
 	}

@@ -430,7 +430,7 @@ menuItem:hover {
 
 
 .defaultTable {
-	padding: 1;
+	padding: 0;
 	padding-vertical: 0;
 	padding-horizontal: 6;
 	font-color: translucentFontColor;
@@ -440,11 +440,11 @@ menuItem:hover {
 		type: round-rect;
 		color: brightBgColor;
 	}
-	layout: center;
+	layout: center | vshrink;
 }
 
 .defaultTable:hover {
-	padding: 1;
+	padding: 0;
 	padding-vertical: 0;
 	padding-horizontal: 6;
 	border {
@@ -461,6 +461,8 @@ menuItem:hover {
 	font-color: translucentFontColor;
 	font-style: bold;
 	font-size: small;
+	y-adjust: -1px;
+	max-height: 6px;
 }
 .tableHeading:hover {
 	font-color: translucentFontColor;
@@ -474,6 +476,8 @@ menuItem:hover {
 	font-color: translucentFontColor;
 	font-style: plain;
 	font-size: small;
+	y-adjust: -1px;
+	max-height: 5px;
 }
 
 .tableCell:hover {

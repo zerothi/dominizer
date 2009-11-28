@@ -21,6 +21,7 @@ public class EditCardsForm extends Form implements CommandListener, ItemStateLis
 	private Object[][] cards = null;
 	private ChoiceGroup cardGroup= null;
 	private Command goBackCmd = new Command( Locale.get( "cmd.GoBack" ), Command.BACK, 8 );
+	private Command switchCmd = new Command( Locale.get( "cmd.switch" ), Command.SCREEN, 8 );
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
 
 	public EditCardsForm(GameApp app, String title) {
@@ -29,8 +30,11 @@ public class EditCardsForm extends Form implements CommandListener, ItemStateLis
 		this.app = app;
 		//#style choiceGroup
 		this.cardGroup = new ChoiceGroup("Card:", Choice.EXCLUSIVE);// doesn't work yet with multiple
+		this.cardGroup.addCommand(switchCmd);
+		this.cardGroup.setDefaultCommand(switchCmd);
 		this.addCommand(goBackCmd);
 		this.addCommand(quitCmd);
+		this.append(this.cardGroup);
 		this.setCommandListener(this);
 		this.setItemStateListener(this);
 	}
@@ -60,7 +64,11 @@ public class EditCardsForm extends Form implements CommandListener, ItemStateLis
 			this.app.returnToMainScreen();
 		else if ( cmd.equals(quitCmd) )
 			this.app.notifyDestroyed();
-
+		else if ( cmd.equals(switchCmd) ) {
+			int selIndex = this.cardGroup.getSelectedIndex();
+			this.append((String)this.cards[9][selIndex]);
+			this.cards[9][selIndex] = new Boolean(! ((Boolean)this.cards[9][selIndex]).booleanValue());
+		}
 	}
 
 	public void itemStateChanged(Item item) {
@@ -70,9 +78,7 @@ public class EditCardsForm extends Form implements CommandListener, ItemStateLis
 	public void itemStateChanged(Item item, Displayable disp) {
 		// TODO Auto-generated method stub
 		if ( item.equals(this.cardGroup) ) {
-			this.delete(1);
-			this.delete(2);
-			this.append((String)this.cards[0][0]);
+			//
 		}
 			
 	}
