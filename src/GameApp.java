@@ -35,7 +35,6 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemCommandListener;
-import javax.microedition.lcdui.ItemStateListener;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
@@ -53,7 +52,7 @@ import de.enough.polish.util.Locale;
  * </pre>
  * @author Nick Papior Andersen, nickpapior@gmail.com
  */
-public class GameApp extends MIDlet implements CommandListener, ItemStateListener, ItemCommandListener {
+public class GameApp extends MIDlet implements CommandListener, ItemCommandListener {
 	
 	ChoiceGroup whatToDoCG = null;
 	ChoiceGroup quickGameRandomizerCG = null;
@@ -61,7 +60,7 @@ public class GameApp extends MIDlet implements CommandListener, ItemStateListene
 	Command chooseCmd = new Command("Choose", Command.SCREEN, 1);
 	Command showRandomizedCardsCmd = new Command( Locale.get( "cmd.Randomize" ), Command.ITEM, 5 );
 	Command showEditCardsCmd = new Command( Locale.get( "cmd.EditCards" ), Command.ITEM, 6 );
-	Command showCardsListCmd = new Command( Locale.get( "cmd.ShowCards" ), Command.ITEM, 8 );
+	//Command showCardsListCmd = new Command( Locale.get( "cmd.ShowCards" ), Command.ITEM, 8 );
 	Command showLogCmd = new Command( Locale.get("cmd.ShowLog"), Command.ITEM, 9 );
 	Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
 	Display display = null;
@@ -80,8 +79,6 @@ public class GameApp extends MIDlet implements CommandListener, ItemStateListene
 		this.whatToDoCG.append("Randomize", null);
 		//style choiceItem
 		this.whatToDoCG.append("Settings", null);
-		this.whatToDoCG.addCommand(chooseCmd);
-		this.whatToDoCG.setDefaultCommand(chooseCmd);
 		this.whatToDoCG.setItemCommandListener(this);
 		//#style filterCards
 		this.quickGameRandomizerCG = new ChoiceGroup("Expansions used:", ChoiceGroup.MULTIPLE);
@@ -93,22 +90,18 @@ public class GameApp extends MIDlet implements CommandListener, ItemStateListene
 		this.quickGameRandomizerCG.append("Intrigue", null);
 		//style choiceItem
 		this.quickGameRandomizerCG.append("Seaside", null);
-		for ( int i = 0 ; i < 1 ; i ++ )
+		for ( int i = 0 ; i < 3 ; i ++ )
 			this.quickGameRandomizerCG.setSelectedIndex(i, true);
-		this.quickGameRandomizerCG.addCommand(chooseCmd);
-		this.quickGameRandomizerCG.setDefaultCommand(chooseCmd);
-		this.quickGameRandomizerCG.setItemCommandListener(this);
 		//this.commandAction(chooseCmd, (Item) this.quickGameRandomizerCG);
 		//this.mainForm.addCommand(chooseCmd);
 		this.mainForm.addCommand(this.showRandomizedCardsCmd);
 		this.mainForm.addCommand(this.showEditCardsCmd);
-		this.mainForm.addCommand(this.showCardsListCmd);
+		//this.mainForm.addCommand(this.showCardsListCmd);
 		this.mainForm.addCommand(this.quitCmd);
 		//#ifdef polish.debugEnabled
 			this.mainForm.addCommand(this.showLogCmd);
 		//#endif
 		this.mainForm.setCommandListener(this);
-		this.mainForm.setItemStateListener(this);
 		
 		this.mainForm.append(this.whatToDoCG);
 		this.mainForm.append(this.quickGameRandomizerCG);
@@ -119,7 +112,7 @@ public class GameApp extends MIDlet implements CommandListener, ItemStateListene
 	}
 	
 	public void commandAction(Command cmd, Displayable screen) {
-		showAlert("Cmd: " + cmd.getLabel() + ". Screen: " + screen.getTitle());
+		//showAlert("Cmd: " + cmd.getLabel() + ". Screen: " + screen.getTitle());
 		if ( screen == this.mainForm ) {
 			if ( cmd == this.showLogCmd ) {
 				Debug.showLog(this.display);
@@ -129,8 +122,10 @@ public class GameApp extends MIDlet implements CommandListener, ItemStateListene
 				this.showRandomizedCards();
 			} else if ( cmd == this.showEditCardsCmd ) {
 				this.showEditCards();
+			/*
 			} else if ( cmd == this.showCardsListCmd ) {
 				this.showCardListTable();
+			*/
 			} else if ( 2 == 1 ){
 				int selectedItem = this.whatToDoCG.getSelectedIndex();
 				switch ( selectedItem ) {
@@ -148,55 +143,34 @@ public class GameApp extends MIDlet implements CommandListener, ItemStateListene
 		}
 		//showAlert(cmd.getLabel() + this.whatToDoCG.getSelectedIndex());
 	}
-
-	public void commandAction(Command cmd, Item item) {
-		showAlert("Cmd: " + cmd.getLabel() + ". Item: " + item.getLabel());
-		if ( cmd == chooseCmd ) {
-			if ( item == this.whatToDoCG ) {
-				//showAlert(cmd.getLabel() + this.whatToDoCG.getSelectedIndex());
-				switch ( this.whatToDoCG.getSelectedIndex() ) {
-				case -1:
-					showAlert("No Action");
-					break;
-				case 0:
-					showAlert(cmd.getLabel() + this.whatToDoCG.getSelectedIndex());
-					this.showRandomizedCards();
-					break;
-				case 1:
-					this.showEditCards();
-					break;
-				default:
-					showAlert(cmd.getLabel() + this.whatToDoCG.getSelectedIndex());
-				}
-			} else if ( item == this.quickGameRandomizerCG ) {
-				showAlert( this.quickGameRandomizerCG.getString(1));
-				boolean flags[] = new boolean[this.quickGameRandomizerCG.size()];
-				this.quickGameRandomizerCG.getSelectedFlags(flags);
-				for (int i = 0; i < this.quickGameRandomizerCG.size() - 1; i++)
-		        	this.dominion.setExpansionPlayingState(this.quickGameRandomizerCG.getString(i), flags[i]);
-			}
-		} else
-	    	this.commandAction(cmd, this.mainForm);
-	}
 	
-	public void itemStateChanged(Item item) {
-		if ( item == this.quickGameRandomizerCG ) {
-			this.commandAction(chooseCmd, item);
+	public void commandAction(Command cmd, Item item) {
+		showAlert(cmd.getLabel());
+		if ( item == this.whatToDoCG ) {
+			switch ( this.whatToDoCG.getSelectedIndex() ) {
+			case 0:
+				this.showRandomizedCards();
+				break;
+			case 1:
+				this.showEditCards();
+				break;
+			}
 		}
+		
 	}
 	
 	private void showRandomizedCards() {
-		String temp = "";
 		boolean flags[] = new boolean[this.quickGameRandomizerCG.size()];
-		this.quickGameRandomizerCG.getSelectedFlags(flags);
-		for (int i = 0; i < this.quickGameRandomizerCG.size() - 1; i++) {
-        	this.dominion.setExpansionPlayingState(this.quickGameRandomizerCG.getString(i), flags[i]);
-        	temp += flags[i];
+		if ( this.quickGameRandomizerCG.getSelectedFlags(flags) == 1 && this.quickGameRandomizerCG.isSelected(1) ) {
+			showAlert("You have only selected Promos. Select more!");
+		} else {
+			for (int i = 0; i < this.quickGameRandomizerCG.size() ; i++)
+	        	this.dominion.setExpansionPlayingState(this.quickGameRandomizerCG.getString(i), flags[i]);
+			flags = null;
+			ShowCardsForm scForm = new ShowCardsForm(this, "Randomized Cards");
+			scForm.viewCards(dominion.getRandomizedCards());
+			this.changeToScreen(scForm);
 		}
-		showAlert(temp);
-		ShowCardsForm scForm = new ShowCardsForm(this, "Randomized Cards");
-		scForm.viewCards(dominion.getRandomizedCards());
-		this.changeToScreen(scForm);
 	}
 	
 	private void showEditCards() {
@@ -204,13 +178,13 @@ public class GameApp extends MIDlet implements CommandListener, ItemStateListene
 		edForm.setCards(dominion.getAllCards());
 		this.changeToScreen(edForm);
 	}
-	
+	/*	
 	private void showCardListTable() {
 		TableCardForm ecForm = new TableCardForm(this, "Table of Cards");
 		ecForm.viewCards(dominion.getAllCards());
 		this.changeToScreen(ecForm);
 	}
-	
+	*/
 	private void changeToScreen(Form form) {
 		this.display = Display.getDisplay(this);
 		this.display.setCurrent(form);
@@ -249,6 +223,8 @@ public class GameApp extends MIDlet implements CommandListener, ItemStateListene
 	private void quit() {
 		notifyDestroyed();
 	}
+
+	
 
 	
 }

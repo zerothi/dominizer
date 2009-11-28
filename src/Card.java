@@ -3,19 +3,22 @@
 public class Card {
 	private String name = null;
 	private String expansion = null;
-	private boolean isPlaying = false;
-	private boolean isSelected = true;
-	private boolean isBlackMarketSelected = true;
+	private boolean[] isGamingRelated = new boolean[3]; 
 	private int cost = 2;
-	private boolean isAction = false;
-	private boolean isVictory = false;
-	private boolean isTreasure = false;
-	private boolean isAttack = false;
-	private boolean isReaction = false;
-	private boolean isDuration = false;
+	/*
+	 * #1 = Action
+	 * #2 = Victory
+	 * #3 = Treasury
+	 * #4 = Attack
+	 * #5 = Reaction
+	 * #6 = Duration
+	 */
+	private boolean[] isSpecific = new boolean[6];
 
 	public Card() {
 		super();
+		this.setSelected(true);
+		this.setBlackMarketSelected(true);
 	}
 
 	public Card(String name) {
@@ -65,12 +68,28 @@ public class Card {
 	public void setExpansion(String game) {
 		this.expansion = game;
 	}
+	
+	/**
+	 * @return the isPlaying
+	 */
+	public boolean isPlaying() {
+		return isGamingRelated[0];
+	}
+
+	/**
+	 * @param isPlaying
+	 *            the isPlaying to set
+	 */
+	public void setPlaying(boolean isPlaying) {
+		this.isGamingRelated[0] = isPlaying;
+	}
+
 
 	/**
 	 * @return the selected
 	 */
 	public boolean isSelected() {
-		return isSelected;
+		return isGamingRelated[1];
 	}
 
 	/**
@@ -78,14 +97,14 @@ public class Card {
 	 *            the selected to set
 	 */
 	public void setSelected(boolean selected) {
-		this.isSelected = selected;
+		this.isGamingRelated[1] = selected;
 	}
 
 	/**
 	 * @return the bmSelected
 	 */
 	public boolean isBlackMarketSelected() {
-		return isBlackMarketSelected;
+		return isGamingRelated[2];
 	}
 
 	/**
@@ -93,7 +112,7 @@ public class Card {
 	 *            the bmSelected to set
 	 */
 	public void setBlackMarketSelected(boolean bmSelected) {
-		this.isBlackMarketSelected = bmSelected;
+		this.isGamingRelated[2] = bmSelected;
 	}
 
 	/**
@@ -111,71 +130,12 @@ public class Card {
 		this.cost = cost;
 	}
 
-	/**
-	 * @return the isPlaying
-	 */
-	public boolean isPlaying() {
-		return isPlaying;
-	}
-
-	/**
-	 * @param isPlaying
-	 *            the isPlaying to set
-	 */
-	public void setPlaying(boolean isPlaying) {
-		this.isPlaying = isPlaying;
-	}
-
-	/**
-	 * @return the isVictory
-	 */
-	public boolean isVictory() {
-		return isVictory;
-	}
-
-	/**
-	 * @param isVictory
-	 *            the isVictory to set
-	 */
-	public void setVictory(boolean isVictory) {
-		this.isVictory = isVictory;
-	}
-
-	/**
-	 * @return the isCoin
-	 */
-	public boolean isTreasure() {
-		return isTreasure;
-	}
-
-	/**
-	 * @param isCoin
-	 *            the isCoin to set
-	 */
-	public void setTreasure(boolean isCoin) {
-		this.isTreasure = isCoin;
-	}
-
-	/**
-	 * @return the isReaction
-	 */
-	public boolean isReaction() {
-		return isReaction;
-	}
-
-	/**
-	 * @param isReaction
-	 *            the isReaction to set
-	 */
-	public void setReaction(boolean isReaction) {
-		this.isReaction = isReaction;
-	}
-
+	
 	/**
 	 * @return the isAction
 	 */
 	public boolean isAction() {
-		return isAction;
+		return isSpecific[0];
 	}
 
 	/**
@@ -183,7 +143,36 @@ public class Card {
 	 *            the isAction to set
 	 */
 	public void setAction(boolean isAction) {
-		this.isAction = isAction;
+		this.isSpecific[0] = isAction;
+	}
+	/**
+	 * @return the isVictory
+	 */
+	public boolean isVictory() {
+		return isSpecific[1];
+	}
+
+	/**
+	 * @param isVictory
+	 *            the isVictory to set
+	 */
+	public void setVictory(boolean isVictory) {
+		this.isSpecific[1] = isVictory;
+	}
+
+	/**
+	 * @return the isCoin
+	 */
+	public boolean isTreasure() {
+		return isSpecific[2];
+	}
+
+	/**
+	 * @param isCoin
+	 *            the isCoin to set
+	 */
+	public void setTreasure(boolean isCoin) {
+		this.isSpecific[2] = isCoin;
 	}
 
 	/**
@@ -191,21 +180,35 @@ public class Card {
 	 *            the isAttack to set
 	 */
 	public void setAttack(boolean isAttack) {
-		this.isAttack = isAttack;
+		this.isSpecific[3] = isAttack;
 	}
 
 	/**
 	 * @return the isAttack
 	 */
 	public boolean isAttack() {
-		return isAttack;
+		return isSpecific[3];
 	}
 
+	/**
+	 * @return the isReaction
+	 */
+	public boolean isReaction() {
+		return isSpecific[4];
+	}
+
+	/**
+	 * @param isReaction
+	 *            the isReaction to set
+	 */
+	public void setReaction(boolean isReaction) {
+		this.isSpecific[4] = isReaction;
+	}
 	/**
 	 * @return the isDuration
 	 */
 	public boolean isDuration() {
-		return isDuration;
+		return isSpecific[5];
 	}
 
 	/**
@@ -213,6 +216,6 @@ public class Card {
 	 *            the isDuration to set
 	 */
 	public void setDuration(boolean isDuration) {
-		this.isDuration = isDuration;
+		this.isSpecific[5] = isDuration;
 	}
 }

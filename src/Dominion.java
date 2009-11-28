@@ -35,25 +35,19 @@ public class Dominion {
 	}
 	
 	public Vector getRandomizedCards() {
-		Vector selectAbleCards = new Vector(cards.size());
-		for (int i = 0 ; i < cards.size() ; i++ ) {
-			if ( ( (Card)cards.elementAt(i) ).isPlaying() )
-				selectAbleCards.addElement((Card)cards.elementAt(i)); 
-		}
-		selectAbleCards.trimToSize();
 		Vector selectedCards = new Vector(selectCards);
-		int totalAvailable = selectAbleCards.size();
+		int totalAvailable = cards.size();
 		int selectedElement = 0;
 		Random selector = new Random(System.currentTimeMillis());
-		for (int i = 0 ; i < selectCards ; i++ ) {
+		int i = 0;
+		while ( i < selectCards ) {
 			selectedElement = selector.nextInt(totalAvailable - i);
-			selectedCards.addElement(selectAbleCards.elementAt(selectedElement));
-			selectAbleCards.removeElementAt(selectedElement);
+			if ( ( (Card)cards.elementAt(selectedElement)).isPlaying() == true && !selectedCards.contains(cards.elementAt(selectedElement))) {
+				selectedCards.addElement(cards.elementAt(selectedElement));
+				i++;
+			}
 		}
-		selectAbleCards = null;
 		selector = null;
-		if ( selectedCards.size() < selectCards )
-			return cards;			
 		return selectedCards;
 	}
 	
@@ -140,18 +134,17 @@ public class Dominion {
 		}
 		if ( cards == null )
 			cards = new Vector();
-		String tmp = sb.toString();
 		boolean foundEndLine = true;
 		int start = 0;
 		int end = -2;
 		cards.ensureCapacity(50);
 		while ( foundEndLine ) {
-			if ( tmp.length() - 10 < end )
+			if ( sb.toString().length() - 10 < end )
 				foundEndLine = false;
 			else {
 				start = end + 2;
-				end = tmp.indexOf(";", start);
-				cards.addElement(processCardInformation(tmp.substring(start, end + 1)));
+				end = sb.toString().indexOf(";", start);
+				cards.addElement(processCardInformation(sb.toString().substring(start, end + 1)));
 			}
 		}
 	}
