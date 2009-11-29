@@ -79,6 +79,7 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 		this.whatToDoCG.append("Randomize", null);
 		//style choiceItem
 		this.whatToDoCG.append("Settings", null);
+		this.whatToDoCG.setDefaultCommand(chooseCmd);
 		this.whatToDoCG.setItemCommandListener(this);
 		//#style filterCards
 		this.quickGameRandomizerCG = new ChoiceGroup("Expansions used:", ChoiceGroup.MULTIPLE);
@@ -141,11 +142,11 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 		if ( cmd == this.quitCmd ) {
 			quit();
 		}
-		//showAlert(cmd.getLabel() + this.whatToDoCG.getSelectedIndex());
+		showAlert(cmd.getLabel() + this.whatToDoCG.getSelectedIndex());
 	}
 	
 	public void commandAction(Command cmd, Item item) {
-		showAlert(cmd.getLabel());
+		showAlert("Hej" + cmd.getLabel());
 		if ( item == this.whatToDoCG ) {
 			switch ( this.whatToDoCG.getSelectedIndex() ) {
 			case 0:
@@ -162,15 +163,17 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	private void showRandomizedCards() {
 		boolean flags[] = new boolean[this.quickGameRandomizerCG.size()];
 		if ( this.quickGameRandomizerCG.getSelectedFlags(flags) == 1 && this.quickGameRandomizerCG.isSelected(1) ) {
-			showAlert("You have only selected Promos. Select more!");
+			showAlert("You have only selected Promos.\nSelect more!");
+		} else if ( this.quickGameRandomizerCG.getSelectedFlags(flags) == 0 ) {
+			showAlert("You have not selected any expansions.\nSelect at least one!");
 		} else {
 			for (int i = 0; i < this.quickGameRandomizerCG.size() ; i++)
 	        	this.dominion.setExpansionPlayingState(this.quickGameRandomizerCG.getString(i), flags[i]);
-			flags = null;
 			ShowCardsForm scForm = new ShowCardsForm(this, "Randomized Cards");
 			scForm.viewCards(dominion.getRandomizedCards());
 			this.changeToScreen(scForm);
 		}
+		flags = null;
 	}
 	
 	private void showEditCards() {

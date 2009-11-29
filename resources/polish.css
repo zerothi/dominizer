@@ -216,7 +216,7 @@ focused {
 }
 
 alertcontent {
-	font-color: white;
+	font-color: fontColor;
 	font-size: small;
 	font-style: bold;
 	text-effect: shadow;
