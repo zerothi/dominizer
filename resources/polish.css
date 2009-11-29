@@ -27,6 +27,7 @@ colors {
 	translucentBgColor:  argb(130, 165,190,247);
 	darkTranslucentBgColor:  argb(100, 145,175,247);
 	translucentFontColor:  argb(130, 165,190,247);
+	translucentBrightFontColor:  argb(150, 175,210,247);
 	
 	maskColor: red;
 	splitTop: rgb(0,25,50);
@@ -172,13 +173,13 @@ focused {
 .mainCommand:hover {
 	font-style: bold;
 	font-size: small;
-	font-color: white;
+	font-color: fontColor;
 	text-effect: shadow;
 }
 
 .mainCommand:pressed {
-	background-color: #f26522;
-	font-color: #333;
+	background-color: bgColor;
+	font-color: fontColor;
 	view-type: particle;
 }
 
@@ -207,13 +208,13 @@ focused {
 
 .messageAlertTitle {
 	padding-top: 20px;
-	font-color: #333;
+	font-color: fontColor;
 	font-style: bold;
 	font-size: normal;
 }
 
 .messageAlertMenuBar {
-	background-color: #333;
+	background-color: fontColor;
 }
 
 alertcontent {
@@ -225,7 +226,7 @@ alertcontent {
 
 .input {
 	margin: 1;
-	background-color: white;
+	background-color: bgColor;
 	layout: expand;
 }
 
@@ -247,10 +248,12 @@ menubar {
 	margin: 0;
 	padding-top: 3;
 	padding: 2;
+	/*menubar-color: bgColor;*/
+	font-color: translucentFontColor;
 	background {
 		type: vertical-gradient;
-		top-color: brightBgColor;
-		bottom-color: bgColor;
+		top-color: bgColor;
+		bottom-color: brightBgColor;
 		start: 10%;
 		end: 100%;
 	}
@@ -274,8 +277,8 @@ leftcommand
 	text-vertical-gradient-end-color: #eee;
 	text-vertical-gradient-start-color: #000;
 	*/
-	text-effect: shadow;
-	text-shadow-color: #333;
+	/*text-effect: shadow;
+	text-shadow-color: translucentBrightFontColor;*/
 	font-size: small;
 }
 
@@ -288,6 +291,7 @@ rightcommand extends leftcommand
 }
 
 middlecommand extends leftcommand {
+	layout: center;
 	padding-top: 1;
 	font-color: black;
 }
@@ -314,7 +318,7 @@ menu {
 		border-width: 2;
 		border-color: translucentBgColor;
 	}
-	font-color: brightFontColor;
+	font-color: translucentFontColor;
 	font-style: bold;
 	view-type: slide-up;
 	/*
@@ -335,7 +339,7 @@ menuItem {
 	padding: 2;
 	padding-left: 5;
 	font {
-		color: fontColor;
+		color: translucentFontColor;
 		size: medium;
 		style: bold;
 	}
@@ -350,7 +354,7 @@ menuItem {
   */
 menuItem:hover {
 	background-color: bgColor;
-	font-color: brightFontColor;
+	font-color: translucentFontColor;
 	layout: left | horizontal-expand;
 	/*
 	label-style: menuLabelFocused;
@@ -457,7 +461,7 @@ menuItem:hover {
 	margin-right: 2;
 	/*before: url( search.png );*/
 	background {
-		color: white;
+		color: bgColor;
 		border-color: black;
 	}
 	layout: expand | left;

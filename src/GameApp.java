@@ -76,7 +76,7 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 		System.out.println("starting Dominion");
 		dominion = new Dominion();
 		//#style mainScreen
-		this.mainForm = new Form("Dominion randomizer");
+		this.mainForm = new Form("Dominizer");
 		//#style choiceGroup
 		this.whatToDoCG = new ChoiceGroup("What to do?", ChoiceGroup.EXCLUSIVE);// doesn't work yet with multiple
 		//style choiceItem

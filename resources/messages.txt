@@ -1,0 +1,6 @@
+cmd.Randomize=Randomize
+cmd.EditCards=Edit Cards
+cmd.ShowLog=Show Log
+cmd.Quit=Quit
+cmd.GoBack=Back
+cmd.switch=Switch
