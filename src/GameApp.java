@@ -89,13 +89,13 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 		this.quickGameRandomizerCG = new ChoiceGroup(Locale.get("mainScreen.QuickSelectExpansions"), ChoiceGroup.MULTIPLE);
 		try {
 			//style choiceItem 
-			this.quickGameRandomizerCG.append("Base", Image.createImage("/base.png"));
+			this.quickGameRandomizerCG.append(Locale.get("base"), Image.createImage("/base.png"));
 			//style choiceItem
-			this.quickGameRandomizerCG.append("Promo", Image.createImage("/promo.png"));
+			this.quickGameRandomizerCG.append(Locale.get("promo"), Image.createImage("/promo.png"));
 			//style choiceItem
-			this.quickGameRandomizerCG.append("Intrigue", Image.createImage("/intrigue.png"));
+			this.quickGameRandomizerCG.append(Locale.get("intrigue"), Image.createImage("/intrigue.png"));
 			//style choiceItem
-			this.quickGameRandomizerCG.append("Seaside", Image.createImage("/seaside.png"));
+			this.quickGameRandomizerCG.append(Locale.get("seaside"), Image.createImage("/seaside.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -173,8 +173,8 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 		} else {
 			for (int i = 0; i < this.quickGameRandomizerCG.size() ; i++)
 	        	this.dominion.setExpansionPlayingState(this.quickGameRandomizerCG.getString(i), flags[i]);
-			ShowCardsForm scForm = new ShowCardsForm(this, Locale.get("screen.RandomizedCards.title"));
-			scForm.viewCards(dominion.getRandomizedCards());
+			ShowCardsForm scForm = new ShowCardsForm(this, dominion, Locale.get("screen.RandomizedCards.title"));
+			scForm.reRandomize();
 			this.changeToScreen(scForm);
 		}
 		flags = null;
@@ -205,7 +205,9 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 		//#debug
 		System.out.println("setting display.");
 		this.changeToScreen(this.mainForm);
+		///#if debug
 		//this.showRandomizedCards();
+		///#endif
 		//#debug
 		System.out.println("sample application is up and running.");
 	}

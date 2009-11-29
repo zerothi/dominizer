@@ -27,6 +27,15 @@ alert=Advarsel
 alert.QuickSelectExpansions.OnlyPromoSelected=Du har kun valgt Promo's.\nVælg flere!
 alert.QuickSelectExpansions.NoneSelected=Du har ikke valgt nogle fulde spil.\nVælg minimum en!
 
+################
+#
+# Expansion Names
+#
+################
+base=Base
+promo=Promo
+intrigue=Intrigue
+seaside=Seaside
 
 ################
 #

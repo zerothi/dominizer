@@ -29,6 +29,16 @@ alert.QuickSelectExpansions.NoneSelected=You have not selected any expansions.\n
 
 ################
 #
+# Expansion Names
+#
+################
+base=Base
+promo=Promo
+intrigue=Intrigue
+seaside=Seaside
+
+################
+#
 # Polish Settings
 #
 ################

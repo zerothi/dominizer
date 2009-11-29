@@ -27,6 +27,17 @@ alert=Alert
 alert.QuickSelectExpansions.OnlyPromoSelected=You have only selected Promo's.\nSelect more!
 alert.QuickSelectExpansions.NoneSelected=You have not selected any expansions.\nSelect at least one!
 
+
+################
+#
+# Expansion Names
+#
+################
+base=Base
+promo=Promo
+intrigue=Intrigue
+seaside=Seaside
+
 ################
 #
 # Polish Settings

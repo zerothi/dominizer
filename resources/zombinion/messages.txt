@@ -27,15 +27,16 @@ alert=Alert
 alert.QuickSelectExpansions.OnlyPromoSelected=You have only selected Promo's.\nSelect more!
 alert.QuickSelectExpansions.NoneSelected=You have not selected any expansions.\nSelect at least one!
 
+
 ################
 #
 # Expansion Names
 #
 ################
-base=Was für eine Welt
+base=Podstawka
 promo=Promo
-intrigue=Die Intrige
-seaside=Wybrzeże
+intrigue=Entrails
+seaside=Genocide
 
 ################
 #
