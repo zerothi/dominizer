@@ -16,7 +16,7 @@
 <!-- http://www.j2mepolish.org                                -->
 <!--                                                          -->
 <!-- Have fun!                                                -->
-<project name="Mobile Dominion" default="j2mepolish" basedir="..">
+<project name="Dominizer" default="j2mepolish" basedir="..">
 
 	<!-- import user specific properties                          -->
 	<property file="${user.name}.properties" />
@@ -30,7 +30,7 @@
 	     using the -D switch, e.g. ant -Ddevice=Generic/midp2 emulator -->
 	<!--property name="device" value="Generic/AnyPhone"/-->
 	<property name="device" value="Nokia/Series40E3"/>
-	<property name="devices" value="${device},Generic/jtwi,Generic/Midp2Cldc11,Nokia/Series40E3,Nokia/Series60E2,Nokia/Series60E3,Sony-Ericsson/JavaPlatform7,Sony-Ericsson/JavaPlatform8"/>
+	<property name="devices" value="Generic/PlainMidp1,Generic/jtwi,Generic/Midp2Cldc11,${device},Nokia/Series60E2,Nokia/Series60E3,Sony-Ericsson/JavaPlatform7,Sony-Ericsson/JavaPlatform8"/>
 	<!--property name="devices" value="${device},Nokia/Midp2Cldc11" /-->
 
 
@@ -69,15 +69,15 @@
 			<!-- Have a look at the <jad>-section for setting specialised attributes.
 		         You can also define localized attributes in the resources/messages.txt files -->
 			<info 
-				name="MobileDominion" 
-				version="0.1.12" 
+				name="Dominizer" 
+				version="0.1" 
 				description="A Dominion Card randomizer" 
-				vendorName="Nick A/S" 
-				infoUrl="Not supported" 
+				vendorName="Nick Papior Andersen A/S" 
+				infoUrl="www.boardgamegeek.com/wiki/Dominizer" 
 				jarName="${ nospace(polish.vendor) }-${ nospace(polish.name) }-Dominion.jar" 
 				jarUrl="${deploy-url}${polish.jarName}" 
-				copyright="Copyright 2009 Nick A/S. All rights reserved."
-				deleteConfirm="Do you really want to kill me?" 
+				copyright="Copyright 2009 Nick Papior Andersen A/S. All rights reserved."
+				deleteConfirm="Delete Dominizer? Nooo? :D" 
 			/>
 			<!-- selection of supported devices -->
 			<!-- In the test mode the application is build only for the  -->
@@ -91,13 +91,13 @@
 			</deviceRequirements>
 
 			<!-- build settings -->
-			<build symbols="ExampleSymbol, AnotherExample" fullscreen="menu" usePolishGui="true" workDir="${dir.work}">
+			<build symbols="Dominizer" fullscreen="menu" usePolishGui="true" workDir="${dir.work}">
 				<!-- javacTarget="${javac.target}" -->
 				<!-- preverify="${preverify.file}"
 			midp2Path="${polish.home}/import/midp-2.0.jar"
 				midlets definition -->
 				<midlets>
-					<midlet class="GameApp" name="Dominizer" icon="resources/img/main.png" number="0" />
+					<midlet class="GameApp" name="Dominizer" icon="main.png" number="0" />
 				</midlets>
 
 				<!-- project-wide variables - used for preprocessing.  -->

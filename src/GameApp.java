@@ -25,6 +25,8 @@
  */
 
 
+import java.io.IOException;
+
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.ChoiceGroup;
@@ -33,11 +35,13 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
+import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemCommandListener;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
+import de.enough.polish.ui.ImageItem;
 import de.enough.polish.util.Debug;
 import de.enough.polish.util.DeviceControl;
 import de.enough.polish.util.Locale;
@@ -57,7 +61,7 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	ChoiceGroup whatToDoCG = null;
 	ChoiceGroup quickGameRandomizerCG = null;
 	Form mainForm = null;
-	Command chooseCmd = new Command("Choose", Command.SCREEN, 1);
+	Command chooseCmd = new Command("Choose", Command.OK, 1);
 	Command showRandomizedCardsCmd = new Command( Locale.get( "cmd.Randomize" ), Command.ITEM, 5 );
 	Command showEditCardsCmd = new Command( Locale.get( "cmd.EditCards" ), Command.ITEM, 6 );
 	//Command showCardsListCmd = new Command( Locale.get( "cmd.ShowCards" ), Command.ITEM, 8 );
@@ -83,14 +87,19 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 		this.whatToDoCG.setItemCommandListener(this);
 		//#style filterCards
 		this.quickGameRandomizerCG = new ChoiceGroup("Expansions used:", ChoiceGroup.MULTIPLE);
-		//style choiceItem
-		this.quickGameRandomizerCG.append("Base", null);
-		//style choiceItem
-		this.quickGameRandomizerCG.append("Promo", null);
-		//style choiceItem
-		this.quickGameRandomizerCG.append("Intrigue", null);
-		//style choiceItem
-		this.quickGameRandomizerCG.append("Seaside", null);
+		try {
+			//style choiceItem 
+			this.quickGameRandomizerCG.append("Base", Image.createImage("/base.png"));
+			//style choiceItem
+			this.quickGameRandomizerCG.append("Promo", Image.createImage("/promo.png"));
+			//style choiceItem
+			this.quickGameRandomizerCG.append("Intrigue", Image.createImage("/intrigue.png"));
+			//style choiceItem
+			this.quickGameRandomizerCG.append("Seaside", Image.createImage("/seaside.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for ( int i = 0 ; i < 3 ; i ++ )
 			this.quickGameRandomizerCG.setSelectedIndex(i, true);
 		//this.commandAction(chooseCmd, (Item) this.quickGameRandomizerCG);
@@ -114,39 +123,34 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	
 	public void commandAction(Command cmd, Displayable screen) {
 		//showAlert("Cmd: " + cmd.getLabel() + ". Screen: " + screen.getTitle());
-		if ( screen == this.mainForm ) {
-			if ( cmd == this.showLogCmd ) {
-				Debug.showLog(this.display);
-				return;
-			}
-			if ( cmd == this.showRandomizedCardsCmd ) {
+		if ( cmd == this.showLogCmd ) {
+			Debug.showLog(this.display);
+			return;
+		}
+		if ( cmd == this.showRandomizedCardsCmd ) {
+			this.showRandomizedCards();
+		} else if ( cmd == this.showEditCardsCmd ) {
+			this.showEditCards();
+		/*
+		} else if ( cmd == this.showCardsListCmd ) {
+			this.showCardListTable();
+		*/
+		} else if ( cmd == this.chooseCmd ){
+			switch ( this.whatToDoCG.getSelectedIndex() ) {
+			case 0:
 				this.showRandomizedCards();
-			} else if ( cmd == this.showEditCardsCmd ) {
+				break;
+			case 1:
 				this.showEditCards();
-			/*
-			} else if ( cmd == this.showCardsListCmd ) {
-				this.showCardListTable();
-			*/
-			} else if ( 2 == 1 ){
-				int selectedItem = this.whatToDoCG.getSelectedIndex();
-				switch ( selectedItem ) {
-				case 0:
-					//this.showRandomizedCards();
-					break;
-				case 1:
-					showAlert( this.whatToDoCG.getString(1));
-					break;
-				}
+				break;
 			}
 		}
 		if ( cmd == this.quitCmd ) {
 			quit();
 		}
-		showAlert(cmd.getLabel() + this.whatToDoCG.getSelectedIndex());
 	}
 	
 	public void commandAction(Command cmd, Item item) {
-		showAlert("Hej" + cmd.getLabel());
 		if ( item == this.whatToDoCG ) {
 			switch ( this.whatToDoCG.getSelectedIndex() ) {
 			case 0:
@@ -226,8 +230,4 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	private void quit() {
 		notifyDestroyed();
 	}
-
-	
-
-	
 }

@@ -1,11 +1,14 @@
 
 
+import java.io.IOException;
 import java.util.Vector;
 
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
+import javax.microedition.lcdui.Image;
+import javax.microedition.lcdui.ImageItem;
 
 
 import de.enough.polish.ui.TableItem;
@@ -49,8 +52,13 @@ public class ShowCardsForm extends Form  implements CommandListener {
 		for (int cardNumber = 0 ; cardNumber < cards.size() ; cardNumber++ ) {
 			//#style tableCell
 			table.set(0, cardNumber + 1, ( (Card) cards.elementAt(cardNumber)).getName() );
-			//#style tableCell
-			table.set(1, cardNumber + 1, ( (Card) cards.elementAt(cardNumber)).getExpansion() );
+			try {
+				//#style tableCell
+				table.set(1, cardNumber + 1, new ImageItem(null, 
+						Image.createImage("/" + ((Card) cards.elementAt(cardNumber)).getExpansion().toLowerCase() + ".png"), ImageItem.PLAIN, null));
+			} catch (IOException e) {
+				table.set(1, cardNumber + 1, ((Card) cards.elementAt(cardNumber)).getExpansion());
+			}
 			//#style tableCellCentered
 			table.set(2, cardNumber + 1, new Integer(( (Card) cards.elementAt(cardNumber) ).getCost()) );
 		}

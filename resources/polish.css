@@ -25,6 +25,7 @@ colors {
 	brightFontColor: white;
 	fontColor: rgb( 66, 85, 148 ); 
 	translucentBgColor:  argb(130, 165,190,247);
+	darkTranslucentBgColor:  argb(100, 145,175,247);
 	translucentFontColor:  argb(130, 165,190,247);
 	
 	maskColor: red;
@@ -248,8 +249,8 @@ menubar {
 	padding: 2;
 	background {
 		type: vertical-gradient;
-		top-color: blue;
-		bottom-color: #fff;
+		top-color: brightBgColor;
+		bottom-color: bgColor;
 		start: 10%;
 		end: 100%;
 	}
@@ -266,7 +267,7 @@ leftcommand
 		padding-top: 7;
 	//#endif
 	padding-bottom: 0;
-	font-color: white;
+	font-color: translucentFontColor;
 	font-style: bold;
 	/*
 	text-effect: vertical-gradient;
@@ -380,7 +381,7 @@ menuItem:hover {
 .choiceGroup {
 	label-style: choiceGroupLabel;
 	background-type: round-rect;
-	background-color: white;
+	background-color: darkTranslucentBgColor;
 	include-label: true;
 	layout: expand;
 	align-heights: true;
@@ -399,7 +400,7 @@ menuItem:hover {
 	font-color: gray;
 	font-style: bold;
 	text-wrap: false;
-	font-size: small;
+	font-size: medium;
 	text-layout: center | vertical-center;
 	layout: vertical-center;
 }
@@ -440,13 +441,13 @@ menuItem:hover {
 	popup-style: filterPopupStyle;
 	background {
 		type: round-rect;
-		color: white;
+		color: darkTranslucentBgColor;
 	}
 }
 
 .filterCards:hover {
-	padding: 3;
-	padding-left: 3;
+	/*padding: 3;
+	padding-left: 5;*/
 	background-color: translucentBgColor;
 	layout: left | expand;	
 }
