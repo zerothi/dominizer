@@ -16,7 +16,7 @@
 <!-- http://www.j2mepolish.org                                -->
 <!--                                                          -->
 <!-- Have fun!                                                -->
-<project name="Dominizer" default="j2mepolish" basedir="..">
+<project name="Dominizer-polish" default="j2mepolish" basedir="..">
 
 	<!-- import user specific properties                          -->
 	<property file="${user.name}.properties" />
@@ -30,7 +30,7 @@
 	     using the -D switch, e.g. ant -Ddevice=Generic/midp2 emulator -->
 	<!--property name="device" value="Generic/AnyPhone"/-->
 	<property name="device" value="Nokia/Series40E3"/>
-	<property name="devices" value="Generic/PlainMidp1,Generic/jtwi,Generic/Midp2Cldc11,${device},Nokia/Series60E2,Nokia/Series60E3,Sony-Ericsson/JavaPlatform7,Sony-Ericsson/JavaPlatform8"/>
+	<property name="devices" value="Generic/AnyPhone,Generic/Midp2Cldc11,${device},Sony-Ericsson/JavaPlatform7,Sony-Ericsson/JavaPlatform8"/>
 	<!--property name="devices" value="${device},Nokia/Midp2Cldc11" /-->
 
 
@@ -73,7 +73,7 @@
 				version="0.1" 
 				description="A Dominion Card randomizer" 
 				vendorName="Nick Papior Andersen A/S" 
-				infoUrl="www.boardgamegeek.com/wiki/Dominizer" 
+				infoUrl="http://www.boardgamegeek.com/wiki/page/Dominizer" 
 				jarName="${ nospace(polish.vendor) }-${ nospace(polish.name) }-Dominion.jar" 
 				jarUrl="${deploy-url}${polish.jarName}" 
 				copyright="Copyright 2009 Nick Papior Andersen A/S. All rights reserved."
@@ -159,6 +159,7 @@
 	<target name="clean" description="allows a clean build. You should call [ant clean] whenever you made changes to devices.xml, vendors.xml or groups.xml">
 		<delete dir="build" />
 		<delete dir="dist" includes="**/*" />
+		<delete dir="tmp**"/>
 	</target>
 	
 	<target name="emulator"

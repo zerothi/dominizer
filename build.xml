@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="MobDominion" default="j2mepolish" basedir=".">
+<project name="Dominizer" default="j2mepolish" basedir=".">
 	<description>Builds, tests, and runs the project .</description>
 	<!--import file="antproject/project.xml"/-->
 	<import file="ant/jbpolish.xml"/>
