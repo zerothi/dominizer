@@ -18,8 +18,8 @@ public class EditCardsForm extends Form implements CommandListener, ItemStateLis
 	private GameApp app = null;
 	private Object[][] cards = null;
 	private ChoiceGroup cardGroup= null;
-	private Command goBackCmd = new Command( Locale.get( "cmd.GoBack" ), Command.BACK, 8 );
-	private Command switchCmd = new Command( Locale.get( "cmd.switch" ), Command.SCREEN, 8 );
+	private Command backCmd = new Command( Locale.get( "cmd.Back" ), Command.BACK, 8 );
+	//private Command switchCmd = new Command( Locale.get( "cmd.switch" ), Command.SCREEN, 8 );
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
 
 	public EditCardsForm(GameApp app, String title) {
@@ -27,10 +27,10 @@ public class EditCardsForm extends Form implements CommandListener, ItemStateLis
 		super(title);
 		this.app = app;
 		//#style choiceGroup
-		this.cardGroup = new ChoiceGroup("Card:", Choice.EXCLUSIVE);// doesn't work yet with multiple
-		this.cardGroup.addCommand(switchCmd);
-		this.cardGroup.setDefaultCommand(switchCmd);
-		this.addCommand(goBackCmd);
+		this.cardGroup = new ChoiceGroup(Locale.get("screen.EditCards.ChoiceCurrentlySelected"), Choice.EXCLUSIVE);
+		//this.cardGroup.addCommand(switchCmd);
+		//this.cardGroup.setDefaultCommand(switchCmd);
+		this.addCommand(backCmd);
 		this.addCommand(quitCmd);
 		this.append(this.cardGroup);
 		this.setCommandListener(this);
@@ -42,7 +42,6 @@ public class EditCardsForm extends Form implements CommandListener, ItemStateLis
 		this.cardGroup.deleteAll();
 		for ( int cardNumber = 0 ; cardNumber < cardsV.size() ; cardNumber++ ) {
 			this.cards[0][cardNumber] = ( (Card)cardsV.elementAt(cardNumber)).getName();
-			// TODO : set the style of this according to the expansion. Thus setting an image for each!!!
 			this.cardGroup.append((String)this.cards[0][cardNumber], null);
 			this.cards[1][cardNumber] = ( (Card)cardsV.elementAt(cardNumber)).getExpansion();
 			this.cards[2][cardNumber] = new Integer(( (Card)cardsV.elementAt(cardNumber)).getCost());
@@ -58,15 +57,15 @@ public class EditCardsForm extends Form implements CommandListener, ItemStateLis
 	}
 	
 	public void commandAction(Command cmd, Displayable disp) {
-		if ( cmd.equals(goBackCmd) )
+		if ( cmd.equals(backCmd) )
 			this.app.returnToMainScreen();
 		else if ( cmd.equals(quitCmd) )
 			this.app.notifyDestroyed();
-		else if ( cmd.equals(switchCmd) ) {
+		/*else if ( cmd.equals(switchCmd) ) {
 			int selIndex = this.cardGroup.getSelectedIndex();
 			this.append((String)this.cards[9][selIndex]);
 			this.cards[9][selIndex] = new Boolean(! ((Boolean)this.cards[9][selIndex]).booleanValue());
-		}
+		}*/
 	}
 
 	public void itemStateChanged(Item item) {

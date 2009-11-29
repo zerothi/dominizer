@@ -1,0 +1,59 @@
+################
+#
+# App Specific translations
+#
+################
+mainScreen.ChoiceWhatToDo=Hvad skal der gøres?
+mainScreen.QuickSelectExpansions=Udvidelser Brugt:
+table.heading.Name=Navn
+table.heading.Expansion=Udv.
+table.heading.Cost=#
+table.heading.ActionCard=A
+table.heading.VictoryCard=V
+table.heading.TreasuryCard=T
+table.heading.ReactionCard=R
+table.heading.AttackCard=A
+table.heading.DurationCard=D
+screen.RandomizedCards.title=Generer Kort
+screen.EditCards.title=Rediger Kort
+screen.EditCards.ChoiceCurrentlySelected=Valgt Kort:
+cmd.Back=Tilbage
+cmd.Randomize=Generer
+cmd.EditCards=Rediger Kort
+cmd.ShowLog=Vis Log
+cmd.Quit=Luk
+cmd.switch=Skift
+alert=Advarsel
+alert.QuickSelectExpansions.OnlyPromoSelected=Du har kun valgt Promo's.\nVælg flere!
+alert.QuickSelectExpansions.NoneSelected=Du har ikke valgt nogle fulde spil.\nVælg minimum en!
+
+
+################
+#
+# Polish Settings
+#
+################
+polish.command.ok=Ok
+polish.command.cancel=Fortryd
+polish.command.select=Vælg
+polish.command.mark=Marker
+polish.command.unmark=Afmarker
+polish.command.options=Indstillinger
+# for deleting a single char:
+polish.command.delete=Slet
+# for deleting a complete TextField:
+polish.command.clear=Ryd
+# for hiding menus on BlackBerry devices:
+polish.command.hide=Skjul
+# for showing a default title when no label
+# is defined in a TextField. This is only
+# used when no direct input mode is activated:
+polish.title.input=Input
+# used for showing a screen for selecting symbols within TextFields:
+polish.command.entersymbol=Tilføj Symbol
+# used by the HtmlBrowser for a links:
+polish.command.followlink=Gå til
+# used by the HtmlBrowser for submitting a form:
+polish.command.submit=Aflever
+# used by the RssBrowser for returning to the previous page:
+polish.command.back=Tilbage

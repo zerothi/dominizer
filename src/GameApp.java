@@ -61,7 +61,7 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	ChoiceGroup whatToDoCG = null;
 	ChoiceGroup quickGameRandomizerCG = null;
 	Form mainForm = null;
-	Command chooseCmd = new Command("Choose", Command.OK, 1);
+	Command selectCmd = new Command( Locale.get("polish.command.select"), Command.OK, 1);
 	Command showRandomizedCardsCmd = new Command( Locale.get( "cmd.Randomize" ), Command.ITEM, 5 );
 	Command showEditCardsCmd = new Command( Locale.get( "cmd.EditCards" ), Command.ITEM, 6 );
 	//Command showCardsListCmd = new Command( Locale.get( "cmd.ShowCards" ), Command.ITEM, 8 );
@@ -78,15 +78,15 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 		//#style mainScreen
 		this.mainForm = new Form("Dominizer");
 		//#style choiceGroup
-		this.whatToDoCG = new ChoiceGroup("What to do?", ChoiceGroup.EXCLUSIVE);// doesn't work yet with multiple
+		this.whatToDoCG = new ChoiceGroup(Locale.get("mainScreen.ChoiceWhatToDo"), ChoiceGroup.EXCLUSIVE);// doesn't work yet with multiple
 		//style choiceItem
-		this.whatToDoCG.append("Randomize", null);
-		//style choiceItem
-		this.whatToDoCG.append("Settings", null);
-		this.whatToDoCG.setDefaultCommand(chooseCmd);
+		this.whatToDoCG.append(Locale.get("cmd.Randomize"), null);
+		/*//style choiceItem
+		this.whatToDoCG.append(Locale.get("cmd.EditCards"), null);*/
+		this.whatToDoCG.setDefaultCommand(selectCmd);
 		this.whatToDoCG.setItemCommandListener(this);
 		//#style filterCards
-		this.quickGameRandomizerCG = new ChoiceGroup("Expansions used:", ChoiceGroup.MULTIPLE);
+		this.quickGameRandomizerCG = new ChoiceGroup(Locale.get("mainScreen.QuickSelectExpansions"), ChoiceGroup.MULTIPLE);
 		try {
 			//style choiceItem 
 			this.quickGameRandomizerCG.append("Base", Image.createImage("/base.png"));
@@ -135,7 +135,7 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 		} else if ( cmd == this.showCardsListCmd ) {
 			this.showCardListTable();
 		*/
-		} else if ( cmd == this.chooseCmd ){
+		} else if ( cmd == this.selectCmd ){
 			switch ( this.whatToDoCG.getSelectedIndex() ) {
 			case 0:
 				this.showRandomizedCards();
@@ -167,13 +167,13 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	private void showRandomizedCards() {
 		boolean flags[] = new boolean[this.quickGameRandomizerCG.size()];
 		if ( this.quickGameRandomizerCG.getSelectedFlags(flags) == 1 && this.quickGameRandomizerCG.isSelected(1) ) {
-			showAlert("You have only selected Promos.\nSelect more!");
+			showAlert(Locale.get("alert.QuickSelectExpansions.OnlyPromoSelected"));
 		} else if ( this.quickGameRandomizerCG.getSelectedFlags(flags) == 0 ) {
-			showAlert("You have not selected any expansions.\nSelect at least one!");
+			showAlert(Locale.get("alert.QuickSelectExpansions.NoneSelected"));
 		} else {
 			for (int i = 0; i < this.quickGameRandomizerCG.size() ; i++)
 	        	this.dominion.setExpansionPlayingState(this.quickGameRandomizerCG.getString(i), flags[i]);
-			ShowCardsForm scForm = new ShowCardsForm(this, "Randomized Cards");
+			ShowCardsForm scForm = new ShowCardsForm(this, Locale.get("screen.RandomizedCards.title"));
 			scForm.viewCards(dominion.getRandomizedCards());
 			this.changeToScreen(scForm);
 		}
@@ -181,7 +181,7 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	}
 	
 	private void showEditCards() {
-		EditCardsForm edForm = new EditCardsForm(this, "Edit Cards");
+		EditCardsForm edForm = new EditCardsForm(this, Locale.get("screen.EditCards.title"));
 		edForm.setCards(dominion.getAllCards());
 		this.changeToScreen(edForm);
 	}
@@ -223,7 +223,7 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	 */
 	public void showAlert(String message) {
 		//#style messageAlert
-		Alert alert = new Alert( "Alert", message, null, AlertType.INFO );
+		Alert alert = new Alert( Locale.get("alert"), message, null, AlertType.INFO );
 		alert.setTimeout( Alert.FOREVER );
 		this.display.setCurrent( alert );
 	}

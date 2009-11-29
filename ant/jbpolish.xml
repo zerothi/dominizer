@@ -119,10 +119,8 @@
 				<resources dir="${resource.dir}" defaultexcludes="yes" excludes="readme.txt">
 					<root dir="${resource.dir}" />
 					<root dir="${resource.dir}/img" />
-					<root dir="${resource.dir}/cards" />
-					<!--root dir="${resource.dir}/lang"  />
-					<localization locales="da_DK, en_GB" unless="test" />
-					<localization locales="en_GB" if="test" /-->
+					<localization locales="da, en, de, pl" unless="test" />
+					<localization locales="en" if="test" />
 				</resources>
 
 				<!-- obfuscator settings: do not obfuscate when the test-property is true-->

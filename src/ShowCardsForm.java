@@ -18,7 +18,7 @@ public class ShowCardsForm extends Form  implements CommandListener {
 	
 	private GameApp app = null;
 	private TableItem table = null;
-	private Command goBackCmd = new Command( Locale.get( "cmd.GoBack" ), Command.BACK, 8 );
+	private Command backCmd = new Command( Locale.get( "cmd.Back" ), Command.BACK, 8 );
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
 	
 	
@@ -30,7 +30,7 @@ public class ShowCardsForm extends Form  implements CommandListener {
 		System.out.println("showing cards initialize");
 		//#style defaultTable
 		table = new TableItem();
-		this.addCommand(goBackCmd);
+		this.addCommand(backCmd);
 		this.addCommand(quitCmd);
 		table.setSelectionMode(TableItem.SELECTION_MODE_CELL);
 		this.append(table);
@@ -42,11 +42,11 @@ public class ShowCardsForm extends Form  implements CommandListener {
 		//#debug
 		System.out.println("adding header");
 		//#style tableHeading
-		table.set(0, 0, "Name");
+		table.set(0, 0, Locale.get("table.heading.Name"));
 		//#style tableHeading
-		table.set(1, 0, "Exp.");
+		table.set(1, 0, Locale.get("table.heading.Expansion"));
 		//#style tableHeading
-		table.set(2, 0, "#");
+		table.set(2, 0, Locale.get("table.heading.Cost"));
 		//#debug
 		System.out.println("adding card information");
 		for (int cardNumber = 0 ; cardNumber < cards.size() ; cardNumber++ ) {
@@ -67,7 +67,7 @@ public class ShowCardsForm extends Form  implements CommandListener {
 
 
 	public void commandAction(Command cmd, Displayable disp) {
-		if ( cmd.equals(goBackCmd) )
+		if ( cmd.equals(backCmd) )
 			this.app.returnToMainScreen();
 		else if ( cmd.equals(quitCmd) )
 			this.app.notifyDestroyed();
