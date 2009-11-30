@@ -62,8 +62,8 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	ChoiceGroup quickGameRandomizerCG = null;
 	Form mainForm = null;
 	Command selectCmd = new Command( Locale.get("polish.command.select"), Command.OK, 1);
-	Command showRandomizedCardsCmd = new Command( Locale.get( "cmd.Randomize" ), Command.ITEM, 5 );
-	Command showEditCardsCmd = new Command( Locale.get( "cmd.EditCards" ), Command.ITEM, 6 );
+	Command showRandomizedCardsCmd = new Command( Locale.get("cmd.Randomize"), Command.ITEM, 5 );
+	Command showEditCardsCmd = new Command( Locale.get("cmd.EditCards"), Command.ITEM, 6 );
 	//Command showCardsListCmd = new Command( Locale.get( "cmd.ShowCards" ), Command.ITEM, 8 );
 	Command showLogCmd = new Command( Locale.get("cmd.ShowLog"), Command.ITEM, 9 );
 	Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
@@ -171,8 +171,10 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 		} else if ( this.quickGameRandomizerCG.getSelectedFlags(flags) == 0 ) {
 			showAlert(Locale.get("alert.QuickSelectExpansions.NoneSelected"));
 		} else {
-			for (int i = 0; i < this.quickGameRandomizerCG.size() ; i++)
-	        	this.dominion.setExpansionPlayingState(this.quickGameRandomizerCG.getString(i), flags[i]);
+			this.dominion.setExpansionPlayingState("Base", flags[0]);
+			this.dominion.setExpansionPlayingState("Promo", flags[1]);
+			this.dominion.setExpansionPlayingState("Intrigue", flags[2]);
+			this.dominion.setExpansionPlayingState("Seaside", flags[3]);
 			ShowCardsForm scForm = new ShowCardsForm(this, dominion, Locale.get("screen.RandomizedCards.title"));
 			scForm.reRandomize();
 			this.changeToScreen(scForm);
@@ -205,9 +207,6 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 		//#debug
 		System.out.println("setting display.");
 		this.changeToScreen(this.mainForm);
-		///#if debug
-		//this.showRandomizedCards();
-		///#endif
 		//#debug
 		System.out.println("sample application is up and running.");
 	}

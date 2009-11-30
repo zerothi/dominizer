@@ -69,7 +69,6 @@ public class ShowCardsForm extends Form  implements CommandListener {
 			//#style tableCellCentered
 			table.set(2, cardNumber + 1, new Integer(( (Card) cards.elementAt(cardNumber) ).getCost()) );
 		}
-		//table.setSelectionMode( TableItem.SELECTION_MODE_ROW | TableItem.SELECTION_MODE_INTERACTIVE );
 	}
 
 
