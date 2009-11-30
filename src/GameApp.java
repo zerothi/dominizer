@@ -38,6 +38,7 @@ import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemCommandListener;
+import javax.microedition.lcdui.List;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
@@ -61,30 +62,30 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	ChoiceGroup whatToDoCG = null;
 	ChoiceGroup quickGameRandomizerCG = null;
 	Form mainForm = null;
-	Command selectCmd = new Command( Locale.get("polish.command.select"), Command.OK, 1);
-	Command showRandomizedCardsCmd = new Command( Locale.get("cmd.Randomize"), Command.ITEM, 5 );
-	Command showEditCardsCmd = new Command( Locale.get("cmd.EditCards"), Command.ITEM, 6 );
+	Command selectCmd = new Command( Locale.get("polish.command.select"), Command.BACK, 0);
+	Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 	//Command showCardsListCmd = new Command( Locale.get( "cmd.ShowCards" ), Command.ITEM, 8 );
-	Command showLogCmd = new Command( Locale.get("cmd.ShowLog"), Command.ITEM, 9 );
-	Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
+	Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
 	Display display = null;
-	public Dominion dominion = null;
+	private Dominion dominion = null;
 	
 	public GameApp() {
 		super();
 		//#debug
 		System.out.println("starting Dominion");
-		dominion = new Dominion();
-		//#style mainScreen
-		this.mainForm = new Form("Dominizer");
+		this.dominion = new Dominion();
+		// Setting up the ChoiceGroup of what to do
 		//#style choiceGroup
-		this.whatToDoCG = new ChoiceGroup(Locale.get("mainScreen.ChoiceWhatToDo"), ChoiceGroup.EXCLUSIVE);// doesn't work yet with multiple
-		//style choiceItem
-		this.whatToDoCG.append(Locale.get("cmd.Randomize"), null);
+		this.whatToDoCG = new ChoiceGroup(Locale.get("mainScreen.ChoiceWhatToDo"), ChoiceGroup.EXCLUSIVE);
+		//#style choiceItem
+		this.whatToDoCG.append(Locale.get("cmd.Randomize.Show"), null);
+		//#style choiceItem
+		this.whatToDoCG.append(Locale.get("cmd.BlackMarket.Show"), null);
 		/*//style choiceItem
-		this.whatToDoCG.append(Locale.get("cmd.EditCards"), null);*/
-		this.whatToDoCG.setDefaultCommand(selectCmd);
+		this.whatToDoCG.append(Locale.get("cmd.EditCards.Show"), null);*/
+		this.whatToDoCG.addCommand(this.selectCmd);
 		this.whatToDoCG.setItemCommandListener(this);
+		// Setting up the QuickGame Randomizer
 		//#style filterCards
 		this.quickGameRandomizerCG = new ChoiceGroup(Locale.get("mainScreen.QuickSelectExpansions"), ChoiceGroup.MULTIPLE);
 		try {
@@ -97,71 +98,54 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 			//style choiceItem
 			this.quickGameRandomizerCG.append(Locale.get("seaside"), Image.createImage("/se.png"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//style choiceItem 
+			this.quickGameRandomizerCG.append(Locale.get("base"), null);
+			//style choiceItem
+			this.quickGameRandomizerCG.append(Locale.get("promo"), null);
+			//style choiceItem
+			this.quickGameRandomizerCG.append(Locale.get("intrigue"), null);
+			//style choiceItem
+			this.quickGameRandomizerCG.append(Locale.get("seaside"), null);
 		}
 		for ( int i = 0 ; i < 3 ; i ++ )
 			this.quickGameRandomizerCG.setSelectedIndex(i, true);
-		//this.commandAction(chooseCmd, (Item) this.quickGameRandomizerCG);
-		//this.mainForm.addCommand(chooseCmd);
-		this.mainForm.addCommand(this.showRandomizedCardsCmd);
-		this.mainForm.addCommand(this.showEditCardsCmd);
-		//this.mainForm.addCommand(this.showCardsListCmd);
-		this.mainForm.addCommand(this.quitCmd);
-		//#ifdef polish.debugEnabled
-			this.mainForm.addCommand(this.showLogCmd);
-		//#endif
-		this.mainForm.setCommandListener(this);
 		
+		this.quickGameRandomizerCG.addCommand(this.quickRandomizeCardsCmd);
+		this.quickGameRandomizerCG.setItemCommandListener(this);
+		
+		//#style mainScreen
+		this.mainForm = new Form("Dominizer");
+		this.mainForm.addCommand(this.quitCmd);
+		this.mainForm.setCommandListener(this);
 		this.mainForm.append(this.whatToDoCG);
 		this.mainForm.append(this.quickGameRandomizerCG);
-		// You can also use further localization features like the following: 
-		//System.out.println("Today is " + Locale.formatDate( System.currentTimeMillis() ));
 		//#debug
 		System.out.println("initialisation done.");
 	}
 	
 	public void commandAction(Command cmd, Displayable screen) {
 		//showAlert("Cmd: " + cmd.getLabel() + ". Screen: " + screen.getTitle());
-		if ( cmd == this.showLogCmd ) {
-			Debug.showLog(this.display);
-			return;
-		}
-		if ( cmd == this.showRandomizedCardsCmd ) {
+		if ( cmd == this.quickRandomizeCardsCmd ) {
 			this.showRandomizedCards();
-		} else if ( cmd == this.showEditCardsCmd ) {
-			this.showEditCards();
-		/*
-		} else if ( cmd == this.showCardsListCmd ) {
-			this.showCardListTable();
-		*/
-		} else if ( cmd == this.selectCmd ){
-			switch ( this.whatToDoCG.getSelectedIndex() ) {
-			case 0:
-				this.showRandomizedCards();
-				break;
-			case 1:
-				this.showEditCards();
-				break;
-			}
-		}
-		if ( cmd == this.quitCmd ) {
-			quit();
+		} else if ( cmd == this.quitCmd ) {
+			this.quit();
 		}
 	}
 	
 	public void commandAction(Command cmd, Item item) {
-		if ( item == this.whatToDoCG ) {
+		if ( cmd == this.quitCmd ) {
+			this.quit();
+		} else if ( item == this.whatToDoCG && cmd == selectCmd ) {
 			switch ( this.whatToDoCG.getSelectedIndex() ) {
 			case 0:
 				this.showRandomizedCards();
 				break;
 			case 1:
-				this.showEditCards();
+				this.showBlackMarketDeck();
 				break;
 			}
-		}
-		
+		} else if ( item == this.quickGameRandomizerCG )
+			this.commandAction(cmd, this.mainForm);
 	}
 	
 	private void showRandomizedCards() {
@@ -180,6 +164,12 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 			this.changeToScreen(scForm);
 		}
 		flags = null;
+	}
+	
+	private void showBlackMarketDeck() {
+		BlackMarketForm bmForm = new BlackMarketForm(this, Locale.get("screen.BlackMarket.title"));
+		bmForm.setBlackMarketDeck(dominion.getAllCards());
+		this.changeToScreen(bmForm);
 	}
 	
 	private void showEditCards() {
@@ -224,10 +214,21 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	 */
 	public void showAlert(String message) {
 		//#style messageAlert
-		Alert alert = new Alert( Locale.get("alert"), message, null, AlertType.INFO );
+		Alert alert = new Alert( Locale.get("alert.alert"), message, null, AlertType.INFO );
 		alert.setTimeout( Alert.FOREVER );
 		this.display.setCurrent( alert );
 	}
+	
+	/**
+	 * @param string
+	 */
+	public void showInfo(String message) {
+		//#style messageAlert
+		Alert alert = new Alert( Locale.get("alert.info"), message, null, AlertType.INFO );
+		alert.setTimeout( Alert.FOREVER );
+		this.display.setCurrent( alert );
+	}
+	
 	private void quit() {
 		notifyDestroyed();
 	}

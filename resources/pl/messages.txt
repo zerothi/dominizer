@@ -17,6 +17,7 @@ table.heading.DurationCard=D
 screen.RandomizedCards.title=Randomized Cards
 screen.EditCards.title=Edit Cards
 screen.EditCards.ChoiceCurrentlySelected=Selected Card:
+cmd.DrawBlackMarket=Draw
 cmd.Back=Back
 cmd.Randomize=Randomize
 cmd.EditCards=Edit Cards

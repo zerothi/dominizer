@@ -8,46 +8,47 @@ import java.util.Vector;
 public class Dominion {
 	
 	private Vector cards = null;
-	private int selectCards = 10;
+	private int numberOfRandomCards = 10;
 	
 	public Dominion() {
 		readCards();
 	}
 	
-	public void setExpansionPlayingState(String expansion, boolean isPlaying) {
+	public void setExpansionPlayingState(String expansion, boolean isAvailable) {
 		for (int i = 0 ; i < cards.size() ; i++ ) {
 			if ( ( (Card)cards.elementAt(i)).getExpansion().equals(expansion) ) 
-				( (Card)cards.elementAt(i)).setPlaying(isPlaying);
+				( (Card)cards.elementAt(i)).setAvailable(isAvailable);
 		}
 	}
 	/**
-	 * @return the selectCards
+	 * @return the numberOfRandomCards
 	 */
-	public int getSelectCards() {
-		return selectCards;
+	public int getNumberOfRandomCards() {
+		return numberOfRandomCards;
 	}
 
 	/**
-	 * @param selectCards the selectCards to set
+	 * @param numberOfRandomCards the number of cards that should be randomized to set
 	 */
-	public void setSelectCards(int selectCards) {
-		this.selectCards = selectCards;
+	public void setNumberOfRandomCards(int numberOfRandomCards) {
+		this.numberOfRandomCards = numberOfRandomCards;
 	}
 	
 	public Vector getRandomizedCards() {
-		Vector selectedCards = new Vector(selectCards);
+		Vector selectedCards = new Vector(numberOfRandomCards);
 		int totalAvailable = cards.size();
 		int selectedElement = 0;
 		Random selector = new Random(System.currentTimeMillis());
 		int i = 0;
-		while ( i < selectCards ) {
+		while ( i < numberOfRandomCards ) {
 			selectedElement = selector.nextInt(totalAvailable - i);
-			if ( ( (Card)cards.elementAt(selectedElement)).isPlaying() == true && !selectedCards.contains(cards.elementAt(selectedElement))) {
-				((Card)cards.elementAt(selectedElement)).setSelected(true);
+			if ( ( (Card)cards.elementAt(selectedElement)).isAvailable() == true && !selectedCards.contains(cards.elementAt(selectedElement))) {
+				((Card)cards.elementAt(selectedElement)).setPlaying(true);
 				selectedCards.addElement(cards.elementAt(selectedElement));
 				i++;
 			}
 		}
+		selectedCards.trimToSize();
 		selector = null;
 		return selectedCards;
 	}
@@ -56,9 +57,9 @@ public class Dominion {
 		return cards;
 	}
 	
-	public void resetIsSelected() {
+	public void resetIsPlaying() {
 		for ( int i = 0 ; i < cards.size() ; i++ )
-			((Card)cards.elementAt(i)).setSelected(false);
+			((Card)cards.elementAt(i)).setPlaying(false);
 	}
 	
 	private void readCards() {

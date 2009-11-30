@@ -51,8 +51,8 @@ public class EditCardsForm extends Form implements CommandListener, ItemStateLis
 			this.cards[6][cardNumber] = new Boolean(( (Card)cardsV.elementAt(cardNumber)).isAttack());
 			this.cards[7][cardNumber] = new Boolean(( (Card)cardsV.elementAt(cardNumber)).isReaction());
 			this.cards[8][cardNumber] = new Boolean(( (Card)cardsV.elementAt(cardNumber)).isDuration());
-			this.cards[9][cardNumber] = new Boolean(( (Card)cardsV.elementAt(cardNumber)).isSelected());
-			this.cards[10][cardNumber] = new Boolean(( (Card)cardsV.elementAt(cardNumber)).isBlackMarketSelected());
+			this.cards[9][cardNumber] = new Boolean(( (Card)cardsV.elementAt(cardNumber)).isAvailable());
+			this.cards[10][cardNumber] = new Boolean(( (Card)cardsV.elementAt(cardNumber)).isBlackMarketAvailable());
 		}
 	}
 	

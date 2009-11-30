@@ -293,7 +293,8 @@ rightcommand extends leftcommand
 middlecommand extends leftcommand {
 	layout: center;
 	padding-top: 1;
-	font-color: black;
+	font-color: translucentFontColor;
+	font-style: bold;
 }
 
 
@@ -405,8 +406,6 @@ menuItem:hover {
 	font-style: bold;
 	text-wrap: false;
 	font-size: medium;
-	text-layout: center | vertical-center;
-	layout: vertical-center;
 }
 
 .choiceItem:hover {

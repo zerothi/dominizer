@@ -83,7 +83,7 @@
 			<!-- In the test mode the application is build only for the  -->
 			<!-- Generic/midp1 phone, but when the test-property is set to false, -->
 			<!-- the second deviceRequirements will be used instead. -->
-			<deviceRequirements if="debug">
+			<deviceRequirements if="debug or quick">
 				<requirement name="Identifier" value="${device}" />
 			</deviceRequirements>
 			<deviceRequirements unless="debug">
@@ -111,28 +111,29 @@
 					//#= private static final String UPDATE_URL = "${ update-url }";
 					You can change the title of the sample application with the "title"-var.
 					-->
-					<variable name="polish.TextField.useDirectInput" value="true" />
-					<variable name="polish.ScreenInfo.enable" value="true" />
-					<variable name="polish.MenuBar.useExtendedMenuBar" value="true" />
+					<variable name="polish.TextField.useDirectInput" value="true"/>
+					<variable name="polish.ScreenInfo.enable" value="true"/>
+					<variable name="polish.MenuBar.useExtendedMenuBar" value="true"/>
+					<variable name="polish.ChoiceGroup.suppressMarkCommands" value="true"/>
 					<!--variable name="polish.ChoiceGroup.suppressMarkCommands" value="true" /-->
 				</variables>
 				<resources dir="${resource.dir}" defaultexcludes="yes" excludes="readme.txt">
 					<root dir="${resource.dir}" />
 					<root dir="${resource.dir}/img" />
-					<localization unless="debug">
+					<localization unless="debug or quick">
 						<locale name="da" encoding="UTF-8"/>
 						<locale name="en" encoding="UTF-8"/>
 						<locale name="de" encoding="UTF-8"/>
 						<locale name="pl" encoding="UTF-8"/>
 						<locale name="zombinion" encoding="UTF-8"/>
 					</localization>
-					<localization if="debug">
+					<localization if="debug or quick">
 						<locale name="en" encoding="UTF-8"/>
 					</localization>
 				</resources>
 
 				<!-- obfuscator settings: do not obfuscate when the test-property is true-->
-				<obfuscator name="ProGuard" unless="test or polish.blackberry">
+				<obfuscator name="ProGuard" unless="test or polish.blackberry or quick">
 					<parameter name="optimize" value="true" />
 					<parameter name="optimizationpasses" value="3"/>
 				</obfuscator>
@@ -174,9 +175,13 @@
 	</target>
 	
 	<target name="emulator"
-		depends="test,j2mepolish"
 		description="invokes the emulator">
+		<exec executable="${wtk.runmidlet}" dir="./${dist.root.dir}" spawn="true">
+		    <arg value="./Nokia-Series40E3-en-Dominizer.jad"/>
+		</exec>
 	</target>
+	
+	<target name="quickbuild" description="Quick builds for one" depends="enableQuick, j2mepolish, emulator" />
 	
 	<target name="deviceDebug" description="debugs the project" depends="enableDebug, enableInfo, j2mepolish" />
 	
@@ -188,6 +193,10 @@
 	
 	<target name="Memory" description="debugs the project" depends="clean, enableMemory, j2mepolish" />
 
+	<!-- Call this target first to skip the obfuscation step, call the emulator and start the debugger, e.g. ant enableDebug j2mepolish-->
+	<target name="enableQuick">
+		<property name="quick" value="true" />
+	</target>
 	
 	<!-- Call this target first to skip the obfuscation step, call the emulator and start the debugger, e.g. ant enableDebug j2mepolish-->
 	<target name="enableDebug">

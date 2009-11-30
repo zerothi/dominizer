@@ -3,6 +3,11 @@
 public class Card {
 	private String name = null;
 	private String expansion = null;
+	/*
+	 * #1 = Is Playing
+	 * #2 = Is Selected for availability
+	 * #3 = Is Black Market available
+	 */
 	private boolean[] isGamingRelated = new boolean[3]; 
 	private int cost = 2;
 	/*
@@ -17,8 +22,8 @@ public class Card {
 
 	public Card() {
 		super();
-		this.setSelected(true);
-		this.setBlackMarketSelected(true);
+		this.setAvailable(true);
+		this.setBlackMarketAvailable(true);
 	}
 
 	public Card(String name) {
@@ -88,22 +93,22 @@ public class Card {
 	/**
 	 * @return the selected
 	 */
-	public boolean isSelected() {
+	public boolean isAvailable() {
 		return isGamingRelated[1];
 	}
 
 	/**
-	 * @param selected
+	 * @param available
 	 *            the selected to set
 	 */
-	public void setSelected(boolean selected) {
-		this.isGamingRelated[1] = selected;
+	public void setAvailable(boolean available) {
+		this.isGamingRelated[1] = available;
 	}
 
 	/**
 	 * @return the bmSelected
 	 */
-	public boolean isBlackMarketSelected() {
+	public boolean isBlackMarketAvailable() {
 		return isGamingRelated[2];
 	}
 
@@ -111,8 +116,8 @@ public class Card {
 	 * @param bmSelected
 	 *            the bmSelected to set
 	 */
-	public void setBlackMarketSelected(boolean bmSelected) {
-		this.isGamingRelated[2] = bmSelected;
+	public void setBlackMarketAvailable(boolean bmAvailable) {
+		this.isGamingRelated[2] = bmAvailable;
 	}
 
 	/**

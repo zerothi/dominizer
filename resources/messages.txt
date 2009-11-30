@@ -17,16 +17,22 @@ table.heading.DurationCard=D
 screen.RandomizedCards.title=Randomized Cards
 screen.EditCards.title=Edit Cards
 screen.EditCards.ChoiceCurrentlySelected=Selected Card:
+screen.BlackMarket.title=Black Market
+screen.BlackMarket.ChooseCards=Choose Card:
+screen.BlackMarket.InfoMessage=You have chosen: 
+screen.BlackMarket.DeckEmpty=Black Market deck is empty
+cmd.Randomize.Show=Randomize
+cmd.BlackMarket.Draw=Draw New
+cmd.BlackMarket.Show=Show BM deck
+cmd.EditCards.Show=Edit Cards
 cmd.Back=Back
-cmd.Randomize=Randomize
-cmd.EditCards=Edit Cards
 cmd.ShowLog=Show Log
 cmd.Quit=Quit
 cmd.switch=Switch
-alert=Alert
+alert.alert=Alert
+alert.info=Info
 alert.QuickSelectExpansions.OnlyPromoSelected=You have only selected Promo's.\nSelect more!
 alert.QuickSelectExpansions.NoneSelected=You have not selected any expansions.\nSelect at least one!
-
 
 ################
 #
