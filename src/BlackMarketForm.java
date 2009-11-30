@@ -46,27 +46,28 @@ public class BlackMarketForm extends Form implements CommandListener {
 		this.addNextCard();
 		this.addNextCard();
 		this.addNextCard();
+		this.chooseCard.setSelectedIndex(0, true);
 	}
 		
 	private void addNextCard() {
-		if ( currentlyReachedCard + 1 <= blackMarketDeck.size() ) {
-			//#style choiceItem
-			this.chooseCard.append((String) blackMarketDeck.elementAt(currentlyReachedCard), null);
-			currentlyReachedCard++;
-		} else if ( currentlyReachedCard == 0 && blackMarketDeck.size() == 0 ) {
+		if ( this.blackMarketDeck.size() == 0 ) {
 			//#style choiceItem
 			this.chooseCard.append(Locale.get("screen.BlackMarket.DeckEmpty"), null);
-		} else {
-			currentlyReachedCard = 0;
+		} else if ( this.blackMarketDeck.size() <= this.currentlyReachedCard ) {
+			this.currentlyReachedCard = 0;
 			addNextCard();
+		} else if ( this.currentlyReachedCard < this.blackMarketDeck.size() ) {
+			//#style choiceItem
+			this.chooseCard.append((String) this.blackMarketDeck.elementAt(this.currentlyReachedCard), null);
+			this.currentlyReachedCard++;
 		}
 	}
 	
 	private void selectCard() {
 		for ( int i = 0 ; i < blackMarketDeck.size() ; i++ ) {
 			if ( this.chooseCard.getString(this.chooseCard.getSelectedIndex()).equals((String) blackMarketDeck.elementAt(i)) ) {
-				this.app.showInfo(Locale.get("screen.BlackMarket.InfoMessage") + (String) blackMarketDeck.elementAt(i) + ".");
-				blackMarketDeck.removeElementAt(i);
+				this.app.showInfo(Locale.get("screen.BlackMarket.InfoMessage") + blackMarketDeck.elementAt(i).toString() + ".");
+				this.blackMarketDeck.removeElementAt(i);
 			}
 		}
 		this.chooseCard.deleteAll();

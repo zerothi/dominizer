@@ -16,8 +16,10 @@ public class Dominion {
 	
 	public void setExpansionPlayingState(String expansion, boolean isAvailable) {
 		for (int i = 0 ; i < cards.size() ; i++ ) {
-			if ( ( (Card)cards.elementAt(i)).getExpansion().equals(expansion) ) 
+			if ( ( (Card)cards.elementAt(i)).getExpansion().equals(expansion) ) { 
 				( (Card)cards.elementAt(i)).setAvailable(isAvailable);
+				( (Card)cards.elementAt(i)).setBlackMarketAvailable(isAvailable);
+			}
 		}
 	}
 	/**
