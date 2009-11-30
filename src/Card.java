@@ -26,24 +26,6 @@ public class Card {
 		this.setBlackMarketAvailable(true);
 	}
 
-	public Card(String name) {
-		super();
-		this.name = name;
-	}
-
-	public Card(String name, String expansion) {
-		super();
-		this.name = name;
-		this.expansion = expansion;
-	}
-
-	public Card(String name, String expansion, int cost) {
-		super();
-		this.name = name;
-		this.expansion = expansion;
-		this.cost = cost;
-	}
-
 	/**
 	 * @return the name
 	 */

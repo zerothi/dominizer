@@ -21,8 +21,6 @@
 	<!-- import user specific properties                          -->
 	<property file="${user.name}.properties" />
 	<property file="ant/project.properties" />
-	<!-- containing the J2ME Polish installation.                 -->
-	<!--property name="polish.home" location="/home/nick/Programs/J2ME-Polish" /-->
 	<!-- import global properties                                 -->
 	<property file="${polish.home}/global.properties" />
 
@@ -69,15 +67,15 @@
 			<!-- Have a look at the <jad>-section for setting specialised attributes.
 		         You can also define localized attributes in the resources/messages.txt files -->
 			<info 
-				name="Dominizer" 
+				name="${app.name}" 
 				version="0.11" 
 				description="A Dominion Card randomizer" 
 				vendorName="Nick Papior Andersen A/S" 
 				infoUrl="http://www.boardgamegeek.com/wiki/page/Dominizer" 
-				jarName="${ nospace(polish.vendor) }-${ nospace(polish.name) }-${ nospace(polish.locale) }-Dominizer.jar" 
+				jarName="${nospace(polish.vendor)}-${nospace(polish.name)}-${ nospace(polish.locale) }-${app.name}.jar" 
 				jarUrl="${deploy-url}${polish.jarName}" 
 				copyright="Copyright 2009 Nick Papior Andersen A/S. All rights reserved."
-				deleteConfirm="Delete Dominizer? Nooo? :D" 
+				deleteConfirm="Delete ${app.name}? Nooo? :D" 
 			/>
 			<!-- selection of supported devices -->
 			<!-- In the test mode the application is build only for the  -->
@@ -100,7 +98,7 @@
 			midp2Path="${polish.home}/import/midp-2.0.jar"
 				midlets definition -->
 				<midlets>
-					<midlet class="GameApp" name="Dominizer" icon="main.png" number="1" />
+					<midlet class="GameApp" name="${app.name}" icon="main.png" number="1" />
 				</midlets>
 
 				<!-- project-wide variables - used for preprocessing.  -->
@@ -128,7 +126,7 @@
 						<locale name="zombinion" encoding="UTF-8"/>
 					</localization>
 					<localization if="debug or quick">
-						<locale name="en" encoding="UTF-8"/>
+						<locale name="zombinion" encoding="UTF-8"/>
 					</localization>
 				</resources>
 
@@ -177,7 +175,7 @@
 	<target name="emulator"
 		description="invokes the emulator">
 		<exec executable="${wtk.runmidlet}" dir="./${dist.root.dir}" spawn="true">
-		    <arg value="./Nokia-Series40E3-en-Dominizer.jad"/>
+		    <arg value="./Nokia-Series40E3-zombinion-Dominizer.jad"/>
 		</exec>
 	</target>
 	

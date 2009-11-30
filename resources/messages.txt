@@ -44,6 +44,14 @@ promo=Promo
 intrigue=Intrigue
 seaside=Seaside
 
+
+################
+#
+# Application Name
+#
+################
+app.name=Dominizer
+
 ################
 #
 # Polish Settings

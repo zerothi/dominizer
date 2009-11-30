@@ -37,14 +37,15 @@ public class Dominion {
 	}
 	
 	public Vector getRandomizedCards() {
+		this.resetIsPlaying();
 		Vector selectedCards = new Vector(numberOfRandomCards);
 		int totalAvailable = cards.size();
 		int selectedElement = 0;
 		Random selector = new Random(System.currentTimeMillis());
 		int i = 0;
 		while ( i < numberOfRandomCards ) {
-			selectedElement = selector.nextInt(totalAvailable - i);
-			if ( ( (Card)cards.elementAt(selectedElement)).isAvailable() == true && !selectedCards.contains(cards.elementAt(selectedElement))) {
+			selectedElement = selector.nextInt(totalAvailable);
+			if ( ((Card)cards.elementAt(selectedElement)).isAvailable() & !selectedCards.contains(cards.elementAt(selectedElement))) {
 				((Card)cards.elementAt(selectedElement)).setPlaying(true);
 				selectedCards.addElement(cards.elementAt(selectedElement));
 				i++;
@@ -60,8 +61,9 @@ public class Dominion {
 	}
 	
 	public void resetIsPlaying() {
-		for ( int i = 0 ; i < cards.size() ; i++ )
+		for ( int i = 0 ; i < cards.size() ; i++ ) {
 			((Card)cards.elementAt(i)).setPlaying(false);
+		}
 	}
 	
 	private void readCards() {

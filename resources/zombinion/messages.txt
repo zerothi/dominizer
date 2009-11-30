@@ -41,6 +41,17 @@ seaside=Genocide
 
 ################
 #
+# Application Name
+#
+################
+app.name=Zombinizer
+MIDlet-1=Zombinizer,/main.png,GameApp
+MIDlet-Name=Zombinizer
+MIDlet-Delete-Confirm=Delete Zombinizer? Nooo? :D
+
+
+################
+#
 # Polish Settings
 #
 ################

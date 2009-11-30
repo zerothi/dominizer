@@ -49,25 +49,25 @@ public class ShowCardsForm extends Form  implements CommandListener {
 		//#debug
 		System.out.println("adding header");
 		//#style tableHeading
-		table.set(0, 0, Locale.get("table.heading.Name"));
+		this.table.set(0, 0, Locale.get("table.heading.Name"));
 		//#style tableHeading
-		table.set(1, 0, Locale.get("table.heading.Expansion"));
+		this.table.set(1, 0, Locale.get("table.heading.Expansion"));
 		//#style tableHeading
-		table.set(2, 0, Locale.get("table.heading.Cost"));
+		this.table.set(2, 0, Locale.get("table.heading.Cost"));
 		//#debug
 		System.out.println("adding card information");
 		for (int cardNumber = 0 ; cardNumber < cards.size() ; cardNumber++ ) {
 			//#style tableCell
-			table.set(0, cardNumber + 1, ( (Card) cards.elementAt(cardNumber)).getName() );
+			this.table.set(0, cardNumber + 1, ( (Card) cards.elementAt(cardNumber)).getName() );
 			try {
 				//#style tableCell
-				table.set(1, cardNumber + 1, new ImageItem(null, 
+				this.table.set(1, cardNumber + 1, new ImageItem(null, 
 						Image.createImage("/" + ((Card) cards.elementAt(cardNumber)).getExpansion() + ".png"), ImageItem.PLAIN, null));
 			} catch (IOException e) {
-				table.set(1, cardNumber + 1, ((Card) cards.elementAt(cardNumber)).getExpansion());
+				this.table.set(1, cardNumber + 1, ((Card) cards.elementAt(cardNumber)).getExpansion());
 			}
 			//#style tableCellCentered
-			table.set(2, cardNumber + 1, new Integer(( (Card) cards.elementAt(cardNumber) ).getCost()) );
+			this.table.set(2, cardNumber + 1, new Integer(( (Card) cards.elementAt(cardNumber) ).getCost()) );
 		}
 	}
 

@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Vector;
 
 import javax.microedition.lcdui.ChoiceGroup;
@@ -63,7 +64,7 @@ public class BlackMarketForm extends Form implements CommandListener {
 		}
 	}
 	
-	private void selectCard() {
+	private void selectCard(int indexChosen) {
 		for ( int i = 0 ; i < blackMarketDeck.size() ; i++ ) {
 			if ( this.chooseCard.getString(this.chooseCard.getSelectedIndex()).equals((String) blackMarketDeck.elementAt(i)) ) {
 				this.app.showInfo(Locale.get("screen.BlackMarket.InfoMessage") + blackMarketDeck.elementAt(i).toString() + ".");
@@ -76,12 +77,29 @@ public class BlackMarketForm extends Form implements CommandListener {
 	}
 	
 	public void setBlackMarketDeck(Vector cards) {
-		blackMarketDeck = new Vector(cards.size() - 10);
-		for ( int i = 0 ; i < cards.size() ; i++ ) {
-			if ( !( (Card)cards.elementAt(i) ).isPlaying() &&  ( (Card)cards.elementAt(i) ).isBlackMarketAvailable() )
-				blackMarketDeck.addElement(((Card)cards.elementAt(i)).getName());
+		this.currentlyReachedCard = 0;
+		for ( int i = 0 ; i < cards.size() ; i++ ) 
+			if ( !( (Card)cards.elementAt(i) ).isPlaying() &  ( (Card)cards.elementAt(i) ).isBlackMarketAvailable() )
+				this.currentlyReachedCard++;
+		if ( this.blackMarketDeck == null )
+			this.blackMarketDeck = new Vector(this.currentlyReachedCard);
+		else {
+			this.blackMarketDeck.removeAllElements();
+			this.blackMarketDeck.ensureCapacity(this.currentlyReachedCard);
 		}
-		blackMarketDeck.trimToSize();
+		for ( int i = 0 ; i < this.currentlyReachedCard ; i++ )
+			this.blackMarketDeck.addElement(null);
+		int randomized = 0;
+		Random selector = new Random(System.currentTimeMillis());
+		for ( int i = 0 ; i < cards.size() ; i++ )
+			if ( !( (Card)cards.elementAt(i) ).isPlaying() &  ( (Card)cards.elementAt(i) ).isBlackMarketAvailable() ) {
+				randomized = selector.nextInt(this.currentlyReachedCard);
+				while ( this.blackMarketDeck.elementAt(randomized) != null )
+					randomized = selector.nextInt(this.currentlyReachedCard);
+				this.blackMarketDeck.setElementAt(((Card)cards.elementAt(i)).getName(), randomized);
+			}
+		selector = null;
+		this.currentlyReachedCard = 0;
 	}
 	
 
@@ -94,6 +112,6 @@ public class BlackMarketForm extends Form implements CommandListener {
 		else if ( cmd.equals(this.drawCardsCmd) )
 			this.drawCards();
 		else if ( cmd.equals(this.selectCardCmd) )
-			this.selectCard();
+			this.selectCard(this.chooseCard.getSelectedIndex());
 	}
 }

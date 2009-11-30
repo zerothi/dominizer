@@ -38,12 +38,9 @@ import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemCommandListener;
-import javax.microedition.lcdui.List;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
-import de.enough.polish.ui.ImageItem;
-import de.enough.polish.util.Debug;
 import de.enough.polish.util.DeviceControl;
 import de.enough.polish.util.Locale;
 /**
@@ -62,10 +59,10 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	ChoiceGroup whatToDoCG = null;
 	ChoiceGroup quickGameRandomizerCG = null;
 	Form mainForm = null;
-	Command selectCmd = new Command( Locale.get("polish.command.select"), Command.BACK, 0);
-	Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
+	Command selectCmd = new Command( Locale.get("polish.command.select"), Command.SCREEN, 0);
+	Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.SCREEN, 0);
 	//Command showCardsListCmd = new Command( Locale.get( "cmd.ShowCards" ), Command.ITEM, 8 );
-	Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
+	Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.BACK, 10);
 	Display display = null;
 	private Dominion dominion = null;
 	
@@ -114,7 +111,7 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 		this.quickGameRandomizerCG.setItemCommandListener(this);
 		
 		//#style mainScreen
-		this.mainForm = new Form("Dominizer");
+		this.mainForm = new Form(Locale.get("app.name"));
 		this.mainForm.addCommand(this.quitCmd);
 		this.mainForm.setCommandListener(this);
 		this.mainForm.append(this.whatToDoCG);
@@ -135,7 +132,7 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	public void commandAction(Command cmd, Item item) {
 		if ( cmd == this.quitCmd ) {
 			this.quit();
-		} else if ( item == this.whatToDoCG && cmd == selectCmd ) {
+		} else if ( item == this.whatToDoCG && cmd == this.selectCmd ) {
 			switch ( this.whatToDoCG.getSelectedIndex() ) {
 			case 0:
 				this.showRandomizedCards();
@@ -159,7 +156,7 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 			this.dominion.setExpansionPlayingState("pr", flags[1]);
 			this.dominion.setExpansionPlayingState("in", flags[2]);
 			this.dominion.setExpansionPlayingState("se", flags[3]);
-			ShowCardsForm scForm = new ShowCardsForm(this, dominion, Locale.get("screen.RandomizedCards.title"));
+			ShowCardsForm scForm = new ShowCardsForm(this, this.dominion, Locale.get("screen.RandomizedCards.title"));
 			scForm.reRandomize();
 			this.changeToScreen(scForm);
 		}
@@ -168,13 +165,13 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	
 	private void showBlackMarketDeck() {
 		BlackMarketForm bmForm = new BlackMarketForm(this, Locale.get("screen.BlackMarket.title"));
-		bmForm.setBlackMarketDeck(dominion.getAllCards());
+		bmForm.setBlackMarketDeck(this.dominion.getAllCards());
 		this.changeToScreen(bmForm);
 	}
 	
 	private void showEditCards() {
 		EditCardsForm edForm = new EditCardsForm(this, Locale.get("screen.EditCards.title"));
-		edForm.setCards(dominion.getAllCards());
+		edForm.setCards(this.dominion.getAllCards());
 		this.changeToScreen(edForm);
 	}
 	/*	
@@ -214,9 +211,9 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	 */
 	public void showAlert(String message) {
 		//#style messageAlert
-		Alert alert = new Alert( Locale.get("alert.alert"), message, null, AlertType.INFO );
-		alert.setTimeout( Alert.FOREVER );
-		this.display.setCurrent( alert );
+		Alert alert = new Alert(Locale.get("alert.alert"), message, null, AlertType.WARNING);
+		alert.setTimeout(Alert.FOREVER);
+		this.display.setCurrent(alert);
 	}
 	
 	/**
@@ -224,9 +221,9 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	 */
 	public void showInfo(String message) {
 		//#style messageAlert
-		Alert alert = new Alert( Locale.get("alert.info"), message, null, AlertType.INFO );
-		alert.setTimeout( Alert.FOREVER );
-		this.display.setCurrent( alert );
+		Alert alert = new Alert(Locale.get("alert.info"), message, null, AlertType.INFO);
+		alert.setTimeout(Alert.FOREVER);
+		this.display.setCurrent(alert);
 	}
 	
 	private void quit() {
