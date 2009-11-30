@@ -89,13 +89,13 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 		this.quickGameRandomizerCG = new ChoiceGroup(Locale.get("mainScreen.QuickSelectExpansions"), ChoiceGroup.MULTIPLE);
 		try {
 			//style choiceItem 
-			this.quickGameRandomizerCG.append(Locale.get("base"), Image.createImage("/base.png"));
+			this.quickGameRandomizerCG.append(Locale.get("base"), Image.createImage("/ba.png"));
 			//style choiceItem
-			this.quickGameRandomizerCG.append(Locale.get("promo"), Image.createImage("/promo.png"));
+			this.quickGameRandomizerCG.append(Locale.get("promo"), Image.createImage("/pr.png"));
 			//style choiceItem
-			this.quickGameRandomizerCG.append(Locale.get("intrigue"), Image.createImage("/intrigue.png"));
+			this.quickGameRandomizerCG.append(Locale.get("intrigue"), Image.createImage("/in.png"));
 			//style choiceItem
-			this.quickGameRandomizerCG.append(Locale.get("seaside"), Image.createImage("/seaside.png"));
+			this.quickGameRandomizerCG.append(Locale.get("seaside"), Image.createImage("/se.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -171,10 +171,10 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 		} else if ( this.quickGameRandomizerCG.getSelectedFlags(flags) == 0 ) {
 			showAlert(Locale.get("alert.QuickSelectExpansions.NoneSelected"));
 		} else {
-			this.dominion.setExpansionPlayingState("Base", flags[0]);
-			this.dominion.setExpansionPlayingState("Promo", flags[1]);
-			this.dominion.setExpansionPlayingState("Intrigue", flags[2]);
-			this.dominion.setExpansionPlayingState("Seaside", flags[3]);
+			this.dominion.setExpansionPlayingState("ba", flags[0]);
+			this.dominion.setExpansionPlayingState("pr", flags[1]);
+			this.dominion.setExpansionPlayingState("in", flags[2]);
+			this.dominion.setExpansionPlayingState("se", flags[3]);
 			ShowCardsForm scForm = new ShowCardsForm(this, dominion, Locale.get("screen.RandomizedCards.title"));
 			scForm.reRandomize();
 			this.changeToScreen(scForm);

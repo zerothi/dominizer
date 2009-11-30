@@ -62,7 +62,7 @@ public class ShowCardsForm extends Form  implements CommandListener {
 			try {
 				//#style tableCell
 				table.set(1, cardNumber + 1, new ImageItem(null, 
-						Image.createImage("/" + ((Card) cards.elementAt(cardNumber)).getExpansion().toLowerCase() + ".png"), ImageItem.PLAIN, null));
+						Image.createImage("/" + ((Card) cards.elementAt(cardNumber)).getExpansion() + ".png"), ImageItem.PLAIN, null));
 			} catch (IOException e) {
 				table.set(1, cardNumber + 1, ((Card) cards.elementAt(cardNumber)).getExpansion());
 			}

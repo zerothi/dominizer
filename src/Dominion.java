@@ -43,6 +43,7 @@ public class Dominion {
 		while ( i < selectCards ) {
 			selectedElement = selector.nextInt(totalAvailable - i);
 			if ( ( (Card)cards.elementAt(selectedElement)).isPlaying() == true && !selectedCards.contains(cards.elementAt(selectedElement))) {
+				((Card)cards.elementAt(selectedElement)).setSelected(true);
 				selectedCards.addElement(cards.elementAt(selectedElement));
 				i++;
 			}
@@ -55,19 +56,15 @@ public class Dominion {
 		return cards;
 	}
 	
+	public void resetIsSelected() {
+		for ( int i = 0 ; i < cards.size() ; i++ )
+			((Card)cards.elementAt(i)).setSelected(false);
+	}
+	
 	private void readCards() {
 		//#debug
-		System.out.println("reading base");
-		readResource("base");
-		//#debug
-		System.out.println("reading promo");
-		readResource("promo");
-		//#debug
-		System.out.println("reading intrigue");
-		readResource("intrigue");
-		//#debug
-		System.out.println("reading seaside");
-		readResource("seaside");
+		System.out.println("reading all cards");
+		readResource("c");
 	}
 	
 	private Card processCardInformation(String information) {
@@ -128,7 +125,7 @@ public class Dominion {
 		boolean foundEndLine = true;
 		int start = 0;
 		int end = -2;
-		cards.ensureCapacity(50);
+		cards.ensureCapacity(78);
 		while ( foundEndLine ) {
 			if ( sb.toString().length() - 10 < end )
 				foundEndLine = false;
