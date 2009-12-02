@@ -78,7 +78,7 @@ public class TableCardForm extends Form implements CommandListener {
 	
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(this.backCmd) )
-			this.app.returnToMainScreen();
+			this.app.changeToScreen(null);
 		else if ( cmd.equals(this.quitCmd) )
 			this.app.notifyDestroyed();
 	}

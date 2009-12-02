@@ -58,7 +58,7 @@ public class EditCardsForm extends Form implements CommandListener, ItemStateLis
 	
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(backCmd) )
-			this.app.returnToMainScreen();
+			this.app.changeToScreen(null);
 		else if ( cmd.equals(quitCmd) )
 			this.app.notifyDestroyed();
 		/*else if ( cmd.equals(switchCmd) ) {

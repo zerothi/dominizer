@@ -50,27 +50,39 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 	}
 	
 	public void drawCards() {
+		//#debug info
+		System.out.println("new drawing");
 		this.chooseCard.removeCommand(this.drawCardsCmd);
 		this.chooseCard.addCommand(this.selectCardCmd);
 		//style choiceItem
 		this.chooseCard.append(Locale.get("screen.BlackMarket.ChooseNone"), null);
-		this.addNextCard();
-		this.addNextCard();
-		this.addNextCard();
+		this.addNextCard(3);
+		if ( 1 < this.blackMarketDeck.size() )
+			this.addNextCard(2);
+		if ( 2 < this.blackMarketDeck.size() )
+			this.addNextCard(1);
 		this.randomizeDrawn();
 		this.chooseCard.setSelectedIndex(0, true);
 	}
 		
-	private void addNextCard() {
+	private void addNextCard(int remaining) {
+		//#debug info
+		System.out.println("add next card. remaining: " + remaining);
 		if ( this.blackMarketDeck.size() == 0 ) {
 			//style choiceItem
+			this.chooseCard.deleteAll();
 			this.chooseCard.append(Locale.get("screen.BlackMarket.DeckEmpty"), null);
 		} else if ( this.blackMarketDeck.size() <= this.currentlyReachedCard ) {
+			//#debug info
+			System.out.println("size to large. remaining: " + remaining);
 			this.currentlyReachedCard = 0;
-			addNextCard();
+			if ( remaining != 0 )
+				addNextCard(0);
 		} else if ( this.currentlyReachedCard < this.blackMarketDeck.size() ) {
+			//#debug info
+			System.out.println("just added. remaining: " + remaining);
 			//style choiceItem
-			this.chooseCard.append((String) this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard)), null);
+			this.chooseCard.append(this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard)).toString(), null);
 			this.currentlyReachedCard++;
 		}
 	}
@@ -88,9 +100,9 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 	}
 	
 	private void randomizeDrawn() {
-		Random selector = new Random(System.currentTimeMillis());
-		this.randomize = selector.nextInt(6);
-		switch ( this.randomize ) {
+		if ( this.blackMarketDeck.size() == 0 )
+			return;
+		switch ( new Random(System.currentTimeMillis()).nextInt(6) ) {
 		case 0:
 			// This means no switching
 			break;
@@ -134,12 +146,14 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 	}
 	
 	private int getIndexCard(int index) {
-		if ( index < 0 )
+		if ( index < 0 ) {
+			if ( this.blackMarketDeck.size() + index < 0 )
+				return 0;
 			return this.blackMarketDeck.size() + index;
-		else if ( index < this.blackMarketDeck.size() )
+		} else if ( index < this.blackMarketDeck.size() )
 			return index;
 		else
-			return index - this.blackMarketDeck.size();
+			return this.getIndexCard(index - this.blackMarketDeck.size());
 	}
 	
 	public void setBlackMarketDeck(Vector cards) {

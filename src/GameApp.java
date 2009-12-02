@@ -26,6 +26,7 @@
 
 
 import java.io.IOException;
+import java.util.Vector;
 
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.AlertType;
@@ -40,6 +41,9 @@ import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemCommandListener;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
+import javax.microedition.rms.RecordStoreException;
+import javax.microedition.rms.RecordStoreFullException;
+import javax.microedition.rms.RecordStoreNotFoundException;
 
 import de.enough.polish.util.DeviceControl;
 import de.enough.polish.util.Locale;
@@ -68,7 +72,7 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	
 	public GameApp() {
 		super();
-		//#debug
+		//#debug info
 		System.out.println("starting Dominion");
 		this.dominion = new Dominion();
 		// Setting up the ChoiceGroup of what to do
@@ -104,19 +108,16 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 			//style choiceItem
 			this.quickGameRandomizerCG.append(Locale.get("seaside"), null);
 		}
-		for ( int i = 0 ; i < 3 ; i ++ )
-			this.quickGameRandomizerCG.setSelectedIndex(i, true);
-		
 		this.quickGameRandomizerCG.addCommand(this.quickRandomizeCardsCmd);
 		this.quickGameRandomizerCG.setItemCommandListener(this);
-		
+		this.quickGameRandomizerCG.setSelectedFlags(new boolean[] {true, true, true, false});
 		//#style mainScreen
 		this.mainForm = new Form(Locale.get("app.name"));
 		this.mainForm.addCommand(this.quitCmd);
 		this.mainForm.setCommandListener(this);
 		this.mainForm.append(this.whatToDoCG);
 		this.mainForm.append(this.quickGameRandomizerCG);
-		//#debug
+		//#debug info
 		System.out.println("initialisation done.");
 	}
 	
@@ -145,57 +146,54 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 			this.commandAction(cmd, this.mainForm);
 	}
 	
-	public void showRandomizedCards() {
+	public boolean updateSelectedQuickRandom() {
 		boolean flags[] = new boolean[this.quickGameRandomizerCG.size()];
 		if ( this.quickGameRandomizerCG.getSelectedFlags(flags) == 1 && this.quickGameRandomizerCG.isSelected(1) ) {
 			showAlert(Locale.get("alert.QuickSelectExpansions.OnlyPromoSelected"));
+			flags = null;
+			return false;
 		} else if ( this.quickGameRandomizerCG.getSelectedFlags(flags) == 0 ) {
 			showAlert(Locale.get("alert.QuickSelectExpansions.NoneSelected"));
+			flags = null;
+			return false;
 		} else {
-			this.dominion.setExpansionPlayingState("ba", flags[0]);
-			this.dominion.setExpansionPlayingState("pr", flags[1]);
-			this.dominion.setExpansionPlayingState("in", flags[2]);
-			this.dominion.setExpansionPlayingState("se", flags[3]);
+			this.dominion.setExpansionPlayingState(Locale.get("rms.base"), flags[0]);
+			this.dominion.setExpansionPlayingState(Locale.get("rms.promo"), flags[1]);
+			this.dominion.setExpansionPlayingState(Locale.get("rms.intrigue"), flags[2]);
+			this.dominion.setExpansionPlayingState(Locale.get("rms.seaside"), flags[3]);
+		}
+		flags = null;
+		return true;
+	}
+	
+	public void showRandomizedCards() {
+		if ( updateSelectedQuickRandom() ) {
 			ShowCardsForm scForm = new ShowCardsForm(this, this.dominion, Locale.get("screen.RandomizedCards.title"));
 			scForm.reRandomize();
 			this.changeToScreen(scForm);
 		}
-		flags = null;
+		
 	}
 	
 	public void showBlackMarketDeck(Form previousForm) {
+		updateSelectedQuickRandom();
 		BlackMarketForm bmForm = new BlackMarketForm(this, previousForm, Locale.get("screen.BlackMarket.title"));
 		bmForm.setBlackMarketDeck(this.dominion.getAllCards());
 		this.changeToScreen(bmForm);
 	}
-	
-	public void showEditCards() {
-		EditCardsForm edForm = new EditCardsForm(this, Locale.get("screen.EditCards.title"));
-		edForm.setCards(this.dominion.getAllCards());
-		this.changeToScreen(edForm);
-	}
-	/*	
-	private void showCardListTable() {
-		TableCardForm ecForm = new TableCardForm(this, "Table of Cards");
-		ecForm.viewCards(dominion.getAllCards());
-		this.changeToScreen(ecForm);
-	}
-	*/
+
 	public void changeToScreen(Form form) {
-		this.display = Display.getDisplay(this);
-		this.display.setCurrent(form);
-	}
-	
-	public void returnToMainScreen() {
-		this.changeToScreen(this.mainForm);
+		if ( form == null )
+			this.changeToScreen(this.mainForm);
+		else
+			this.display.setCurrent(form);
 	}
 
 	protected void startApp() throws MIDletStateChangeException {
-		//#debug
-		System.out.println("setting display.");
-		this.changeToScreen(this.mainForm);
-		//#debug
-		System.out.println("sample application is up and running.");
+		//#debug info
+		System.out.println("setting display");
+		this.display = Display.getDisplay(this);
+		this.changeToScreen(null);
 	}
 
 	protected void pauseApp() {
@@ -229,6 +227,4 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	private void quit() {
 		notifyDestroyed();
 	}
-	
-	
 }

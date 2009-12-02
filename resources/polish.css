@@ -414,15 +414,15 @@ menuItem:hover {
 }
 
 .choiceItem:pressed {
-	background-color: #f26522;
-	font-color: #333;
+	background-color: darkTranslucentBgColor;
+	font-color: translucentBrightFontColor;
 	font-size: medium;
 }
 
 .choiceItemChecked {
 	background-type: round-rect;
-	background-color: #f26522;
-	font-color: blue;
+	background-color: darkTranslucentBgColor;
+	font-color: translucentBrightFontColor;
 	font-size: medium;
 }
 

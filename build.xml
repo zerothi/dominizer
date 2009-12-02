@@ -24,6 +24,7 @@
 	<!-- import global properties                                 -->
 	<property file="${polish.home}/global.properties" />
 
+	<property name="debugLang" value="en"/>
 	<!-- the device for the test mode - you can define it on the command-line
 	     using the -D switch, e.g. ant -Ddevice=Generic/midp2 emulator -->
 	<!--property name="device" value="Generic/AnyPhone"/-->
@@ -126,7 +127,7 @@
 						<locale name="zombinion" encoding="UTF-8"/>
 					</localization>
 					<localization if="debug or quick">
-						<locale name="en" encoding="UTF-8"/>
+						<locale name="${debugLang}" encoding="UTF-8"/>
 					</localization>
 				</resources>
 
@@ -175,7 +176,7 @@
 	<target name="emulator"
 		description="invokes the emulator">
 		<exec executable="${wtk.runmidlet}" dir="./${dist.root.dir}" spawn="true">
-		    <arg value="./Nokia-Series40E3-Dominizer-en.jad"/>
+		    <arg value="./Nokia-Series40E3-Dominizer-${debugLang}.jad"/>
 		</exec>
 	</target>
 	
