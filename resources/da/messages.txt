@@ -18,10 +18,12 @@ screen.RandomizedCards.title=Generer Kort
 screen.EditCards.title=Rediger Kort
 screen.EditCards.ChoiceCurrentlySelected=Valgt Kort:
 screen.BlackMarket.title=Black Market
+screen.BlackMarket.ChooseNone=Ingen
 screen.BlackMarket.ChooseCards=Vælg Kort:
 screen.BlackMarket.InfoMessage=Du har valgt: 
 screen.BlackMarket.DeckEmpty=Black Market deck er tomt
 cmd.Randomize.Show=Generer
+cmd.BlackMarket=Black Market Deck
 cmd.BlackMarket.Draw=Træk Nye
 cmd.BlackMarket.Show=Træk BM deck
 cmd.EditCards.Show=Rediger Kort
@@ -43,6 +45,7 @@ base=Base
 promo=Promo
 intrigue=Intrigue
 seaside=Seaside
+card.BlackMarket=Black Market
 
 ################
 #

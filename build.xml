@@ -68,11 +68,11 @@
 		         You can also define localized attributes in the resources/messages.txt files -->
 			<info 
 				name="${app.name}" 
-				version="0.11" 
+				version="0.15" 
 				description="A Dominion Card randomizer" 
 				vendorName="Nick Papior Andersen A/S" 
 				infoUrl="http://www.boardgamegeek.com/wiki/page/Dominizer" 
-				jarName="${nospace(polish.vendor)}-${nospace(polish.name)}-${ nospace(polish.locale) }-${app.name}.jar" 
+				jarName="${nospace(polish.vendor)}-${nospace(polish.name)}-${app.name}-${ nospace(polish.locale) }.jar" 
 				jarUrl="${deploy-url}${polish.jarName}" 
 				copyright="Copyright 2009 Nick Papior Andersen A/S. All rights reserved."
 				deleteConfirm="Delete ${app.name}? Nooo? :D" 
@@ -110,10 +110,10 @@
 					You can change the title of the sample application with the "title"-var.
 					-->
 					<variable name="polish.TextField.useDirectInput" value="true"/>
-					<variable name="polish.ScreenInfo.enable" value="true"/>
+					<!--variable name="polish.ScreenInfo.enable" value="true"/-->
 					<variable name="polish.MenuBar.useExtendedMenuBar" value="true"/>
-					<variable name="polish.ChoiceGroup.suppressMarkCommands" value="true"/>
-					<!--variable name="polish.ChoiceGroup.suppressMarkCommands" value="true" /-->
+					<variable name="polish.ChoiceGroup.suppressMarkCommands" value="true"/> 
+					<variable name="polish.ChoiceGroup.suppressSelectCommand" value="true"/>
 				</variables>
 				<resources dir="${resource.dir}" defaultexcludes="yes" excludes="readme.txt">
 					<root dir="${resource.dir}" />
@@ -126,7 +126,7 @@
 						<locale name="zombinion" encoding="UTF-8"/>
 					</localization>
 					<localization if="debug or quick">
-						<locale name="zombinion" encoding="UTF-8"/>
+						<locale name="en" encoding="UTF-8"/>
 					</localization>
 				</resources>
 
@@ -175,7 +175,7 @@
 	<target name="emulator"
 		description="invokes the emulator">
 		<exec executable="${wtk.runmidlet}" dir="./${dist.root.dir}" spawn="true">
-		    <arg value="./Nokia-Series40E3-zombinion-Dominizer.jad"/>
+		    <arg value="./Nokia-Series40E3-Dominizer-en.jad"/>
 		</exec>
 	</target>
 	
@@ -210,5 +210,4 @@
 	<target name="enableMemory"> 
 		<property name="memory" value="true" />
 	</target>
-	
 </project>

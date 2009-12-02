@@ -6,6 +6,8 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
+import javax.microedition.lcdui.Item;
+import javax.microedition.lcdui.ItemCommandListener;
 
 import de.enough.polish.util.Locale;
 
@@ -17,63 +19,127 @@ import de.enough.polish.util.Locale;
  * @author nick
  *
  */
-public class BlackMarketForm extends Form implements CommandListener {
+public class BlackMarketForm extends Form implements CommandListener, ItemCommandListener {
 
 	GameApp app = null;
+	Form previousForm = null;
 	Vector blackMarketDeck = null;
 	ChoiceGroup chooseCard = null;
-	private Command drawCardsCmd = new Command( Locale.get("cmd.BlackMarket.Draw"), Command.SCREEN, 1);
-	private Command selectCardCmd = new Command( Locale.get("polish.command.select"), Command.SCREEN, 2);
-	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.BACK, 0);
+	Command drawCardsCmd = new Command( Locale.get("cmd.BlackMarket.Draw"), Command.SCREEN, 0);
+	Command selectCardCmd = new Command( Locale.get("polish.command.select"), Command.SCREEN, 1);
+	Command backCmd = new Command( Locale.get("cmd.Back"), Command.BACK, 0);
+	String randomizeCardHolder = null;
 	int currentlyReachedCard = 0;
+	int randomize = 0;
 	
 	/**
 	 * @param title
 	 */
-	public BlackMarketForm(GameApp app, String title) {
+	public BlackMarketForm(GameApp app, Form previousForm, String title) {
+		//#style mainScreen
 		super(title);
 		this.app = app;
-		//#style choiceGroup
+		this.previousForm = previousForm;
+		//#style filterCards
 		this.chooseCard = new ChoiceGroup(Locale.get("screen.BlackMarket.ChooseCards"), ChoiceGroup.EXCLUSIVE);
-		this.addCommand(this.drawCardsCmd);
+		this.chooseCard.addCommand(this.drawCardsCmd);
+		this.chooseCard.setItemCommandListener(this);
 		this.addCommand(this.backCmd);
 		this.append(this.chooseCard);
 		this.setCommandListener(this);
 	}
 	
 	public void drawCards() {
-		this.removeCommand(this.drawCardsCmd);
-		this.addCommand(this.selectCardCmd);
+		this.chooseCard.removeCommand(this.drawCardsCmd);
+		this.chooseCard.addCommand(this.selectCardCmd);
+		//style choiceItem
+		this.chooseCard.append(Locale.get("screen.BlackMarket.ChooseNone"), null);
 		this.addNextCard();
 		this.addNextCard();
 		this.addNextCard();
+		this.randomizeDrawn();
 		this.chooseCard.setSelectedIndex(0, true);
 	}
 		
 	private void addNextCard() {
 		if ( this.blackMarketDeck.size() == 0 ) {
-			//#style choiceItem
+			//style choiceItem
 			this.chooseCard.append(Locale.get("screen.BlackMarket.DeckEmpty"), null);
 		} else if ( this.blackMarketDeck.size() <= this.currentlyReachedCard ) {
 			this.currentlyReachedCard = 0;
 			addNextCard();
 		} else if ( this.currentlyReachedCard < this.blackMarketDeck.size() ) {
-			//#style choiceItem
-			this.chooseCard.append((String) this.blackMarketDeck.elementAt(this.currentlyReachedCard), null);
+			//style choiceItem
+			this.chooseCard.append((String) this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard)), null);
 			this.currentlyReachedCard++;
 		}
 	}
 	
 	private void selectCard(int indexChosen) {
 		for ( int i = 0 ; i < blackMarketDeck.size() ; i++ ) {
-			if ( this.chooseCard.getString(this.chooseCard.getSelectedIndex()).equals((String) blackMarketDeck.elementAt(i)) ) {
+			if ( this.chooseCard.getString(this.chooseCard.getSelectedIndex()).equals(blackMarketDeck.elementAt(i)) ) {
 				this.app.showInfo(Locale.get("screen.BlackMarket.InfoMessage") + blackMarketDeck.elementAt(i).toString() + ".");
 				this.blackMarketDeck.removeElementAt(i);
 			}
 		}
 		this.chooseCard.deleteAll();
-		this.removeCommand(this.selectCardCmd);
-		this.addCommand(this.drawCardsCmd);
+		this.chooseCard.removeCommand(this.selectCardCmd);
+		this.chooseCard.addCommand(this.drawCardsCmd);
+	}
+	
+	private void randomizeDrawn() {
+		Random selector = new Random(System.currentTimeMillis());
+		this.randomize = selector.nextInt(6);
+		switch ( this.randomize ) {
+		case 0:
+			// This means no switching
+			break;
+		case 1:
+			// This means swap of first and second card
+			this.randomizeCardHolder = (String) this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard - 3 + 1));
+			this.blackMarketDeck.setElementAt(this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard - 3)), this.getIndexCard(this.currentlyReachedCard - 3 + 1));
+			this.blackMarketDeck.setElementAt(this.randomizeCardHolder, this.getIndexCard(this.currentlyReachedCard - 3));
+			break;
+		case 2:
+			// This means swap of first and third card
+			this.randomizeCardHolder = (String) this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard - 3 + 2));
+			this.blackMarketDeck.setElementAt(this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard - 3)), this.getIndexCard(this.currentlyReachedCard - 3 + 2));
+			this.blackMarketDeck.setElementAt(this.randomizeCardHolder, this.getIndexCard(this.currentlyReachedCard - 3));
+			break;
+		case 3:
+			// This means swap of second and third card
+			this.randomizeCardHolder = (String) this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard - 3 + 2));
+			this.blackMarketDeck.setElementAt(this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard - 3 + 1)), this.getIndexCard(this.currentlyReachedCard - 3 + 2));
+			this.blackMarketDeck.setElementAt(this.randomizeCardHolder, this.getIndexCard(this.currentlyReachedCard - 3 + 1));
+			break;
+		case 4:
+			// This means : Put third as first, the first as the second, and the second as third
+			this.randomizeCardHolder = (String) this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard - 3 + 2));
+			this.blackMarketDeck.setElementAt(this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard - 3)), this.getIndexCard(this.currentlyReachedCard - 3 + 2));
+			this.blackMarketDeck.setElementAt(this.randomizeCardHolder, this.getIndexCard(this.currentlyReachedCard - 3));
+			this.randomizeCardHolder = (String) this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard - 3 + 2));
+			this.blackMarketDeck.setElementAt(this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard - 3 + 1)), this.getIndexCard(this.currentlyReachedCard - 3 + 2));
+			this.blackMarketDeck.setElementAt(this.randomizeCardHolder, this.getIndexCard(this.currentlyReachedCard - 3 + 1));
+			break;
+		case 5:
+			// This means : Put third as second, the first as the third, and the second as first
+			this.randomizeCardHolder = (String) this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard - 3 + 2));
+			this.blackMarketDeck.setElementAt(this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard - 3 + 1)), this.getIndexCard(this.currentlyReachedCard - 3 + 2));
+			this.blackMarketDeck.setElementAt(this.randomizeCardHolder, this.getIndexCard(this.currentlyReachedCard - 3 + 1));
+			this.randomizeCardHolder = (String) this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard - 3 + 2));
+			this.blackMarketDeck.setElementAt(this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard - 3)), this.getIndexCard(this.currentlyReachedCard - 3 + 2));
+			this.blackMarketDeck.setElementAt(this.randomizeCardHolder, this.getIndexCard(this.currentlyReachedCard - 3));
+			break;
+		}		
+	}
+	
+	private int getIndexCard(int index) {
+		if ( index < 0 )
+			return this.blackMarketDeck.size() + index;
+		else if ( index < this.blackMarketDeck.size() )
+			return index;
+		else
+			return index - this.blackMarketDeck.size();
 	}
 	
 	public void setBlackMarketDeck(Vector cards) {
@@ -89,14 +155,14 @@ public class BlackMarketForm extends Form implements CommandListener {
 		}
 		for ( int i = 0 ; i < this.currentlyReachedCard ; i++ )
 			this.blackMarketDeck.addElement(null);
-		int randomized = 0;
+		this.randomize = 0;
 		Random selector = new Random(System.currentTimeMillis());
 		for ( int i = 0 ; i < cards.size() ; i++ )
 			if ( !( (Card)cards.elementAt(i) ).isPlaying() &  ( (Card)cards.elementAt(i) ).isBlackMarketAvailable() ) {
-				randomized = selector.nextInt(this.currentlyReachedCard);
-				while ( this.blackMarketDeck.elementAt(randomized) != null )
-					randomized = selector.nextInt(this.currentlyReachedCard);
-				this.blackMarketDeck.setElementAt(((Card)cards.elementAt(i)).getName(), randomized);
+				this.randomize = selector.nextInt(this.currentlyReachedCard);
+				while ( this.blackMarketDeck.elementAt(this.randomize) != null )
+					this.randomize = selector.nextInt(this.currentlyReachedCard);
+				this.blackMarketDeck.setElementAt(((Card)cards.elementAt(i)).getName(), this.randomize);
 			}
 		selector = null;
 		this.currentlyReachedCard = 0;
@@ -107,11 +173,20 @@ public class BlackMarketForm extends Form implements CommandListener {
 	 * @see javax.microedition.lcdui.CommandListener#commandAction(javax.microedition.lcdui.Command, javax.microedition.lcdui.Displayable)
 	 */
 	public void commandAction(Command cmd, Displayable screen) {
-		if ( cmd.equals(this.backCmd) )
-			this.app.returnToMainScreen();
-		else if ( cmd.equals(this.drawCardsCmd) )
+		if ( cmd == this.backCmd )
+			this.app.changeToScreen(previousForm);
+		else if ( cmd == this.drawCardsCmd )
 			this.drawCards();
-		else if ( cmd.equals(this.selectCardCmd) )
+		else if ( cmd == this.selectCardCmd )
+			this.selectCard(this.chooseCard.getSelectedIndex());
+	}
+	
+	public void commandAction(Command cmd, Item item) {
+		if ( cmd == this.backCmd )
+			this.commandAction(this.backCmd, this);
+		else if ( item == this.chooseCard && cmd == this.drawCardsCmd )
+			this.drawCards();
+		else if ( cmd == this.selectCardCmd )
 			this.selectCard(this.chooseCard.getSelectedIndex());
 	}
 }

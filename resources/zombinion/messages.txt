@@ -3,30 +3,7 @@
 # App Specific translations
 #
 ################
-mainScreen.ChoiceWhatToDo=What to do?
-mainScreen.QuickSelectExpansions=Expansions Used:
-table.heading.Name=Name
-table.heading.Expansion=Exp.
-table.heading.Cost=#
-table.heading.ActionCard=A
-table.heading.VictoryCard=V
-table.heading.TreasuryCard=T
-table.heading.ReactionCard=R
-table.heading.AttackCard=A
-table.heading.DurationCard=D
-screen.RandomizedCards.title=Randomized Cards
-screen.EditCards.title=Edit Cards
-screen.EditCards.ChoiceCurrentlySelected=Selected Card:
-cmd.DrawBlackMarket=Draw
-cmd.Back=Back
-cmd.Randomize=Randomize
-cmd.EditCards=Edit Cards
-cmd.ShowLog=Show Log
-cmd.Quit=Quit
-cmd.switch=Switch
-alert=Alert
-alert.QuickSelectExpansions.OnlyPromoSelected=You have only selected Promo's.\nSelect more!
-alert.QuickSelectExpansions.NoneSelected=You have not selected any expansions.\nSelect at least one!
+# Currently these are the same as in the english translation!
 
 
 ################
@@ -38,6 +15,7 @@ base=Base
 promo=Promo
 intrigue=Entrails
 seaside=Genocide
+card.BlackMarket=Alternate Path
 
 ################
 #

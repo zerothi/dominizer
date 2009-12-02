@@ -20,6 +20,7 @@ public class ShowCardsForm extends Form  implements CommandListener {
 	private Dominion dominion = null;
 	private TableItem table = null;
 	private Command randomizeCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.SCREEN, 1);
+	private Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.SCREEN, 2);
 	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.BACK, 0);
 	//private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
 	
@@ -45,6 +46,7 @@ public class ShowCardsForm extends Form  implements CommandListener {
 	}
 
 	public void viewCards(Vector cards) {
+		this.removeCommand(blackMarketCmd);
 		this.table.setDimension(3, cards.size() + 1);
 		//#debug
 		System.out.println("adding header");
@@ -59,6 +61,8 @@ public class ShowCardsForm extends Form  implements CommandListener {
 		for (int cardNumber = 0 ; cardNumber < cards.size() ; cardNumber++ ) {
 			//#style tableCell
 			this.table.set(0, cardNumber + 1, ( (Card) cards.elementAt(cardNumber)).getName() );
+			if ( ((Card) cards.elementAt(cardNumber)).getName().equals(Locale.get("card.BlackMarket")) )
+				this.addCommand(blackMarketCmd);
 			try {
 				//#style tableCell
 				this.table.set(1, cardNumber + 1, new ImageItem(null, 
@@ -73,9 +77,11 @@ public class ShowCardsForm extends Form  implements CommandListener {
 
 
 	public void commandAction(Command cmd, Displayable disp) {
-		if ( cmd.equals(this.backCmd) ) {
+		if ( cmd.equals(this.backCmd) )
 			this.app.returnToMainScreen();
-		} else if ( cmd.equals(this.randomizeCmd) )
+		else if ( cmd.equals(this.randomizeCmd) )
 			this.reRandomize();
+		else if ( cmd.equals(this.blackMarketCmd) )
+			this.app.showBlackMarketDeck(this);
 	}
 }

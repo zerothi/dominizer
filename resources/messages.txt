@@ -18,10 +18,12 @@ screen.RandomizedCards.title=Randomized Cards
 screen.EditCards.title=Edit Cards
 screen.EditCards.ChoiceCurrentlySelected=Selected Card:
 screen.BlackMarket.title=Black Market
+screen.BlackMarket.ChooseNone=None
 screen.BlackMarket.ChooseCards=Choose Card:
 screen.BlackMarket.InfoMessage=You have chosen: 
 screen.BlackMarket.DeckEmpty=Black Market deck is empty
 cmd.Randomize.Show=Randomize
+cmd.BlackMarket=Black Market Deck
 cmd.BlackMarket.Draw=Draw New
 cmd.BlackMarket.Show=Show BM deck
 cmd.EditCards.Show=Edit Cards
@@ -43,7 +45,7 @@ base=Base
 promo=Promo
 intrigue=Intrigue
 seaside=Seaside
-
+card.BlackMarket=Black Market
 
 ################
 #
@@ -81,3 +83,12 @@ polish.command.followlink=Go
 polish.command.submit=Submit
 # used by the RssBrowser for returning to the previous page:
 polish.command.back=Back
+
+#################
+#
+# No need for translations
+# only used for RMS
+#
+#################
+rms.file.settings=settings
+rms.expansions=expansions

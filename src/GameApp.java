@@ -138,14 +138,14 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 				this.showRandomizedCards();
 				break;
 			case 1:
-				this.showBlackMarketDeck();
+				this.showBlackMarketDeck(this.mainForm);
 				break;
 			}
 		} else if ( item == this.quickGameRandomizerCG )
 			this.commandAction(cmd, this.mainForm);
 	}
 	
-	private void showRandomizedCards() {
+	public void showRandomizedCards() {
 		boolean flags[] = new boolean[this.quickGameRandomizerCG.size()];
 		if ( this.quickGameRandomizerCG.getSelectedFlags(flags) == 1 && this.quickGameRandomizerCG.isSelected(1) ) {
 			showAlert(Locale.get("alert.QuickSelectExpansions.OnlyPromoSelected"));
@@ -163,13 +163,13 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 		flags = null;
 	}
 	
-	private void showBlackMarketDeck() {
-		BlackMarketForm bmForm = new BlackMarketForm(this, Locale.get("screen.BlackMarket.title"));
+	public void showBlackMarketDeck(Form previousForm) {
+		BlackMarketForm bmForm = new BlackMarketForm(this, previousForm, Locale.get("screen.BlackMarket.title"));
 		bmForm.setBlackMarketDeck(this.dominion.getAllCards());
 		this.changeToScreen(bmForm);
 	}
 	
-	private void showEditCards() {
+	public void showEditCards() {
 		EditCardsForm edForm = new EditCardsForm(this, Locale.get("screen.EditCards.title"));
 		edForm.setCards(this.dominion.getAllCards());
 		this.changeToScreen(edForm);
@@ -181,7 +181,7 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 		this.changeToScreen(ecForm);
 	}
 	*/
-	private void changeToScreen(Form form) {
+	public void changeToScreen(Form form) {
 		this.display = Display.getDisplay(this);
 		this.display.setCurrent(form);
 	}
@@ -229,4 +229,6 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 	private void quit() {
 		notifyDestroyed();
 	}
+	
+	
 }

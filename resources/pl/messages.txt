@@ -37,6 +37,7 @@ base=Podstawka
 promo=Promo
 intrigue=Intryga
 seaside=Wybrzeże
+card.BlackMarket=Czarny Rynek
 
 ################
 #
