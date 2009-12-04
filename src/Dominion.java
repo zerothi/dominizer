@@ -5,10 +5,15 @@ import java.io.InputStream;
 import java.util.Random;
 import java.util.Vector;
 
+import javax.microedition.lcdui.Image;
+
+import de.enough.polish.util.Locale;
+
 public class Dominion {
 	
 	private Vector cards = null;
 	private int numberOfRandomCards = 10;
+	private int[] numberOfCardsFromExp = new int[] {-1, -1, -1 , -1};
 	
 	public Dominion() {
 		readCards();
@@ -43,9 +48,49 @@ public class Dominion {
 		int selectedElement = 0;
 		Random selector = new Random(System.currentTimeMillis());
 		int i = 0;
+		if ( 0 < numberOfCardsFromExp[0] )
+			while ( i < numberOfCardsFromExp[0] ) {
+				selectedElement = selector.nextInt(totalAvailable);
+				if ( ((Card)cards.elementAt(selectedElement)).isAvailable() && !selectedCards.contains(cards.elementAt(selectedElement)) 
+						&& ((Card)cards.elementAt(selectedElement)).getExpansion().equals(Locale.get("base")) ) {
+					((Card)cards.elementAt(selectedElement)).setPlaying(true);
+					selectedCards.addElement(cards.elementAt(selectedElement));
+					i++;
+				}
+			}
+		if ( 0 < numberOfCardsFromExp[1] )
+			while ( i < numberOfCardsFromExp[0] + numberOfCardsFromExp[1] ) {
+				selectedElement = selector.nextInt(totalAvailable);
+				if ( ((Card)cards.elementAt(selectedElement)).isAvailable() && !selectedCards.contains(cards.elementAt(selectedElement)) 
+						&& ((Card)cards.elementAt(selectedElement)).getExpansion().equals(Locale.get("promo")) ) {
+					((Card)cards.elementAt(selectedElement)).setPlaying(true);
+					selectedCards.addElement(cards.elementAt(selectedElement));
+					i++;
+				}
+			}
+		if ( 0 < numberOfCardsFromExp[2] )
+			while ( i < numberOfCardsFromExp[0] + numberOfCardsFromExp[1] + numberOfCardsFromExp[2] ) {
+				selectedElement = selector.nextInt(totalAvailable);
+				if ( ((Card)cards.elementAt(selectedElement)).isAvailable() && !selectedCards.contains(cards.elementAt(selectedElement)) 
+						&& ((Card)cards.elementAt(selectedElement)).getExpansion().equals(Locale.get("intrigue")) ) {
+					((Card)cards.elementAt(selectedElement)).setPlaying(true);
+					selectedCards.addElement(cards.elementAt(selectedElement));
+					i++;
+				}
+			}
+		if ( 0 < numberOfCardsFromExp[3] )
+			while ( i < numberOfCardsFromExp[0] + numberOfCardsFromExp[1] + numberOfCardsFromExp[2] + numberOfCardsFromExp[3] ) {
+				selectedElement = selector.nextInt(totalAvailable);
+				if ( ((Card)cards.elementAt(selectedElement)).isAvailable() && !selectedCards.contains(cards.elementAt(selectedElement)) 
+						&& ((Card)cards.elementAt(selectedElement)).getExpansion().equals(Locale.get("seaside")) ) {
+					((Card)cards.elementAt(selectedElement)).setPlaying(true);
+					selectedCards.addElement(cards.elementAt(selectedElement));
+					i++;
+				}
+			}
 		while ( i < numberOfRandomCards ) {
 			selectedElement = selector.nextInt(totalAvailable);
-			if ( ((Card)cards.elementAt(selectedElement)).isAvailable() & !selectedCards.contains(cards.elementAt(selectedElement))) {
+			if ( ((Card)cards.elementAt(selectedElement)).isAvailable() && !selectedCards.contains(cards.elementAt(selectedElement)) ) {
 				((Card)cards.elementAt(selectedElement)).setPlaying(true);
 				selectedCards.addElement(cards.elementAt(selectedElement));
 				i++;
@@ -54,6 +99,34 @@ public class Dominion {
 		selectedCards.trimToSize();
 		selector = null;
 		return selectedCards;
+	}
+	
+	public boolean setCardsUsedForExpansion(String expansion, int numberOfCards) {
+		if ( Locale.get("base") == expansion && numberOfRandomCards >= getNumberOfCardsSum(0) + numberOfCards ) {
+			numberOfCardsFromExp[0] = numberOfCards;
+			return true;
+		} else if ( Locale.get("promo") == expansion && numberOfRandomCards >= getNumberOfCardsSum(1) + numberOfCards ) {
+			numberOfCardsFromExp[1] = numberOfCards;
+			return true;
+		} else if ( Locale.get("intrigue") == expansion && numberOfRandomCards >= getNumberOfCardsSum(2) + numberOfCards ) {
+			numberOfCardsFromExp[2] = numberOfCards;
+			return true;
+		} else if ( Locale.get("seaside") == expansion && numberOfRandomCards >= getNumberOfCardsSum(3) + numberOfCards ) {
+			numberOfCardsFromExp[3] = numberOfCards;
+			return true;
+		}
+		return false;
+	}
+	
+	private int getNumberOfCardsSum(int overlook) {
+		int tmp = numberOfCardsFromExp[0];
+		tmp += numberOfCardsFromExp[1];
+		tmp += numberOfCardsFromExp[2];
+		tmp += numberOfCardsFromExp[3];
+		if ( overlook == -1 )
+			return tmp;
+		tmp -= numberOfCardsFromExp[overlook];
+		return tmp;
 	}
 	
 	public Vector getAllCards() {

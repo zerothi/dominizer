@@ -75,6 +75,9 @@ public class ShowCardsForm extends Form  implements CommandListener {
 		}
 	}
 
+	public void keyReleased(int keyCode) {
+		this.app.showAlert("Trykket " + keyCode);
+	}
 
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(this.backCmd) )

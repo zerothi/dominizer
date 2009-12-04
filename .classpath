@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/home/nick/Programs/J2ME-Polish/lib/enough-j2mepolish-build.jar"/>
+	<classpathentry kind="lib" path="/home/nick/Programs/J2ME-Polish/lib/enough-j2mepolish-build-common.jar"/>
+	<classpathentry kind="lib" path="/home/nick/.jdk_wireless/lib/cldcapi11.jar"/>
+	<classpathentry kind="lib" path="/home/nick/.jdk_wireless/lib/jsr082.jar"/>
+	<classpathentry kind="lib" path="/home/nick/.jdk_wireless/lib/midpapi20.jar"/>
+	<classpathentry kind="lib" path="/home/nick/.jdk_wireless/lib/midpapi21.jar"/>
+	<classpathentry kind="lib" path="/home/nick/Programs/J2ME-Polish/lib/enough-j2mepolish-build-src.jar"/>
+	<classpathentry kind="lib" path="/home/nick/Programs/J2ME-Polish/lib/enough-j2mepolish-client.jar"/>
+	<classpathentry kind="output" path="build"/>
+</classpath>

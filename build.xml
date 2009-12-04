@@ -28,9 +28,9 @@
 	<!-- the device for the test mode - you can define it on the command-line
 	     using the -D switch, e.g. ant -Ddevice=Generic/midp2 emulator -->
 	<!--property name="device" value="Generic/AnyPhone"/-->
+	<!--property name="device" value="Generic/Android"/-->
 	<property name="device" value="Nokia/Series40E3"/>
 	<property name="devices" value="Generic/AnyPhone,Generic/Midp2Cldc11,${device},Sony-Ericsson/JavaPlatform7,Sony-Ericsson/JavaPlatform8"/>
-	<!--property name="devices" value="${device},Nokia/Midp2Cldc11" /-->
 
 
 	<!-- Definition of the J2ME Polish task:                      -->
@@ -110,6 +110,7 @@
 					//#= private static final String UPDATE_URL = "${ update-url }";
 					You can change the title of the sample application with the "title"-var.
 					-->
+					<variable name="polish.FullScreen" value="false" if="polish.android" />
 					<variable name="polish.TextField.useDirectInput" value="true"/>
 					<!--variable name="polish.ScreenInfo.enable" value="true"/-->
 					<variable name="polish.MenuBar.useExtendedMenuBar" value="true"/>

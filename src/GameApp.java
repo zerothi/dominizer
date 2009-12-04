@@ -23,13 +23,13 @@
  * refer to the accompanying LICENSE.txt or visit
  * http://www.j2mepolish.org for details.
  */
-
+// Following package is needed for Android Compilation
 
 import java.io.IOException;
-import java.util.Vector;
 
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.AlertType;
+import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.ChoiceGroup;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -41,9 +41,6 @@ import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemCommandListener;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
-import javax.microedition.rms.RecordStoreException;
-import javax.microedition.rms.RecordStoreFullException;
-import javax.microedition.rms.RecordStoreNotFoundException;
 
 import de.enough.polish.util.DeviceControl;
 import de.enough.polish.util.Locale;
@@ -59,7 +56,6 @@ import de.enough.polish.util.Locale;
  * @author Nick Papior Andersen, nickpapior@gmail.com
  */
 public class GameApp extends MIDlet implements CommandListener, ItemCommandListener {
-	
 	ChoiceGroup whatToDoCG = null;
 	ChoiceGroup quickGameRandomizerCG = null;
 	Form mainForm = null;
@@ -143,8 +139,9 @@ public class GameApp extends MIDlet implements CommandListener, ItemCommandListe
 				break;
 			}
 		} else if ( item == this.quickGameRandomizerCG )
-			this.commandAction(cmd, this.mainForm);
+			this.commandAction(cmd, this.mainForm);	
 	}
+
 	
 	public boolean updateSelectedQuickRandom() {
 		boolean flags[] = new boolean[this.quickGameRandomizerCG.size()];
