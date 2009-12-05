@@ -3,7 +3,48 @@
 # App Specific translations
 #
 ################
-# Currently Use the same as in the english translation!
+mainScreen.ChoiceWhatToDo=Ihre Auswahl
+mainScreen.QuickSelectExpansions=Verwendete Sets
+table.heading.Name=Name
+# Expansion=Erweiterung
+table.heading.Expansion=Erw.
+# Cost=Kosten
+table.heading.Cost=#
+# Action=Aktion
+table.heading.ActionCard=A
+# Victory=Siegpunkt
+table.heading.VictoryCard=SP
+# Treasury=Schatz
+table.heading.TreasuryCard=Sch
+# Reaction=Reaktion
+table.heading.ReactionCard=R
+# Attack=Angriff
+table.heading.AttackCard=A
+# Duration=Dauer
+table.heading.DurationCard=D
+screen.RandomizedCards.title=Zufällige Karten
+screen.EditCards.title=Karten bearbeiten
+screen.EditCards.ChoiceCurrentlySelected=Ausgewählte Karten:
+screen.BlackMarket.title=Schwarzmarkt
+screen.BlackMarket.ChooseNone=Keine
+screen.BlackMarket.ChooseCards=Wähle eine Karte:
+screen.BlackMarket.InfoMessage=Deine Auswahl:
+screen.BlackMarket.DeckEmpty=Der Schwarzmarkt-Stapel ist verbraucht
+cmd.Randomize.Show=Zufalls-Set
+cmd.BlackMarket=Schwarzmarkt-Stapel
+cmd.BlackMarket.Draw=Neu auswählen
+cmd.BlackMarket.Show=Zeige Schwarzmarkt-Stapel
+cmd.EditCards.Show=Karten bearbeiten
+cmd.Back=Zurück
+cmd.ShowLog=Zeige Log
+cmd.Quit=Beenden
+cmd.switch=Wechseln
+alert.alert=Achtung
+alert.info=Info
+alert.Settings.CouldNotBeRead=Die Einstellungen konnten leider\nnicht geladen werden!
+alert.Settings.CouldNotBeSaved=Die Einstellungen konnten leider\nnicht gespeichert werden
+alert.QuickSelectExpansions.OnlyPromoSelected=Es können nicht ausschließlich\nPromokarten ausgewählt werden!
+alert.QuickSelectExpansions.NoneSelected=Es wurde keine Erweiterung ausgewählt.\nBitte mindestens eine auswählen!
 
 ################
 #
@@ -22,26 +63,16 @@ card.BlackMarket=Schwarzmarkt
 #
 ################
 polish.command.ok=Ok
-polish.command.cancel=Zurück
-polish.command.select=Select
-polish.command.mark=Mark
-polish.command.unmark=Unmark
-polish.command.options=Options
-# for deleting a single char:
-polish.command.delete=Delete
-# for deleting a complete TextField:
-polish.command.clear=Clear
-# for hiding menus on BlackBerry devices:
-polish.command.hide=Hide
-# for showing a default title when no label
-# is defined in a TextField. This is only
-# used when no direct input mode is activated:
-polish.title.input=Input
-# used for showing a screen for selecting symbols within TextFields:
-polish.command.entersymbol=Add Symbol
-# used by the HtmlBrowser for a links:
-polish.command.followlink=Go
-# used by the HtmlBrowser for submitting a form:
-polish.command.submit=Submit
-# used by the RssBrowser for returning to the previous page:
-polish.command.back=Back
+polish.command.cancel=Abbruch
+polish.command.select=Auswahl
+polish.command.mark=Markieren
+polish.command.unmark=Ent-Markieren
+polish.command.options=Optionen
+polish.command.delete=Löschen
+polish.command.clear=Löschen
+polish.command.hide=Verstecken
+polish.title.input=Eingabe
+polish.command.entersymbol=Symbol hinzufügen
+polish.command.followlink=Gehe
+polish.command.submit=Übermitteln
+polish.command.back=Zurück

@@ -88,8 +88,8 @@ public class SettingsRecordStorage {
 				throw new RecordStoreException();
 			data = new Vector(store.getNumRecords());
 			for (int i = 0; i < store.getNumRecords(); i++) {
-				record = new byte[store.getRecordSize(i + 1)];
-				store.getRecord(i + 1, record, 0);
+				//record = new byte[store.getRecordSize(i + 1)];
+				record = store.getRecord(i);
 				if ( record != null ) {
 					//#debug info
 					System.out.println("Found record: " + new String(record));

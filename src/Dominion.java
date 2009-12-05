@@ -1,11 +1,9 @@
 
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Random;
 import java.util.Vector;
-
-import javax.microedition.lcdui.Image;
 
 import de.enough.polish.util.Locale;
 
@@ -13,7 +11,7 @@ public class Dominion {
 	
 	private Vector cards = null;
 	private int numberOfRandomCards = 10;
-	private int[] numberOfCardsFromExp = new int[] {-1, -1, -1 , -1};
+	private int[] numberOfCardsFromExp = new int[] {0, 0, 0, 0};
 	
 	public Dominion() {
 		readCards();
@@ -172,46 +170,32 @@ public class Dominion {
 		return test.equals("0") ? false : true;
 	}
 	
-	private void readResource(String file) {
-		StringBuffer sb = new StringBuffer();
-		try {
-		InputStream is = this.getClass().getResourceAsStream(file);
-		int len = 0;
-		byte[] data = new byte[64];
-		try {
-			while ( ( len = is.read(data) ) != -1 ) {
-				sb.append(new String(data,0,len));
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			//#debug
-			System.out.println("Ioexception");
-		}
-		try {
-			is.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			//#debug
-			System.out.println("Ioexception");
-		}
-		} catch (IllegalArgumentException e) {
-			//#debug
-			System.out.println("IllegalArgument" + e.toString());
-		}
+	private void readResource(String fileName) {
 		if ( cards == null )
 			cards = new Vector();
-		boolean foundEndLine = true;
-		int start = 0;
-		int end = -2;
 		cards.ensureCapacity(78);
-		while ( foundEndLine ) {
-			if ( sb.toString().length() - 10 < end )
-				foundEndLine = false;
-			else {
-				start = end + 2;
-				end = sb.toString().indexOf(";", start);
-				cards.addElement(processCardInformation(sb.toString().substring(start, end + 1)));
+		StringBuffer sb = new StringBuffer();
+		InputStream is = null;
+		InputStreamReader isr = null;
+		try {
+			is = this.getClass().getResourceAsStream(fileName);      
+			if (is == null)
+				throw new Exception("File Does Not Exist");
+			isr = new InputStreamReader(is,"UTF8");
+			int ch;
+			while ( (ch = isr.read()) > -1 ) {
+				sb.append((char)ch);
+				if ( (char)ch == ';' ) {
+					cards.addElement(processCardInformation(sb.toString().substring(2)));
+					sb.delete(0, sb.toString().length() - 1);
+				}
+					
 			}
+			if (isr != null)  
+				isr.close();              
+		} catch (Exception ex) {
+			//#debug
+			System.out.println(ex);
 		}
 	}
 }
