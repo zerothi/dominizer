@@ -26,9 +26,9 @@ colors {
 	fontColor: rgb( 30, 150, 55 ); 
 	translucentBgColor:  argb(130, 241,160,190);
 	darkTranslucentBgColor:  argb(230, 247,160,175);
-	titleFontColor: rgb(30,150,55);
-	translucentFontColor:  argb(130, 105,180,120);
-	translucentBrightFontColor:  argb(150, 115,195,130);
+	titleFontColor: rgb(0,0,0);
+	translucentFontColor:  argb(130, 0,0,0);
+	translucentBrightFontColor:  argb(150, 0,0,0);
 	
 	maskColor: red;
 	splitTop: bgColor;

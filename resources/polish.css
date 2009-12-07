@@ -25,7 +25,7 @@ colors {
 	translucentBgColor:  argb(130, 165,190,247);
 	darkTranslucentBgColor:  argb(100, 145,175,247);
 	/* Font Colors*/
-	titleFontColor: rgb(60,150,75);
+	titleFontColor: rgb( 175,210,247);
 	fontColor: rgb( 66, 85, 148 );
 	brightFontColor: white; 
 	translucentFontColor:  argb(130, 165,190,247);
@@ -462,7 +462,7 @@ menuItem:hover {
 	border {
 		type: round-rect;
 		width: 2;
-		color: #333;
+		color: translucentBgColor;
 	}
 	background {
 		color: bgColor;

@@ -90,7 +90,7 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 	private void selectCard(int indexChosen) {
 		for ( int i = 0 ; i < blackMarketDeck.size() ; i++ ) {
 			if ( this.chooseCard.getString(this.chooseCard.getSelectedIndex()).equals(blackMarketDeck.elementAt(i)) ) {
-				this.app.showInfo(Locale.get("screen.BlackMarket.InfoMessage") + blackMarketDeck.elementAt(i).toString() + ".");
+				this.app.showInfo(Locale.get("screen.BlackMarket.InfoMessage") + "\n" + blackMarketDeck.elementAt(i).toString() + ".");
 				this.blackMarketDeck.removeElementAt(i);
 			}
 		}

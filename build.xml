@@ -24,7 +24,7 @@
 	<!-- import global properties                                 -->
 	<property file="${polish.home}/global.properties" />
 
-	<property name="debugLang" value="christmas"/>
+	<property name="debugLang" value="en"/>
 	<!-- the device for the test mode - you can define it on the command-line
 	     using the -D switch, e.g. ant -Ddevice=Generic/midp2 emulator -->
 	<!--property name="device" value="Generic/AnyPhone"/-->
@@ -82,10 +82,10 @@
 			<!-- In the test mode the application is build only for the  -->
 			<!-- Generic/midp1 phone, but when the test-property is set to false, -->
 			<!-- the second deviceRequirements will be used instead. -->
-			<deviceRequirements if="debug or quick">
+			<deviceRequirements if="debug or app.quick">
 				<requirement name="Identifier" value="${device}" />
 			</deviceRequirements>
-			<deviceRequirements unless="debug or quick">
+			<deviceRequirements unless="debug or app.quick">
 				<requirement name="Identifier" value="${devices}" />
 			</deviceRequirements>
 			<!-- build settings -->
@@ -119,7 +119,7 @@
 				<resources dir="${resource.dir}" defaultexcludes="yes" excludes="readme.txt">
 					<root dir="${resource.dir}"/>
 					<root dir="${resource.dir}/img" />
-					<localization unless="debug or quick">
+					<localization unless="debug or app.quick">
 						<locale name="da" encoding="UTF-8"/>
 						<locale name="en" encoding="UTF-8"/>
 						<locale name="de" encoding="UTF-8"/>
@@ -127,7 +127,7 @@
 						<locale name="zombinion" encoding="UTF-8"/>
 						<locale name="christmas" encoding="UTF-8"/>
 					</localization>
-					<localization if="debug or quick">
+					<localization if="debug or app.quick">
 						<locale name="${debugLang}" encoding="UTF-8"/>
 					</localization>
 				</resources>
@@ -195,7 +195,7 @@
 
 	<!-- Call this target first to skip the obfuscation step, call the emulator and start the debugger, e.g. ant enableDebug j2mepolish-->
 	<target name="enableQuick">
-		<property name="quick" value="true" />
+		<property name="app.quick" value="true" />
 	</target>
 	
 	<!-- Call this target first to skip the obfuscation step, call the emulator and start the debugger, e.g. ant enableDebug j2mepolish-->
