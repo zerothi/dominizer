@@ -99,7 +99,7 @@
 			midp2Path="${polish.home}/import/midp-2.0.jar"
 				midlets definition -->
 				<midlets>
-					<midlet class="GameApp" name="${app.name}" icon="main.png" number="1" />
+					<midlet class="GameApp" name="Dominizer" icon="main.png" number="1" />
 				</midlets>
 
 				<!-- project-wide variables - used for preprocessing.  -->
