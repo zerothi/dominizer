@@ -3,19 +3,19 @@
 # App Specific translations
 #
 ################
-mainScreen.ChoiceWhatToDo=Ihre Auswahl
-mainScreen.QuickSelectExpansions=Verwendete Sets
+mainScreen.ChoiceWhatToDo=Auswahlmenue
+mainScreen.QuickSelectExpansions=Benutzte Erweiterungen
 table.heading.Name=Name
 # Expansion=Erweiterung
 table.heading.Expansion=Erw.
-# Cost=Kosten
+# Cost=
 table.heading.Cost=#
 # Action=Aktion
 table.heading.ActionCard=A
 # Victory=Siegpunkt
-table.heading.VictoryCard=SP
-# Treasury=Schatz
-table.heading.TreasuryCard=Sch
+table.heading.VictoryCard=S
+# Treasury=Geld
+table.heading.TreasuryCard=G
 # Reaction=Reaktion
 table.heading.ReactionCard=R
 # Attack=Angriff

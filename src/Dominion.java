@@ -96,24 +96,40 @@ public class Dominion {
 		}
 		selectedCards.trimToSize();
 		selector = null;
-		return selectedCards;
+		return sortCards(selectedCards);
 	}
 	
 	public boolean setCardsUsedForExpansion(String expansion, int numberOfCards) {
-		if ( Locale.get("base") == expansion && numberOfRandomCards >= getNumberOfCardsSum(0) + numberOfCards ) {
+		if ( Locale.get("base").equals(expansion) && numberOfRandomCards >= getNumberOfCardsSum(0) + numberOfCards ) {
 			numberOfCardsFromExp[0] = numberOfCards;
 			return true;
-		} else if ( Locale.get("promo") == expansion && numberOfRandomCards >= getNumberOfCardsSum(1) + numberOfCards ) {
+		} else if ( Locale.get("promo").equals(expansion) && numberOfRandomCards >= getNumberOfCardsSum(1) + numberOfCards ) {
 			numberOfCardsFromExp[1] = numberOfCards;
 			return true;
-		} else if ( Locale.get("intrigue") == expansion && numberOfRandomCards >= getNumberOfCardsSum(2) + numberOfCards ) {
+		} else if ( Locale.get("intrigue").equals(expansion) && numberOfRandomCards >= getNumberOfCardsSum(2) + numberOfCards ) {
 			numberOfCardsFromExp[2] = numberOfCards;
 			return true;
-		} else if ( Locale.get("seaside") == expansion && numberOfRandomCards >= getNumberOfCardsSum(3) + numberOfCards ) {
+		} else if ( Locale.get("seaside").equals(expansion) && numberOfRandomCards >= getNumberOfCardsSum(3) + numberOfCards ) {
 			numberOfCardsFromExp[3] = numberOfCards;
 			return true;
 		}
 		return false;
+	}
+	
+	public Vector sortCards(Vector cards) {
+		Card tmp = null;
+		for ( int j = 0; j < cards.size(); j++ ) { 
+			for ( int i = j + 1; i < cards.size(); i++ ) { 
+				if ( Card.compare((Card)cards.elementAt(i), (Card)cards.elementAt(j), Card.NAME) < 0) {
+					tmp = (Card)cards.elementAt(j);
+					//#debug info
+					System.out.println("Switching : " + tmp.getName() + " og " + cards.elementAt(i));
+					cards.setElementAt(cards.elementAt(i), j); 
+					cards.setElementAt(tmp, i);
+				}
+			}
+		}
+		return cards;
 	}
 	
 	private int getNumberOfCardsSum(int overlook) {
@@ -146,7 +162,7 @@ public class Dominion {
 	private Card processCardInformation(String information) {
 		Card card = new Card();
 		int start = 0;
-		card.setName(information.substring(start, information.indexOf(":", start)));
+		card.setName(information.substring(start, information.indexOf(":", start)).trim());
 		start = information.indexOf(":", start) + 1;
 		card.setExpansion(information.substring(start, information.indexOf(":", start)));
 		start = information.indexOf(":", start) + 1;
@@ -186,10 +202,11 @@ public class Dominion {
 			while ( (ch = isr.read()) > -1 ) {
 				sb.append((char)ch);
 				if ( (char)ch == ';' ) {
-					cards.addElement(processCardInformation(sb.toString().substring(2)));
+					cards.addElement(processCardInformation(sb.toString()));
+					sb.delete(0, sb.toString().length() - 1);
+				} else if ( (char)ch == '\n' ) {
 					sb.delete(0, sb.toString().length() - 1);
 				}
-					
 			}
 			if (isr != null)  
 				isr.close();              

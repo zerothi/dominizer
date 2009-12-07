@@ -1,6 +1,9 @@
+import de.enough.polish.util.Locale;
 
 
 public class Card {
+	public static final int NAME = 0;
+	public static final int COST = 1;
 	private String name = null;
 	private String expansion = null;
 	/*
@@ -204,5 +207,29 @@ public class Card {
 	 */
 	public void setDuration(boolean isDuration) {
 		this.isSpecific[5] = isDuration;
+	}
+	
+	public static int compare(Card first, Card compareTo, int method) {
+		if ( first.getExpansion().equals(compareTo.getExpansion()) )
+			return first.getName().compareTo(compareTo.getName());
+		else if ( first.getExpansion().equals(Locale.get("rms.base")) )
+			return -1;
+		else if ( first.getExpansion().equals(Locale.get("rms.promo")) )
+			if ( compareTo.getExpansion().equals(Locale.get("rms.base")) )
+				return 1;
+			else
+				return -1;
+		else if ( first.getExpansion().equals(Locale.get("rms.intrigue")) )
+			if ( compareTo.getExpansion().equals(Locale.get("rms.base")) || compareTo.getExpansion().equals(Locale.get("rms.promo")) )
+				return 1;
+			else
+				return -1;
+		else if ( first.getExpansion().equals(Locale.get("rms.seaside")) )
+			return 1;
+		return 0;
+	}
+	
+	public String toString() {
+		return this.getName();
 	}
 }

@@ -33,6 +33,8 @@ cmd.Quit=Luk
 cmd.switch=Skift
 alert.alert=Advarsel
 alert.info=Information
+alert.Settings.CouldNotBeRead=Indstillinger kunne ikke læses!\nUndskyld.
+alert.Settings.CouldNotBeSaved=Indstillinger kunne ikke gemmes!\nUndskyld.
 alert.QuickSelectExpansions.OnlyPromoSelected=Du har kun valgt Promo's.\nVælg flere!
 alert.QuickSelectExpansions.NoneSelected=Du har ikke valgt nogle fulde spil.\nVælg minimum en!
 
