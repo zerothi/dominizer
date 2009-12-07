@@ -28,9 +28,13 @@
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
+import javax.microedition.rms.RecordStoreException;
+import javax.microedition.rms.RecordStoreFullException;
+import javax.microedition.rms.RecordStoreNotFoundException;
 
 import de.enough.polish.util.DeviceControl;
 import de.enough.polish.util.Locale;
@@ -46,7 +50,7 @@ import de.enough.polish.util.Locale;
  * @author Nick Papior Andersen, nickpapior@gmail.com
  */
 public class GameApp extends MIDlet {
-	Form currentForm = null;
+	Displayable currentForm = null;
 	Display display = null;
 	private Dominion dominion = null;
 	
@@ -94,11 +98,11 @@ public class GameApp extends MIDlet {
 		this.changeToScreen(bmForm);
 	}
 
-	public void changeToScreen(Form form) {
-		if ( form == null )
+	public void changeToScreen(Displayable displayable) {
+		if ( displayable == null )
 			this.changeToScreen(this.currentForm);
 		else
-			this.display.setCurrent(form);
+			this.display.setCurrent(displayable);
 	}
 
 	protected void startApp() throws MIDletStateChangeException {

@@ -8,6 +8,9 @@ import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemCommandListener;
+import javax.microedition.rms.RecordStoreException;
+import javax.microedition.rms.RecordStoreFullException;
+import javax.microedition.rms.RecordStoreNotFoundException;
 
 import de.enough.polish.util.Locale;
 
@@ -68,6 +71,18 @@ public class QuickRandomizeForm extends Form implements CommandListener, ItemCom
 		}
 		this.quickGameRandomizerCG.addCommand(this.quickRandomizeCardsCmd);
 		this.quickGameRandomizerCG.setItemCommandListener(this);
+		try {
+			flags = new SettingsRecordStorage().getExpansions();
+		} catch (RecordStoreFullException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RecordStoreNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RecordStoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.quickGameRandomizerCG.setSelectedFlags(flags);
 		this.addCommand(this.quitCmd);
 		this.setCommandListener(this);
@@ -104,6 +119,15 @@ public class QuickRandomizeForm extends Form implements CommandListener, ItemCom
 			switch ( this.whatToDoCG.getSelectedIndex() ) {
 			case 0:
 				this.app.showRandomizedCards(getExpansionFlags(), isEmptySelection(), isOnlyPromoSelection());
+				try {
+					new SettingsRecordStorage().writeExpansions(flags);
+				} catch (RecordStoreFullException e) {
+					// TODO Auto-generated catch block
+				} catch (RecordStoreNotFoundException e) {
+					// TODO Auto-generated catch block
+				} catch (RecordStoreException e) {
+					// TODO Auto-generated catch block
+				}
 				break;
 			case 1:
 				this.app.showBlackMarketDeck(this);
