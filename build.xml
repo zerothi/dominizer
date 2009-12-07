@@ -68,15 +68,15 @@
 			<!-- Have a look at the <jad>-section for setting specialised attributes.
 		         You can also define localized attributes in the resources/messages.txt files -->
 			<info 
-				name="Dominizer" 
-				version="0.151" 
+				name="${app.name}" 
+				version="0.15" 
 				description="A Dominion Card randomizer" 
 				vendorName="Nick Papior Andersen A/S" 
 				infoUrl="http://www.boardgamegeek.com/wiki/page/Dominizer" 
-				jarName="${nospace(polish.vendor)}-${nospace(polish.name)}-Dominizer-${ nospace(polish.locale) }.jar" 
+				jarName="${nospace(polish.vendor)}-${nospace(polish.name)}-${app.name}-${ nospace(polish.locale) }.jar" 
 				jarUrl="${deploy-url}${polish.jarName}" 
 				copyright="Copyright 2009 Nick Papior Andersen A/S. All rights reserved."
-				deleteConfirm="Delete Dominizer? Nooo? :D" 
+				deleteConfirm="Delete ${app.name}? Nooo? :D" 
 			/>
 			<!-- selection of supported devices -->
 			<!-- In the test mode the application is build only for the  -->
@@ -85,10 +85,9 @@
 			<deviceRequirements if="debug or quick">
 				<requirement name="Identifier" value="${device}" />
 			</deviceRequirements>
-			<deviceRequirements unless="debug">
+			<deviceRequirements unless="debug or quick">
 				<requirement name="Identifier" value="${devices}" />
 			</deviceRequirements>
-			
 			<!-- build settings -->
 			<build symbols="Dominizer" 
 				fullscreen="menu" 
@@ -99,7 +98,7 @@
 			midp2Path="${polish.home}/import/midp-2.0.jar"
 				midlets definition -->
 				<midlets>
-					<midlet class="GameApp" name="Dominizer" icon="main.png" number="1" />
+					<midlet class="GameApp" name="${app.name}" icon="main.png" number="1" />
 				</midlets>
 
 				<!-- project-wide variables - used for preprocessing.  -->
@@ -136,7 +135,7 @@
 				<!-- obfuscator settings: do not obfuscate when the test-property is true-->
 				<obfuscator name="ProGuard" unless="test or polish.blackberry or quick">
 					<parameter name="optimize" value="true" />
-					<parameter name="optimizationpasses" value="1"/>
+					<parameter name="optimizationpasses" value="3"/>
 				</obfuscator>
 				<!-- info memory -->
 				<debug if="info" showLogOnError="true" verbose="true" level="info">
