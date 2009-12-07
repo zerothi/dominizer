@@ -68,15 +68,15 @@
 			<!-- Have a look at the <jad>-section for setting specialised attributes.
 		         You can also define localized attributes in the resources/messages.txt files -->
 			<info 
-				name="${app.name}" 
-				version="0.15" 
+				name="Dominizer" 
+				version="0.151" 
 				description="A Dominion Card randomizer" 
 				vendorName="Nick Papior Andersen A/S" 
 				infoUrl="http://www.boardgamegeek.com/wiki/page/Dominizer" 
-				jarName="${nospace(polish.vendor)}-${nospace(polish.name)}-${app.name}-${ nospace(polish.locale) }.jar" 
+				jarName="${nospace(polish.vendor)}-${nospace(polish.name)}-Dominizer-${ nospace(polish.locale) }.jar" 
 				jarUrl="${deploy-url}${polish.jarName}" 
 				copyright="Copyright 2009 Nick Papior Andersen A/S. All rights reserved."
-				deleteConfirm="Delete ${app.name}? Nooo? :D" 
+				deleteConfirm="Delete Dominizer? Nooo? :D" 
 			/>
 			<!-- selection of supported devices -->
 			<!-- In the test mode the application is build only for the  -->
@@ -118,7 +118,7 @@
 					<variable name="polish.ChoiceGroup.suppressSelectCommand" value="true"/>
 				</variables>
 				<resources dir="${resource.dir}" defaultexcludes="yes" excludes="readme.txt">
-					<root dir="${resource.dir}" />
+					<root dir="${resource.dir}"/>
 					<root dir="${resource.dir}/img" />
 					<localization unless="debug or quick">
 						<locale name="da" encoding="UTF-8"/>
