@@ -24,7 +24,7 @@
 	<!-- import global properties                                 -->
 	<property file="${polish.home}/global.properties" />
 
-	<property name="debugLang" value="en"/>
+	<property name="debugLang" value="christmas"/>
 	<!-- the device for the test mode - you can define it on the command-line
 	     using the -D switch, e.g. ant -Ddevice=Generic/midp2 emulator -->
 	<!--property name="device" value="Generic/AnyPhone"/-->
@@ -126,6 +126,7 @@
 						<locale name="de" encoding="UTF-8"/>
 						<locale name="pl" encoding="UTF-8"/>
 						<locale name="zombinion" encoding="UTF-8"/>
+						<locale name="christmas" encoding="UTF-8"/>
 					</localization>
 					<localization if="debug or quick">
 						<locale name="${debugLang}" encoding="UTF-8"/>

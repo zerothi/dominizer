@@ -1,0 +1,62 @@
+/** 
+  * The polish.css files contains all
+  * design information about a project.
+  * It can be adjusted for specific devices
+  * or device groups by putting it in the 
+  * appropriate sub-folder.
+  * If you want to adjust a design for all
+  * Nokia devices, define it in "resources/Nokia/polish.css"
+  * and so on. Only new and different settings
+  * need to be specified in such polish.css files. 
+  */
+
+/**
+  * the colors which are defined in
+  * the colors section can later be referenced.
+  * This makes changes easy, since the color
+  * just needs to be changed in one position.
+  * Even default colors (like blue, green, lime, etc)
+  * can be changed here. 
+  */
+colors {
+	bgColor:  rgb(230,30,45);
+	brightBgColor:  rgb(250,35,50);
+	evenBrightColor: rgb(250,65,85);
+	brightFontColor: rgb(10,35,55);
+	fontColor: rgb( 16, 25, 58 ); 
+	translucentBgColor:  argb(130, 241,160,190);
+	darkTranslucentBgColor:  argb(230, 247,160,175);
+	titleFontColor: rgb(60,150,75);
+	translucentFontColor:  argb(130, 135,210,150);
+	translucentBrightFontColor:  argb(150, 145,220,175);
+	
+	maskColor: red;
+	splitTop: bgColor;
+	splitBot: brightBgColor;
+}
+
+.mainScreen {
+	padding: 2;
+	padding-left: 10;
+	padding-right: 10;
+	layout: horizontal-expand | horizontal-center | vertical-center;
+	background {
+		type: combined;
+		foreground: snowflakes;
+		background: titleGradient;
+	}
+	background-vertical-gradient-top-color: splitTop;
+	background-vertical-gradient-bottom-color: splitBot;
+	background-snowflakes-number-of-flakes-animation {
+		on: show;
+		range: 5..10;
+		duration: 10s;
+		repeat: always;
+	}
+	background-snowflakes-max-flake-size-animation {
+		on: show;
+		range: 10..16;
+		duration: 10s;
+		repeat: always;
+	}
+}

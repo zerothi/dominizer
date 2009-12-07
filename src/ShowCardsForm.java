@@ -36,7 +36,7 @@ public class ShowCardsForm extends Form  implements CommandListener {
 		this.table = new TableItem();
 		this.addCommand(this.randomizeCmd);
 		this.addCommand(this.backCmd);
-		this.table.setSelectionMode(TableItem.SELECTION_MODE_CELL);
+		this.table.setSelectionMode(TableItem.SELECTION_MODE_NONE);//SELECTION_MODE_CELL);
 		this.append(this.table);
 		this.setCommandListener(this);
 	}

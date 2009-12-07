@@ -45,7 +45,6 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 		this.chooseCard.addCommand(this.drawCardsCmd);
 		this.chooseCard.setItemCommandListener(this);
 		this.addCommand(this.backCmd);
-		this.addCommand(okCmd);
 		this.append(this.chooseCard);
 		this.setCommandListener(this);
 	}
@@ -194,8 +193,6 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 			this.drawCards();
 		else if ( cmd == this.selectCardCmd )
 			this.selectCard(this.chooseCard.getSelectedIndex());
-		else if ( cmd == this.okCmd )
-			this.app.showAlert("Pressed Ok");
 	}
 	
 	public void commandAction(Command cmd, Item item) {
@@ -205,7 +202,5 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 			this.drawCards();
 		else if ( cmd == this.selectCardCmd )
 			this.selectCard(this.chooseCard.getSelectedIndex());
-		else if ( cmd == this.okCmd )
-			this.app.showAlert("Pressed Ok");
 	}
 }

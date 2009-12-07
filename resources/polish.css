@@ -22,19 +22,26 @@ colors {
 	bgColor:  rgb(0,10,25);
 	brightBgColor:  rgb(0,25,50);
 	evenBrightColor: rgb(10,45,65);
-	brightFontColor: white;
-	fontColor: rgb( 66, 85, 148 ); 
 	translucentBgColor:  argb(130, 165,190,247);
 	darkTranslucentBgColor:  argb(100, 145,175,247);
+	/* Font Colors*/
+	titleFontColor: rgb(60,150,75);
+	fontColor: rgb( 66, 85, 148 );
+	brightFontColor: white; 
 	translucentFontColor:  argb(130, 165,190,247);
 	translucentBrightFontColor:  argb(150, 175,210,247);
 	
 	maskColor: red;
-	splitTop: rgb(0,25,50);
-	splitBot: rgb(0,10,25);
+	splitTop: brightBgColor;
+	splitBot: bgColor;
 }
 
 backgrounds {
+	snowflakes {
+		type: snowflakes;
+		color: transparent;
+		flake-color: white;
+	}
 
 	titleGradient {
 		type: vertical-gradient;
@@ -44,15 +51,6 @@ backgrounds {
 	
 	tableSelection {
 		color: #ffc;
-	}
-	
-	maskBackground {
-		type: polygon;
-		points: 5,90 55,0 105,90 155,0 205,90;
-		reference-width: 210;
-		reference-height: 100;
-		scale-mode: scale;
-		color: maskColor;
 	}
 	
 	alertTop {
@@ -80,13 +78,9 @@ title {
 	font-face: proportional;
 	font-size: normal;
 	font-style: bold;
-	font-color: brightFontColor;
+	font-color: titleFontColor;
 	border: none;
 	layout: horizontal-center | horizontal-expand;
-	/*	
-	background-color: bgColor;
-	*/
-	
 	background: titleGradient;
 }
 
@@ -124,29 +118,12 @@ focused {
 	padding: 2;
 	padding-left: 10;
 	padding-right: 10;
+	layout: horizontal-expand | horizontal-center | vertical-center;
 	background {
-		type: round-rect-split;
+		type: vertical-gradient;
 		top-color: splitTop;
 		bottom-color: splitBot;
-		split-pos: 50%;
-		arc-width: 8;
-		arc-height: 8;
 	}
-	layout: horizontal-expand | horizontal-center | vertical-center;
-	/*
-	view-type: fisheye;
-	fisheyeview-scale: 60%;
-	fisheyeview-scale-end: 20%;
-	fisheyeview-remove-text: true;		
-	view-type: horizontal-gray-out;
-	view-type: carousel;
-	fisheyeview-scale-start: 75%;
-	fisheyeview-scale-end: 50%;
-	fisheyeview-alpha-start: 200;
-	fisheyeview-alpha-end: 80;
-	fisheyeview-remove-text: false;
-	fisheyeview-max-visible: 3;
-	*/
 }
 
 /**
@@ -262,8 +239,7 @@ menubar {
 /**
  * Commands within the menubar on the left side
  */
-leftcommand
-{
+leftcommand {
 	margin: 0;
     //#if polish.key.MiddleSoftKey:defined or polish.MenuBar.useMiddleCommand
     	/* the middle command is used, so lower the left and right commands relatively */
@@ -272,13 +248,6 @@ leftcommand
 	padding-bottom: 0;
 	font-color: translucentFontColor;
 	font-style: bold;
-	/*
-	text-effect: vertical-gradient;
-	text-vertical-gradient-end-color: #eee;
-	text-vertical-gradient-start-color: #000;
-	*/
-	/*text-effect: shadow;
-	text-shadow-color: translucentBrightFontColor;*/
 	font-size: small;
 }
 
@@ -322,9 +291,6 @@ menu {
 	font-color: translucentFontColor;
 	font-style: bold;
 	view-type: slide-up;
-	/*
-	view-type: numbered;
-	*/
 }
 
 
