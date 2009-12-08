@@ -107,6 +107,15 @@ public class QuickRandomizeForm extends Form implements CommandListener, ItemCom
 		//showAlert("Cmd: " + cmd.getLabel() + ". Screen: " + screen.getTitle());
 		if ( cmd == this.quickRandomizeCardsCmd ) {
 			this.app.showRandomizedCards(getExpansionFlags(), isEmptySelection(), isOnlyPromoSelection());
+			try {
+				new SettingsRecordStorage().writeExpansions(flags);
+			} catch (RecordStoreFullException e) {
+				// TODO Auto-generated catch block
+			} catch (RecordStoreNotFoundException e) {
+				// TODO Auto-generated catch block
+			} catch (RecordStoreException e) {
+				// TODO Auto-generated catch block
+			}
 		} else if ( cmd == this.quitCmd ) {
 			this.app.quit();
 		}

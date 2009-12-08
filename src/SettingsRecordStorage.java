@@ -1,4 +1,3 @@
-import de.enough.polish.util.Locale;
 import java.util.Vector;
 
 import javax.microedition.rms.RecordEnumeration;
@@ -7,6 +6,8 @@ import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreFullException;
 import javax.microedition.rms.RecordStoreNotFoundException;
 import javax.microedition.rms.RecordStoreNotOpenException;
+
+import de.enough.polish.util.Locale;
 
 public class SettingsRecordStorage {
 	public static final char BIG_SPLITTER = ':';
@@ -31,6 +32,8 @@ public class SettingsRecordStorage {
 			} catch (RecordStoreException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} finally {
+				store = null;
 			}
 		}
 			
@@ -49,21 +52,23 @@ public class SettingsRecordStorage {
 				System.out.println("found Element: " + settings.elementAt(i).toString());
 				if ( settings.elementAt(i).toString().startsWith(Locale.get("rms.expansions")) ) {
 					//#debug info
-					System.out.println("SettingsRecordStorage: getExpansions : Element" + settings.elementAt(i).toString());
-					expansionsSettings[0] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 2, Locale.get("rms.expansions").length() + 3).equals("1");
-					expansionsSettings[1] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 3, Locale.get("rms.expansions").length() + 4).equals("1");
-					expansionsSettings[2] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 4, Locale.get("rms.expansions").length() + 5).equals("1");
-					expansionsSettings[3] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 5).equals("1");
+					System.out.println("getExpansions: " + settings.elementAt(i).toString() + " first: " + settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 1, Locale.get("rms.expansions").length() + 2));
+					expansionsSettings[0] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 1, Locale.get("rms.expansions").length() + 2).equals("1");
+					expansionsSettings[1] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 2, Locale.get("rms.expansions").length() + 3).equals("1");
+					expansionsSettings[2] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 3, Locale.get("rms.expansions").length() + 4).equals("1");
+					expansionsSettings[3] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 4).equals("1");
 					i = settings.size();
 				}
 			}
 		}
+		//#debug info
+		System.out.println("found " + expansionsSettings[0] + expansionsSettings[1] + expansionsSettings[2] + expansionsSettings[3]);
 		return expansionsSettings;
 	}
 
 	public boolean writeExpansions(boolean[] expansions) throws RecordStoreFullException, RecordStoreNotFoundException,
 	        RecordStoreException {
-		StringBuffer sb = new StringBuffer();
+		StringBuffer sb = new StringBuffer(4);
 		sb.append(expansions[0] ? "1" : "0");
 		sb.append(expansions[1] ? "1" : "0");
 		sb.append(expansions[2] ? "1" : "0");
@@ -80,27 +85,28 @@ public class SettingsRecordStorage {
 			//#debug info
 			System.out.println("found " + store.getNumRecords() + " records");
 			if ( store.getNumRecords() == 0 ) {
-				throw new RecordStoreException("there is no records to be founds");
+				throw new RecordStoreException("there is no records to be found");
 			}
+			RecordEnumeration re = store.enumerateRecords(null, null, false);
 			data = new Vector(store.getNumRecords());
-			for (int i = 0; i < store.getNumRecords(); i++) {
-				//record = new byte[store.getRecordSize(i + 1)];
+			while ( re.hasNextElement() ) {
 				//#debug info
-				System.out.println("try reading record #= " + i);
-				tmpByte = store.getRecord(i + 1);
+				System.out.println("try reading record #= ");
+				tmpByte = re.nextRecord();
 				if ( tmpByte != null ) {
 					//#debug info
 					System.out.println("Found record: " + new String(tmpByte));
 					data.addElement(new String(tmpByte));
 				}
 			}
-			return data;
 		} catch (RecordStoreException rms) {
 			//#debug info
 			System.out.println("store exception happened. " + rms.toString());
 			data = null;
 		} finally {
 			store.closeRecordStore();
+			//#debug info
+			System.out.println("succesfull close of store");
 		}
 		return data;
 	}
@@ -113,15 +119,20 @@ public class SettingsRecordStorage {
 		System.out.println("Writing record: " + record);
 		try {
 			settings = readData(recordStore);
+		} catch (RecordStoreFullException rms) {
+			//#debug info
+			System.out.println("error read");
+		} catch (RecordStoreException rms) {
+			//#debug info
+			System.out.println("error read");
+		}
+		try {
 			this.deleteRecordStore(recordStore);
 			store = RecordStore.openRecordStore(recordStore, true);
-			for ( int i = 0 ; i < settings.size() ; i++ )
-				if ( settings.elementAt(i).toString().startsWith(key) )
-					settings.removeElementAt(i);
-			for ( int i = 0 ; i < settings.size() ; i++ )
-				if ( settings.elementAt(i).toString().startsWith(key) )
-					store.addRecord(settings.elementAt(i).toString().getBytes(), 0, settings.elementAt(i).toString().getBytes().length);
-			//tmpByte = record.getBytes();
+			if ( settings != null )
+				for ( int i = 0 ; i < settings.size() ; i++ )
+					if ( !settings.elementAt(i).toString().startsWith(key) )
+						store.addRecord(settings.elementAt(i).toString().getBytes(), 0, settings.elementAt(i).toString().getBytes().length);
 			store.addRecord(new String(key + BIG_SPLITTER + record).getBytes(), 0, new String(key + BIG_SPLITTER + record).getBytes().length);
 			//#debug info
 			System.out.println("Succes");
