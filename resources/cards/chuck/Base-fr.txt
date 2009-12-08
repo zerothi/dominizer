@@ -1,0 +1,25 @@
+2 Cave
+2 Chapelle
+2 Douves
+3 Chancelier
+3 Village
+3 Bûcheron
+3 Atelier
+4 Bureaucrate
+4 Festin
+4 Jardins
+4 Milice
+4 Prêteur sur gages
+4 Rénovation
+4 Forgeron
+4 Espion
+4 Voleur
+4 Salle du Trône
+5 Chambre du conseil
+5 Festival
+5 Laboratoire
+5 Bibliothèque
+5 Marché
+5 Mine
+5 Sorcière
+6 Aventurier

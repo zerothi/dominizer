@@ -1,0 +1,26 @@
+2 Embargo
+2 Havre
+2 Phare
+2 Village indigène
+2 Plongeur de perles
+3 Ambassadeur
+3 Village de pêcheurs
+3 Vigie
+3 Contrebandiers
+3 Entrepôt
+4 Caravane
+4 Coupeur de bourses
+4 Île
+4 Navigateur
+4 Bateau pirate
+4 Sauveteur
+4 Sorcière de mer
+4 Carte aux trésors
+5 Bazar
+5 Explorateur
+5 Vaisseau fantôme
+5 Navire marchand
+5 Avant-poste
+5 Tacticien
+5 Trésorerie
+5 Quai

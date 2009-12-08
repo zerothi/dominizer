@@ -124,6 +124,7 @@
 						<locale name="en" encoding="UTF-8"/>
 						<locale name="de" encoding="UTF-8"/>
 						<locale name="pl" encoding="UTF-8"/>
+						<locale name="fr" encoding="UTF-8"/>
 						<locale name="zombinion" encoding="UTF-8"/>
 						<locale name="christmas" encoding="UTF-8"/>
 					</localization>

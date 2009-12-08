@@ -1,0 +1,5 @@
+Base|Base
+Intrigue|Intrigue
+Seaside|Rivages
+BlackMarket|Marché noir
+Envoy|Emissaire

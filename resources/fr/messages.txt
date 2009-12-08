@@ -1,0 +1,82 @@
+################
+#
+# App Specific translations
+#
+################
+mainScreen.ChoiceWhatToDo=Que faire?
+mainScreen.QuickSelectExpansions=Extensions utilisées:
+table.heading.Name=Nom
+table.heading.Expansion=Ext.
+table.heading.Cost=#
+table.heading.ActionCard=A
+table.heading.VictoryCard=V
+table.heading.TreasuryCard=T
+table.heading.ReactionCard=R
+table.heading.AttackCard=A
+table.heading.DurationCard=D
+screen.RandomizedCards.title=Cartes aléatoires
+screen.EditCards.title=Editer les cartes
+screen.EditCards.ChoiceCurrentlySelected=Carte sélectionnée:
+screen.BlackMarket.title=Black Market
+screen.BlackMarket.ChooseNone=None
+screen.BlackMarket.ChooseCards=Choose Card:
+screen.BlackMarket.InfoMessage=You have chosen: 
+screen.BlackMarket.DeckEmpty=Black Market deck is empty
+cmd.Randomize=Mélanger
+cmd.BlackMarket=Black Market Deck
+cmd.BlackMarket.Draw=Draw New
+cmd.BlackMarket.Show=Show BM deck
+cmd.EditCards=Editer
+cmd.Back=Retour
+cmd.ShowLog=Afficher le journal
+cmd.Quit=Quitter
+cmd.switch=Basculer
+alert.alert=Alerte
+alert.info=Info
+alert.Settings.CouldNotBeRead=Settings could not be read!\nSorry.
+alert.Settings.CouldNotBeSaved=Settings could not be saved!\nSorry.
+alert.QuickSelectExpansions.OnlyPromoSelected=Vous n'avez sélectionné que des cartes promotionnelles.\nElargissez votre sélection !
+alert.QuickSelectExpansions.NoneSelected=Vous n'avez sélectionné aucune extension.\nChoisissez-en au moins une !
+
+################
+#
+# Expansion Names
+#
+################
+
+base=Base
+promo=Promo
+intrigue=Intrigue
+seaside=Rivages
+card.BlackMarket=Marché noir
+
+################
+#
+# Polish Settings
+#
+################
+
+polish.command.ok=Ok
+polish.command.cancel=Annuler
+polish.command.select=Selectionner
+polish.command.mark=Cocher
+polish.command.unmark=Décocher
+polish.command.options=Options
+# for deleting a single char:
+polish.command.delete=Supprimer
+# for deleting a complete TextField:
+polish.command.clear=Réinitialiser
+# for hiding menus on BlackBerry devices:
+polish.command.hide=Cacher
+# for showing a default title when no label
+# is defined in a TextField. This is only
+# used when no direct input mode is activated:
+polish.title.input=Commande
+# used for showing a screen for selecting symbols within TextFields:
+polish.command.entersymbol=Ajouter un symbole
+# used by the HtmlBrowser for a links:
+polish.command.followlink=Afficher
+# used by the HtmlBrowser for submitting a form:
+polish.command.submit=Envoyer
+# used by the RssBrowser for returning to the previous page:
+polish.command.back=Retour 
