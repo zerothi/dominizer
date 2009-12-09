@@ -1,5 +1,7 @@
 import java.io.IOException;
+import java.util.Vector;
 
+import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.ChoiceGroup;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -8,10 +10,12 @@ import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemCommandListener;
+import javax.microedition.lcdui.ItemStateListener;
 import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreFullException;
-import javax.microedition.rms.RecordStoreNotFoundException;
 
+import de.enough.polish.ui.ChoiceItem;
+import de.enough.polish.ui.UiAccess;
 import de.enough.polish.util.Locale;
 
 /**
@@ -22,7 +26,7 @@ import de.enough.polish.util.Locale;
  * @author nick
  *
  */
-public class QuickRandomizeForm extends Form implements CommandListener, ItemCommandListener{
+public class QuickRandomizeForm extends Form implements CommandListener, ItemCommandListener {
 	
 	GameApp app = null;
 	ChoiceGroup whatToDoCG = null;
@@ -31,7 +35,7 @@ public class QuickRandomizeForm extends Form implements CommandListener, ItemCom
 	Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.SCREEN, 0);
 	//Command showCardsListCmd = new Command( Locale.get( "cmd.ShowCards" ), Command.ITEM, 8 );
 	Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.BACK, 10);
-	boolean[] flags = new boolean[] {true, true, true, false};
+	int currentItem = -1;
 	
 	public QuickRandomizeForm(GameApp app, String title) {
 		//#style mainScreen
@@ -52,70 +56,72 @@ public class QuickRandomizeForm extends Form implements CommandListener, ItemCom
 		this.quickGameRandomizerCG = new ChoiceGroup(Locale.get("mainScreen.QuickSelectExpansions"), ChoiceGroup.MULTIPLE);
 		try {
 			//style choiceItem 
-			this.quickGameRandomizerCG.append(Locale.get("base"), Image.createImage("/ba.png"));
+			this.quickGameRandomizerCG.append(this.app.getExpansionName(0), Image.createImage("/ba.png"));
 			//style choiceItem
-			this.quickGameRandomizerCG.append(Locale.get("promo"), Image.createImage("/pr.png"));
+			this.quickGameRandomizerCG.append(this.app.getExpansionName(1), Image.createImage("/pr.png"));
 			//style choiceItem
-			this.quickGameRandomizerCG.append(Locale.get("intrigue"), Image.createImage("/in.png"));
+			this.quickGameRandomizerCG.append(this.app.getExpansionName(2), Image.createImage("/in.png"));
 			//style choiceItem
-			this.quickGameRandomizerCG.append(Locale.get("seaside"), Image.createImage("/se.png"));
+			this.quickGameRandomizerCG.append(this.app.getExpansionName(3), Image.createImage("/se.png"));
 		} catch (IOException e) {
 			//style choiceItem 
-			this.quickGameRandomizerCG.append(Locale.get("base"), null);
+			this.quickGameRandomizerCG.append(this.app.getExpansionName(0), null);
 			//style choiceItem
-			this.quickGameRandomizerCG.append(Locale.get("promo"), null);
+			this.quickGameRandomizerCG.append(this.app.getExpansionName(1), null);
 			//style choiceItem
-			this.quickGameRandomizerCG.append(Locale.get("intrigue"), null);
+			this.quickGameRandomizerCG.append(this.app.getExpansionName(2), null);
 			//style choiceItem
-			this.quickGameRandomizerCG.append(Locale.get("seaside"), null);
+			this.quickGameRandomizerCG.append(this.app.getExpansionName(3), null);
 		}
 		this.quickGameRandomizerCG.addCommand(this.quickRandomizeCardsCmd);
 		this.quickGameRandomizerCG.setItemCommandListener(this);
-		try {
-			flags = new SettingsRecordStorage().getExpansions();
-		} catch (RecordStoreFullException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RecordStoreNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RecordStoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		this.quickGameRandomizerCG.setSelectedFlags(flags);
+		this.readExpansionSettings();
 		this.addCommand(this.quitCmd);
 		this.setCommandListener(this);
 		this.append(this.whatToDoCG);
 		this.append(this.quickGameRandomizerCG);	
 	}
 	
-	public boolean isEmptySelection() {
-		return (0 == this.quickGameRandomizerCG.getSelectedFlags(flags));
-	}
-	
-	public boolean isOnlyPromoSelection() {
-		return (1 == this.quickGameRandomizerCG.getSelectedFlags(flags) && this.quickGameRandomizerCG.getSelectedIndex() == 1);
-	}
-	
-	public boolean[] getExpansionFlags() {
-		this.quickGameRandomizerCG.getSelectedFlags(flags);
-		return flags;
+	public void readExpansionSettings() {
+		Vector settings = null;
+		try {
+			settings = new SettingsRecordStorage().readData(Locale.get("rms.file.settings"));
+		} catch (RecordStoreFullException e) {
+			settings = null;
+		} catch (RecordStoreException e) {
+			settings = null;
+		}
+		if ( settings == null ) {
+			//#debug info
+			System.out.println("SettingsRecordStorage: getExpansions : settings is null");
+		} else {
+			for ( int i = 0 ; i < settings.size() ; i++ ) {
+				if ( settings.elementAt(i).toString().startsWith(Locale.get("rms.expansions")) ) {
+					//#debug info
+					System.out.println("getExpansions: " + settings.elementAt(i).toString() + " first: " + settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 1, Locale.get("rms.expansions").length() + 2));
+					GameApp.flags[0] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 1, Locale.get("rms.expansions").length() + 2).equals("1");
+					GameApp.flags[1] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 2, Locale.get("rms.expansions").length() + 3).equals("1");
+					GameApp.flags[2] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 3, Locale.get("rms.expansions").length() + 4).equals("1");
+					GameApp.flags[3] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 4).equals("1");
+				} else if ( settings.elementAt(i).toString().startsWith(Locale.get("rms.expansions.usedcards")) ) {
+					GameApp.dominion.setCardsUsedForExpansion(0, parseInt(settings.elementAt(i).toString().substring(Locale.get("rms.expansions.usedcards").length() + 1, Locale.get("rms.expansions.usedcards").length() + 2)));
+					GameApp.dominion.setCardsUsedForExpansion(1, parseInt(settings.elementAt(i).toString().substring(Locale.get("rms.expansions.usedcards").length() + 2, Locale.get("rms.expansions.usedcards").length() + 3)));
+					GameApp.dominion.setCardsUsedForExpansion(2, parseInt(settings.elementAt(i).toString().substring(Locale.get("rms.expansions.usedcards").length() + 3, Locale.get("rms.expansions.usedcards").length() + 4)));
+					GameApp.dominion.setCardsUsedForExpansion(3, parseInt(settings.elementAt(i).toString().substring(Locale.get("rms.expansions.usedcards").length() + 4)));
+				}
+			}
+		}
+		this.quickGameRandomizerCG.setSelectedFlags(GameApp.flags);
+		this.setCardsFromExpansion(0, GameApp.dominion.getNumberOfExpansionCards()[0]);
+		this.setCardsFromExpansion(1, GameApp.dominion.getNumberOfExpansionCards()[1]);
+		this.setCardsFromExpansion(2, GameApp.dominion.getNumberOfExpansionCards()[2]);
+		this.setCardsFromExpansion(3, GameApp.dominion.getNumberOfExpansionCards()[3]);
 	}
 	
 	public void commandAction(Command cmd, Displayable screen) {
-		//showAlert("Cmd: " + cmd.getLabel() + ". Screen: " + screen.getTitle());
+		this.quickGameRandomizerCG.getSelectedFlags(GameApp.flags);
 		if ( cmd == this.quickRandomizeCardsCmd ) {
-			this.app.showRandomizedCards(getExpansionFlags(), isEmptySelection(), isOnlyPromoSelection());
-			try {
-				new SettingsRecordStorage().writeExpansions(flags);
-			} catch (RecordStoreFullException e) {
-				// TODO Auto-generated catch block
-			} catch (RecordStoreNotFoundException e) {
-				// TODO Auto-generated catch block
-			} catch (RecordStoreException e) {
-				// TODO Auto-generated catch block
-			}
+			this.app.showRandomizedCards();
 		} else if ( cmd == this.quitCmd ) {
 			this.app.quit();
 		}
@@ -123,20 +129,12 @@ public class QuickRandomizeForm extends Form implements CommandListener, ItemCom
 	
 	public void commandAction(Command cmd, Item item) {
 		if ( cmd == this.quitCmd ) {
-			this.app.quit();
+			this.commandAction(cmd, this);
 		} else if ( item == this.whatToDoCG && cmd == this.selectCmd ) {
 			switch ( this.whatToDoCG.getSelectedIndex() ) {
 			case 0:
-				this.app.showRandomizedCards(getExpansionFlags(), isEmptySelection(), isOnlyPromoSelection());
-				try {
-					new SettingsRecordStorage().writeExpansions(flags);
-				} catch (RecordStoreFullException e) {
-					// TODO Auto-generated catch block
-				} catch (RecordStoreNotFoundException e) {
-					// TODO Auto-generated catch block
-				} catch (RecordStoreException e) {
-					// TODO Auto-generated catch block
-				}
+				this.quickGameRandomizerCG.getSelectedFlags(GameApp.flags);
+				this.app.showRandomizedCards();
 				break;
 			case 1:
 				this.app.showBlackMarketDeck(this);
@@ -144,5 +142,67 @@ public class QuickRandomizeForm extends Form implements CommandListener, ItemCom
 			}
 		} else if ( item == this.quickGameRandomizerCG )
 			this.commandAction(cmd, this);	
+	}
+	
+	public void keyPressed(int keyCode) {
+		switch (keyCode) {
+		case Canvas.KEY_NUM0:
+			this.setCardsFromExpansion(0);
+			break;
+		case Canvas.KEY_NUM1:
+			this.setCardsFromExpansion(1);
+			break;
+		case Canvas.KEY_NUM2:
+			this.setCardsFromExpansion(2);
+			break;
+		case Canvas.KEY_NUM3:
+			this.setCardsFromExpansion(3);
+			break;
+		case Canvas.KEY_NUM4:
+			this.setCardsFromExpansion(4);
+			break;
+		case Canvas.KEY_NUM5:
+			this.setCardsFromExpansion(5);
+			break;
+		case Canvas.KEY_NUM6:
+			this.setCardsFromExpansion(6);
+			break;
+		case Canvas.KEY_NUM7:
+			this.setCardsFromExpansion(7);
+			break;
+		case Canvas.KEY_NUM8:
+			this.setCardsFromExpansion(8);
+			break;
+		case Canvas.KEY_NUM9:
+			this.setCardsFromExpansion(9);
+			break;
+		default:
+			super.keyPressed(keyCode);
+		}
+	}
+	
+	private void setCardsFromExpansion(int numberCards) {
+		//#debug info
+		System.out.println("trying to set cards from expansion");
+		this.setCardsFromExpansion(UiAccess.getFocusedIndex(this.quickGameRandomizerCG), numberCards);
+	}
+	
+	private void setCardsFromExpansion(int expansion, int numberOfCards) {
+		if ( -1 < expansion ) {
+			//#debug info
+			System.out.println("expansion found " + expansion);
+			if ( numberOfCards > 0 )
+				if ( expansion == 1 && numberOfCards > 2 )
+					this.app.showAlert(Locale.get("alert.CardsFromExpansion.Promo"));
+				else
+					this.quickGameRandomizerCG.set(expansion, this.app.getExpansionName(expansion) + " " + numberOfCards, this.quickGameRandomizerCG.getImage(expansion));					
+			else
+				this.quickGameRandomizerCG.set(expansion, this.app.getExpansionName(expansion), this.quickGameRandomizerCG.getImage(expansion));
+			GameApp.dominion.setCardsUsedForExpansion(expansion, numberOfCards);
+		}
+	}
+	
+	private static int parseInt(String value) {
+		return Integer.parseInt(value);		
 	}
 }

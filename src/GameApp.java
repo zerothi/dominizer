@@ -30,9 +30,14 @@ import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
+import javax.microedition.lcdui.List;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
+import javax.microedition.rms.RecordStoreException;
+import javax.microedition.rms.RecordStoreFullException;
+import javax.microedition.rms.RecordStoreNotFoundException;
 
+import de.enough.polish.ui.UiAccess;
 import de.enough.polish.util.DeviceControl;
 import de.enough.polish.util.Locale;
 /**
@@ -49,7 +54,8 @@ import de.enough.polish.util.Locale;
 public class GameApp extends MIDlet {
 	Displayable currentForm = null;
 	Display display = null;
-	private Dominion dominion = null;
+	public static Dominion dominion = null;
+	public static boolean[] flags = new boolean[] {true, true, true, true};
 	
 	public GameApp() {
 		super();
@@ -60,32 +66,21 @@ public class GameApp extends MIDlet {
 		//#debug info
 		System.out.println("initialisation done.");
 	}
-	
-	
-	public boolean updateSelectedQuickRandom(boolean[] flags, boolean empty, boolean promo) {
-		if ( promo ) {
+
+	public void showRandomizedCards() {
+		if ( !flags[0] && flags[1] && !flags[2] && !flags[3] )
 			this.showAlert(Locale.get("alert.QuickSelectExpansions.OnlyPromoSelected"));
-			return false;
-		} else if ( empty ) {
+		else if ( !flags[0] && !flags[1] && !flags[2] && !flags[3] )
 			this.showAlert(Locale.get("alert.QuickSelectExpansions.NoneSelected"));
-			return false;
-		} else {
+		else {
 			this.dominion.setExpansionPlayingState(Locale.get("rms.base"), flags[0]);
 			this.dominion.setExpansionPlayingState(Locale.get("rms.promo"), flags[1]);
 			this.dominion.setExpansionPlayingState(Locale.get("rms.intrigue"), flags[2]);
 			this.dominion.setExpansionPlayingState(Locale.get("rms.seaside"), flags[3]);
-			return true;
-		}
-	}
-	
-	public void showRandomizedCards(boolean[] flags, boolean empty, boolean promo) {
-		if ( updateSelectedQuickRandom(flags, empty, promo) ) {
 			ShowCardsForm scForm = new ShowCardsForm(this, this.dominion, Locale.get("screen.RandomizedCards.title"));
 			scForm.reRandomize();
 			this.changeToScreen(scForm);
-		} else
-			this.showAlert("Flag: " + flags[0] + flags[1] + flags[2] + flags[3]);
-		
+		}
 	}
 	
 	public void showBlackMarketDeck(Form previousForm) {
@@ -138,6 +133,32 @@ public class GameApp extends MIDlet {
 	}
 	
 	public void quit() {
+		try {
+			SettingsRecordStorage srs = new SettingsRecordStorage();
+			srs.writeExpansions(GameApp.flags);
+			srs.writeExpansionCards(GameApp.dominion.getNumberOfExpansionCards());
+			srs = null;
+		} catch (RecordStoreFullException e) {
+			// TODO Auto-generated catch block
+		} catch (RecordStoreNotFoundException e) {
+			// TODO Auto-generated catch block
+		} catch (RecordStoreException e) {
+			// TODO Auto-generated catch block
+		}
 		notifyDestroyed();
+	}
+	
+	public String getExpansionName(int expansion) {
+		switch ( expansion ) {
+		case 0:
+			return Locale.get("base");
+		case 1:
+			return Locale.get("promo");
+		case 2:
+			return Locale.get("intrigue");
+		case 3:
+			return Locale.get("seaside");
+		}
+		return "";
 	}
 }

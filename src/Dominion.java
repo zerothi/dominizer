@@ -11,6 +11,7 @@ public class Dominion {
 	
 	private Vector cards = null;
 	private int numberOfRandomCards = 10;
+	private boolean[] playingExpansions = new boolean[] {true, true, true, true};
 	private int[] numberOfCardsFromExp = new int[] {0, 0, 0, 0};
 	
 	public Dominion() {
@@ -46,17 +47,25 @@ public class Dominion {
 		int selectedElement = 0;
 		Random selector = new Random(System.currentTimeMillis());
 		int i = 0;
-		if ( 0 < numberOfCardsFromExp[0] )
+		if ( 0 < numberOfCardsFromExp[0] &&)
+			//#debug info
+			System.out.println("starting selecting for BASE");
 			while ( i < numberOfCardsFromExp[0] ) {
 				selectedElement = selector.nextInt(totalAvailable);
+				//#debug info
+				System.out.println("try selecting" + selectedElement);
 				if ( ((Card)cards.elementAt(selectedElement)).isAvailable() && !selectedCards.contains(cards.elementAt(selectedElement)) 
 						&& ((Card)cards.elementAt(selectedElement)).getExpansion().equals(Locale.get("base")) ) {
 					((Card)cards.elementAt(selectedElement)).setPlaying(true);
 					selectedCards.addElement(cards.elementAt(selectedElement));
 					i++;
+					//#debug info
+					System.out.println("BASE game selection: " + i);
 				}
 			}
 		if ( 0 < numberOfCardsFromExp[1] )
+			//#debug info
+			System.out.println("starting selecting for PROMO");
 			while ( i < numberOfCardsFromExp[0] + numberOfCardsFromExp[1] ) {
 				selectedElement = selector.nextInt(totalAvailable);
 				if ( ((Card)cards.elementAt(selectedElement)).isAvailable() && !selectedCards.contains(cards.elementAt(selectedElement)) 
@@ -64,9 +73,13 @@ public class Dominion {
 					((Card)cards.elementAt(selectedElement)).setPlaying(true);
 					selectedCards.addElement(cards.elementAt(selectedElement));
 					i++;
+					//#debug info
+					System.out.println("PROMO game selection: " + i);
 				}
 			}
 		if ( 0 < numberOfCardsFromExp[2] )
+			//#debug info
+			System.out.println("starting selecting for INTRIGUE");
 			while ( i < numberOfCardsFromExp[0] + numberOfCardsFromExp[1] + numberOfCardsFromExp[2] ) {
 				selectedElement = selector.nextInt(totalAvailable);
 				if ( ((Card)cards.elementAt(selectedElement)).isAvailable() && !selectedCards.contains(cards.elementAt(selectedElement)) 
@@ -74,9 +87,13 @@ public class Dominion {
 					((Card)cards.elementAt(selectedElement)).setPlaying(true);
 					selectedCards.addElement(cards.elementAt(selectedElement));
 					i++;
+					//#debug info
+					System.out.println("INTRIGUE game selection: " + i);
 				}
 			}
 		if ( 0 < numberOfCardsFromExp[3] )
+			//#debug info
+			System.out.println("starting selecting for SEASIDE");
 			while ( i < numberOfCardsFromExp[0] + numberOfCardsFromExp[1] + numberOfCardsFromExp[2] + numberOfCardsFromExp[3] ) {
 				selectedElement = selector.nextInt(totalAvailable);
 				if ( ((Card)cards.elementAt(selectedElement)).isAvailable() && !selectedCards.contains(cards.elementAt(selectedElement)) 
@@ -84,6 +101,8 @@ public class Dominion {
 					((Card)cards.elementAt(selectedElement)).setPlaying(true);
 					selectedCards.addElement(cards.elementAt(selectedElement));
 					i++;
+					//#debug info
+					System.out.println("SEASIDE game selection: " + i);
 				}
 			}
 		while ( i < numberOfRandomCards ) {
@@ -99,21 +118,15 @@ public class Dominion {
 		return sortCards(selectedCards);
 	}
 	
-	public boolean setCardsUsedForExpansion(String expansion, int numberOfCards) {
-		if ( Locale.get("base").equals(expansion) && numberOfRandomCards >= getNumberOfCardsSum(0) + numberOfCards ) {
-			numberOfCardsFromExp[0] = numberOfCards;
-			return true;
-		} else if ( Locale.get("promo").equals(expansion) && numberOfRandomCards >= getNumberOfCardsSum(1) + numberOfCards ) {
-			numberOfCardsFromExp[1] = numberOfCards;
-			return true;
-		} else if ( Locale.get("intrigue").equals(expansion) && numberOfRandomCards >= getNumberOfCardsSum(2) + numberOfCards ) {
-			numberOfCardsFromExp[2] = numberOfCards;
-			return true;
-		} else if ( Locale.get("seaside").equals(expansion) && numberOfRandomCards >= getNumberOfCardsSum(3) + numberOfCards ) {
-			numberOfCardsFromExp[3] = numberOfCards;
-			return true;
-		}
-		return false;
+	public void setCardsUsedForExpansion(int expansion, int numberOfCards) {
+		if ( expansion == 0 && numberOfRandomCards >= getNumberOfCardsSum(0) + numberOfCards )
+			numberOfCardsFromExp[expansion] = numberOfCards;
+		else if ( expansion == 1 && numberOfRandomCards >= getNumberOfCardsSum(1) + numberOfCards )
+			numberOfCardsFromExp[expansion] = numberOfCards;
+		else if ( expansion == 2 && numberOfRandomCards >= getNumberOfCardsSum(2) + numberOfCards )
+			numberOfCardsFromExp[expansion] = numberOfCards;
+		else if ( expansion == 3 && numberOfRandomCards >= getNumberOfCardsSum(3) + numberOfCards )
+			numberOfCardsFromExp[expansion] = numberOfCards;
 	}
 	
 	public Vector sortCards(Vector cards) {
@@ -130,6 +143,10 @@ public class Dominion {
 			}
 		}
 		return cards;
+	}
+	
+	public int[] getNumberOfExpansionCards() {
+		return numberOfCardsFromExp;
 	}
 	
 	private int getNumberOfCardsSum(int overlook) {

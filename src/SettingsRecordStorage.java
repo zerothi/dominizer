@@ -15,14 +15,13 @@ public class SettingsRecordStorage {
 	public static final char SMALL_SPLITTER = '#';
 	public static final char OPTION_SPLITTER = '=';
 
-	private Vector settings = null;
+	private Vector data = null;
 	private RecordStore store = null;
 	private byte[] tmpByte = null;
-	boolean[] expansionsSettings = new boolean[] {true, true, true, false};
 
 	public SettingsRecordStorage() {
 		super();
-		settings = null;
+		data = null;
 		if ( store != null ) {
 			try {
 				store.closeRecordStore();
@@ -36,34 +35,6 @@ public class SettingsRecordStorage {
 				store = null;
 			}
 		}
-			
-	}
-
-	public boolean[] getExpansions() throws RecordStoreFullException, RecordStoreNotFoundException, RecordStoreException {
-		//#debug info
-		System.out.println("reading file.");
-		settings = readData(Locale.get("rms.file.settings"));
-		if ( settings == null ) {
-			//#debug info
-			System.out.println("SettingsRecordStorage: getExpansions : settings is null");
-		} else {
-			for ( int i = 0 ; i < settings.size() ; i++ ) {
-				//#debug info
-				System.out.println("found Element: " + settings.elementAt(i).toString());
-				if ( settings.elementAt(i).toString().startsWith(Locale.get("rms.expansions")) ) {
-					//#debug info
-					System.out.println("getExpansions: " + settings.elementAt(i).toString() + " first: " + settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 1, Locale.get("rms.expansions").length() + 2));
-					expansionsSettings[0] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 1, Locale.get("rms.expansions").length() + 2).equals("1");
-					expansionsSettings[1] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 2, Locale.get("rms.expansions").length() + 3).equals("1");
-					expansionsSettings[2] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 3, Locale.get("rms.expansions").length() + 4).equals("1");
-					expansionsSettings[3] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 4).equals("1");
-					i = settings.size();
-				}
-			}
-		}
-		//#debug info
-		System.out.println("found " + expansionsSettings[0] + expansionsSettings[1] + expansionsSettings[2] + expansionsSettings[3]);
-		return expansionsSettings;
 	}
 
 	public boolean writeExpansions(boolean[] expansions) throws RecordStoreFullException, RecordStoreNotFoundException,
@@ -75,9 +46,19 @@ public class SettingsRecordStorage {
 		sb.append(expansions[3] ? "1" : "0");
 		return writeData(Locale.get("rms.file.settings"), Locale.get("rms.expansions"), sb.toString());
 	}
+	
+	public boolean writeExpansionCards(int[] expansionCards) throws RecordStoreFullException, RecordStoreNotFoundException,
+	RecordStoreException {
+		StringBuffer sb = new StringBuffer(4);
+		sb.append(expansionCards[0]);
+		sb.append(expansionCards[1]);
+		sb.append(expansionCards[2]);
+		sb.append(expansionCards[3]);
+		return writeData(Locale.get("rms.file.settings"), Locale.get("rms.expansions.usedcards"), sb.toString());
+}
 
 	public Vector readData(String recordStore) throws RecordStoreFullException, RecordStoreException {
-		Vector data = null;
+		data = null;
 		try {
 			//#debug info
 			System.out.println("opening record store");
@@ -118,7 +99,7 @@ public class SettingsRecordStorage {
 		//#debug info
 		System.out.println("Writing record: " + record);
 		try {
-			settings = readData(recordStore);
+			data = readData(recordStore);
 		} catch (RecordStoreFullException rms) {
 			//#debug info
 			System.out.println("error read");
@@ -126,13 +107,13 @@ public class SettingsRecordStorage {
 			//#debug info
 			System.out.println("error read");
 		}
+		this.deleteRecordStore(recordStore);
 		try {
-			this.deleteRecordStore(recordStore);
 			store = RecordStore.openRecordStore(recordStore, true);
-			if ( settings != null )
-				for ( int i = 0 ; i < settings.size() ; i++ )
-					if ( !settings.elementAt(i).toString().startsWith(key) )
-						store.addRecord(settings.elementAt(i).toString().getBytes(), 0, settings.elementAt(i).toString().getBytes().length);
+			if ( data != null )
+				for ( int i = 0 ; i < data.size() ; i++ )
+					if ( !data.elementAt(i).toString().startsWith(key) )
+						store.addRecord(data.elementAt(i).toString().getBytes(), 0, data.elementAt(i).toString().getBytes().length);
 			store.addRecord(new String(key + BIG_SPLITTER + record).getBytes(), 0, new String(key + BIG_SPLITTER + record).getBytes().length);
 			//#debug info
 			System.out.println("Succes");
@@ -141,6 +122,7 @@ public class SettingsRecordStorage {
 		} finally {
 			store.closeRecordStore();
 		}
+		data = null;
 		return succes;
 	}
 	

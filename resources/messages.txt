@@ -37,6 +37,7 @@ alert.Settings.CouldNotBeRead=Settings could not be read!\nSorry.
 alert.Settings.CouldNotBeSaved=Settings could not be saved!\nSorry.
 alert.QuickSelectExpansions.OnlyPromoSelected=You have only selected Promo's.\nSelect more!
 alert.QuickSelectExpansions.NoneSelected=You have not selected any expansions.\nSelect at least one!
+alert.CardsFromExpansion.Promo=You cannot have more than 2 cards from the Promo deck.\nUse fewer!
 
 ################
 #
@@ -94,6 +95,7 @@ polish.command.back=Back
 #################
 rms.file.settings=settings
 rms.expansions=expansions
+rms.expansions.usedcards=expcards
 rms.notselected=no
 rms.base=ba
 rms.promo=pr
