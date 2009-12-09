@@ -157,6 +157,7 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 	}
 	
 	public void setBlackMarketDeck(Cards blackMarketDeck) {
+		this.blackMarketDeck = new Vector(blackMarketDeck.size());
 		for ( int i = 0 ; i < blackMarketDeck.size() ; i++ )
 			this.blackMarketDeck.addElement(blackMarketDeck.getName(i));
 		this.currentlyReachedCard = 0;
