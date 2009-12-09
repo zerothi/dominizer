@@ -1,3 +1,4 @@
+<<<<<<< .working
 ################
 #
 # App Specific translations
@@ -100,4 +101,107 @@ rms.notselected=no
 rms.base=ba
 rms.promo=pr
 rms.intrigue=in
-rms.seaside=se
+rms.seaside=se=======
+################
+#
+# App Specific translations
+#
+################
+mainScreen.ChoiceWhatToDo=What to do?
+mainScreen.QuickSelectExpansions=Expansions Used:
+table.heading.Name=Name
+table.heading.Expansion=Exp.
+table.heading.Cost=#
+table.heading.ActionCard=A
+table.heading.VictoryCard=V
+table.heading.TreasuryCard=T
+table.heading.ReactionCard=R
+table.heading.AttackCard=A
+table.heading.DurationCard=D
+screen.RandomizedCards.title=Randomized Cards
+screen.EditCards.title=Edit Cards
+screen.EditCards.ChoiceCurrentlySelected=Selected Card:
+screen.BlackMarket.title=Black Market
+screen.BlackMarket.ChooseNone=None
+screen.BlackMarket.ChooseCards=Choose Card:
+screen.BlackMarket.InfoMessage=You have chosen: 
+screen.BlackMarket.DeckEmpty=Black Market deck is empty
+cmd.Randomize.Show=Randomize
+cmd.BlackMarket=Black Market Deck
+cmd.BlackMarket.Draw=Draw New
+cmd.BlackMarket.Show=Show BM deck
+cmd.EditCards.Show=Edit Cards
+cmd.Back=Back
+cmd.ShowLog=Show Log
+cmd.Quit=Quit
+cmd.switch=Switch
+alert.alert=Alert
+alert.info=Info
+alert.Settings.CouldNotBeRead=Settings could not be read!\nSorry.
+alert.Settings.CouldNotBeSaved=Settings could not be saved!\nSorry.
+alert.QuickSelectExpansions.OnlyPromoSelected=You have only selected Promo's.\nSelect more!
+alert.QuickSelectExpansions.NoneSelected=You have not selected any expansions.\nSelect at least one!
+alert.CardsFromExpansion.Promo=You cannot have more than 2 cards from the Promo deck.\nUse fewer!
+
+################
+#
+# Expansion Names
+#
+################
+base=Base
+promo=Promo
+intrigue=Intrigue
+seaside=Seaside
+card.BlackMarket=Black Market
+
+################
+#
+# Application Name
+#
+################
+app.name=Dominizer
+
+################
+#
+# Polish Settings
+#
+################
+polish.command.ok=Ok
+polish.command.cancel=Cancel
+polish.command.select=Select
+polish.command.mark=Mark
+polish.command.unmark=Unmark
+polish.command.options=Options
+# for deleting a single char:
+polish.command.delete=Delete
+# for deleting a complete TextField:
+polish.command.clear=Clear
+# for hiding menus on BlackBerry devices:
+polish.command.hide=Hide
+# for showing a default title when no label
+# is defined in a TextField. This is only
+# used when no direct input mode is activated:
+polish.title.input=Input
+# used for showing a screen for selecting symbols within TextFields:
+polish.command.entersymbol=Add Symbol
+# used by the HtmlBrowser for a links:
+polish.command.followlink=Go
+# used by the HtmlBrowser for submitting a form:
+polish.command.submit=Submit
+# used by the RssBrowser for returning to the previous page:
+polish.command.back=Back
+
+#################
+#
+# No need for translations
+# only used for RMS
+#
+#################
+rms.file.settings=settings
+rms.expansions=expansions
+rms.expansions.usedcards=expcards
+rms.notselected=no
+rms.base=ba
+rms.promo=pr
+rms.intrigue=in
+rms.seaside=se>>>>>>> .merge-right.r177

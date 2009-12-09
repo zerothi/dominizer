@@ -156,29 +156,9 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 			return this.getIndexCard(index - this.blackMarketDeck.size());
 	}
 	
-	public void setBlackMarketDeck(Vector cards) {
-		this.currentlyReachedCard = 0;
-		for ( int i = 0 ; i < cards.size() ; i++ ) 
-			if ( !( (Card)cards.elementAt(i) ).isPlaying() &  ( (Card)cards.elementAt(i) ).isBlackMarketAvailable() )
-				this.currentlyReachedCard++;
-		if ( this.blackMarketDeck == null )
-			this.blackMarketDeck = new Vector(this.currentlyReachedCard);
-		else {
-			this.blackMarketDeck.removeAllElements();
-			this.blackMarketDeck.ensureCapacity(this.currentlyReachedCard);
-		}
-		for ( int i = 0 ; i < this.currentlyReachedCard ; i++ )
-			this.blackMarketDeck.addElement(null);
-		this.randomize = 0;
-		Random selector = new Random(System.currentTimeMillis());
-		for ( int i = 0 ; i < cards.size() ; i++ )
-			if ( !( (Card)cards.elementAt(i) ).isPlaying() &  ( (Card)cards.elementAt(i) ).isBlackMarketAvailable() ) {
-				this.randomize = selector.nextInt(this.currentlyReachedCard);
-				while ( this.blackMarketDeck.elementAt(this.randomize) != null )
-					this.randomize = selector.nextInt(this.currentlyReachedCard);
-				this.blackMarketDeck.setElementAt(((Card)cards.elementAt(i)).getName(), this.randomize);
-			}
-		selector = null;
+	public void setBlackMarketDeck(Cards blackMarketDeck) {
+		for ( int i = 0 ; i < blackMarketDeck.size() ; i++ )
+			this.blackMarketDeck.addElement(blackMarketDeck.getName(i));
 		this.currentlyReachedCard = 0;
 	}
 	
