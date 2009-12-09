@@ -99,7 +99,20 @@ public class Dominion {
 		}
 		while ( selected < numberOfRandomCards ) {
 			selectedElement = selector.nextInt(TOTAL_CARDS);
-			tmpSum = 
+			if ( selectedElement < expansions[0].size() )
+				tmpSum = 0;
+			else if ( selectedElement < (expansions[0].size() + expansions[1].size()) ) {
+				selectedElement -= expansions[0].size();
+				tmpSum = 1;
+			} else if ( selectedElement < (expansions[0].size() + expansions[1].size() + expansions[2].size()) ) {
+				selectedElement -= (expansions[0].size() + expansions[1].size());
+				tmpSum = 2;
+			} else if ( selectedElement < (expansions[0].size() + expansions[1].size() + expansions[2].size() + expansions[3].size()) ) {
+				selectedElement -= (expansions[0].size() + expansions[1].size() + expansions[2].size());
+				tmpSum = 3;
+			}
+			//#debug info
+			System.out.println("choosing expansion: " + tmpSum + ". together with card: " + selectedElement);
 			if ( expansions[tmpSum].isAvailable(selectedElement) && !selectedCards.contains(expansions[tmpSum].getName(selectedElement)) ) {
 				expansions[tmpSum].setPlaying(selectedElement, true);
 				selectedCards.setCard(selected, expansions[tmpSum].getCard(selectedElement));
@@ -108,22 +121,6 @@ public class Dominion {
 		}
 		selector = null;
 		return sortCards(selectedCards);
-	}
-	
-	public int getCardIndex(int selectedCard) {
-		if ( selectedCard < expansions[0].size() )
-			return 0;
-		else if ( selectedCard < (expansions[0].size() + expansions[1].size()) ) {
-			selectedCard -= expansions[0].size();
-			return 1;
-		} else if ( selectedCard < (expansions[0].size() + expansions[1].size() + expansions[2].size()) ) {
-			selectedCard -= expansions[0].size() + expansions[1].size();
-			return 2;
-		} else if ( selectedCard < (expansions[0].size() + expansions[1].size() + expansions[2].size() + expansions[3].size()) ) {
-			selectedCard -= expansions[0].size() + expansions[1].size() + expansions[2].size();
-			return 3;
-		}
-		return 0;
 	}
 	
 	public Cards getBlackMarketDeck() {
