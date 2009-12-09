@@ -54,7 +54,7 @@ public class TableCardForm extends Form implements CommandListener {
 		this.table.set(8, 0, Locale.get("table.heading.DurationCard"));
 		//#debug
 		System.out.println("adding card information");
-		for (int cardNumber = 0 ; cardNumber < cards.size() ; cardNumber++ ) {
+		for (int cardNumber = 0 ; cardNumber < cards.size() ; cardNumber++ ) {/*
 			//#style tableCell
 			this.table.set(0, cardNumber + 1, ( (Card) cards.elementAt(cardNumber)).getName() );
 			//#style tableCell
@@ -72,7 +72,7 @@ public class TableCardForm extends Form implements CommandListener {
 			//#style tableCell
 			this.table.set(7, cardNumber + 1, ( (Card) cards.elementAt(cardNumber) ).isAttack() == true ? "Y" : "N" );
 			//#style tableCell
-			this.table.set(8, cardNumber + 1, ( (Card) cards.elementAt(cardNumber) ).isDuration() == true ? "Y" : "N" );
+			this.table.set(8, cardNumber + 1, ( (Card) cards.elementAt(cardNumber) ).isDuration() == true ? "Y" : "N" );*/
 		}
 	}
 	

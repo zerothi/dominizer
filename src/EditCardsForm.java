@@ -39,7 +39,7 @@ public class EditCardsForm extends Form implements CommandListener, ItemStateLis
 
 	public void setCards(Vector cardsV) {
 		this.cards = new Object[11][cardsV.size()];
-		this.cardGroup.deleteAll();
+		this.cardGroup.deleteAll();/*
 		for ( int cardNumber = 0 ; cardNumber < cardsV.size() ; cardNumber++ ) {
 			this.cards[0][cardNumber] = ( (Card)cardsV.elementAt(cardNumber)).getName();
 			this.cardGroup.append((String)this.cards[0][cardNumber], null);
@@ -53,7 +53,7 @@ public class EditCardsForm extends Form implements CommandListener, ItemStateLis
 			this.cards[8][cardNumber] = new Boolean(( (Card)cardsV.elementAt(cardNumber)).isDuration());
 			this.cards[9][cardNumber] = new Boolean(( (Card)cardsV.elementAt(cardNumber)).isAvailable());
 			this.cards[10][cardNumber] = new Boolean(( (Card)cardsV.elementAt(cardNumber)).isBlackMarketAvailable());
-		}
+		}*/
 	}
 	
 	public void commandAction(Command cmd, Displayable disp) {
