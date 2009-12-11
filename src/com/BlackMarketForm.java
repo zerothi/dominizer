@@ -49,6 +49,7 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 		super(title);
 		this.app = app;
 		this.previousForm = previousForm;
+		//#style mainItem
 		this.informationItem = new StringItem("", Locale.get("screen.BlackMarket.DrawTextInfo"));
 		//#style filterCards
 		this.chooseCard = new ChoiceGroup(Locale.get("screen.BlackMarket.ChooseCards"), ChoiceGroup.EXCLUSIVE);
@@ -86,7 +87,8 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 		if ( this.blackMarketDeck.size() == 0 ) {
 			//style choiceItem
 			this.chooseCard.deleteAll();
-			this.chooseCard.append(Locale.get("screen.BlackMarket.DeckEmpty"), null);
+			this.deleteAll();
+			
 		} else if ( this.blackMarketDeck.size() <= this.currentlyReachedCard ) {
 			//#debug info
 			System.out.println("size to large. remaining: " + remaining);
@@ -108,13 +110,18 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 				this.app.showInfo(Locale.get("screen.BlackMarket.InfoMessage") + "\n" + blackMarketDeck.elementAt(i).toString() + ".");
 				this.drawnDeck.addElement(this.blackMarketDeck.elementAt(i));
 				this.blackMarketDeck.removeElementAt(i);
+				this.addCommand(cancelBuyCmd);
 			}
 		}
 		this.deleteAll();
 		this.chooseCard.deleteAll();
+		if ( this.blackMarketDeck.size() != 0 )
+			this.addCommand(this.drawCardsCmd);
+		else {
+			//#style mainItem
+			this.informationItem = new StringItem("", Locale.get("screen.BlackMarket.DeckEmpty"));
+		}
 		this.append(informationItem);
-		this.addCommand(cancelBuyCmd);
-		this.addCommand(this.drawCardsCmd);
 		/*this.chooseCard.removeCommand(this.selectCardCmd);
 		this.chooseCard.addCommand(this.drawCardsCmd);*/
 		//this.setDefaultCommand(this.drawCardsCmd);
@@ -124,7 +131,11 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 		if ( show )
 			this.app.showConfirmation(Locale.get("screen.BlackMarket.CancelBuy") + this.drawnDeck.lastElement(), this);
 		else {
-			this.blackMarketDeck.insertElementAt(this.drawnDeck.lastElement(), getIndexCard(currentlyReachedCard - 1));
+			if ( this.blackMarketDeck.size() == 0 ) {
+				this.blackMarketDeck.addElement(this.drawnDeck.lastElement());
+				this.addCommand(drawCardsCmd);
+			} else
+				this.blackMarketDeck.insertElementAt(this.drawnDeck.lastElement(), getIndexCard(currentlyReachedCard - 1));
 			this.drawnDeck.removeElementAt(this.drawnDeck.size() - 1);
 			if ( this.drawnDeck.size() == 0 )
 				this.removeCommand(cancelBuyCmd);

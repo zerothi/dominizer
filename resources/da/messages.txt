@@ -18,13 +18,16 @@ screen.RandomizedCards.title=Generer Kort
 screen.EditCards.title=Rediger Kort
 screen.EditCards.ChoiceCurrentlySelected=Valgt Kort:
 screen.BlackMarket.title=Black Market
+screen.BlackMarket.DrawTextInfo=Træk venligst nye kort
 screen.BlackMarket.ChooseNone=Ingen
 screen.BlackMarket.ChooseCards=Vælg Kort:
 screen.BlackMarket.InfoMessage=Du har valgt: 
 screen.BlackMarket.DeckEmpty=Black Market deck er tomt
+screen.BlackMarket.CancelBuy=Vil du annulere sidste køb?\n
 cmd.Randomize.Show=Generer
 cmd.BlackMarket=Black Market Deck
 cmd.BlackMarket.Draw=Træk Nye
+cmd.BlackMarket.CancelBuy=Annuler køb
 cmd.BlackMarket.Show=Træk BM deck
 cmd.EditCards.Show=Rediger Kort
 cmd.Back=Tilbage
@@ -33,10 +36,12 @@ cmd.Quit=Luk
 cmd.switch=Skift
 alert.alert=Advarsel
 alert.info=Information
+alert.confirmation=Bekræft
 alert.Settings.CouldNotBeRead=Indstillinger kunne ikke læses!\nUndskyld.
 alert.Settings.CouldNotBeSaved=Indstillinger kunne ikke gemmes!\nUndskyld.
 alert.QuickSelectExpansions.OnlyPromoSelected=Du har kun valgt Promo's.\nVælg flere!
 alert.QuickSelectExpansions.NoneSelected=Du har ikke valgt nogle fulde spil.\nVælg minimum en!
+alert.CardsFromExpansion.Promo=Du kan ikke have mere end 2 kort fra Promo decket.\nBrug færre!
 
 ################
 #

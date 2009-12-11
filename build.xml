@@ -28,9 +28,9 @@
 	<!-- the device for the test mode - you can define it on the command-line
 	     using the -D switch, e.g. ant -Ddevice=Generic/midp2 emulator -->
 	<!--property name="device" value="Generic/AnyPhone"/-->
-	<property name="device" value="Generic/Android"/>
-	<!--property name="device" value="Nokia/Series40E3"/-->
-	<property name="devices" value="Generic/AnyPhone,Generic/Midp2Cldc11,Nokia/Series40E3,Sony-Ericsson/JavaPlatform7,Sony-Ericsson/JavaPlatform8,Generic/Android"/>
+	<!--property name="device" value="Generic/Android"/-->
+	<property name="device" value="Nokia/Series40E3"/>
+	<property name="devices" value="Generic/AnyPhone,Generic/Midp2Cldc11,Nokia/Series40E3,Sony-Ericsson/JavaPlatform7,Sony-Ericsson/JavaPlatform8"/>
 
 
 	<!-- Definition of the J2ME Polish task:                      -->

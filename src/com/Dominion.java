@@ -1,8 +1,10 @@
 package com;
 
 
-
-import java.io.InputStream;
+//#if polish.android
+//#= import android.content.res.Resources;
+//#= import java.nio.charset.Charset;
+//#endif
 import java.io.InputStreamReader;
 import java.util.Random;
 
@@ -209,7 +211,7 @@ public class Dominion {
 		int cardRead = 0;
 		try {
 			//#if polish.android
-				//#= isr = new InputStreamReader(getResources().openRawResource(fileName),"UTF8");
+				//#= isr = new InputStreamReader(Resources.openRawResource(fileName), Charset.forName("UTF-8"));
 			//#else
 			isr = new InputStreamReader(this.getClass().getResourceAsStream(fileName),"UTF8");
 			//#endif

@@ -161,6 +161,11 @@ focused {
 }
 
 
+.mainItem {
+	font-color: translucentBrightFontColor;
+	font-size: medium;
+}
+
 
 .messageAlert {
 	padding: 20px;

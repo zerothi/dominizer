@@ -6,33 +6,28 @@
 mainScreen.ChoiceWhatToDo=Auswahlmenue
 mainScreen.QuickSelectExpansions=Benutzte Erweiterungen
 table.heading.Name=Name
-# Expansion=Erweiterung
 table.heading.Expansion=Erw.
-# Cost=
 table.heading.Cost=#
-# Action=Aktion
 table.heading.ActionCard=A
-# Victory=Siegpunkt
 table.heading.VictoryCard=S
-# Treasury=Geld
 table.heading.TreasuryCard=G
-# Reaction=Reaktion
 table.heading.ReactionCard=R
-# Attack=Angriff
 table.heading.AttackCard=A
-# Duration=Dauer
 table.heading.DurationCard=D
 screen.RandomizedCards.title=Zufällige Karten
 screen.EditCards.title=Karten bearbeiten
 screen.EditCards.ChoiceCurrentlySelected=Ausgewählte Karten:
 screen.BlackMarket.title=Schwarzmarkt
+screen.BlackMarket.DrawTextInfo=Bitte Karten ziehen
 screen.BlackMarket.ChooseNone=Keine
 screen.BlackMarket.ChooseCards=Wähle eine Karte:
 screen.BlackMarket.InfoMessage=Deine Auswahl:
 screen.BlackMarket.DeckEmpty=Der Schwarzmarkt-Stapel ist verbraucht
+screen.BlackMarket.CancelBuy=Wollen Sie abbrechen kaufen?\n
 cmd.Randomize.Show=Zufalls-Set
 cmd.BlackMarket=Schwarzmarkt-Stapel
 cmd.BlackMarket.Draw=Neu auswählen
+cmd.BlackMarket.CancelBuy=Abbrechen kaufen
 cmd.BlackMarket.Show=Zeige Schwarzmarkt-Stapel
 cmd.EditCards.Show=Karten bearbeiten
 cmd.Back=Zurück
@@ -45,6 +40,17 @@ alert.Settings.CouldNotBeRead=Die Einstellungen konnten leider\nnicht geladen we
 alert.Settings.CouldNotBeSaved=Die Einstellungen konnten leider\nnicht gespeichert werden
 alert.QuickSelectExpansions.OnlyPromoSelected=Es können nicht ausschließlich\nPromokarten ausgewählt werden!
 alert.QuickSelectExpansions.NoneSelected=Es wurde keine Erweiterung ausgewählt.\nBitte mindestens eine auswählen!
+alert.CardsFromExpansion.Promo=You cannot have more than 2 cards from the Promo deck.\nUse fewer!
+
+
+# Expansion=Erweiterung
+# Cost=
+# Action=Aktion
+# Victory=Siegpunkt
+# Treasury=Geld
+# Reaction=Reaktion
+# Attack=Angriff
+# Duration=Dauer
 
 ################
 #

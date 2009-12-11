@@ -17,14 +17,17 @@ table.heading.DurationCard=D
 screen.RandomizedCards.title=Cartes aléatoires
 screen.EditCards.title=Editer les cartes
 screen.EditCards.ChoiceCurrentlySelected=Carte sélectionnée:
-screen.BlackMarket.title=Black Market
-screen.BlackMarket.ChooseNone=None
-screen.BlackMarket.ChooseCards=Choose Card:
-screen.BlackMarket.InfoMessage=You have chosen: 
-screen.BlackMarket.DeckEmpty=Black Market deck is empty
+screen.BlackMarket.title=Marché noir
+screen.BlackMarket.DrawTextInfo=S'il vous plaît tirer des cartes
+screen.BlackMarket.ChooseNone=Nul
+screen.BlackMarket.ChooseCards=Choisir une carte:
+screen.BlackMarket.InfoMessage=Vous avez choisi: 
+screen.BlackMarket.DeckEmpty=Black Market deck est vide
+screen.BlackMarket.CancelBuy=Will you redo the buy?\n
 cmd.Randomize=Mélanger
 cmd.BlackMarket=Black Market Deck
 cmd.BlackMarket.Draw=Draw New
+cmd.BlackMarket.CancelBuy=Annuler acheter
 cmd.BlackMarket.Show=Show BM deck
 cmd.EditCards=Editer
 cmd.Back=Retour
@@ -33,10 +36,12 @@ cmd.Quit=Quitter
 cmd.switch=Basculer
 alert.alert=Alerte
 alert.info=Info
+alert.confirmation=Confirm
 alert.Settings.CouldNotBeRead=Settings could not be read!\nSorry.
 alert.Settings.CouldNotBeSaved=Settings could not be saved!\nSorry.
 alert.QuickSelectExpansions.OnlyPromoSelected=Vous n'avez sélectionné que des cartes promotionnelles.\nElargissez votre sélection !
 alert.QuickSelectExpansions.NoneSelected=Vous n'avez sélectionné aucune extension.\nChoisissez-en au moins une !
+alert.CardsFromExpansion.Promo=You cannot have more than 2 cards from the Promo deck.\nUse fewer!
 
 ################
 #

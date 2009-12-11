@@ -82,8 +82,8 @@ public class QuickRandomizeForm extends Form implements CommandListener, ItemCom
 		this.readExpansionSettings();
 		this.addCommand(this.quitCmd);
 		this.setCommandListener(this);
+		this.append(this.quickGameRandomizerCG);
 		this.append(this.whatToDoCG);
-		this.append(this.quickGameRandomizerCG);	
 	}
 	
 	public void readExpansionSettings() {
