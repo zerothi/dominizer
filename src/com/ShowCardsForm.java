@@ -1,3 +1,5 @@
+package com;
+
 
 
 import java.io.IOException;
@@ -9,6 +11,9 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.ImageItem;
+
+import com.dominizer.GameApp;
+
 
 
 import de.enough.polish.ui.TableItem;

@@ -1,3 +1,5 @@
+package com;
+
 import java.io.IOException;
 import java.util.Vector;
 
@@ -13,6 +15,9 @@ import javax.microedition.lcdui.ItemCommandListener;
 import javax.microedition.lcdui.ItemStateListener;
 import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreFullException;
+
+import com.dominizer.GameApp;
+
 
 import de.enough.polish.ui.ChoiceItem;
 import de.enough.polish.ui.UiAccess;

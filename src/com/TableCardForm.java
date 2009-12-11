@@ -1,3 +1,5 @@
+package com;
+
 
 
 import java.util.Vector;
@@ -6,6 +8,9 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
+
+import com.dominizer.GameApp;
+
 
 import de.enough.polish.ui.TableItem;
 import de.enough.polish.util.Locale;

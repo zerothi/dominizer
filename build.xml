@@ -28,9 +28,9 @@
 	<!-- the device for the test mode - you can define it on the command-line
 	     using the -D switch, e.g. ant -Ddevice=Generic/midp2 emulator -->
 	<!--property name="device" value="Generic/AnyPhone"/-->
-	<!--property name="device" value="Generic/Android"/-->
-	<property name="device" value="Nokia/Series40E3"/>
-	<property name="devices" value="Generic/AnyPhone,Generic/Midp2Cldc11,${device},Sony-Ericsson/JavaPlatform7,Sony-Ericsson/JavaPlatform8"/>
+	<property name="device" value="Generic/Android"/>
+	<!--property name="device" value="Nokia/Series40E3"/-->
+	<property name="devices" value="Generic/AnyPhone,Generic/Midp2Cldc11,Nokia/Series40E3,Sony-Ericsson/JavaPlatform7,Sony-Ericsson/JavaPlatform8,Generic/Android"/>
 
 
 	<!-- Definition of the J2ME Polish task:                      -->
@@ -76,7 +76,8 @@
 				jarName="${nospace(polish.vendor)}-${nospace(polish.name)}-${app.name}-${ nospace(polish.locale) }.jar" 
 				jarUrl="${deploy-url}${polish.jarName}" 
 				copyright="Copyright 2009 Nick Papior Andersen A/S. All rights reserved."
-				deleteConfirm="Delete ${app.name}? Nooo? :D" 
+				deleteConfirm="Delete ${app.name}? Nooo? :D"
+				icon="main.png"
 			/>
 			<!-- selection of supported devices -->
 			<!-- In the test mode the application is build only for the  -->
@@ -98,8 +99,15 @@
 			midp2Path="${polish.home}/import/midp-2.0.jar"
 				midlets definition -->
 				<midlets>
-					<midlet class="GameApp" name="${app.name}" icon="main.png" number="1" />
+					<midlet class="com.dominizer.GameApp" name="${app.name}" icon="main.png" number="1" />
 				</midlets>
+				
+				<sign
+					key="npakey"
+					keystore="ant/npa-release.keystore"
+					password="${password}"
+					if="polish.android"
+				/>
 
 				<!-- project-wide variables - used for preprocessing.  -->
 				<!-- You can set localized variables in the resources/messages.txt files as well.  -->
@@ -109,6 +117,10 @@
 					//#= private static final String UPDATE_URL = "${ update-url }";
 					You can change the title of the sample application with the "title"-var.
 					-->
+					<variable name="javac.source" value="1.5" if="polish.android" />
+					<variable name="javac.target" value="1.5" if="polish.android" />
+					<variable name="javac.source" value="1.3" unless="polish.android" />
+					<variable name="javac.target" value="1.3" unless="polish.android" />
 					<variable name="polish.FullScreen" value="false" if="polish.android" />
 					<variable name="polish.TextField.useDirectInput" value="true"/>
 					<!--variable name="polish.ScreenInfo.enable" value="true"/-->
@@ -137,6 +149,8 @@
 				<obfuscator name="ProGuard" unless="test or polish.blackberry or quick">
 					<parameter name="optimize" value="true" />
 					<parameter name="optimizationpasses" value="3"/>
+					<parameter name="dontskipnonpubliclibraryclasses" value=""/>
+					<parameter name="dontusemixedcaseclassnames" value=""/>
 				</obfuscator>
 				<!-- info memory -->
 				<debug if="info" showLogOnError="true" verbose="true" level="info">
@@ -175,14 +189,22 @@
 		<delete dir="tmp**"/>
 	</target>
 	
-	<target name="emulator"
+	<target name="emuGeneric"
 		description="invokes the emulator">
 		<exec executable="${wtk.runmidlet}" dir="./${dist.root.dir}" spawn="true">
 		    <arg value="./Nokia-Series40E3-Dominizer-${debugLang}.jad"/>
 		</exec>
 	</target>
 	
-	<target name="quickbuild" description="Quick builds for one" depends="enableQuick, j2mepolish, emulator" />
+	<target name="emuAndroid"
+		description="invokes the emulator">
+		<exec executable="${android.home}/tools/adb" dir="./${dist.root.dir}" spawn="true">
+			<arg value="install"/>
+			<arg value="./Generic-android-Dominizer-${debugLang}.apk"/>
+		</exec>
+	</target>
+	
+	<target name="quickbuild" description="Quick builds for one" depends="enableQuick, j2mepolish, emuGeneric" />
 	
 	<target name="deviceDebug" description="debugs the project" depends="enableDebug, enableInfo, j2mepolish" />
 	
@@ -213,4 +235,5 @@
 	<target name="enableMemory"> 
 		<property name="memory" value="true" />
 	</target>
+
 </project>

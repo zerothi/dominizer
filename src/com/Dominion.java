@@ -1,9 +1,10 @@
+package com;
+
 
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Random;
-import java.util.Vector;
 
 import de.enough.polish.util.Locale;
 
@@ -113,7 +114,8 @@ public class Dominion {
 			}
 			//#debug info
 			System.out.println("choosing expansion: " + tmpSum + ". together with card: " + selectedElement);
-			if ( expansions[tmpSum].isAvailable(selectedElement) && !selectedCards.contains(expansions[tmpSum].getName(selectedElement)) ) {
+			if ( playingExpansions[tmpSum] && expansions[tmpSum].isAvailable(selectedElement) && 
+					!selectedCards.contains(expansions[tmpSum].getName(selectedElement)) ) {
 				expansions[tmpSum].setPlaying(selectedElement, true);
 				selectedCards.setCard(selected, expansions[tmpSum].getCard(selectedElement));
 				selected++;
@@ -202,15 +204,15 @@ public class Dominion {
 	private void readResource(int exp, String fileName, int totalCards) {
 		expansions[exp] = new Cards(totalCards, Cards.IS_SET);
 		StringBuffer sb = new StringBuffer();
-		InputStream is = null;
 		InputStreamReader isr = null;
 		int start = 0;
 		int cardRead = 0;
 		try {
-			is = this.getClass().getResourceAsStream(fileName);      
-			if (is == null)
-				throw new Exception("File Does Not Exist");
-			isr = new InputStreamReader(is,"UTF8");
+			//#if polish.android
+				//#= isr = new InputStreamReader(getResources().openRawResource(fileName),"UTF8");
+			//#else
+			isr = new InputStreamReader(this.getClass().getResourceAsStream(fileName),"UTF8");
+			//#endif
 			int ch;
 			while ( (ch = isr.read()) > -1 ) {
 				sb.append((char)ch);
