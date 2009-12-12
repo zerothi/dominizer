@@ -3,7 +3,6 @@ package com;
 
 
 import java.io.IOException;
-import java.util.Vector;
 
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -13,8 +12,6 @@ import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.ImageItem;
 
 import com.dominizer.GameApp;
-
-
 
 import de.enough.polish.ui.TableItem;
 import de.enough.polish.util.Locale;

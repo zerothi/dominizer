@@ -47,8 +47,8 @@ public class QuickRandomizeForm extends Form implements CommandListener, ItemCom
 		this.app = app;
 		//#style choiceGroup
 		this.whatToDoCG = new ChoiceGroup(Locale.get("mainScreen.ChoiceWhatToDo"), ChoiceGroup.EXCLUSIVE);
-		//#style choiceItem
-		this.whatToDoCG.append(Locale.get("cmd.Randomize.Show"), null);
+		// #style choiceItem
+		//this.whatToDoCG.append(Locale.get("cmd.Randomize.Show"), null);
 		//#style choiceItem
 		this.whatToDoCG.append(Locale.get("cmd.BlackMarket.Show"), null);
 		/*//style choiceItem
@@ -138,13 +138,13 @@ public class QuickRandomizeForm extends Form implements CommandListener, ItemCom
 			this.commandAction(cmd, this);
 		} else if ( item == this.whatToDoCG && cmd == this.selectCmd ) {
 			switch ( this.whatToDoCG.getSelectedIndex() ) {
-			case 0:
+			case 1:
 				boolean[] flags = new boolean[4];
 				this.quickGameRandomizerCG.getSelectedFlags(flags);
 				Dominion.instance().setExpansionPlayingState(flags);
 				this.app.showRandomizedCards();
 				break;
-			case 1:
+			case 0:
 				this.app.showBlackMarketDeck(this);
 				break;
 			}

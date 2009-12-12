@@ -23,7 +23,7 @@ card.BlackMarket=Alternate Path
 #
 ################
 app.name=Zombinizer
-MIDlet-1=Zombinizer,/main.png,GameApp
+MIDlet-1=Zombinizer,/main.png,com.dominizer.GameApp
 MIDlet-Name=Zombinizer
 MIDlet-Delete-Confirm=Delete Zombinizer? Nooo? :D
 

@@ -31,6 +31,7 @@
 	<!--property name="device" value="Generic/Android"/-->
 	<property name="device" value="Nokia/Series40E3"/>
 	<property name="devices" value="Generic/AnyPhone,Generic/Midp2Cldc11,Nokia/Series40E3,Sony-Ericsson/JavaPlatform7,Sony-Ericsson/JavaPlatform8"/>
+	<!--property name="devices" value="Nokia/Series40E3"/-->
 
 
 	<!-- Definition of the J2ME Polish task:                      -->
@@ -133,8 +134,8 @@
 						<locale name="de" encoding="UTF-8"/>
 						<locale name="pl" encoding="UTF-8"/>
 						<locale name="fr" encoding="UTF-8"/>
-						<locale name="zombinion" encoding="UTF-8"/>
 						<locale name="christmas" encoding="UTF-8"/>
+						<locale name="zombinion" encoding="UTF-8"/>
 					</localization>
 					<localization if="debug or app.quick">
 						<locale name="${debugLang}" encoding="UTF-8"/>

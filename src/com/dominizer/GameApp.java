@@ -36,6 +36,7 @@ public class GameApp extends MIDlet {
 	Displayable currentForm = null;
 	Display display = null;
 	Alert alert = null;
+	
 	public GameApp() {
 		super();
 		//#debug info
@@ -99,10 +100,10 @@ public class GameApp extends MIDlet {
 	/**
 	 * @param string
 	 */
-	public void showInfo(String message) {
+	public void showInfo(String message, int timeOut) {
 		//#style messageAlert
 		alert = new Alert(Locale.get("alert.info"), message, null, AlertType.INFO);
-		alert.setTimeout(Alert.FOREVER);
+		alert.setTimeout(timeOut);
 		this.display.setCurrent(alert);
 	}
 	

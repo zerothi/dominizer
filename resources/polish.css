@@ -22,6 +22,7 @@ colors {
 	bgColor:  rgb(0,10,25);
 	brightBgColor:  rgb(0,25,50);
 	evenBrightColor: rgb(10,45,65);
+	eevenBrightColor: rgb(40,70,95);
 	translucentBgColor:  argb(130, 165,190,247);
 	darkTranslucentBgColor:  argb(100, 145,175,247);
 	/* Font Colors*/
@@ -325,7 +326,7 @@ menuItem {
   * A focused menuItem
   */
 menuItem:hover {
-	background-color: bgColor;
+	background-color: eevenBrightColor;
 	font-color: translucentFontColor;
 	layout: left | horizontal-expand;
 	/*
@@ -452,7 +453,10 @@ menuItem:hover {
 	padding-horizontal: 6;
 	font-color: translucentFontColor;
 	font-size: small;
-	table-selected-background: tableSelection;
+	table {
+		selected-background: tableSelection;
+		line-color: evenBrightColor;
+	}
 	background {
 		type: round-rect;
 		color: brightBgColor;
@@ -478,39 +482,31 @@ menuItem:hover {
 	font-color: translucentFontColor;
 	font-style: bold;
 	font-size: small;
-	/*content-y-adjust: -1px;
-	max-height: 7px;*/
+	table {
+		line-color: evenBrightColor;
+	}
 }
+
 .tableHeading:hover {
-	font-color: translucentFontColor;
-	font-style: bold;
-	font-size: small;
 	background {
 		color: bgColor;
 	}
 }
-.tableCell {
-	font-color: translucentFontColor;
+
+.tableCell extends tableHeading {
 	font-style: plain;
 	font-size: small;
-	/*content-y-adjust: -1px;
-	max-height: 6px;*/
 }
 
 .tableCell:hover {
-	font-color: translucentFontColor;
-	font-style: plain;
-	font-size: small;
 	background {
 		color: evenBrightColor;
 	}
 }
 
-
 .tableCellCentered extends tableCell {
 	layout: center;
 }
-
 
 .tableBoolean {
 	padding: 2px;

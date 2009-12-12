@@ -8,6 +8,8 @@ package com;
 import java.io.InputStreamReader;
 import java.util.Random;
 
+import com.dominizer.GameApp;
+
 import de.enough.polish.util.Locale;
 
 public class Dominion {
@@ -171,14 +173,6 @@ public class Dominion {
 		return numberOfCardsFromExp;
 	}
 	
-	private int getNumberOfCardsSum(int overlook) {
-		int tmp = 0;
-		for ( int i = 0 ; i < numberOfCardsFromExp.length ; i++ )
-			if ( overlook != i )
-				tmp += numberOfCardsFromExp[i];
-		return tmp;
-	}
-	
 	public void resetIsPlaying() {
 		for ( int i = 0 ; i < expansions.length ; i++ )
 			for ( int j = 0 ; j < expansions[i].size() ; j++ )
@@ -211,9 +205,20 @@ public class Dominion {
 		int cardRead = 0;
 		try {
 			//#if polish.android
-				//#= isr = new InputStreamReader(Resources.openRawResource(fileName), Charset.forName("UTF-8"));
+				//#= try {
+				//#= if ( exp == 0 )
+				//#= 	isr = new InputStreamReader(Resources.openRawResource(R.raw.base), Charset.forName("UTF-8"));
+				//#= else if ( exp == 1 )
+				//#= 	isr = new InputStreamReader(Resources.openRawResource(R.raw.promo), Charset.forName("UTF-8"));
+				//#= else if ( exp == 2 )
+				//#= 	isr = new InputStreamReader(Resources.openRawResource(R.raw.intrigue), Charset.forName("UTF-8"));
+				//#= else if ( exp == 3 )
+				//#= 	isr = new InputStreamReader(Resources.openRawResource(R.raw.seaside), Charset.forName("UTF-8"));
+				//#= } catch (Resources.NotFoundException e) {
+				//#= 	//TODO do nothing
+				//#= }
 			//#else
-			isr = new InputStreamReader(this.getClass().getResourceAsStream(fileName),"UTF8");
+				isr = new InputStreamReader(this.getClass().getResourceAsStream(fileName),"UTF8");
 			//#endif
 			int ch;
 			while ( (ch = isr.read()) > -1 ) {
