@@ -32,7 +32,7 @@ public class EditCardsForm extends Form implements CommandListener, ItemStateLis
 		super(title);
 		this.app = app;
 		//#style choiceGroup
-		this.cardGroup = new ChoiceGroup(Locale.get("screen.EditCards.ChoiceCurrentlySelected"), Choice.EXCLUSIVE);
+		this.cardGroup = new ChoiceGroup(Locale.get("screen.EditSingleCards.ChoiceCurrentlySelected"), Choice.EXCLUSIVE);
 		//this.cardGroup.addCommand(switchCmd);
 		//this.cardGroup.setDefaultCommand(switchCmd);
 		this.addCommand(backCmd);

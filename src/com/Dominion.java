@@ -30,14 +30,22 @@ public class Dominion {
 		System.out.println("reading base");
 		readResource(BASE, "base", 25);
 		//#debug info
+		System.out.println("size base: " + expansions[0].size());
+		//#debug info
 		System.out.println("reading promo");
 		readResource(PROMO, "promo", 2);
+		//#debug info
+		System.out.println("size promo: " + expansions[1].size());
 		//#debug info
 		System.out.println("reading intrigue");
 		readResource(INTRIGUE, "intrigue", 25);
 		//#debug info
+		System.out.println("size intrigue: " + expansions[2].size());
+		//#debug info
 		System.out.println("reading seaside");
 		readResource(SEASIDE, "seaside", 26);
+		//#debug info
+		System.out.println("size seaside: " + expansions[3].size()+ ". Third name: " + expansions[3].getName(2));
 	}
 	
 	public static Dominion instance() {
@@ -207,15 +215,16 @@ public class Dominion {
 			//#if polish.android
 				//#= try {
 				//#= if ( exp == 0 )
-				//#= 	isr = new InputStreamReader(Resources.openRawResource(R.raw.base), Charset.forName("UTF-8"));
+				//#= 	isr = new InputStreamReader(new Resources(null, null, null).openRawResource(com.dominizer.R.raw.base), Charset.forName("UTF-8"));
 				//#= else if ( exp == 1 )
-				//#= 	isr = new InputStreamReader(Resources.openRawResource(R.raw.promo), Charset.forName("UTF-8"));
+				//#= 	isr = new InputStreamReader(new Resources(null, null, null).openRawResource(com.dominizer.R.raw.promo), Charset.forName("UTF-8"));
 				//#= else if ( exp == 2 )
-				//#= 	isr = new InputStreamReader(Resources.openRawResource(R.raw.intrigue), Charset.forName("UTF-8"));
+				//#= 	isr = new InputStreamReader(new Resources(null, null, null).openRawResource(com.dominizer.R.raw.intrigue), Charset.forName("UTF-8"));
 				//#= else if ( exp == 3 )
-				//#= 	isr = new InputStreamReader(Resources.openRawResource(R.raw.seaside), Charset.forName("UTF-8"));
+				//#= 	isr = new InputStreamReader(new Resources(null, null, null).openRawResource(com.dominizer.R.raw.seaside), Charset.forName("UTF-8"));
 				//#= } catch (Resources.NotFoundException e) {
-				//#= 	//TODO do nothing
+				//#= 	//#debug info
+				//#=    System.out.println("Resource hasn't been found");
 				//#= }
 			//#else
 				isr = new InputStreamReader(this.getClass().getResourceAsStream(fileName),"UTF8");
@@ -253,8 +262,8 @@ public class Dominion {
 			if (isr != null)  
 				isr.close();              
 		} catch (Exception ex) {
-			//#debug
-			System.out.println(ex);
+			//#debug info
+			System.out.println("exception on reading:" + ex);
 		}
 	}
 }

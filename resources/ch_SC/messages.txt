@@ -1,0 +1,90 @@
+﻿################
+#
+# App Specific translations
+#
+################
+
+mainScreen.ChoiceWhatToDo=想做什么?
+mainScreen.QuickSelectExpansions=扩充使用:
+table.heading.Name=名字
+table.heading.Expansion=扩充.
+table.heading.Cost=价值
+table.heading.ActionCard=行动
+table.heading.VictoryCard=分数
+table.heading.TreasuryCard=钱币
+table.heading.ReactionCard=再行动
+table.heading.AttackCard=攻击
+table.heading.DurationCard=递延
+screen.RandomizedCards.title=随机选卡
+screen.EditSingleCards.title=编辑卡片
+screen.EditSingleCards.ChoiceCurrentlySelected=选择卡片:
+screen.BlackMarket.title=黑市
+screen.BlackMarket.DrawTextInfo=请抽卡
+screen.BlackMarket.ChooseNone=无
+screen.BlackMarket.ChooseCards=选择卡片:
+screen.BlackMarket.InfoMessage=你选择了: 
+screen.BlackMarket.DeckEmpty=黑市牌堆是空的
+screen.BlackMarket.CancelBuy=要重新买卡?\否
+cmd.Randomize.Show=随机
+cmd.BlackMarket=黑市牌堆
+cmd.BlackMarket.Draw=抽新卡
+cmd.BlackMarket.CancelBuy=取消购买
+cmd.BlackMarket.Show=显示黑市牌堆
+cmd.EditSingleCards.Show=编辑卡片
+cmd.Back=返回
+cmd.ShowLog=显示日志
+cmd.Quit=退出
+cmd.switch=切换
+alert.alert=警告
+alert.info=信息
+alert.confirmation=确认
+alert.QuickSelectExpansions.OnlyPromoSelected=只选择了特典卡\不选更多!
+alert.QuickSelectExpansions.NoneSelected=没有选择任何扩充\不至少选一个!
+alert.CardsFromExpansion.Promo=只能选2张以下特典卡\不使用较少!
+
+################
+#
+# Expansion Names
+#
+################
+base=皇舆争霸
+promo=特典
+intrigue=暗潮汹涌
+seaside=海国图志
+card.BlackMarket=黑市
+
+################
+#
+# Application Name
+#
+################
+app.name=领土
+
+################
+#
+#Polish Settings
+#
+################
+polish.command.ok=好
+polish.command.cancel=取消
+polish.command.select=选择
+polish.command.mark=标记
+polish.command.unmark=取消标记
+polish.command.options=选项
+# 删除一个标记:
+polish.command.delete=删除# 删除整个文本:
+polish.command.clear=清除
+# 在黑莓上隐藏菜单:
+polish.command.hide=隐藏
+# 没标签时显示默认标题
+# 是定义一个文本. 这只是
+# 当直接输入模式没有启动时使用:
+polish.title.input=输入
+# 用来显示屏选择不含文本的符号:
+polish.command.entersymbol=添加符号
+# 用来给HTML游览器链接:
+polish.command.followlink=跳转
+# 用来给HTML游览器提交表格:
+polish.command.submit=提交
+# 用来返回前页:
+polish.command.back=返回

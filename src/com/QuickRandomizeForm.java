@@ -52,7 +52,7 @@ public class QuickRandomizeForm extends Form implements CommandListener, ItemCom
 		//#style choiceItem
 		this.whatToDoCG.append(Locale.get("cmd.BlackMarket.Show"), null);
 		/*//style choiceItem
-		this.whatToDoCG.append(Locale.get("cmd.EditCards.Show"), null);*/
+		this.whatToDoCG.append(Locale.get("cmd.EditSingleCards.Show"), null);*/
 		this.whatToDoCG.addCommand(this.selectCmd);
 		this.whatToDoCG.setItemCommandListener(this);
 		// Setting up the QuickGame Randomizer

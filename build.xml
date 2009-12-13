@@ -24,7 +24,7 @@
 	<!-- import global properties                                 -->
 	<property file="${polish.home}/global.properties" />
 
-	<property name="debugLang" value="en"/>
+	<property name="debugLang" value="ch_SC"/>
 	<!-- the device for the test mode - you can define it on the command-line
 	     using the -D switch, e.g. ant -Ddevice=Generic/midp2 emulator -->
 	<!--property name="device" value="Generic/AnyPhone"/-->
@@ -70,7 +70,7 @@
 		         You can also define localized attributes in the resources/messages.txt files -->
 			<info 
 				name="${app.name}" 
-				version="0.15" 
+				version="0.16" 
 				description="A Dominion Card randomizer" 
 				vendorName="Nick Papior Andersen A/S" 
 				infoUrl="http://www.boardgamegeek.com/wiki/page/Dominizer" 
@@ -134,6 +134,8 @@
 						<locale name="de" encoding="UTF-8"/>
 						<locale name="pl" encoding="UTF-8"/>
 						<locale name="fr" encoding="UTF-8"/>
+						<locale name="ch_SC" encoding="UTF-8"/>
+						<locale name="ch_TC" encoding="UTF-8"/>
 						<locale name="christmas" encoding="UTF-8"/>
 						<locale name="zombinion" encoding="UTF-8"/>
 					</localization>
