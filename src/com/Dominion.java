@@ -186,10 +186,7 @@ public class Dominion {
 			for ( int j = 0 ; j < expansions[i].size() ; j++ )
 				expansions[i].setPlaying(j, false);
 	}
-	
-	private boolean isTrue(String test) {
-		return test.equals("0") ? false : true;
-	}
+
 	
 	public String getExpansionName(int expansion) {
 		switch ( expansion ) {
@@ -245,15 +242,23 @@ public class Dominion {
 					start = sb.toString().indexOf(":", start) + 1;
 					expansions[exp].setTreasure(cardRead, isTrue(sb.toString().substring(start, sb.toString().indexOf(":", start))));
 					start = sb.toString().indexOf(":", start) + 1;
-					expansions[exp].setAction(cardRead, isTrue(sb.toString().substring(start, sb.toString().indexOf(":", start))));
+					expansions[exp].setAttack(cardRead, isTrue(sb.toString().substring(start, sb.toString().indexOf(":", start))));
 					start = sb.toString().indexOf(":", start) + 1;
 					expansions[exp].setReaction(cardRead, isTrue(sb.toString().substring(start, sb.toString().indexOf(":", start))));
 					start = sb.toString().indexOf(":", start) + 1;
 					expansions[exp].setDuration(cardRead, isTrue(sb.toString().substring(start, sb.toString().indexOf(";", start))));
 					sb.delete(0, sb.toString().length() - 1);
 					start = 0;
-					//#debug info
-					System.out.println("expansions[" + exp + "].name(" + cardRead + "): " + expansions[exp].getName(cardRead));
+					/*
+					//debug info
+					System.out.println("expansions[" + exp + "].name(" + cardRead + "): " + expansions[exp].getName(cardRead) + ". Action? " + expansions[exp].isAction(cardRead)+
+							". Attack? " + expansions[exp].isAttack(cardRead) +
+							". Reaction? " + expansions[exp].isReaction(cardRead) +
+							". Victory? " + expansions[exp].isVictory(cardRead) +
+							". Treasury? " + expansions[exp].isTreasure(cardRead) +
+							". Duration? " + expansions[exp].isDuration(cardRead)
+							);
+					*/
 					cardRead++;
 				} else if ( (char)ch == '\n' ) {
 					sb.delete(0, sb.toString().length() - 1);
@@ -265,5 +270,9 @@ public class Dominion {
 			//#debug info
 			System.out.println("exception on reading:" + ex);
 		}
+	}
+	
+	private boolean isTrue(String test) {
+		return test.equals("0") ? false : true;
 	}
 }

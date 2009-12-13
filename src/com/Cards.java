@@ -8,6 +8,16 @@ public class Cards {
 	public static final int IS_NOT_SET = 0;
 	public static final int NAME = 0;
 	public static final int COST = 1;
+	public static final int TYPE_ACTION = 0;
+	public static final int TYPE_ACTION_ATTACK = 1;
+	public static final int TYPE_ACTION_REACTION = 2;
+	public static final int TYPE_VICTORY = 3;
+	public static final int TYPE_ACTION_TREASURY = 4;
+	public static final int TYPE_ACTION_VICTORY = 5;
+	public static final int TYPE_TREASURY_VICTORY = 6;
+	public static final int TYPE_ACTION_DURATION = 7;
+	
+	
 	private String[] name = null;
 	private String[] expansion = null;
 	/*
@@ -237,6 +247,26 @@ public class Cards {
 	 */
 	public void setDuration(int index, boolean isDuration) {
 		this.isSpecific[index][5] = isDuration;
+	}
+	
+	public int getCardType(int index) {
+		if ( isAction(index) && !isAttack(index) && !isReaction(index) && !isVictory(index) && !isTreasure(index) && !isDuration(index) )
+			return TYPE_ACTION;
+		else if ( isAction(index) && isAttack(index) && !isReaction(index) && !isVictory(index) && !isTreasure(index) && !isDuration(index) )
+			return TYPE_ACTION_ATTACK;
+		else if ( isAction(index) && !isAttack(index) && isReaction(index) && !isVictory(index) && !isTreasure(index) && !isDuration(index) )
+			return TYPE_ACTION_REACTION;
+		else if ( !isAction(index) && !isAttack(index) && !isReaction(index) && isVictory(index) && !isTreasure(index) && !isDuration(index) )
+			return TYPE_VICTORY;
+		else if ( isAction(index) && !isAttack(index) && !isReaction(index) && !isVictory(index) && isTreasure(index) && !isDuration(index) )
+			return TYPE_ACTION_TREASURY;
+		else if ( isAction(index) && !isAttack(index) && !isReaction(index) && isVictory(index) && !isTreasure(index) && !isDuration(index) )
+			return TYPE_ACTION_VICTORY;
+		else if ( !isAction(index) && !isAttack(index) && !isReaction(index) && isVictory(index) && isTreasure(index) && !isDuration(index) )
+			return TYPE_TREASURY_VICTORY;
+		else if ( isAction(index) && !isAttack(index) && !isReaction(index) && !isVictory(index) && !isTreasure(index) && isDuration(index) )
+			return TYPE_ACTION_DURATION;
+		return TYPE_ACTION;
 	}
 	
 	public Object[] getCard(int index) {

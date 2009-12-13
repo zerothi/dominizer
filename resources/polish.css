@@ -67,6 +67,21 @@ backgrounds {
 	alertOverlay {
 		color: #9fff;
 	}
+	
+	cardTypeCircle {
+		type: circle;
+		color: red;
+		diameter: 80%;
+		anchor: right | vcenter;
+		x-offset: -5;
+	}
+	
+	cardType {
+		type: round-rect-split;
+		split-pos: 50%;
+		arc-width: 8;
+		arc-height: 8;
+	}
 }
 
 
@@ -506,6 +521,11 @@ menuItem:hover {
 
 .tableCellCentered extends tableCell {
 	layout: center;
+	background {
+		type: radial-gradient;
+		outer-color: #a98934;
+		inner-color: #e9d363;
+	}
 }
 
 .tableBoolean {
@@ -515,4 +535,47 @@ menuItem:hover {
 		type: round-rect;
 		color: silver;
 	}
+}
+
+
+/*
+* Card types
+*
+*/
+.cardTypeStyle {
+	font-style: plain;
+	font-size: small;
+	background {
+		type: round-rect-split;
+		split-pos: 50%;
+		top-color: white;
+		arc-width: 8;
+		arc-height: 8;
+	}
+}
+.cardTypeAction extends cardTypeStyle {
+	background-bottom-color: white;
+}
+.cardTypeActionAttack extends cardTypeStyle {
+	background-bottom-color: red;
+}
+.cardTypeActionReaction extends cardTypeStyle {
+	background-bottom-color: blue;
+}
+.cardTypeActionTreasury extends cardTypeStyle {
+	background-bottom-color: #cba135;
+}
+.cardTypeActionDuration extends cardTypeStyle {
+	background-bottom-color: #ffa000;
+}
+.cardTypeActionVictory extends cardTypeStyle {
+	background-bottom-color: green;
+}
+.cardTypeTreasuryVictory extends cardTypeStyle {
+	background-top-color: #cba135;
+	background-bottom-color: green;
+}
+.cardTypeVictory extends cardTypeStyle {
+	background-top-color: green;
+	background-bottom-color: green;
 }

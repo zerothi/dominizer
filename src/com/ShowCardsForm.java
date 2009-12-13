@@ -59,8 +59,40 @@ public class ShowCardsForm extends Form  implements CommandListener {
 		//#debug
 		System.out.println("adding card information");
 		for (int cardNumber = 0 ; cardNumber < cards.size() ; cardNumber++ ) {
-			//#style tableCell
-			this.table.set(0, cardNumber + 1, cards.getName(cardNumber) );
+			switch ( cards.getCardType(cardNumber) ) {
+			case Cards.TYPE_ACTION:
+				//#style cardTypeAction
+				this.table.set(0, cardNumber + 1, cards.getName(cardNumber) );
+				break;
+			case Cards.TYPE_ACTION_ATTACK:
+				//#style cardTypeActionAttack
+				this.table.set(0, cardNumber + 1, cards.getName(cardNumber) );
+				break;
+			case Cards.TYPE_ACTION_REACTION:
+				//#style cardTypeActionReaction
+				this.table.set(0, cardNumber + 1, cards.getName(cardNumber) );
+				break;
+			case Cards.TYPE_VICTORY:
+				//#style cardTypeVictory
+				this.table.set(0, cardNumber + 1, cards.getName(cardNumber) );
+				break;
+			case Cards.TYPE_ACTION_TREASURY:
+				//#style cardTypeActionTreasury
+				this.table.set(0, cardNumber + 1, cards.getName(cardNumber) );
+				break;
+			case Cards.TYPE_ACTION_VICTORY:
+				//#style cardTypeActionVictory
+				this.table.set(0, cardNumber + 1, cards.getName(cardNumber) );
+				break;
+			case Cards.TYPE_TREASURY_VICTORY:
+				//#style cardTypeTreasuryVictory
+				this.table.set(0, cardNumber + 1, cards.getName(cardNumber) );
+				break;
+			case Cards.TYPE_ACTION_DURATION:
+				//#style cardTypeActionDuration
+				this.table.set(0, cardNumber + 1, cards.getName(cardNumber) );
+				break;
+			}
 			if ( cards.getName(cardNumber).equals(Locale.get("card.BlackMarket")) )
 				this.addCommand(blackMarketCmd);
 			try {
@@ -75,6 +107,7 @@ public class ShowCardsForm extends Form  implements CommandListener {
 				this.table.set(2, cardNumber + 1, new ImageItem(null, 
 						Image.createImage("/trea" + new Integer(cards.getCost(cardNumber)).toString() + ".png"), ImageItem.PLAIN, null));
 			} catch (IOException e) {
+				//#style tableCellCentered
 				this.table.set(2, cardNumber + 1, new Integer(cards.getCost(cardNumber)));
 			}
 		}
