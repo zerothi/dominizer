@@ -8,6 +8,7 @@ mainScreen.QuickSelectExpansions=Expansions Used:
 table.heading.Name=Name
 table.heading.Expansion=Exp.
 table.heading.Cost=#
+table.heading.Type=?
 table.heading.ActionCard=A
 table.heading.VictoryCard=V
 table.heading.TreasuryCard=T

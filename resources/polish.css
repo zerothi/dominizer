@@ -547,8 +547,8 @@ menuItem:hover {
 	font-size: small;
 	background {
 		type: round-rect-split;
-		split-pos: 50%;
 		top-color: white;
+		split-pos: 50%;
 		arc-width: 8;
 		arc-height: 8;
 	}
