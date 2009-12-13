@@ -70,8 +70,13 @@ public class ShowCardsForm extends Form  implements CommandListener {
 			} catch (IOException e) {
 				this.table.set(1, cardNumber + 1, cards.getExpansion(cardNumber));
 			}
-			//#style tableCellCentered
-			this.table.set(2, cardNumber + 1, new Integer(cards.getCost(cardNumber)) );
+			try {
+				//#style tableCellCentered
+				this.table.set(2, cardNumber + 1, new ImageItem(null, 
+						Image.createImage("/trea" + new Integer(cards.getCost(cardNumber)).toString() + ".png"), ImageItem.PLAIN, null));
+			} catch (IOException e) {
+				this.table.set(2, cardNumber + 1, new Integer(cards.getCost(cardNumber)));
+			}
 		}
 	}
 
