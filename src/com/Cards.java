@@ -343,7 +343,7 @@ public class Cards {
 		return name.length;
 	}
 	
-	public static Image getImageType(Image img, int cardType) {
+	public static Image convert2ImageType(Image img, int cardType) {
 		int[] pixels = new int[img.getWidth() * img.getHeight()];
 		img.getRGB(pixels,0,img.getWidth(),0,0,img.getWidth(),img.getHeight());
 		int[] greenAddition = new int[2];
@@ -400,9 +400,6 @@ public class Cards {
 			redAddition[1] = 0;
 			break;
 		}
-		int blue = onePixel & 0xff;
-		int green = (onePixel & 0xff00) >> 8;
-		int red = (onePixel & 0xff0000) >> 16;
-		int alpha = (onePixel & 0xff000000) >> 24;
+		return null;
 	}
 }
