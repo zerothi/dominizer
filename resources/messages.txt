@@ -7,7 +7,7 @@ mainScreen.ChoiceWhatToDo=What to do?
 mainScreen.QuickSelectExpansions=Expansions Used:
 table.heading.Name=Name
 table.heading.Expansion=Exp.
-table.heading.Cost=#
+table.heading.Cost=$
 table.heading.Type=?
 table.heading.ActionCard=A
 table.heading.VictoryCard=V
@@ -54,6 +54,18 @@ promo=Promo
 intrigue=Intrigue
 seaside=Seaside
 card.BlackMarket=Black Market
+
+preset.base.FirstGame=First Game
+preset.base.BigMoney=Big Money
+preset.base.Interaction=Interaction
+preset.base.SizeDistortion=Size Distortion
+preset.base.VillageSquare=Village Square
+preset.intrigue.VictoryDance=Victory Dance
+preset.intrigue.SecretSchemes=Secret Schemes
+preset.intrigue.BestWishes=Best Wishes
+preset.intrigue.Deconstruction=Deconstruction
+preset.intrigue.HandMadness=Hand Madness
+preset.intrigue.Underlings=Underlings
 
 ################
 #

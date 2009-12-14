@@ -27,9 +27,9 @@
 	<property name="debugLang" value="en"/>
 	<!-- the device for the test mode - you can define it on the command-line
 	     using the -D switch, e.g. ant -Ddevice=Generic/midp2 emulator -->
-	<property name="device" value="Generic/AnyPhone"/>
+	<!--property name="device" value="Generic/AnyPhone"/-->
 	<!--property name="device" value="Generic/Android"/-->
-	<!--property name="device" value="Nokia/Series40E3"/-->
+	<property name="device" value="Nokia/Series40E3"/>
 	<property name="devices" value="Generic/AnyPhone,Nokia/Series40E3,Sony-Ericsson/JavaPlatform7,Sony-Ericsson/JavaPlatform8"/>
 	<!--property name="devices" value="Nokia/Series40E3"/-->
 

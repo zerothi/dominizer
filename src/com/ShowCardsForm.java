@@ -47,7 +47,7 @@ public class ShowCardsForm extends Form  implements CommandListener {
 
 	public void viewCards(Cards cards) {
 		this.removeCommand(blackMarketCmd);
-		this.table.setDimension(4, cards.size() + 1);
+		this.table.setDimension(3, cards.size() + 1);
 		//#debug
 		System.out.println("adding header");
 		//#style tableHeading
@@ -56,8 +56,6 @@ public class ShowCardsForm extends Form  implements CommandListener {
 		this.table.set(1, 0, Locale.get("table.heading.Expansion"));
 		//#style tableHeading
 		this.table.set(2, 0, Locale.get("table.heading.Cost"));
-		//#style tableHeading
-		this.table.set(3, 0, Locale.get("table.heading.Type"));
 		//#debug
 		System.out.println("adding card information");
 		for (int cardNumber = 0 ; cardNumber < cards.size() ; cardNumber++ ) {

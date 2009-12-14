@@ -4,6 +4,7 @@
 #
 ################
 # Currentlly usinng the same as the english version
+table.heading.Cost=€
 
 ################
 #
