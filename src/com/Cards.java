@@ -1,5 +1,7 @@
 package com;
 
+import javax.microedition.lcdui.Image;
+
 import de.enough.polish.util.Locale;
 
 
@@ -339,5 +341,68 @@ public class Cards {
 	
 	public int size() {
 		return name.length;
+	}
+	
+	public static Image getImageType(Image img, int cardType) {
+		int[] pixels = new int[img.getWidth() * img.getHeight()];
+		img.getRGB(pixels,0,img.getWidth(),0,0,img.getWidth(),img.getHeight());
+		int[] greenAddition = new int[2];
+		int[] blueAddition = new int[2];
+		int[] redAddition = new int[2];
+		greenAddition[0] = -2;
+		blueAddition[0] = -2;
+		redAddition[0] = -2;
+		switch ( cardType ) {
+		case TYPE_ACTION:
+			greenAddition[1] = -2;
+			blueAddition[1] = -2;
+			redAddition[1] = -2;
+			break;
+		case TYPE_ACTION_ATTACK:
+			greenAddition[1] = 0;
+			blueAddition[1] = 0;
+			redAddition[1] = 2;
+			break;
+		case TYPE_ACTION_REACTION:
+			greenAddition[1] = 0;
+			blueAddition[1] = 2;
+			redAddition[1] = 0;
+			break;
+		case TYPE_ACTION_VICTORY:
+			greenAddition[1] = 2;
+			blueAddition[1] = 0;
+			redAddition[1] = 0;
+			break;
+		case TYPE_ACTION_TREASURY:
+			greenAddition[1] = 2;
+			blueAddition[1] = 1;
+			redAddition[1] = 3;
+			break;
+		case TYPE_TREASURY_VICTORY:
+			greenAddition[0] = 2;
+			blueAddition[0] = 1;
+			redAddition[0] = 3;
+			greenAddition[1] = 2;
+			blueAddition[1] = 0;
+			redAddition[1] = 3;
+			break;
+		case TYPE_ACTION_DURATION:
+			greenAddition[1] = 2;
+			blueAddition[1] = 0;
+			redAddition[1] = 2;
+			break;
+		case TYPE_VICTORY:
+			greenAddition[0] = 2;
+			blueAddition[0] = 0;
+			redAddition[0] = 0;
+			greenAddition[1] = 2;
+			blueAddition[1] = 0;
+			redAddition[1] = 0;
+			break;
+		}
+		int blue = onePixel & 0xff;
+		int green = (onePixel & 0xff00) >> 8;
+		int red = (onePixel & 0xff0000) >> 16;
+		int alpha = (onePixel & 0xff000000) >> 24;
 	}
 }
