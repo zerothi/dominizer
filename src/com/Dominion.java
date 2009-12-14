@@ -247,7 +247,7 @@ public class Dominion {
 					expansions[exp].setReaction(cardRead, isTrue(sb.toString().substring(start, sb.toString().indexOf(":", start))));
 					start = sb.toString().indexOf(":", start) + 1;
 					expansions[exp].setDuration(cardRead, isTrue(sb.toString().substring(start, sb.toString().indexOf(";", start))));
-					sb.delete(0, sb.toString().length() - 1);
+					sb.delete(0, sb.toString().length());
 					start = 0;
 					/*
 					//debug info
