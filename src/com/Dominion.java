@@ -120,7 +120,7 @@ public class Dominion {
 					new int[] {2, 20},
 					new int[] {2, 21},
 					new int[] {2, 22}
-		})
+		});
 		rulePresets[1].setPreset(2, Locale.get("preset.intrigue.BestWishes"), 
 				new int[][] { 
 					new int[] {2,  3},
@@ -133,7 +133,7 @@ public class Dominion {
 					new int[] {2, 21},
 					new int[] {2, 23},
 					new int[] {2, 24}
-		})
+		});
 		rulePresets[1].setPreset(3, Locale.get("preset.intrigue.Deconstruction"), 
 				new int[][] { 
 					new int[] {0, 16},

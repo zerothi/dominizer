@@ -12,7 +12,7 @@ public class CardPresets {
 	private String[] presetNames;
 	
 	public CardPresets(int size) {
-		presets = new int[size][4][10];
+		presets = new int[size][10][2];
 		presetNames = new String[size];
 	}
 	

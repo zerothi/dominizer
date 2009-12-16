@@ -579,3 +579,66 @@ menuItem:hover {
 	background-top-color: green;
 	background-bottom-color: green;
 }
+
+/**************
+ *
+ * Tabbed pane 
+ *
+ **************/
+
+.tabbedPane {
+	title-menu: true;
+}
+
+.tabbedPaneIcons {
+	view-type: horizontal;
+	background {
+		type: vertical-gradient;
+		top-color: #f6f6f6;
+		bottom-color: #acadb1;
+	}
+	border {
+		top-width: 1;
+		color: #aaa;
+	}
+	layout: expand;
+}
+
+.tabIcon {
+	margin: 1px;
+	padding: 2px;
+	max-width: 25%;
+	layout: expand | center | vertical-center;
+}
+
+.tabIcon:hover {
+	padding: 1px;
+	background {
+		type: round-rect;
+		arc: 8;
+		color: #f1f1f1;
+	}
+	border {
+		type: round-rect;
+		arc: 8;
+		color: #aeaeae;
+	}
+}
+
+.tabIcon:landscape {
+	text-visible: false;
+}
+
+.tabIcon:landscape:hover {
+	padding: 1px;
+	background {
+		type: round-rect;
+		arc: 8;
+		color: #f1f1f1;
+	}
+	border {
+		type: round-rect;
+		arc: 8;
+		color: #aeaeae;
+	}
+}
