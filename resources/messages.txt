@@ -3,8 +3,10 @@
 # App Specific translations
 #
 ################
-mainScreen.ChoiceWhatToDo=What to do?
-mainScreen.QuickSelectExpansions=Expansions Used:
+tab.Quick.title=Quick
+tab.Quick.QuickSelectExpansions=Expansions Used:
+tab.Quick.title=Quick
+tab.Settings.title=Settings
 table.heading.Name=Name
 table.heading.Expansion=Exp.
 table.heading.Cost=$
@@ -26,6 +28,7 @@ screen.BlackMarket.InfoMessage=You have chosen:
 screen.BlackMarket.DeckEmpty=Black Market deck is empty
 screen.BlackMarket.CancelBuy=Will you redo the buy?\n
 cmd.Randomize.Show=Randomize
+cmd.ShowChosenCardInfo=Show info
 cmd.BlackMarket=Black Market Deck
 cmd.BlackMarket.Draw=Draw New
 cmd.BlackMarket.CancelBuy=Cancel Buy

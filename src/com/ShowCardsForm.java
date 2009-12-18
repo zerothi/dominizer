@@ -20,9 +20,10 @@ public class ShowCardsForm extends Form  implements CommandListener {
 	
 	private GameApp app = null;
 	private TableItem table = null;
-	private Command randomizeCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.SCREEN, 1);
-	private Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.SCREEN, 2);
-	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.BACK, 0);
+	private Command randomizeCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 1);
+	private Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.SCREEN, 1);
+	private Command showInfoCmd = new Command( Locale.get("cmd.ShowChosenCardInfo"), Command.SCREEN, 2);
+	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 10);
 	//private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
 	
 	
@@ -35,6 +36,7 @@ public class ShowCardsForm extends Form  implements CommandListener {
 		//#style defaultTable
 		this.table = new TableItem();
 		this.addCommand(this.randomizeCmd);
+		this.addCommand(showInfoCmd);
 		this.addCommand(this.backCmd);
 		this.table.setSelectionMode(TableItem.SELECTION_MODE_NONE);//SELECTION_MODE_CELL);
 		this.append(this.table);
@@ -82,11 +84,13 @@ public class ShowCardsForm extends Form  implements CommandListener {
 	}
 
 	public void commandAction(Command cmd, Displayable disp) {
-		if ( cmd.equals(this.backCmd) )
+		if ( cmd == this.backCmd )
 			this.app.changeToScreen(null);
-		else if ( cmd.equals(this.randomizeCmd) )
+		else if ( cmd == this.randomizeCmd )
 			this.reRandomize();
-		else if ( cmd.equals(this.blackMarketCmd) )
+		else if ( cmd == this.blackMarketCmd )
+			this.app.showBlackMarketDeck(this);
+		else if ( cmd == this.showInfoCmd )
 			this.app.showBlackMarketDeck(this);
 	}
 }

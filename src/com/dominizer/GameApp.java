@@ -15,14 +15,10 @@ import javax.microedition.rms.RecordStoreNotFoundException;
 
 import com.BlackMarketForm;
 import com.Dominion;
-import com.QuickRandomizeForm;
+import com.DominizerTabbedForm;
 import com.SettingsRecordStorage;
 import com.ShowCardsForm;
 
-import de.enough.polish.ui.Screen;
-import de.enough.polish.ui.TabListener;
-import de.enough.polish.ui.TabbedFormListener;
-import de.enough.polish.ui.TabbedPane;
 import de.enough.polish.util.DeviceControl;
 import de.enough.polish.util.Locale;
 /**
@@ -36,11 +32,10 @@ import de.enough.polish.util.Locale;
  * </pre>
  * @author Nick Papior Andersen, nickpapior@gmail.com
  */
-public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
+public class GameApp extends MIDlet {
 	Displayable currentForm = null;
 	Display display = null;
 	Alert alert = null;
-	TabbedPane tabbedPane = null;
 	
 	public GameApp() {
 		super();
@@ -71,7 +66,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		if ( alert != null )
 			alert = null;
 		if ( displayable == null )
-			this.changeToScreen(this.tabbedPane);
+			this.changeToScreen(this.currentForm);
 		else
 			this.display.setCurrent(displayable);
 	}
@@ -79,37 +74,9 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	protected void startApp() throws MIDletStateChangeException {
 		//#debug info
 		System.out.println("setting display");
-		//#style tabbedPane
-		this.tabbedPane = new TabbedPane(null);//QuickRandomizeForm(this, Locale.get("app.name")), null, Locale.get("app.name")
-		//#debug info
-		System.out.println("setting display");
-		this.tabbedPane.addTabListener(this);
-   	 	this.tabbedPane.setTabbedFormListener(this);
-   	 	//#debug info
-		System.out.println("adding forms");
-		//#style mainScreen
-		Form tmp1 = new Form(null);
-		tmp1.append("Hej1");
-		//#style mainScreen
-		Form tmp2 = new Form(null);
-		tmp2.append("Hej2");
-		//#debug info
-		System.out.println("adding forms");
-		//#style tabIcon
-		this.tabbedPane.addTab(tmp1, null, "Hej");
-		//#debug info
-		System.out.println("adding forms2");
-		//#style tabIcon
-		this.tabbedPane.addTab(tmp2, null, "He2j");
-		//#debug info
-		System.out.println("setting focu");
-		//tabbedPane.addTab(new ShowCardsForm(this, Locale.get("app.name")), null, Locale.get("app.name"));
-		//this.currentForm = new QuickRandomizeForm(this, Locale.get("app.name"));
+		this.currentForm = new DominizerTabbedForm(this, Locale.get("app.name"));
 		this.display = Display.getDisplay(this);
-		//#debug info
-		System.out.println("setting display");
-		this.display.setCurrent(this.tabbedPane);
-		//this.changeToScreen(null);
+		this.changeToScreen(null);
 	}
 
 	protected void pauseApp() {
@@ -166,21 +133,6 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 			// TODO Auto-generated catch block
 		}
 		notifyDestroyed();
-	}
-
-	public void tabChangeEvent(Screen arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void notifyTabChangeCompleted(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public boolean notifyTabChangeRequested(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		return true;
 	}
 	
 

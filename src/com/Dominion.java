@@ -20,6 +20,7 @@ public class Dominion {
 	public static final int INTRIGUE = 2;
 	public static final int SEASIDE = 3;
 	private Cards[] expansions = null;
+	private Cards selectedCards = null;
 	private CardPresets[] rulePresets = null;
 	private int numberOfRandomCards = 10;
 	private boolean[] playingExpansions = new boolean[] {true, true, true, true};
@@ -235,7 +236,7 @@ public class Dominion {
 	
 	public Cards getRandomizedCards() {
 		this.resetIsPlaying();
-		Cards selectedCards = new Cards(numberOfRandomCards, Cards.IS_NOT_SET);
+		this.selectedCards = new Cards(numberOfRandomCards, Cards.IS_NOT_SET);
 		int selectedElement = 0;
 		Random selector = new Random(System.currentTimeMillis());
 		int selected = 0;
@@ -284,6 +285,16 @@ public class Dominion {
 		}
 		selector = null;
 		return sortCards(selectedCards);
+	}
+	
+	public String getSelectedInfo() {
+		if ( this.selectedCards == null )
+			return "";
+		StringBuffer sb = new StringBuffer(50);
+		for ( int i = 0 ; i < selectedCards.size() ; i++ ) {
+			
+		}
+		return sb.toString();
 	}
 	
 	public Cards getBlackMarketDeck() {
