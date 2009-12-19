@@ -5,7 +5,8 @@
 ################
 tab.Quick.title=Quick
 tab.Quick.QuickSelectExpansions=Expansions Used:
-tab.Quick.title=Quick
+tab.Preset.title=Presets
+tab.EditCards.title=Edit Cards
 tab.Settings.title=Settings
 table.heading.Name=Name
 table.heading.Expansion=Exp.
@@ -17,8 +18,10 @@ table.heading.TreasuryCard=T
 table.heading.ReactionCard=R
 table.heading.AttackCard=A
 table.heading.DurationCard=D
+screen.PresetCards.title=Preset Cards
 screen.RandomizedCards.title=Randomized Cards
 screen.EditSingleCards.title=Edit Cards
+screen.EditSingleCards.ChoiceExp=Expansion:
 screen.EditSingleCards.ChoiceCurrentlySelected=Selected Card:
 screen.BlackMarket.title=Black Market
 screen.BlackMarket.DrawTextInfo=Please draw cards
@@ -29,6 +32,7 @@ screen.BlackMarket.DeckEmpty=Black Market deck is empty
 screen.BlackMarket.CancelBuy=Will you redo the buy?\n
 cmd.Randomize.Show=Randomize
 cmd.ShowChosenCardInfo=Show info
+cmd.EditPopUp=Edit Card
 cmd.BlackMarket=Black Market Deck
 cmd.BlackMarket.Draw=Draw New
 cmd.BlackMarket.CancelBuy=Cancel Buy
@@ -69,6 +73,12 @@ preset.intrigue.BestWishes=Best Wishes
 preset.intrigue.Deconstruction=Deconstruction
 preset.intrigue.HandMadness=Hand Madness
 preset.intrigue.Underlings=Underlings
+preset.seaside.HighSeas=High Seas
+preset.seaside.BuriedTreasure=Buried Treasure
+preset.seaside.Shipwrecks=Shipwrecks
+preset.seaside.ReachForTomorrow=Reach For Tomorrow
+preset.seaside.Repetition=Repetition
+preset.seaside.GiveAndTake=Give and Take
 
 ################
 #

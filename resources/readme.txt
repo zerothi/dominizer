@@ -98,4 +98,3 @@ Treasure Map=22
 Treasury=23
 Warehouse=24
 Wharf=25
-

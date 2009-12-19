@@ -90,6 +90,7 @@ backgrounds {
   * for all screen-titles.
   */
 title {
+	max-width: 56%;
 	padding: 2;
 	font-face: proportional;
 	font-size: normal;
@@ -123,14 +124,9 @@ focused {
 	layout: expand | center;	
 }
 
-/** 
-  * The .mainScreen style is a static style, which
-  * is set in the MIDlet source-code with the //#style directive.
-  * If the source-code would not have defined this
-  * style, we could use the dynamic style "list" to design all
-  * list-screens. 
-  */
+
 .mainScreen {
+	title-menu: true;
 	padding: 2;
 	padding-left: 10;
 	padding-right: 10;
@@ -262,6 +258,8 @@ menubar {
  */
 leftcommand {
 	margin: 0;
+	min-width: 40%; /* 40% of 50% maximum width results in 20% of screen width */
+	max-width: 40%;
     //#if polish.key.MiddleSoftKey:defined or polish.MenuBar.useMiddleCommand
     	/* the middle command is used, so lower the left and right commands relatively */
 		padding-top: 7;
@@ -425,6 +423,7 @@ menuItem:hover {
 	padding-vertical: 1;
 	include-label: true;
 	layout: left | expand;
+	repaint-previous-screen: true;
 	/** style of the filter-textfield of a FilteredList/FilteredChoiceGroup */
 	filter-style: filterTextFieldStyle;
 	/** style of the popup screen for a FileredChoiceGroup */
@@ -433,12 +432,14 @@ menuItem:hover {
 		type: round-rect;
 		color: darkTranslucentBgColor;
 	}
+	font-color: translucentFontColor;
 }
 
 .filterCards:hover {
 	/*padding: 3;
 	padding-left: 5;*/
 	background-color: translucentBgColor;
+	font-color: translucentBrightFontColor;
 	layout: left | expand;	
 }
 
@@ -537,49 +538,6 @@ menuItem:hover {
 	}
 }
 
-
-/*
-* Card types
-*
-*/
-.cardTypeStyle {
-	font-style: plain;
-	font-size: small;
-	background {
-		type: round-rect-split;
-		top-color: white;
-		split-pos: 50%;
-		arc-width: 8;
-		arc-height: 8;
-	}
-}
-.cardTypeAction extends cardTypeStyle {
-	background-bottom-color: white;
-}
-.cardTypeActionAttack extends cardTypeStyle {
-	background-bottom-color: red;
-}
-.cardTypeActionReaction extends cardTypeStyle {
-	background-bottom-color: blue;
-}
-.cardTypeActionTreasury extends cardTypeStyle {
-	background-bottom-color: #cba135;
-}
-.cardTypeActionDuration extends cardTypeStyle {
-	background-bottom-color: #ffa000;
-}
-.cardTypeActionVictory extends cardTypeStyle {
-	background-bottom-color: green;
-}
-.cardTypeTreasuryVictory extends cardTypeStyle {
-	background-top-color: #cba135;
-	background-bottom-color: green;
-}
-.cardTypeVictory extends cardTypeStyle {
-	background-top-color: green;
-	background-bottom-color: green;
-}
-
 /**************
  *
  * Tabbed pane 
@@ -594,12 +552,12 @@ menuItem:hover {
 	view-type: horizontal;
 	background {
 		type: vertical-gradient;
-		top-color: #f6f6f6;
-		bottom-color: #acadb1;
+		top-color: bgColor;
+		bottom-color: brightBgColor;
 	}
 	border {
 		top-width: 1;
-		color: #aaa;
+		color: translucentBgColor;
 	}
 	layout: expand;
 }
@@ -609,6 +567,8 @@ menuItem:hover {
 	padding: 2px;
 	max-width: 25%;
 	layout: expand | center | vertical-center;
+	font-size: small;
+	font-color: fontColor;
 }
 
 .tabIcon:hover {
@@ -616,13 +576,14 @@ menuItem:hover {
 	background {
 		type: round-rect;
 		arc: 8;
-		color: #f1f1f1;
+		color: evenBrightColor;
 	}
 	border {
 		type: round-rect;
 		arc: 8;
-		color: #aeaeae;
+		color: translucentBgColor;
 	}
+	font-color: titleFontColor;
 }
 
 .tabIcon:landscape {
@@ -634,11 +595,12 @@ menuItem:hover {
 	background {
 		type: round-rect;
 		arc: 8;
-		color: #f1f1f1;
+		color: brightBgColor;
 	}
 	border {
 		type: round-rect;
 		arc: 8;
-		color: #aeaeae;
+		color: translucentBgColor;
 	}
+	font-color: titleFontColor;
 }
