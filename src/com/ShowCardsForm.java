@@ -22,6 +22,7 @@ public class ShowCardsForm extends Form  implements CommandListener {
 	private Command randomizeCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 1);
 	private Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.SCREEN, 1);
 	private Command showInfoCmd = new Command( Locale.get("cmd.ShowChosenCardInfo"), Command.SCREEN, 2);
+	private Command saveCmd = new Command( Locale.get("cmd.SaveAsPreset"), Command.SCREEN, 6);
 	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 10);
 	//private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
 	
@@ -34,7 +35,8 @@ public class ShowCardsForm extends Form  implements CommandListener {
 		//#style defaultTable
 		this.table = new TableItem();
 		this.addCommand(this.randomizeCmd);
-		this.addCommand(showInfoCmd);
+		this.addCommand(this.showInfoCmd);
+		this.addCommand(this.saveCmd);
 		this.addCommand(this.backCmd);
 		this.table.setSelectionMode(TableItem.SELECTION_MODE_NONE);//SELECTION_MODE_CELL);
 		this.append(this.table);
@@ -89,6 +91,8 @@ public class ShowCardsForm extends Form  implements CommandListener {
 		else if ( cmd == this.blackMarketCmd )
 			GameApp.showBlackMarketDeck(this);
 		else if ( cmd == this.showInfoCmd )
+			GameApp.showBlackMarketDeck(this);
+		else if ( cmd == this.saveCmd )
 			GameApp.showBlackMarketDeck(this);
 	}
 }

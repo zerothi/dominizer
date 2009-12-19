@@ -32,6 +32,7 @@ screen.BlackMarket.DeckEmpty=Black Market deck is empty
 screen.BlackMarket.CancelBuy=Will you redo the buy?\n
 cmd.Randomize.Show=Randomize
 cmd.ShowChosenCardInfo=Show info
+cmd.SaveAsPreset=Save
 cmd.EditPopUp=Edit Card
 cmd.BlackMarket=Black Market Deck
 cmd.BlackMarket.Draw=Draw New

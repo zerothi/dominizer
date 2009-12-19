@@ -57,7 +57,21 @@ public class SettingsRecordStorage {
 		sb.append(expansionCards[2]);
 		sb.append(expansionCards[3]);
 		return writeData(Locale.get("rms.file.settings"), Locale.get("rms.expansions.usedcards"), sb.toString());
-}
+	}
+
+    public boolean savePreset(String presetName, int[][] preset) {
+	StringBuffer sb = new StringBuffer(100);
+	sb.append(presetName);
+
+	for ( int i = 0 ; i < preset.length ; i++ ) {
+	    sb.append(BIG_SPLITTER);
+	    sb.append("" + preset[i][0]);
+	    sb.append(MEDIUM_SPLITTER);
+	    sb.append("" + preset[i][1]);
+	}
+	sb.append(BIG_SPLITTER);
+	return 
+    }
 
 	public Vector readData(String recordStore) throws RecordStoreFullException, RecordStoreException {
 		data = null;

@@ -253,14 +253,10 @@ public class Dominion {
 		return rulePresets.length;
 	}
 	
-	public CardPresets getPreset(int preset) {
-		return rulePresets[preset];
-	}
-	
-	public Cards getPreset(int[][] preset) {
+    public Cards getPreset(int presetDeck, int preset) {
 		Cards presetCards = new Cards(10, Cards.IS_NOT_SET);
-		for ( int i = 0 ; i < preset.length ; i++ )
-			presetCards.setCard(i, expansions[preset[i][0]].getCard(preset[i][1]));
+		for ( int i = 0 ; i < rulePresets[presetDeck].length ; i++ )
+		    presetCards.setCard(i, expansions[rulePresets[presetDeck][i][0]].getCard(rulePresets[presetDeck][i][1]));
 		return sortCards(presetCards);
 	}
 	
