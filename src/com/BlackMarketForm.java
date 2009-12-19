@@ -27,7 +27,6 @@ import de.enough.polish.util.Locale;
  */
 public class BlackMarketForm extends Form implements CommandListener, ItemCommandListener {
 
-	GameApp app = null;
 	Form previousForm = null;
 	Vector blackMarketDeck = null;
 	Vector drawnDeck = null;
@@ -44,10 +43,9 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 	/**
 	 * @param title
 	 */
-	public BlackMarketForm(GameApp app, Form previousForm, String title) {
+	public BlackMarketForm(Form previousForm, String title) {
 		//#style mainScreen
 		super(title);
-		this.app = app;
 		this.previousForm = previousForm;
 		//#style mainItem
 		this.informationItem = new StringItem("", Locale.get("screen.BlackMarket.DrawTextInfo"));
@@ -107,7 +105,7 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 	private void selectCard(int indexChosen) {
 		for ( int i = 0 ; i < blackMarketDeck.size() ; i++ ) {
 			if ( this.chooseCard.getString(this.chooseCard.getSelectedIndex()).equals(blackMarketDeck.elementAt(i)) ) {
-				this.app.showInfo(Locale.get("screen.BlackMarket.InfoMessage") + "\n" + blackMarketDeck.elementAt(i).toString() + ".", 2000);
+				GameApp.showInfo(Locale.get("screen.BlackMarket.InfoMessage") + "\n" + blackMarketDeck.elementAt(i).toString() + ".", 2000);
 				this.drawnDeck.addElement(this.blackMarketDeck.elementAt(i));
 				this.blackMarketDeck.removeElementAt(i);
 				this.addCommand(cancelBuyCmd);
@@ -129,7 +127,7 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 	
 	private void cancelBuy(boolean show) {
 		if ( show )
-			this.app.showConfirmation(Locale.get("screen.BlackMarket.CancelBuy") + this.drawnDeck.lastElement(), this);
+			GameApp.showConfirmation(Locale.get("screen.BlackMarket.CancelBuy") + this.drawnDeck.lastElement(), this);
 		else {
 			if ( this.blackMarketDeck.size() == 0 ) {
 				this.blackMarketDeck.addElement(this.drawnDeck.lastElement());
@@ -213,7 +211,7 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 	 */
 	public void commandAction(Command cmd, Displayable screen) {
 		if ( cmd == this.backCmd )
-			this.app.changeToScreen(previousForm);
+			GameApp.changeToScreen(previousForm);
 		else if ( cmd == this.drawCardsCmd )
 			this.drawCards();
 		else if ( cmd == this.selectCardCmd )
@@ -222,9 +220,9 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 			this.cancelBuy(true);
 		else if ( cmd.getLabel().equals(Locale.get("polish.command.ok")) ) {
 			this.cancelBuy(false);
-			this.app.changeToScreen(this);
+			GameApp.changeToScreen(this);
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel")) )
-			this.app.changeToScreen(this);
+			GameApp.changeToScreen(this);
 	}
 	
 	public void commandAction(Command cmd, Item item) {

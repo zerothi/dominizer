@@ -17,8 +17,7 @@ import de.enough.polish.ui.TableItem;
 import de.enough.polish.util.Locale;
 
 public class ShowCardsForm extends Form  implements CommandListener {
-	
-	private GameApp app = null;
+
 	private TableItem table = null;
 	private Command randomizeCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 1);
 	private Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.SCREEN, 1);
@@ -27,10 +26,9 @@ public class ShowCardsForm extends Form  implements CommandListener {
 	//private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
 	
 	
-	public ShowCardsForm(GameApp app, String title) {
+	public ShowCardsForm(String title) {
 		//#style mainScreen
 		super(title);
-		this.app = app;
 		//#debug
 		System.out.println("showing cards initialize");
 		//#style defaultTable
@@ -85,12 +83,12 @@ public class ShowCardsForm extends Form  implements CommandListener {
 
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd == this.backCmd )
-			this.app.changeToScreen(null);
+			GameApp.changeToScreen(null);
 		else if ( cmd == this.randomizeCmd )
 			this.reRandomize();
 		else if ( cmd == this.blackMarketCmd )
-			this.app.showBlackMarketDeck(this);
+			GameApp.showBlackMarketDeck(this);
 		else if ( cmd == this.showInfoCmd )
-			this.app.showBlackMarketDeck(this);
+			GameApp.showBlackMarketDeck(this);
 	}
 }

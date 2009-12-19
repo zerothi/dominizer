@@ -15,10 +15,17 @@ import javax.microedition.rms.RecordStoreNotFoundException;
 
 import com.BlackMarketForm;
 import com.Dominion;
-import com.DominizerTabbedForm;
+import com.EditCardsForm;
+import com.PresetFilteredList;
+import com.QuickRandomizeForm;
 import com.SettingsRecordStorage;
 import com.ShowCardsForm;
 
+import de.enough.polish.ui.FilteredList;
+import de.enough.polish.ui.Screen;
+import de.enough.polish.ui.TabListener;
+import de.enough.polish.ui.TabbedFormListener;
+import de.enough.polish.ui.TabbedPane;
 import de.enough.polish.util.DeviceControl;
 import de.enough.polish.util.Locale;
 /**
@@ -32,94 +39,104 @@ import de.enough.polish.util.Locale;
  * </pre>
  * @author Nick Papior Andersen, nickpapior@gmail.com
  */
-public class GameApp extends MIDlet {
+public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	Displayable currentForm = null;
-	Display display = null;
-	Alert alert = null;
+	static Display display = null;
+	static Alert alert = null;
+	static TabbedPane tabbedPane = null;
 	
 	public GameApp() {
 		super();
 		//#debug info
 		System.out.println("initialisation done.");
 	}
-
-	public void showRandomizedCards() {
+	
+	public static void showRandomizedCards() {
 		if ( !Dominion.instance().getPlayingStates()[0] && Dominion.instance().getPlayingStates()[1] && !Dominion.instance().getPlayingStates()[2] && !Dominion.instance().getPlayingStates()[3] )
-			this.showAlert(Locale.get("alert.QuickSelectExpansions.OnlyPromoSelected"));
+			showAlert(Locale.get("alert.QuickSelectExpansions.OnlyPromoSelected"));
 		else if ( !Dominion.instance().getPlayingStates()[0] && !Dominion.instance().getPlayingStates()[1] && !Dominion.instance().getPlayingStates()[2] && !Dominion.instance().getPlayingStates()[3] )
-			this.showAlert(Locale.get("alert.QuickSelectExpansions.NoneSelected"));
+			showAlert(Locale.get("alert.QuickSelectExpansions.NoneSelected"));
 		else {
-			ShowCardsForm scForm = new ShowCardsForm(this, Locale.get("screen.RandomizedCards.title"));
+			ShowCardsForm scForm = new ShowCardsForm(Locale.get("screen.RandomizedCards.title"));
 			scForm.reRandomize();
-			this.changeToScreen(scForm);
+			changeToScreen(scForm);
 		}
 	}
 	
-	public void showBlackMarketDeck(Form previousForm) {
+	public static void showBlackMarketDeck(Form previousForm) {
 		//updateSelectedQuickRandom();
-		BlackMarketForm bmForm = new BlackMarketForm(this, previousForm, Locale.get("screen.BlackMarket.title"));
+		BlackMarketForm bmForm = new BlackMarketForm(previousForm, Locale.get("screen.BlackMarket.title"));
 		bmForm.setBlackMarketDeck(Dominion.instance().getBlackMarketDeck());
-		this.changeToScreen(bmForm);
+		changeToScreen(bmForm);
 	}
 
-	public void changeToScreen(Displayable displayable) {
+	public static void changeToScreen(Displayable displayable) {
 		if ( alert != null )
 			alert = null;
 		if ( displayable == null )
-			this.changeToScreen(this.currentForm);
+			changeToScreen(tabbedPane);
 		else
-			this.display.setCurrent(displayable);
+			GameApp.display.setCurrent(displayable);
 	}
 
 	protected void startApp() throws MIDletStateChangeException {
 		//#debug info
 		System.out.println("setting display");
-		this.currentForm = new DominizerTabbedForm(this, Locale.get("app.name"));
-		this.display = Display.getDisplay(this);
-		this.changeToScreen(null);
+		GameApp.display = Display.getDisplay(this);
+		//#style tabbedPane
+		tabbedPane = new TabbedPane(null);
+		tabbedPane.addTabListener(this);
+		tabbedPane.setTabbedFormListener(this);
+		//#style tabIcon
+		tabbedPane.addTab(new QuickRandomizeForm(Locale.get("tab.Quick.title")), null, Locale.get("app.name"));
+		//#style tabIcon
+		tabbedPane.addTab(new PresetFilteredList(Locale.get("tab.Preset.title"), FilteredList.IMPLICIT), null, Locale.get("screen.PresetCards.title"));
+		//#style tabIcon
+		tabbedPane.addTab(new EditCardsForm(Locale.get("tab.EditCards.title")), null, Locale.get("screen.EditSingleCards.title"));
+		changeToScreen(tabbedPane);
 	}
 
 	protected void pauseApp() {
 		DeviceControl.lightOff();
 	}
 	
-	protected void destroyApp(boolean unconditional) throws MIDletStateChangeException {
+	protected void destroyApp(boolean sunconditional) throws MIDletStateChangeException {
 		// just quit
 	}
 	
 	/**
 	 * @param string
 	 */
-	public void showAlert(String message) {
+	public static void showAlert(String message) {
 		//#style messageAlert
 		alert = new Alert(Locale.get("alert.alert"), message, null, AlertType.WARNING);
 		alert.setTimeout(Alert.FOREVER);
-		this.display.setCurrent(alert);
+		GameApp.display.setCurrent(alert);
 	}
 	
 	/**
 	 * @param string
 	 */
-	public void showInfo(String message, int timeOut) {
+	public static void showInfo(String message, int timeOut) {
 		//#style messageAlert
 		alert = new Alert(Locale.get("alert.info"), message, null, AlertType.INFO);
 		alert.setTimeout(timeOut);
-		this.display.setCurrent(alert);
+		GameApp.display.setCurrent(alert);
 	}
 	
 	/**
 	 * @param string
 	 */
-	public void showConfirmation(String message, CommandListener cmdListener) {
+	public static void showConfirmation(String message, CommandListener cmdListener) {
 		//#style messageAlert
 		alert = new Alert(Locale.get("alert.confirmation"), message, null, AlertType.CONFIRMATION);
 		alert.addCommand(new Command(Locale.get("polish.command.ok"), Command.OK, 1));
         alert.addCommand(new Command(Locale.get("polish.command.cancel"), Command.CANCEL, 1));
 		alert.setCommandListener(cmdListener);
-		this.display.setCurrent(alert);
+		GameApp.display.setCurrent(alert);
 	}
 	
-	public void quit() {
+	public static void quit() {
 		try {
 			SettingsRecordStorage srs = new SettingsRecordStorage();
 			srs.writeExpansions(Dominion.instance().getPlayingStates());
@@ -132,7 +149,21 @@ public class GameApp extends MIDlet {
 		} catch (RecordStoreException e) {
 			// TODO Auto-generated catch block
 		}
-		notifyDestroyed();
+	}
+
+	public void tabChangeEvent(Screen arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void notifyTabChangeCompleted(int arg0, int arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean notifyTabChangeRequested(int arg0, int arg1) {
+		// TODO Auto-generated method stub
+		return true;
 	}
 	
 

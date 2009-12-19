@@ -32,20 +32,15 @@ import de.enough.polish.util.Locale;
  * @author nick
  *
  */
-public class DominizerTabbedForm extends TabbedForm implements CommandListener, ItemCommandListener {
+public class QuickRandomizeForm extends Form implements CommandListener, ItemCommandListener {
 	
-	GameApp app = null;
-	ChoiceGroup whatToDoCG = null;
 	ChoiceGroup quickGameRandomizerCG = null;
-	
-	Command selectCmd = new Command( Locale.get("polish.command.select"), Command.SCREEN, 0);
 	Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.SCREEN, 0);
 	Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.BACK, 10);
 	
-	public DominizerTabbedForm(GameApp app, String title) {
+	public QuickRandomizeForm(String title) {
 		//#style mainScreen
-		super(title, new String[] {Locale.get("tab.Quick.title"), Locale.get("tab.Settings.title") }, null);
-		this.app = app;
+		super(title);
 		// Setting up the QuickGame Randomizer
 		//#style filterCards
 		this.quickGameRandomizerCG = new ChoiceGroup(Locale.get("tab.Quick.QuickSelectExpansions"), ChoiceGroup.MULTIPLE);
@@ -73,7 +68,7 @@ public class DominizerTabbedForm extends TabbedForm implements CommandListener, 
 		this.readExpansionSettings();
 		this.addCommand(this.quitCmd);
 		this.setCommandListener(this);
-		this.append(0, this.quickGameRandomizerCG);
+		this.append(this.quickGameRandomizerCG);
 	}
 	
 	public void readExpansionSettings() {
@@ -113,20 +108,14 @@ public class DominizerTabbedForm extends TabbedForm implements CommandListener, 
 	}
 	
 	public void commandAction(Command cmd, Displayable screen) {
-		if ( cmd == this.quitCmd )
-			this.app.quit();
-		switch ( this.getActiveTab() ) {
-		case 0:
-			if ( cmd == this.quickRandomizeCardsCmd ) {
-				boolean[] flags = new boolean[4];
-				this.quickGameRandomizerCG.getSelectedFlags(flags);
-				Dominion.instance().setExpansionPlayingState(flags);
-				this.app.showRandomizedCards();
-			}
-			break;
-		case 1:
-		}
-		
+		if ( cmd == this.quickRandomizeCardsCmd ) {
+			boolean[] flags = new boolean[4];
+			this.quickGameRandomizerCG.getSelectedFlags(flags);
+			Dominion.instance().setExpansionPlayingState(flags);
+			GameApp.showRandomizedCards();
+		} else if ( cmd == this.quitCmd )
+			GameApp.quit();
+				
 	}
 	
 	public void commandAction(Command cmd, Item item) {
@@ -135,44 +124,36 @@ public class DominizerTabbedForm extends TabbedForm implements CommandListener, 
 	}
 	
 	public void keyPressed(int keyCode) {
-		switch ( this.getActiveTab() ) {
-		case 0:
-			switch (keyCode) {
-			case Canvas.KEY_NUM0:
-				this.setCardsFromExpansion(0);
-				break;
-			case Canvas.KEY_NUM1:
-				this.setCardsFromExpansion(1);
-				break;
-			case Canvas.KEY_NUM2:
-				this.setCardsFromExpansion(2);
-				break;
-			case Canvas.KEY_NUM3:
-				this.setCardsFromExpansion(3);
-				break;
-			case Canvas.KEY_NUM4:
-				this.setCardsFromExpansion(4);
-				break;
-			case Canvas.KEY_NUM5:
-				this.setCardsFromExpansion(5);
-				break;
-			case Canvas.KEY_NUM6:
-				this.setCardsFromExpansion(6);
-				break;
-			case Canvas.KEY_NUM7:
-				this.setCardsFromExpansion(7);
-				break;
-			case Canvas.KEY_NUM8:
-				this.setCardsFromExpansion(8);
-				break;
-			case Canvas.KEY_NUM9:
-				this.setCardsFromExpansion(9);
-				break;
-			default:
-				super.keyPressed(keyCode);
-			}
+		switch (keyCode) {
+		case Canvas.KEY_NUM0:
+			this.setCardsFromExpansion(0);
 			break;
-		case 1:
+		case Canvas.KEY_NUM1:
+			this.setCardsFromExpansion(1);
+			break;
+		case Canvas.KEY_NUM2:
+			this.setCardsFromExpansion(2);
+			break;
+		case Canvas.KEY_NUM3:
+			this.setCardsFromExpansion(3);
+			break;
+		case Canvas.KEY_NUM4:
+			this.setCardsFromExpansion(4);
+			break;
+		case Canvas.KEY_NUM5:
+			this.setCardsFromExpansion(5);
+			break;
+		case Canvas.KEY_NUM6:
+			this.setCardsFromExpansion(6);
+			break;
+		case Canvas.KEY_NUM7:
+			this.setCardsFromExpansion(7);
+			break;
+		case Canvas.KEY_NUM8:
+			this.setCardsFromExpansion(8);
+			break;
+		case Canvas.KEY_NUM9:
+			this.setCardsFromExpansion(9);
 			break;
 		default:
 			super.keyPressed(keyCode);
@@ -190,7 +171,7 @@ public class DominizerTabbedForm extends TabbedForm implements CommandListener, 
 			//#debug info
 			System.out.println("expansion found " + expansion);
 			if ( expansion == 1 && numberOfCards > 2 )
-				this.app.showAlert(Locale.get("alert.CardsFromExpansion.Promo"));
+				GameApp.showAlert(Locale.get("alert.CardsFromExpansion.Promo"));
 			else {
 				if ( numberOfCards > 0 )
 					this.quickGameRandomizerCG.set(expansion, Dominion.instance().getExpansionName(expansion) + " " + numberOfCards, this.quickGameRandomizerCG.getImage(expansion));
