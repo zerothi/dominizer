@@ -70,7 +70,7 @@ public class SettingsRecordStorage {
 	    sb.append("" + preset[i][1]);
 	}
 	sb.append(BIG_SPLITTER);
-	return 
+	return writeData(Locale.get("rms.file.preset"), Locale.get("rms.preset"), sb.toString());
     }
 
 	public Vector readData(String recordStore) throws RecordStoreFullException, RecordStoreException {

@@ -82,8 +82,6 @@ public class Dominion {
 			new int[] {0, 10}, new int[] {0, 11}, new int[] {0, 15}, new int[] {0, 22}, new int[] {3,  0},
 			new int[] {3,  6}, new int[] {3,  8}, new int[] {3,  9}, new int[] {3, 18}, new int[] {3, 20} });
 		//#debug info
-		System.out.println("reading preset card Village Square: " + rulePresets[0].getPresetName(4) + ". Card 3: " + rulePresets[0].getPreset(4)[3][0] + " and " + rulePresets[0].getPreset(4)[3][1]);
-		//#debug info
 		System.out.println("reading base");
 		readResource(BASE, "base", 25);
 		//#debug info
@@ -267,7 +265,11 @@ public class Dominion {
 	}
 
 	
-	public String getExpansionName(int expansion) {
+
+    public boolean saveCurrentAsPreset(String name) {
+	StringBuffer sb = new StringBuffer(50)
+    }
+	public static String getExpansionName(int expansion) {
 		switch ( expansion ) {
 		case BASE:
 			return Locale.get("base");
