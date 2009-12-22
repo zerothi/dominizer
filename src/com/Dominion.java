@@ -19,66 +19,66 @@ public class Dominion {
 	public static final int SEASIDE = 3;
 	private Cards[] expansions = null;
 	private Cards selectedCards = null;
-	private CardPresets[] rulePresets = null;
+	private CardPresets[] presets = null;
 	private int numberOfRandomCards = 10;
 	private boolean[] playingExpansions = new boolean[] {true, true, true, true};
 	private int[] numberOfCardsFromExp = new int[] {0, 0, 0, 0};
-	
+
 	private Dominion() {
 		expansions = new Cards[4];
-		rulePresets = new CardPresets[3]; // Promo cards doesn't have preset!
-		rulePresets[0] = new CardPresets(5);
-		rulePresets[0].setPreset(0, Locale.get("preset.base.FirstGame"), new int[][] { 
+		presets = new CardPresets[3]; // Promo cards doesn't have preset!
+		presets[0] = new CardPresets(5);
+		presets[0].setPreset(0, Locale.get("preset.base.FirstGame"), new int[][] { 
 			new int[] {0,  2}, new int[] {0, 11}, new int[] {0, 12}, new int[] {0, 13}, new int[] {0, 14}, 
 			new int[] {0, 16}, new int[] {0, 17}, new int[] {0, 21}, new int[] {0, 23}, new int[] {0, 24} });
-		rulePresets[0].setPreset(1, Locale.get("preset.base.BigMoney"), new int[][] { 
+		presets[0].setPreset(1, Locale.get("preset.base.BigMoney"), new int[][] { 
 			new int[] {0,  0}, new int[] {0,  1}, new int[] {0,  3}, new int[] {0,  4}, new int[] {0,  6}, 
 			new int[] {0,  9}, new int[] {0, 11}, new int[] {0, 13}, new int[] {0, 15}, new int[] {0, 20} });
-		rulePresets[0].setPreset(2, Locale.get("preset.base.Interaction"), new int[][] { 
+		presets[0].setPreset(2, Locale.get("preset.base.Interaction"), new int[][] { 
 			new int[] {0,  1}, new int[] {0,  3}, new int[] {0,  5}, new int[] {0,  7}, new int[] {0, 10},
 			new int[] {0, 12}, new int[] {0, 14}, new int[] {0, 18}, new int[] {0, 23}, new int[] {0, 24} });
-		rulePresets[0].setPreset(3, Locale.get("preset.base.SizeDistortion"), new int[][] {
+		presets[0].setPreset(3, Locale.get("preset.base.SizeDistortion"), new int[][] {
 			new int[] {0,  2}, new int[] {0,  4}, new int[] {0,  6}, new int[] {0,  8}, new int[] {0,  9},
 			new int[] {0, 19}, new int[] {0, 21}, new int[] {0, 22}, new int[] {0, 23}, new int[] {0, 24} });
-		rulePresets[0].setPreset(4, Locale.get("preset.base.VillageSquare"), new int[][] { 
+		presets[0].setPreset(4, Locale.get("preset.base.VillageSquare"), new int[][] { 
 			new int[] {0,  1}, new int[] {0,  2}, new int[] {0,  7}, new int[] {0, 10}, new int[] {0, 11},
 			new int[] {0, 16}, new int[] {0, 17}, new int[] {0, 20}, new int[] {0, 21}, new int[] {0, 23} });
-		rulePresets[1] = new CardPresets(6);
-		rulePresets[1].setPreset(0, Locale.get("preset.intrigue.VictoryDance"), new int[][] { 
+		presets[1] = new CardPresets(6);
+		presets[1].setPreset(0, Locale.get("preset.intrigue.VictoryDance"), new int[][] { 
 			new int[] {2,  1}, new int[] {2,  5}, new int[] {2,  6}, new int[] {2,  7}, new int[] {2,  8},
 			new int[] {2,  9}, new int[] {2, 12}, new int[] {2, 13}, new int[] {2, 15}, new int[] {2, 23} });
-		rulePresets[1].setPreset(1, Locale.get("preset.intrigue.SecretSchemes"), new int[][] { 
+		presets[1].setPreset(1, Locale.get("preset.intrigue.SecretSchemes"), new int[][] { 
 			new int[] {2,  2}, new int[] {2,  7}, new int[] {2,  8}, new int[] {2, 13},	new int[] {2, 14},
 			new int[] {2, 17}, new int[] {2, 18}, new int[] {2, 20}, new int[] {2, 21}, new int[] {2, 22} });
-		rulePresets[1].setPreset(2, Locale.get("preset.intrigue.BestWishes"), new int[][] { 
+		presets[1].setPreset(2, Locale.get("preset.intrigue.BestWishes"), new int[][] { 
 			new int[] {2,  3}, new int[] {2,  4}, new int[] {2,  9}, new int[] {2, 15}, new int[] {2, 17}, 
 			new int[] {2, 18}, new int[] {2, 20}, new int[] {2, 21}, new int[] {2, 23}, new int[] {2, 24} });
-		rulePresets[1].setPreset(3, Locale.get("preset.intrigue.Deconstruction"),  	new int[][] { 
+		presets[1].setPreset(3, Locale.get("preset.intrigue.Deconstruction"),  	new int[][] { 
 			new int[] {0, 16}, new int[] {0, 18}, new int[] {0, 19}, new int[] {0, 20}, new int[] {2,  1},
 			new int[] {2, 10}, new int[] {2, 14}, new int[] {2, 16}, new int[] {2, 19}, new int[] {2, 20} });
-		rulePresets[1].setPreset(4, Locale.get("preset.intrigue.HandMadness"), new int[][] { 
+		presets[1].setPreset(4, Locale.get("preset.intrigue.HandMadness"), new int[][] { 
 			new int[] {0,  1}, new int[] {0,  3}, new int[] {0,  5}, new int[] {0, 12}, new int[] {0, 13},
 			new int[] {2,  4}, new int[] {2, 11}, new int[] {2, 12}, new int[] {2, 18}, new int[] {2, 20} });
-		rulePresets[1].setPreset(5, Locale.get("preset.intrigue.Underlings"), new int[][] {
+		presets[1].setPreset(5, Locale.get("preset.intrigue.Underlings"), new int[][] {
 			new int[] {0,  2}, new int[] {0,  7}, new int[] {0, 10}, new int[] {0, 22}, new int[] {2,  0},
 			new int[] {2,  9}, new int[] {2, 11}, new int[] {2, 12}, new int[] {2, 13}, new int[] {2, 18} });
-		rulePresets[2] = new CardPresets(6);
-		rulePresets[2].setPreset(0, Locale.get("preset.seaside.HighSeas"), new int[][] {
+		presets[2] = new CardPresets(6);
+		presets[2].setPreset(0, Locale.get("preset.seaside.HighSeas"), new int[][] {
 			new int[] {3,  1}, new int[] {3,  2}, new int[] {3,  4}, new int[] {3,  5}, new int[] {3,  8},
 			new int[] {3,  9}, new int[] {3, 11}, new int[] {3, 17}, new int[] {3, 20}, new int[] {3, 25} });
-		rulePresets[2].setPreset(1, Locale.get("preset.seaside.BuriedTreasure"), new int[][] {
+		presets[2].setPreset(1, Locale.get("preset.seaside.BuriedTreasure"), new int[][] {
 			new int[] {3,  0}, new int[] {3,  3}, new int[] {3,  6}, new int[] {3, 10}, new int[] {3, 15},
 			new int[] {3, 16}, new int[] {3, 21}, new int[] {3, 22}, new int[] {3, 24}, new int[] {3, 25} });
-		rulePresets[2].setPreset(2, Locale.get("preset.seaside.Shipwrecks"), new int[][] {
+		presets[2].setPreset(2, Locale.get("preset.seaside.Shipwrecks"), new int[][] {
 			new int[] {3,  7}, new int[] {3, 12}, new int[] {3, 13}, new int[] {3, 14}, new int[] {3, 16},
 			new int[] {3, 18}, new int[] {3, 19}, new int[] {3, 20}, new int[] {3, 23}, new int[] {3, 24} });
-		rulePresets[2].setPreset(3, Locale.get("preset.seaside.ReachForTomorrow"), new int[][] {
+		presets[2].setPreset(3, Locale.get("preset.seaside.ReachForTomorrow"), new int[][] {
 			new int[] {0,  0}, new int[] {0,  2}, new int[] {0,  5}, new int[] {0, 21}, new int[] {0, 18},
 			new int[] {3,  3}, new int[] {3,  7}, new int[] {3, 11}, new int[] {3, 19}, new int[] {3, 22} });
-		rulePresets[2].setPreset(4, Locale.get("preset.seaside.Repetition"), new int[][] {
+		presets[2].setPreset(4, Locale.get("preset.seaside.Repetition"), new int[][] {
 			new int[] {0,  3}, new int[] {0,  7}, new int[] {0, 12}, new int[] {0, 24}, new int[] {3,  2},
 			new int[] {3,  5}, new int[] {3, 15}, new int[] {3, 16}, new int[] {3, 17}, new int[] {3, 23} });
-		rulePresets[2].setPreset(5, Locale.get("preset.seaside.GiveAndTake"), new int[][] {
+		presets[2].setPreset(5, Locale.get("preset.seaside.GiveAndTake"), new int[][] {
 			new int[] {0, 10}, new int[] {0, 11}, new int[] {0, 15}, new int[] {0, 22}, new int[] {3,  0},
 			new int[] {3,  6}, new int[] {3,  8}, new int[] {3,  9}, new int[] {3, 18}, new int[] {3, 20} });
 		//#debug info
@@ -102,13 +102,13 @@ public class Dominion {
 		//#debug info
 		System.out.println("size seaside: " + expansions[3].size()+ ". Third name: " + expansions[3].getName(2));
 	}
-	
+
 	public static Dominion instance() {
 		if ( dom == null )
 			dom = new Dominion();
 		return dom;
 	}
-	
+
 	/**
 	 * @return the numberOfRandomCards
 	 */
@@ -122,11 +122,11 @@ public class Dominion {
 	public void setNumberOfRandomCards(int numberOfRandomCards) {
 		this.numberOfRandomCards = numberOfRandomCards;
 	}
-	
+
 	public boolean[] getPlayingStates() {
 		return playingExpansions;
 	}
-	
+
 	public void setExpansionPlayingState(int expansion, boolean isAvailable) {
 		playingExpansions[expansion] = isAvailable;
 		for (int i = 0 ; i < expansions[expansion].size() ; i++ ) {
@@ -134,12 +134,12 @@ public class Dominion {
 			expansions[expansion].setBlackMarketAvailable(i, isAvailable);
 		}
 	}
-	
+
 	public void setExpansionPlayingState(boolean[] isAvailable) {
 		for (int exp = 0 ; exp < isAvailable.length ; exp++ )
 			setExpansionPlayingState(exp, isAvailable[exp]);
 	}
-	
+
 	public Cards getRandomizedCards() {
 		this.resetIsPlaying();
 		this.selectedCards = new Cards(numberOfRandomCards, Cards.IS_NOT_SET);
@@ -192,7 +192,7 @@ public class Dominion {
 		selector = null;
 		return sortCards(selectedCards);
 	}
-	
+
 	public Cards getBlackMarketDeck() {
 		int total = 0;
 		for ( int i = 0; i < expansions.length ; i++ ) 
@@ -212,21 +212,20 @@ public class Dominion {
 				}
 		return blackMarket;
 	}
-	
+
 	public void setCardsUsedForExpansion(int expansion, int numberOfCards) {
 		numberOfCardsFromExp[expansion] = numberOfCards;
 	}
-	
+
 	public String getSelectedInfo() {
 		if ( this.selectedCards == null )
 			return "";
 		StringBuffer sb = new StringBuffer(50);
 		for ( int i = 0 ; i < selectedCards.size() ; i++ ) {
-			
 		}
 		return sb.toString();
 	}
-	
+
 	public Cards sortCards(Cards cards) {
 		Object[] tmp = null;
 		for ( int j = 0; j < cards.size(); j++ ) { 
@@ -242,33 +241,46 @@ public class Dominion {
 		}
 		return cards;
 	}
-	
+
 	public int[] getNumberOfExpansionCards() {
 		return numberOfCardsFromExp;
 	}
-	
+
 	public int presetSize() {
-		return rulePresets.length;
+		return presets.length;
+	}
+
+	public Cards getPreset(int presetDeck, int preset) {
+		this.selectedCards = new Cards(10, Cards.IS_NOT_SET);
+		for ( int i = 0 ; i < presets[presetDeck].size() ; i++ )
+			selectedCards.setCard(i, expansions[presets[presetDeck].getPresetCardExpansion(preset, i)].getCard(presets[presetDeck].getPresetCardPlacement(preset, i)));
+		return sortCards(selectedCards);
 	}
 	
-    public Cards getPreset(int presetDeck, int preset) {
-		Cards presetCards = new Cards(10, Cards.IS_NOT_SET);
-		for ( int i = 0 ; i < rulePresets[presetDeck].length ; i++ )
-		    presetCards.setCard(i, expansions[rulePresets[presetDeck][i][0]].getCard(rulePresets[presetDeck][i][1]));
-		return sortCards(presetCards);
+	public CardPresets getPreset(int preset) {
+		return presets[preset];
 	}
-	
+
 	public void resetIsPlaying() {
 		for ( int i = 0 ; i < expansions.length ; i++ )
 			for ( int j = 0 ; j < expansions[i].size() ; j++ )
 				expansions[i].setPlaying(j, false);
 	}
 
-	
 
-    public boolean saveCurrentAsPreset(String name) {
-	StringBuffer sb = new StringBuffer(50)
-    }
+
+	public String getCurrentAsPreset() {
+		if ( this.selectedCards == null )
+			return "";
+		StringBuffer sb = new StringBuffer(50);
+		for ( int i = 0 ; i < expansions.length ; i++ )
+			for ( int j = 0 ; j < expansions[i].size() ; j++ )
+				for ( int k = 0 ; k < selectedCards.size() ; k++ )
+					if ( selectedCards.getName(k).equals(expansions[i].getName(j)) )
+						sb.append(SettingsRecordStorage.BIG_SPLITTER + i + SettingsRecordStorage.MEDIUM_SPLITTER + j);
+		return sb.toString();
+	}
+	
 	public static String getExpansionName(int expansion) {
 		switch ( expansion ) {
 		case BASE:
@@ -282,7 +294,7 @@ public class Dominion {
 		}
 		return "";
 	}
-	
+
 	private void readResource(int exp, String fileName, int totalCards) {
 		expansions[exp] = new Cards(totalCards, Cards.IS_SET);
 		StringBuffer sb = new StringBuffer();
@@ -291,21 +303,21 @@ public class Dominion {
 		int cardRead = 0;
 		try {
 			//#if polish.android
-				//#= try {
-				//#= if ( exp == 0 )
-				//#= 	isr = new InputStreamReader(new Resources(null, null, null).openRawResource(com.dominizer.R.raw.base), Charset.forName("UTF-8"));
-				//#= else if ( exp == 1 )
-				//#= 	isr = new InputStreamReader(new Resources(null, null, null).openRawResource(com.dominizer.R.raw.promo), Charset.forName("UTF-8"));
-				//#= else if ( exp == 2 )
-				//#= 	isr = new InputStreamReader(new Resources(null, null, null).openRawResource(com.dominizer.R.raw.intrigue), Charset.forName("UTF-8"));
-				//#= else if ( exp == 3 )
-				//#= 	isr = new InputStreamReader(new Resources(null, null, null).openRawResource(com.dominizer.R.raw.seaside), Charset.forName("UTF-8"));
-				//#= } catch (Resources.NotFoundException e) {
-				//#= 	//#debug info
-				//#=    System.out.println("Resource hasn't been found");
-				//#= }
+			//#= try {
+			//#= if ( exp == 0 )
+			//#= 	isr = new InputStreamReader(new Resources(null, null, null).openRawResource(com.dominizer.R.raw.base), Charset.forName("UTF-8"));
+			//#= else if ( exp == 1 )
+			//#= 	isr = new InputStreamReader(new Resources(null, null, null).openRawResource(com.dominizer.R.raw.promo), Charset.forName("UTF-8"));
+			//#= else if ( exp == 2 )
+			//#= 	isr = new InputStreamReader(new Resources(null, null, null).openRawResource(com.dominizer.R.raw.intrigue), Charset.forName("UTF-8"));
+			//#= else if ( exp == 3 )
+			//#= 	isr = new InputStreamReader(new Resources(null, null, null).openRawResource(com.dominizer.R.raw.seaside), Charset.forName("UTF-8"));
+			//#= } catch (Resources.NotFoundException e) {
+			//#= 	//#debug info
+			//#=    System.out.println("Resource hasn't been found");
+			//#= }
 			//#else
-				isr = new InputStreamReader(this.getClass().getResourceAsStream(fileName),"UTF8");
+			isr = new InputStreamReader(this.getClass().getResourceAsStream(fileName),"UTF8");
 			//#endif
 			int ch;
 			while ( (ch = isr.read()) > -1 ) {
@@ -339,7 +351,7 @@ public class Dominion {
 							". Treasury? " + expansions[exp].isTreasure(cardRead) +
 							". Duration? " + expansions[exp].isDuration(cardRead)
 							);
-					*/
+					 */
 					cardRead++;
 				} else if ( (char)ch == '\n' ) {
 					sb.delete(0, sb.toString().length() - 1);
@@ -352,7 +364,7 @@ public class Dominion {
 			System.out.println("exception on reading:" + ex);
 		}
 	}
-	
+
 	private boolean isTrue(String test) {
 		return test.equals("0") ? false : true;
 	}

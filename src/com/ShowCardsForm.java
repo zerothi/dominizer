@@ -16,7 +16,7 @@ import com.dominizer.GameApp;
 import de.enough.polish.ui.TableItem;
 import de.enough.polish.util.Locale;
 
-public class ShowCardsForm extends Form  implements CommandListener {
+public class ShowCardsForm extends Form implements CommandListener {
 
 	private TableItem table = null;
 	private Command randomizeCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 1);

@@ -40,7 +40,6 @@ import de.enough.polish.util.Locale;
  * @author Nick Papior Andersen, nickpapior@gmail.com
  */
 public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
-	Displayable currentForm = null;
 	static Display display = null;
 	static Alert alert = null;
 	static TabbedPane tabbedPane = null;

@@ -40,7 +40,7 @@ public class SettingsRecordStorage {
 	}
 
 	public boolean writeExpansions(boolean[] expansions) throws RecordStoreFullException, RecordStoreNotFoundException,
-	        RecordStoreException {
+	RecordStoreException {
 		StringBuffer sb = new StringBuffer(4);
 		sb.append(expansions[0] ? "1" : "0");
 		sb.append(expansions[1] ? "1" : "0");
@@ -48,7 +48,7 @@ public class SettingsRecordStorage {
 		sb.append(expansions[3] ? "1" : "0");
 		return writeData(Locale.get("rms.file.settings"), Locale.get("rms.expansions"), sb.toString());
 	}
-	
+
 	public boolean writeExpansionCards(int[] expansionCards) throws RecordStoreFullException, RecordStoreNotFoundException,
 	RecordStoreException {
 		StringBuffer sb = new StringBuffer(4);
@@ -59,19 +59,14 @@ public class SettingsRecordStorage {
 		return writeData(Locale.get("rms.file.settings"), Locale.get("rms.expansions.usedcards"), sb.toString());
 	}
 
-    public boolean savePreset(String presetName, int[][] preset) {
-	StringBuffer sb = new StringBuffer(100);
-	sb.append(presetName);
-
-	for ( int i = 0 ; i < preset.length ; i++ ) {
-	    sb.append(BIG_SPLITTER);
-	    sb.append("" + preset[i][0]);
-	    sb.append(MEDIUM_SPLITTER);
-	    sb.append("" + preset[i][1]);
+	public boolean savePreset(String presetName, String preset) throws RecordStoreFullException, RecordStoreNotFoundException, RecordStoreException {
+		StringBuffer sb = new StringBuffer(100);
+		sb.append(presetName);
+		sb.append(BIG_SPLITTER);
+		sb.append(preset);
+		sb.append(BIG_SPLITTER);
+		return writeData(Locale.get("rms.file.preset"), Locale.get("rms.preset"), sb.toString());
 	}
-	sb.append(BIG_SPLITTER);
-	return writeData(Locale.get("rms.file.preset"), Locale.get("rms.preset"), sb.toString());
-    }
 
 	public Vector readData(String recordStore) throws RecordStoreFullException, RecordStoreException {
 		data = null;
@@ -110,7 +105,7 @@ public class SettingsRecordStorage {
 
 
 	public boolean writeData(String recordStore, String key, String record) throws RecordStoreFullException, RecordStoreNotFoundException,
-	        RecordStoreException {
+	RecordStoreException {
 		boolean succes = true;
 		//#debug info
 		System.out.println("Writing record: " + record);
@@ -141,7 +136,7 @@ public class SettingsRecordStorage {
 		data = null;
 		return succes;
 	}
-	
+
 	public void deleteRecordStore(String recordStore) {
 		try {
 			RecordStore.deleteRecordStore(recordStore);

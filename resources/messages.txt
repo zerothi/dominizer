@@ -125,8 +125,10 @@ polish.command.back=Back
 #
 #################
 rms.file.settings=settings
+rms.file.preset=presets
 rms.expansions=expansions
 rms.expansions.usedcards=expcards
+rms.preset=preset
 rms.notselected=no
 rms.base=ba
 rms.promo=pr

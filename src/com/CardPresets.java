@@ -3,6 +3,8 @@
  */
 package com;
 
+import de.enough.polish.util.Locale;
+
 /**
  * @author nick
  *
@@ -16,8 +18,19 @@ public class CardPresets {
 		presetNames = new String[size];
 	}
 	
-	public int[][] getPreset(int index) {
-		return presets[index];
+	public int[][] getPreset(int preset) {
+		return presets[preset];
+	}
+	
+	public int[] getPresetCard(int preset, int card) {
+		return presets[preset][card];
+	}
+	
+	public int getPresetCardExpansion(int preset, int card) {
+		return presets[preset][card][0];
+	}
+	public int getPresetCardPlacement(int preset, int card) {
+		return presets[preset][card][1];
 	}
 	
 	public int[][] getPreset(String presetName) {
@@ -39,5 +52,4 @@ public class CardPresets {
 	public int size() {
 		return presetNames.length;
 	}
-
 }
