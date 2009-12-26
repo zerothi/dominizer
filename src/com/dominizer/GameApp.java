@@ -56,11 +56,31 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		else if ( !Dominion.instance().getPlayingStates()[0] && !Dominion.instance().getPlayingStates()[1] && !Dominion.instance().getPlayingStates()[2] && !Dominion.instance().getPlayingStates()[3] )
 			showAlert(Locale.get("alert.QuickSelectExpansions.NoneSelected"));
 		else {
-			ShowCardsForm scForm = new ShowCardsForm(Locale.get("screen.RandomizedCards.title"));
-			scForm.reRandomize();
-			changeToScreen(scForm);
+		    ShowCardsForm.instance().reRandomize();
+		    changeToScreen(ShowCardsForm.instance());
 		}
 	}
+
+	public static void showRandomizedCards() {
+		if ( !Dominion.instance().getPlayingStates()[0] && Dominion.instance().getPlayingStates()[1] && !Dominion.instance().getPlayingStates()[2] && !Dominion.instance().getPlayingStates()[3] )
+			showAlert(Locale.get("alert.QuickSelectExpansions.OnlyPromoSelected"));
+		else if ( !Dominion.instance().getPlayingStates()[0] && !Dominion.instance().getPlayingStates()[1] && !Dominion.instance().getPlayingStates()[2] && !Dominion.instance().getPlayingStates()[3] )
+			showAlert(Locale.get("alert.QuickSelectExpansions.NoneSelected"));
+		else {
+		    ShowCardsForm.instance().reRandomize();
+		    changeToScreen(ShowCardsForm.instance());
+		}
+	}
+
+    public static void showCurrentSelectedCards() {
+	try {
+	    Dominion.instance().getCurrentlySelected();
+	} catch (DominionException exp) {
+	    //#debug info
+	    System.out.println(exp.toString());
+	}
+    }
+
 	
 	public static void showBlackMarketDeck(Form previousForm) {
 		//updateSelectedQuickRandom();

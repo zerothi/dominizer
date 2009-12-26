@@ -32,6 +32,13 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 	}
 	
 	public void commandAction(Command cmd, Displayable disp) {
-		
+	    if ( cmd == quickRandomizeCardsCmd ) {
+		Random selector = new Random(System.currentTimeMillis());
+		//TODO set selected cursor! Probably UIaccess
+		//this.setCursor(selector.nextInt(this.getSize());
+	    } else if ( cmd == selectCmd ) {
+		ShowCardsForm.instance().viewCards(Dominion.instance().getPreset(this.getSelected()));
+		GameApp.changeToScreen(ShowCardsForm.instance());
+	    }
 	}
 }

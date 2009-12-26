@@ -17,7 +17,8 @@ import de.enough.polish.ui.TableItem;
 import de.enough.polish.util.Locale;
 
 public class ShowCardsForm extends Form implements CommandListener {
-
+    
+    private ShowCardsForm scF = null;
 	private TableItem table = null;
 	private Command randomizeCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 1);
 	private Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.SCREEN, 1);
@@ -27,7 +28,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 	//private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
 	
 	
-	public ShowCardsForm(String title) {
+	private ShowCardsForm(String title) {
 		//#style mainScreen
 		super(title);
 		//#debug
@@ -42,6 +43,11 @@ public class ShowCardsForm extends Form implements CommandListener {
 		this.append(this.table);
 		this.setCommandListener(this);
 	}
+    public ShowCardsForm instance() {
+	if ( scF == null )
+	    scF = new ShowCardsForm(Locale.get("screen.RandomizedCards.title"));
+	return scF;
+    }
 	
 	public void reRandomize() {
 		this.viewCards(Dominion.instance().getRandomizedCards());

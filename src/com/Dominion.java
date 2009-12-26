@@ -140,7 +140,7 @@ public class Dominion {
 			setExpansionPlayingState(exp, isAvailable[exp]);
 	}
 
-	public Cards getRandomizedCards() {
+	public void randomizeCards(int sort) {
 		this.resetIsPlaying();
 		this.selectedCards = new Cards(numberOfRandomCards, Cards.IS_NOT_SET);
 		int selectedElement = 0;
@@ -256,6 +256,15 @@ public class Dominion {
 			selectedCards.setCard(i, expansions[presets[presetDeck].getPresetCardExpansion(preset, i)].getCard(presets[presetDeck].getPresetCardPlacement(preset, i)));
 		return sortCards(selectedCards);
 	}
+    
+    public Cards getPreset(String presetName) {
+	for ( int i = 0 ; i < presets.length ; i++ )
+	    for ( int j = 0 ; j < presets[i].size() ; j++ )
+		if ( presets[i].getPresetName(j).equals(presetName) )
+		    return this.getPreset(i, j);
+	return null;
+	
+    }
 	
 	public CardPresets getPreset(int preset) {
 		return presets[preset];
@@ -269,7 +278,7 @@ public class Dominion {
 
 
 
-	public String getCurrentAsPreset() {
+	public String getCurrentAsPresetSave() {
 		if ( this.selectedCards == null )
 			return "";
 		StringBuffer sb = new StringBuffer(50);
@@ -294,6 +303,13 @@ public class Dominion {
 		}
 		return "";
 	}
+
+    public Cards getCurrentSelected() throws DominionException {
+	if ( selectedCards == null | selectedCards.size() == numberOfRandomCards ) 
+	    throw new DominionException("No currently selected cards");
+	return selectedCards;
+    }
+	
 
 	private void readResource(int exp, String fileName, int totalCards) {
 		expansions[exp] = new Cards(totalCards, Cards.IS_SET);
