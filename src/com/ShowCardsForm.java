@@ -111,7 +111,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 		else if ( cmd == this.saveCmd ) {
 			SettingsRecordStorage src = new SettingsRecordStorage();
 			try {
-				src.saveInfo(Locale.get("rms.preset"), Dominion.instance().getCurrentAsPresetSave());
+				src.savePreset(Locale.get("rms.preset"), Dominion.instance().getCurrentAsPresetSave());
 			} catch (RecordStoreFullException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
