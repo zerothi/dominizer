@@ -17,9 +17,9 @@ public class SettingsRecordStorage {
 	public static final char SMALL_SPLITTER = '#';
 	public static final char OPTION_SPLITTER = '=';
 
-	private Vector data = null;
-	private RecordStore store = null;
-	private byte[] tmpByte = null;
+	private static Vector data = null;
+	private static RecordStore store = null;
+	private static byte[] tmpByte = null;
 
 	public SettingsRecordStorage() {
 		super();

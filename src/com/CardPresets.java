@@ -3,7 +3,6 @@
  */
 package com;
 
-import de.enough.polish.util.Locale;
 
 /**
  * @author nick

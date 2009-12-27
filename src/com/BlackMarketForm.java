@@ -27,26 +27,24 @@ import de.enough.polish.util.Locale;
  */
 public class BlackMarketForm extends Form implements CommandListener, ItemCommandListener {
 
-	Form previousForm = null;
-	Vector blackMarketDeck = null;
-	Vector drawnDeck = null;
-	Item informationItem = null;
-	ChoiceGroup chooseCard = null;
-	Command cancelBuyCmd = new Command( Locale.get("cmd.BlackMarket.CancelBuy"), Command.SCREEN, 1);
-	Command drawCardsCmd = new Command( Locale.get("cmd.BlackMarket.Draw"), Command.OK, 0);
-	Command selectCardCmd = new Command( Locale.get("polish.command.select"), Command.SCREEN, 2);
-	Command backCmd = new Command( Locale.get("cmd.Back"), Command.BACK, 0);
-	String randomizeCardHolder = null;
+	private Vector blackMarketDeck = null;
+	private Vector drawnDeck = null;
+	private Item informationItem = null;
+	private ChoiceGroup chooseCard = null;
+	private Command cancelBuyCmd = new Command( Locale.get("cmd.BlackMarket.CancelBuy"), Command.SCREEN, 1);
+	private Command drawCardsCmd = new Command( Locale.get("cmd.BlackMarket.Draw"), Command.OK, 0);
+	private Command selectCardCmd = new Command( Locale.get("polish.command.select"), Command.SCREEN, 2);
+	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.BACK, 0);
+	private String randomizeCardHolder = null;
 	int currentlyReachedCard = 0;
 	int randomize = 0;
 	
 	/**
 	 * @param title
 	 */
-	public BlackMarketForm(Form previousForm, String title) {
+	public BlackMarketForm(String title) {
 		//#style mainScreen
 		super(title);
-		this.previousForm = previousForm;
 		//#style mainItem
 		this.informationItem = new StringItem("", Locale.get("screen.BlackMarket.DrawTextInfo"));
 		//#style filterCards
@@ -205,13 +203,12 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 		this.currentlyReachedCard = 0;
 	}
 	
-
 	/* (non-Javadoc)
 	 * @see javax.microedition.lcdui.CommandListener#commandAction(javax.microedition.lcdui.Command, javax.microedition.lcdui.Displayable)
 	 */
 	public void commandAction(Command cmd, Displayable screen) {
 		if ( cmd == this.backCmd )
-			GameApp.changeToScreen(previousForm);
+			GameApp.returnToPreviousScreen();
 		else if ( cmd == this.drawCardsCmd )
 			this.drawCards();
 		else if ( cmd == this.selectCardCmd )

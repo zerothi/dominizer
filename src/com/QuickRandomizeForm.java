@@ -34,9 +34,9 @@ import de.enough.polish.util.Locale;
  */
 public class QuickRandomizeForm extends Form implements CommandListener, ItemCommandListener {
 	
-	ChoiceGroup quickGameRandomizerCG = null;
-	Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.SCREEN, 0);
-	Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.BACK, 10);
+	private ChoiceGroup quickGameRandomizerCG = null;
+	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.SCREEN, 0);
+	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.BACK, 10);
 	
 	public QuickRandomizeForm(String title) {
 		//#style mainScreen
@@ -46,22 +46,22 @@ public class QuickRandomizeForm extends Form implements CommandListener, ItemCom
 		this.quickGameRandomizerCG = new ChoiceGroup(Locale.get("tab.Quick.QuickSelectExpansions"), ChoiceGroup.MULTIPLE);
 		try {
 			//style choiceItem 
-			this.quickGameRandomizerCG.append(Dominion.instance().getExpansionName(0), Image.createImage("/ba.png"));
+			this.quickGameRandomizerCG.append(Dominion.getExpansionName(0), Image.createImage("/ba.png"));
 			//style choiceItem
-			this.quickGameRandomizerCG.append(Dominion.instance().getExpansionName(1), Image.createImage("/pr.png"));
+			this.quickGameRandomizerCG.append(Dominion.getExpansionName(1), Image.createImage("/pr.png"));
 			//style choiceItem
-			this.quickGameRandomizerCG.append(Dominion.instance().getExpansionName(2), Image.createImage("/in.png"));
+			this.quickGameRandomizerCG.append(Dominion.getExpansionName(2), Image.createImage("/in.png"));
 			//style choiceItem
-			this.quickGameRandomizerCG.append(Dominion.instance().getExpansionName(3), Image.createImage("/se.png"));
+			this.quickGameRandomizerCG.append(Dominion.getExpansionName(3), Image.createImage("/se.png"));
 		} catch (IOException e) {
 			//style choiceItem 
-			this.quickGameRandomizerCG.append(Dominion.instance().getExpansionName(0), null);
+			this.quickGameRandomizerCG.append(Dominion.getExpansionName(0), null);
 			//style choiceItem
-			this.quickGameRandomizerCG.append(Dominion.instance().getExpansionName(1), null);
+			this.quickGameRandomizerCG.append(Dominion.getExpansionName(1), null);
 			//style choiceItem
-			this.quickGameRandomizerCG.append(Dominion.instance().getExpansionName(2), null);
+			this.quickGameRandomizerCG.append(Dominion.getExpansionName(2), null);
 			//style choiceItem
-			this.quickGameRandomizerCG.append(Dominion.instance().getExpansionName(3), null);
+			this.quickGameRandomizerCG.append(Dominion.getExpansionName(3), null);
 		}
 		this.quickGameRandomizerCG.addCommand(this.quickRandomizeCardsCmd);
 		//this.quickGameRandomizerCG.setItemCommandListener(this);
@@ -174,9 +174,9 @@ public class QuickRandomizeForm extends Form implements CommandListener, ItemCom
 				GameApp.showAlert(Locale.get("alert.CardsFromExpansion.Promo"));
 			else {
 				if ( numberOfCards > 0 )
-					this.quickGameRandomizerCG.set(expansion, Dominion.instance().getExpansionName(expansion) + " " + numberOfCards, this.quickGameRandomizerCG.getImage(expansion));
+					this.quickGameRandomizerCG.set(expansion, Dominion.getExpansionName(expansion) + " " + numberOfCards, this.quickGameRandomizerCG.getImage(expansion));
 				else
-					this.quickGameRandomizerCG.set(expansion, Dominion.instance().getExpansionName(expansion), this.quickGameRandomizerCG.getImage(expansion));
+					this.quickGameRandomizerCG.set(expansion, Dominion.getExpansionName(expansion), this.quickGameRandomizerCG.getImage(expansion));
 				Dominion.instance().setCardsUsedForExpansion(expansion, numberOfCards);
 			}
 		}

@@ -10,15 +10,19 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.ImageItem;
+import javax.microedition.rms.RecordStoreException;
+import javax.microedition.rms.RecordStoreFullException;
+import javax.microedition.rms.RecordStoreNotFoundException;
 
 import com.dominizer.GameApp;
 
+import de.enough.polish.ui.Alert;
 import de.enough.polish.ui.TableItem;
 import de.enough.polish.util.Locale;
 
 public class ShowCardsForm extends Form implements CommandListener {
-    
-    private ShowCardsForm scF = null;
+
+	private static ShowCardsForm scF = null;
 	private TableItem table = null;
 	private Command randomizeCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 1);
 	private Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.SCREEN, 1);
@@ -26,8 +30,8 @@ public class ShowCardsForm extends Form implements CommandListener {
 	private Command saveCmd = new Command( Locale.get("cmd.SaveAsPreset"), Command.SCREEN, 6);
 	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 10);
 	//private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
-	
-	
+
+
 	private ShowCardsForm(String title) {
 		//#style mainScreen
 		super(title);
@@ -43,14 +47,20 @@ public class ShowCardsForm extends Form implements CommandListener {
 		this.append(this.table);
 		this.setCommandListener(this);
 	}
-    public ShowCardsForm instance() {
-	if ( scF == null )
-	    scF = new ShowCardsForm(Locale.get("screen.RandomizedCards.title"));
-	return scF;
-    }
 	
+	public static ShowCardsForm instance() {
+		if ( scF == null )
+			scF = new ShowCardsForm(Locale.get("screen.RandomizedCards.title"));
+		return scF;
+	}
+
 	public void reRandomize() {
-		this.viewCards(Dominion.instance().getRandomizedCards());
+		Dominion.instance().randomizeCards(Dominion.SORT_EXPANSION);
+		try {
+			this.viewCards(Dominion.instance().getCurrentlySelected());
+		} catch (DominionException e) {
+			GameApp.showAlert(e.toString());
+		}
 	}
 
 	public void viewCards(Cards cards) {
@@ -95,10 +105,23 @@ public class ShowCardsForm extends Form implements CommandListener {
 		else if ( cmd == this.randomizeCmd )
 			this.reRandomize();
 		else if ( cmd == this.blackMarketCmd )
-			GameApp.showBlackMarketDeck(this);
+			GameApp.showBlackMarketDeck(-1);
 		else if ( cmd == this.showInfoCmd )
-			GameApp.showBlackMarketDeck(this);
-		else if ( cmd == this.saveCmd )
-			GameApp.showBlackMarketDeck(this);
+			GameApp.showInfo(Dominion.instance().getSelectedInfo(), Alert.FOREVER);
+		else if ( cmd == this.saveCmd ) {
+			SettingsRecordStorage src = new SettingsRecordStorage();
+			try {
+				src.saveInfo(Locale.get("rms.preset"), Dominion.instance().getCurrentAsPresetSave());
+			} catch (RecordStoreFullException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (RecordStoreNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (RecordStoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }
