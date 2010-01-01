@@ -32,7 +32,7 @@ import de.enough.polish.util.Locale;
  * @author nick
  *
  */
-public class QuickRandomizeForm extends Form implements CommandListener, ItemCommandListener {
+public class QuickRandomizeForm extends Form implements CommandListener {
 	
 	private ChoiceGroup quickGameRandomizerCG = null;
 	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.SCREEN, 0);
@@ -87,7 +87,7 @@ public class QuickRandomizeForm extends Form implements CommandListener, ItemCom
 			for ( int i = 0 ; i < settings.size() ; i++ ) {
 				if ( settings.elementAt(i).toString().startsWith(Locale.get("rms.expansions")) ) {
 					//#debug info
-					System.out.println("getExpansions: " + settings.elementAt(i).toString() + " first: " + settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 1, Locale.get("rms.expansions").length() + 2));
+					System.out.println("getExpansions: " + settings.elementAt(i).toString());
 					Dominion.instance().getPlayingStates()[0] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 1, Locale.get("rms.expansions").length() + 2).equals("1");
 					Dominion.instance().getPlayingStates()[1] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 2, Locale.get("rms.expansions").length() + 3).equals("1");
 					Dominion.instance().getPlayingStates()[2] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 3, Locale.get("rms.expansions").length() + 4).equals("1");
@@ -112,16 +112,16 @@ public class QuickRandomizeForm extends Form implements CommandListener, ItemCom
 			boolean[] flags = new boolean[4];
 			this.quickGameRandomizerCG.getSelectedFlags(flags);
 			Dominion.instance().setExpansionPlayingState(flags);
-			GameApp.showRandomizedCards();
+			GameApp.instance().showRandomizedCards();
 		} else if ( cmd == this.quitCmd )
-			GameApp.quit();
+			GameApp.instance().quit();
 				
 	}
 	
-	public void commandAction(Command cmd, Item item) {
+	/*public void commandAction(Command cmd, Item item) {
 		if ( cmd == this.quitCmd )
 			this.commandAction(cmd, this);
-	}
+	}*/
 	
 	public void keyPressed(int keyCode) {
 		switch (keyCode) {
@@ -171,7 +171,7 @@ public class QuickRandomizeForm extends Form implements CommandListener, ItemCom
 			//#debug info
 			System.out.println("expansion found " + expansion);
 			if ( expansion == 1 && numberOfCards > 2 )
-				GameApp.showAlert(Locale.get("alert.CardsFromExpansion.Promo"));
+				GameApp.instance().showAlert(Locale.get("alert.CardsFromExpansion.Promo"));
 			else {
 				if ( numberOfCards > 0 )
 					this.quickGameRandomizerCG.set(expansion, Dominion.getExpansionName(expansion) + " " + numberOfCards, this.quickGameRandomizerCG.getImage(expansion));

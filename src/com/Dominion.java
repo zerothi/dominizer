@@ -129,8 +129,11 @@ public class Dominion {
 	}
 
 	public void setExpansionPlayingState(boolean[] isAvailable) {
-		for (int exp = 0 ; exp < isAvailable.length ; exp++ )
+		for (int exp = 0 ; exp < isAvailable.length ; exp++ ) {
+			//#debug info
+			System.out.println("setting playing state: " + exp + ". =" + isAvailable[exp]);	
 			setExpansionPlayingState(exp, isAvailable[exp]);
+		}
 	}
 
 	public void randomizeCards(int sortMethod) {
@@ -151,7 +154,7 @@ public class Dominion {
 					System.out.println("try selecting" + selectedElement);
 					if ( expansions[i].isAvailable(selectedElement) && !selectedCards.contains(expansions[i].getName(selectedElement)) ) {
 						expansions[i].setPlaying(selectedElement, true);
-						selectedCards.setCard(selected, expansions[i].getCard(selectedElement));
+						this.selectedCards.setCard(selected, expansions[i].getCard(selectedElement));
 						selected++;
 						//#debug info
 						System.out.println("expansion: " + i + ". selected: " + selected);
@@ -178,12 +181,12 @@ public class Dominion {
 			if ( playingExpansions[tmpSum] && expansions[tmpSum].isAvailable(selectedElement) && 
 					!selectedCards.contains(expansions[tmpSum].getName(selectedElement)) ) {
 				expansions[tmpSum].setPlaying(selectedElement, true);
-				selectedCards.setCard(selected, expansions[tmpSum].getCard(selectedElement));
+				this.selectedCards.setCard(selected, expansions[tmpSum].getCard(selectedElement));
 				selected++;
 			}
 		}
 		selector = null;
-		selectedCards = sortCards(selectedCards, sortMethod);
+		sortCards(this.selectedCards, sortMethod);
 	}
 
 	public Cards getBlackMarketDeck() {
@@ -214,7 +217,7 @@ public class Dominion {
 		if ( this.selectedCards == null )
 			return "";
 		StringBuffer sb = new StringBuffer(50);
-		double action = 0D, attack = 0D, reaction = 0D, treasury = 0D, victory = 0D, duration = 0D;
+		double action = 0.00, attack = 0.00, reaction = 0.00, treasury = 0.00, victory = 0.00, duration = 0.00;
 		for ( int i = 0 ; i < selectedCards.size() ; i++ ) {
 			action += selectedCards.isAction(i) ? 1 / selectedCards.size() : 0;
 			attack += selectedCards.isAttack(i) ? 1 / selectedCards.size() : 0;
@@ -223,12 +226,12 @@ public class Dominion {
 			victory += selectedCards.isVictory(i) ? 1 / selectedCards.size() : 0;
 			duration += selectedCards.isDuration(i) ? 1 / selectedCards.size() : 0;
 		}
-		sb.append("Action:\t" + action + ".\n");
-		sb.append("Attack:\t" + attack + ".\n");
-		sb.append("Reaction:\t" + reaction + ".\n");
-		sb.append("Treasury:\t" + treasury + ".\n");
-		sb.append("Victory:\t" + victory + ".\n");
-		sb.append("Duration:\t" + duration + ".");
+		sb.append("Action: \t" + action + ".\n");
+		sb.append("Attack: \t" + attack + ".\n");
+		sb.append("Reaction: \t" + reaction + ".\n");
+		sb.append("Treasury: \t" + treasury + ".\n");
+		sb.append("Victory: \t" + victory + ".\n");
+		sb.append("Duration: \t" + duration + ".");
 		return sb.toString();
 	}
 
@@ -257,9 +260,14 @@ public class Dominion {
 	}
 
 	public Cards getPreset(int presetDeck, int preset) {
+		//#debug info
+		System.out.println("fetching preset: " + presetDeck + " and " + preset);
 		this.selectedCards = new Cards(10, Cards.IS_NOT_SET);
-		for ( int i = 0 ; i < presets[presetDeck].size() ; i++ )
+		for ( int i = 0 ; i < presets[presetDeck].size() ; i++ ) {
+			//#debug info
+			System.out.println("selecting expansion: " + presets[presetDeck].getPresetCardExpansion(preset, i) + " and card: " + presets[presetDeck].getPresetCardPlacement(preset, i));
 			selectedCards.setCard(i, expansions[presets[presetDeck].getPresetCardExpansion(preset, i)].getCard(presets[presetDeck].getPresetCardPlacement(preset, i)));
+		}
 		return sortCards(selectedCards, SORT_EXPANSION);
 	}
 
@@ -310,9 +318,9 @@ public class Dominion {
 	}
 
 	public Cards getCurrentlySelected() throws DominionException {
-		if ( selectedCards == null | selectedCards.size() == numberOfRandomCards ) 
-			throw new DominionException("No currently selected cards");
-		return selectedCards;
+		if ( selectedCards == null | selectedCards.size() != numberOfRandomCards ) 
+			throw new DominionException("No currently selected cards.");
+		return this.selectedCards;
 	}
 
 	/**
@@ -351,7 +359,7 @@ public class Dominion {
 			//#=    System.out.println("Resource hasn't been found");
 			//#= }
 			//#else
-			isr = new InputStreamReader(this.getClass().getResourceAsStream(fileName),"UTF8");
+			isr = new InputStreamReader(this.getClass().getResourceAsStream("/" + fileName),"UTF8");
 			//#endif
 			int ch;
 			while ( (ch = isr.read()) > -1 ) {

@@ -59,7 +59,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 		try {
 			this.viewCards(Dominion.instance().getCurrentlySelected());
 		} catch (DominionException e) {
-			GameApp.showAlert(e.toString());
+			GameApp.instance().showAlert(e.toString());
 		}
 	}
 
@@ -101,13 +101,13 @@ public class ShowCardsForm extends Form implements CommandListener {
 
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd == this.backCmd )
-			GameApp.changeToScreen(null);
+			GameApp.instance().changeToScreen(null);
 		else if ( cmd == this.randomizeCmd )
 			this.reRandomize();
 		else if ( cmd == this.blackMarketCmd )
-			GameApp.showBlackMarketDeck(-1);
+			GameApp.instance().showBlackMarketDeck(-1);
 		else if ( cmd == this.showInfoCmd )
-			GameApp.showInfo(Dominion.instance().getSelectedInfo(), Alert.FOREVER);
+			GameApp.instance().showInfo(Dominion.instance().getSelectedInfo(), Alert.FOREVER);
 		else if ( cmd == this.saveCmd ) {
 			SettingsRecordStorage src = new SettingsRecordStorage();
 			try {

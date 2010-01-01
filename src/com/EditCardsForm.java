@@ -49,7 +49,7 @@ public class EditCardsForm extends Form implements CommandListener, ItemStateLis
 	
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd == editCmd ) {
-			GameApp.showAlert("Hej");
+			GameApp.instance().showAlert("Hej");
 		}
 	}
 

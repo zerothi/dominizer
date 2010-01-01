@@ -103,7 +103,7 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 	private void selectCard(int indexChosen) {
 		for ( int i = 0 ; i < blackMarketDeck.size() ; i++ ) {
 			if ( this.chooseCard.getString(this.chooseCard.getSelectedIndex()).equals(blackMarketDeck.elementAt(i)) ) {
-				GameApp.showInfo(Locale.get("screen.BlackMarket.InfoMessage") + "\n" + blackMarketDeck.elementAt(i).toString() + ".", 2000);
+				GameApp.instance().showInfo(Locale.get("screen.BlackMarket.InfoMessage") + "\n" + blackMarketDeck.elementAt(i).toString() + ".", 2000);
 				this.drawnDeck.addElement(this.blackMarketDeck.elementAt(i));
 				this.blackMarketDeck.removeElementAt(i);
 				this.addCommand(cancelBuyCmd);
@@ -125,7 +125,7 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 	
 	private void cancelBuy(boolean show) {
 		if ( show )
-			GameApp.showConfirmation(Locale.get("screen.BlackMarket.CancelBuy") + this.drawnDeck.lastElement(), this);
+			GameApp.instance().showConfirmation(Locale.get("screen.BlackMarket.CancelBuy") + this.drawnDeck.lastElement(), this);
 		else {
 			if ( this.blackMarketDeck.size() == 0 ) {
 				this.blackMarketDeck.addElement(this.drawnDeck.lastElement());
@@ -208,7 +208,7 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 	 */
 	public void commandAction(Command cmd, Displayable screen) {
 		if ( cmd == this.backCmd )
-			GameApp.returnToPreviousScreen();
+			GameApp.instance().returnToPreviousScreen();
 		else if ( cmd == this.drawCardsCmd )
 			this.drawCards();
 		else if ( cmd == this.selectCardCmd )
@@ -217,9 +217,9 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 			this.cancelBuy(true);
 		else if ( cmd.getLabel().equals(Locale.get("polish.command.ok")) ) {
 			this.cancelBuy(false);
-			GameApp.changeToScreen(this);
+			GameApp.instance().changeToScreen(this);
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel")) )
-			GameApp.changeToScreen(this);
+			GameApp.instance().changeToScreen(this);
 	}
 	
 	public void commandAction(Command cmd, Item item) {
