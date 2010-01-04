@@ -11,16 +11,12 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.Item;
-import javax.microedition.lcdui.ItemCommandListener;
 import javax.microedition.lcdui.ItemStateListener;
 import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreFullException;
 
 import com.dominizer.GameApp;
 
-
-import de.enough.polish.ui.ChoiceItem;
-import de.enough.polish.ui.TabbedForm;
 import de.enough.polish.ui.UiAccess;
 import de.enough.polish.util.Locale;
 
@@ -32,12 +28,13 @@ import de.enough.polish.util.Locale;
  * @author nick
  *
  */
-public class QuickRandomizeForm extends Form implements CommandListener {
-	
+public class QuickRandomizeForm extends Form implements CommandListener, ItemStateListener {
+
 	private ChoiceGroup quickGameRandomizerCG = null;
 	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.SCREEN, 0);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.BACK, 10);
-	
+	private boolean[] flags = new boolean[4];
+
 	public QuickRandomizeForm(String title) {
 		//#style mainScreen
 		super(title);
@@ -47,30 +44,30 @@ public class QuickRandomizeForm extends Form implements CommandListener {
 		try {
 			//style choiceItem 
 			this.quickGameRandomizerCG.append(Dominion.getExpansionName(0), Image.createImage("/ba.png"));
-			//style choiceItem
+			//style choiceItem 
 			this.quickGameRandomizerCG.append(Dominion.getExpansionName(1), Image.createImage("/pr.png"));
-			//style choiceItem
+			//style choiceItem 
 			this.quickGameRandomizerCG.append(Dominion.getExpansionName(2), Image.createImage("/in.png"));
-			//style choiceItem
+			//style choiceItem 
 			this.quickGameRandomizerCG.append(Dominion.getExpansionName(3), Image.createImage("/se.png"));
 		} catch (IOException e) {
 			//style choiceItem 
 			this.quickGameRandomizerCG.append(Dominion.getExpansionName(0), null);
-			//style choiceItem
+			//style choiceItem 
 			this.quickGameRandomizerCG.append(Dominion.getExpansionName(1), null);
-			//style choiceItem
+			//style choiceItem 
 			this.quickGameRandomizerCG.append(Dominion.getExpansionName(2), null);
-			//style choiceItem
+			//style choiceItem 
 			this.quickGameRandomizerCG.append(Dominion.getExpansionName(3), null);
 		}
 		this.quickGameRandomizerCG.addCommand(this.quickRandomizeCardsCmd);
-		//this.quickGameRandomizerCG.setItemCommandListener(this);
 		this.readExpansionSettings();
 		this.addCommand(this.quitCmd);
 		this.setCommandListener(this);
+		this.setItemStateListener(this);
 		this.append(this.quickGameRandomizerCG);
 	}
-	
+
 	public void readExpansionSettings() {
 		Vector settings = null;
 		try {
@@ -106,66 +103,41 @@ public class QuickRandomizeForm extends Form implements CommandListener {
 		this.setCardsFromExpansion(2, Dominion.instance().getNumberOfExpansionCards()[2]);
 		this.setCardsFromExpansion(3, Dominion.instance().getNumberOfExpansionCards()[3]);
 	}
-	
+
 	public void commandAction(Command cmd, Displayable screen) {
-		if ( cmd == this.quickRandomizeCardsCmd ) {
-			boolean[] flags = new boolean[4];
-			this.quickGameRandomizerCG.getSelectedFlags(flags);
-			Dominion.instance().setExpansionPlayingState(flags);
+		GameApp.instance().showInfo("Screen CommandAction", 1000);
+		if ( cmd.equals(this.quickRandomizeCardsCmd) ) {
 			GameApp.instance().showRandomizedCards();
-		} else if ( cmd == this.quitCmd )
+		} else if ( cmd.equals(this.quitCmd) )
 			GameApp.instance().quit();
-				
 	}
-	
-	/*public void commandAction(Command cmd, Item item) {
-		if ( cmd == this.quitCmd )
-			this.commandAction(cmd, this);
-	}*/
-	
+
 	public void keyPressed(int keyCode) {
 		switch (keyCode) {
 		case Canvas.KEY_NUM0:
-			this.setCardsFromExpansion(0);
-			break;
 		case Canvas.KEY_NUM1:
-			this.setCardsFromExpansion(1);
-			break;
 		case Canvas.KEY_NUM2:
-			this.setCardsFromExpansion(2);
-			break;
 		case Canvas.KEY_NUM3:
-			this.setCardsFromExpansion(3);
-			break;
 		case Canvas.KEY_NUM4:
-			this.setCardsFromExpansion(4);
-			break;
 		case Canvas.KEY_NUM5:
-			this.setCardsFromExpansion(5);
-			break;
 		case Canvas.KEY_NUM6:
-			this.setCardsFromExpansion(6);
-			break;
 		case Canvas.KEY_NUM7:
-			this.setCardsFromExpansion(7);
-			break;
 		case Canvas.KEY_NUM8:
-			this.setCardsFromExpansion(8);
-			break;
 		case Canvas.KEY_NUM9:
-			this.setCardsFromExpansion(9);
+			this.setCardsFromExpansion(keyCode - Canvas.KEY_NUM0);
 			break;
 		default:
-			super.keyPressed(keyCode);
+			//#= super.keyPressed(keyCode);
 		}
 	}
-	
+
 	private void setCardsFromExpansion(int numberCards) {
 		//#debug info
 		System.out.println("trying to set cards from expansion");
 		this.setCardsFromExpansion(UiAccess.getFocusedIndex(this.quickGameRandomizerCG), numberCards);
+		UiAccess.repaint(this.quickGameRandomizerCG);
 	}
-	
+
 	private void setCardsFromExpansion(int expansion, int numberOfCards) {
 		if ( -1 < expansion ) {
 			//#debug info
@@ -181,8 +153,15 @@ public class QuickRandomizeForm extends Form implements CommandListener {
 			}
 		}
 	}
-	
+
 	private static int parseInt(String value) {
 		return Integer.parseInt(value);		
+	}
+
+	public void itemStateChanged(Item item) {
+		if ( item.equals(quickGameRandomizerCG) ) {
+			this.quickGameRandomizerCG.getSelectedFlags(flags);
+			Dominion.instance().setExpansionPlayingState(flags);
+		}
 	}
 }

@@ -2,6 +2,7 @@ package com;
 
 import java.util.Random;
 
+import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
@@ -15,9 +16,9 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 	private Command selectCmd = new Command( Locale.get("polish.command.select"), Command.SCREEN, 0);
 	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 
-	public PresetFilteredList(String title, int filterHeight) {
+	public PresetFilteredList(String title, int listType) {
 		//#style mainScreen
-		super(title, filterHeight);
+		super(title, listType);
 		this.addCommand(selectCmd);
 		this.addCommand(quickRandomizeCardsCmd);
 		this.setCommandListener(this);
@@ -35,6 +36,27 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 	public void setPresets(CardPresets cardPreset) {
 		this.deleteAll();
 		this.addPresets(cardPreset);
+	}
+	
+	public void keyPressed(int keyCode) {
+		switch (keyCode) {
+		case Canvas.KEY_POUND:
+		case Canvas.KEY_STAR:
+			if ( this.getCurrentIndex() < Dominion.instance().getPreset(0).size() )
+				this.focus(Dominion.instance().getPreset(0).size());
+			else if ( this.getCurrentIndex() < 
+					Dominion.instance().getPreset(0).size() + Dominion.instance().getPreset(1).size() )
+				this.focus(Dominion.instance().getPreset(0).size() + Dominion.instance().getPreset(1).size());
+			else if ( this.getCurrentIndex() < 
+					Dominion.instance().getPreset(0).size() + Dominion.instance().getPreset(1).size()
+					+ Dominion.instance().getPreset(2).size() )
+				this.focus(Dominion.instance().getPreset(0).size() + Dominion.instance().getPreset(1).size() + Dominion.instance().getPreset(2).size());
+			else
+				this.focus(0);
+			break;
+		default:
+			//#= super.keyPressed(keyCode);
+		}
 	}
 
 	public void commandAction(Command cmd, Displayable disp) {

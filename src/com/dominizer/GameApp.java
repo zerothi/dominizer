@@ -42,6 +42,7 @@ import de.enough.polish.util.Locale;
  * @author Nick Papior Andersen, nickpapior@gmail.com
  */
 public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
+	
 	private static GameApp app = null;
 	private Display display = null;
 	private Alert alert = null;
@@ -112,18 +113,18 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		System.out.println("setting display");
 		display = Display.getDisplay(this);
 		//#style tabbedPane
-		tabbedPane = new TabbedPane(null);
-		tabbedPane.addTabListener(this);
-		tabbedPane.setTabbedFormListener(this);
+		this.tabbedPane = new TabbedPane(null);
+		this.tabbedPane.addTabListener(this);
+		this.tabbedPane.setTabbedFormListener(this);
 		//#style tabIcon
-		tabbedPane.addTab(new QuickRandomizeForm(Locale.get("tab.Quick.title")), null, Locale.get("app.name"));
+		this.tabbedPane.addTab(new QuickRandomizeForm(Locale.get("tab.Quick.title")), null, Locale.get("app.name"));
 		//#style tabIcon
-		tabbedPane.addTab(new PresetFilteredList(Locale.get("tab.Preset.title"), FilteredList.IMPLICIT), null, Locale.get("screen.PresetCards.title"));
+		this.tabbedPane.addTab(new PresetFilteredList(Locale.get("tab.Preset.title"), FilteredList.IMPLICIT), null, Locale.get("screen.PresetCards.title"));
 		//#style tabIcon
-		tabbedPane.addTab(new EditCardsForm(Locale.get("tab.EditCards.title")), null, Locale.get("screen.EditSingleCards.title"));
+		this.tabbedPane.addTab(new EditCardsForm(Locale.get("tab.EditCards.title"), FilteredList.MULTIPLE), null, Locale.get("screen.EditCards.title"));
 		//#style tabIcon
-		tabbedPane.addTab(new GameCalendar(Locale.get("tab.Calendar.title")), null, Locale.get("screen.Calendar.title"));
-		changeToScreen(tabbedPane);
+		this.tabbedPane.addTab(new GameCalendar(Locale.get("tab.Calendar.title")), null, Locale.get("screen.Calendar.title"));
+		changeToScreen(this.tabbedPane);
 	}
 
 	protected void pauseApp() {
@@ -167,22 +168,20 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	}
 
 	public void quit() {
+		SettingsRecordStorage srs = new SettingsRecordStorage();
 		try {
-			SettingsRecordStorage srs = new SettingsRecordStorage();
 			srs.writeExpansions(Dominion.instance().getPlayingStates());
 			srs.writeExpansionCards(Dominion.instance().getNumberOfExpansionCards());
-			srs = null;
 		} catch (RecordStoreFullException e) {
-			// TODO Auto-generated catch block
 		} catch (RecordStoreNotFoundException e) {
-			// TODO Auto-generated catch block
 		} catch (RecordStoreException e) {
-			// TODO Auto-generated catch block
+		} finally {
+			srs = null;
 		}
 		notifyDestroyed();
 	}
 
-	public void tabChangeEvent(Screen arg0) {
+	public void tabChangeEvent(Screen scr) {
 		// TODO Auto-generated method stub		
 	}
 

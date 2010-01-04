@@ -108,6 +108,7 @@ public class Dominion {
 		readResource(SEASIDE, "seaside", 26);
 		//#debug info
 		System.out.println("size seaside: " + expansions[3].size()+ ". Third name: " + expansions[3].getName(2));
+		readUserPresets();
 	}
 
 	public static Dominion instance() {
@@ -219,12 +220,12 @@ public class Dominion {
 		StringBuffer sb = new StringBuffer(50);
 		double action = 0.00, attack = 0.00, reaction = 0.00, treasury = 0.00, victory = 0.00, duration = 0.00;
 		for ( int i = 0 ; i < selectedCards.size() ; i++ ) {
-			action += selectedCards.isAction(i) ? 1 / selectedCards.size() : 0;
-			attack += selectedCards.isAttack(i) ? 1 / selectedCards.size() : 0;
-			reaction += selectedCards.isReaction(i) ? 1 / selectedCards.size() : 0;
-			treasury += selectedCards.isTreasure(i) ? 1 / selectedCards.size() : 0;
-			victory += selectedCards.isVictory(i) ? 1 / selectedCards.size() : 0;
-			duration += selectedCards.isDuration(i) ? 1 / selectedCards.size() : 0;
+			action += (selectedCards.isAction(i) ? 1 / selectedCards.size() : 0);
+			attack += (selectedCards.isAttack(i) ? 1 / selectedCards.size() : 0);
+			reaction += (selectedCards.isReaction(i) ? 1 / selectedCards.size() : 0);
+			treasury += (selectedCards.isTreasure(i) ? 1 / selectedCards.size() : 0);
+			victory += (selectedCards.isVictory(i) ? 1 / selectedCards.size() : 0);
+			duration += (selectedCards.isDuration(i) ? 1 / selectedCards.size() : 0);
 		}
 		sb.append("Action: \t" + action + ".\n");
 		sb.append("Attack: \t" + attack + ".\n");
@@ -316,11 +317,19 @@ public class Dominion {
 			return "";
 		}
 	}
+	
+	public Cards getExpansion(int expansion) {
+		return expansions[expansion];
+	}
 
 	public Cards getCurrentlySelected() throws DominionException {
 		if ( selectedCards == null | selectedCards.size() != numberOfRandomCards ) 
 			throw new DominionException("No currently selected cards.");
 		return this.selectedCards;
+	}
+	
+	public int getExpansions() {
+		return expansions.length;
 	}
 
 	/**

@@ -462,6 +462,7 @@ menuItem:hover {
 	margin-bottom: 0;
 	padding: 5;
 	background-color: bgColor;
+	font-color: translucentBrightFontColor;
 }
 
 
