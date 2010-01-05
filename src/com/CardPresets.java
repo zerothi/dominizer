@@ -9,12 +9,14 @@ package com;
  *
  */
 public class CardPresets {
-	private int[][][] presets;
-	private String[] presetNames;
+	private int[][][] presets = null;
+	private String[] presetNames = null;
 	
 	public CardPresets(int size) {
-		presets = new int[size][10][2];
-		presetNames = new String[size];
+		if ( 0 < size ) {
+			presets = new int[size][10][2];
+			presetNames = new String[size];
+		}
 	}
 	
 	public int[][] getPreset(int preset) {
@@ -49,6 +51,8 @@ public class CardPresets {
 	}
 	
 	public int size() {
+		if ( presetNames == null )
+			return 0;
 		return presetNames.length;
 	}
 }

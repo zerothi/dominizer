@@ -21,6 +21,7 @@ public class Dominion {
 	public static final int PROMO = 1;
 	public static final int INTRIGUE = 2;
 	public static final int SEASIDE = 3;
+	public static final int USER = 10;
 	public static final int SORT_EXPANSION = 0;
 	public static final int SORT_NAME = 1;
 	public static final int SORT_COST = 2;
@@ -428,6 +429,7 @@ public class Dominion {
 		if ( settings == null ) {
 			//#debug info
 			System.out.println("Read user settings: settings is null");
+			presets[3] = null;
 			return;
 		}
 		presets[3] = new CardPresets(settings.size());

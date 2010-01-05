@@ -143,7 +143,7 @@ public class BlackMarketForm extends Form implements CommandListener, ItemComman
 			return;
 		switch ( new Random(System.currentTimeMillis()).nextInt(6) ) {
 		case 0:
-			// This means no switching
+			// This means no switching when shuffling
 			break;
 		case 1:
 			// This means swap of first and second card

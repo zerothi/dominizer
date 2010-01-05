@@ -16,8 +16,8 @@ import javax.microedition.rms.RecordStoreNotFoundException;
 import com.BlackMarketForm;
 import com.Dominion;
 import com.DominionException;
-import com.EditCardsForm;
-import com.GameCalendar;
+import com.EditCardsFilteredList;
+import com.GameCalendarForm;
 import com.PresetFilteredList;
 import com.QuickRandomizeForm;
 import com.SettingsRecordStorage;
@@ -121,9 +121,9 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		//#style tabIcon
 		this.tabbedPane.addTab(new PresetFilteredList(Locale.get("tab.Preset.title"), FilteredList.IMPLICIT), null, Locale.get("screen.PresetCards.title"));
 		//#style tabIcon
-		this.tabbedPane.addTab(new EditCardsForm(Locale.get("tab.EditCards.title"), FilteredList.MULTIPLE), null, Locale.get("screen.EditCards.title"));
+		this.tabbedPane.addTab(new EditCardsFilteredList(Locale.get("tab.EditCards.title"), FilteredList.MULTIPLE), null, Locale.get("screen.EditCards.title"));
 		//#style tabIcon
-		this.tabbedPane.addTab(new GameCalendar(Locale.get("tab.Calendar.title")), null, Locale.get("screen.Calendar.title"));
+		this.tabbedPane.addTab(new GameCalendarForm(Locale.get("tab.Calendar.title")), null, Locale.get("screen.Calendar.title"));
 		changeToScreen(this.tabbedPane);
 	}
 

@@ -17,7 +17,7 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 
 	public PresetFilteredList(String title, int listType) {
-		//#style mainScreen
+		//#style filterCards
 		super(title, listType);
 		this.addCommand(selectCmd);
 		this.addCommand(quickRandomizeCardsCmd);
@@ -49,7 +49,8 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 				this.focus(Dominion.instance().getPreset(0).size() + Dominion.instance().getPreset(1).size());
 			else if ( this.getCurrentIndex() < 
 					Dominion.instance().getPreset(0).size() + Dominion.instance().getPreset(1).size()
-					+ Dominion.instance().getPreset(2).size() )
+					+ Dominion.instance().getPreset(2).size() && 
+					Dominion.instance().getPreset(3) != null )
 				this.focus(Dominion.instance().getPreset(0).size() + Dominion.instance().getPreset(1).size() + Dominion.instance().getPreset(2).size());
 			else
 				this.focus(0);

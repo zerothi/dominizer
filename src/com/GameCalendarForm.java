@@ -15,12 +15,12 @@ import de.enough.polish.util.Locale;
  * @author nick
  *
  */
-public class GameCalendar extends Form implements CommandListener {
+public class GameCalendarForm extends Form implements CommandListener {
 
 	private CalendarItem calendar = null;
 	private Command addGameCmd = new Command(Locale.get("cmd.Calendar.AddGame"), Command.BACK, 0);
 	
-	public GameCalendar(String title) {
+	public GameCalendarForm(String title) {
 		//#style mainScreen
 		super(title);
 		//#style calendar
@@ -104,5 +104,4 @@ public class GameCalendar extends Form implements CommandListener {
 			addGame();
 
 	}
-
 }

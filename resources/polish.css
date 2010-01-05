@@ -419,12 +419,14 @@ menuItem:hover {
 }
 
 .filterCards {
+	title-menu: true;
 	padding: 3;
 	padding-left: 5;
 	padding-vertical: 1;
 	include-label: true;
 	layout: left | expand;
-	repaint-previous-screen: true;
+	font-color: translucentFontColor;
+	repaint-previous-screen: false;
 	/** style of the filter-textfield of a FilteredList/FilteredChoiceGroup */
 	filter-style: filterTextFieldStyle;
 	/** style of the popup screen for a FileredChoiceGroup */
@@ -433,7 +435,7 @@ menuItem:hover {
 		type: round-rect;
 		color: darkTranslucentBgColor;
 	}
-	font-color: translucentFontColor;
+	
 }
 
 .filterCards:hover {
@@ -457,12 +459,12 @@ menuItem:hover {
 }
 
 .filterPopupStyle {
-	repaint-previous-screen: true;
+	repaint-previous-screen: false;
 	margin: 10;
 	margin-bottom: 0;
 	padding: 5;
-	background-color: bgColor;
 	font-color: translucentBrightFontColor;
+	background-color: bgColor;
 }
 
 

@@ -16,11 +16,11 @@ import de.enough.polish.ui.FilteredList;
 import de.enough.polish.ui.List;
 import de.enough.polish.util.Locale;
 
-public class EditCardsForm extends FilteredList implements CommandListener {
+public class EditCardsFilteredList extends FilteredList implements CommandListener {
 	
 	private Command toggleCmd = new Command(Locale.get("cmd.EditCards.Toggle"), Command.BACK, 0);
 
-	public EditCardsForm(String title, int listType) {
+	public EditCardsFilteredList(String title, int listType) {
 		//#style mainScreen
 		super(title, listType);
 		for ( int i = 0 ; i < Dominion.instance().getExpansions() ; i++ ){
