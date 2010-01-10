@@ -1,40 +1,20 @@
-/** 
-  * The polish.css files contains all
-  * design information about a project.
-  * It can be adjusted for specific devices
-  * or device groups by putting it in the 
-  * appropriate sub-folder.
-  * If you want to adjust a design for all
-  * Nokia devices, define it in "resources/Nokia/polish.css"
-  * and so on. Only new and different settings
-  * need to be specified in such polish.css files. 
-  */
-
-/**
-  * the colors which are defined in
-  * the colors section can later be referenced.
-  * This makes changes easy, since the color
-  * just needs to be changed in one position.
-  * Even default colors (like blue, green, lime, etc)
-  * can be changed here. 
-  */
 colors {
-	bgColor:  rgb(0,10,25);
-	brightBgColor:  rgb(0,25,50);
-	evenBrightColor: rgb(10,45,65);
-	eevenBrightColor: rgb(40,70,95);
-	translucentBgColor:  argb(130, 165,190,247);
-	darkTranslucentBgColor:  argb(100, 145,175,247);
+	bgColor:  					rgb(0,10,25);
+	brightBgColor:  			rgb(0,25,50);
+	evenBrightColor: 			rgb(10,45,65);
+	eevenBrightColor: 			rgb(40,70,95);
+	translucentBgColor:  		argb(130, 165,190,247);
+	darkTranslucentBgColor: 	argb(100, 145,175,247);
 	/* Font Colors*/
-	titleFontColor: rgb( 175,210,247);
-	fontColor: rgb( 66, 85, 148 );
-	brightFontColor: white; 
-	translucentFontColor:  argb(130, 165,190,247);
-	translucentBrightFontColor:  argb(150, 175,210,247);
+	titleFontColor: 			rgb(175,210,247);
+	fontColor: 					rgb( 66, 85,148);
+	brightFontColor: 			white; 
+	translucentFontColor:  		argb(130, 165,190,247);
+	translucentBrightFontColor: argb(150, 175,210,247);
 	
-	maskColor: red;
-	splitTop: brightBgColor;
-	splitBot: bgColor;
+	maskColor: 					red;
+	splitTop: 					brightBgColor;
+	splitBot: 					bgColor;
 }
 
 backgrounds {
@@ -66,21 +46,6 @@ backgrounds {
 	
 	alertOverlay {
 		color: #9fff;
-	}
-	
-	cardTypeCircle {
-		type: circle;
-		color: red;
-		diameter: 80%;
-		anchor: right | vcenter;
-		x-offset: -5;
-	}
-	
-	cardType {
-		type: round-rect-split;
-		split-pos: 50%;
-		arc-width: 8;
-		arc-height: 8;
 	}
 }
 
@@ -146,17 +111,10 @@ focused {
   * If the source-code would not have defined this
   * style, we could use the dynamic style "listitem" to design all
   * items on the list-screens. 
-  * An interesting attribute is the "icon-image" URL, which uses
-  * the %INDEX% keyword. The first list-item will use the image
-  * "icon0.png", the second "icon1.png" and so on. 
   */
 .mainCommand {
 	padding: 0;
 	padding-vertical: 5;
-	/*
-	icon-image: url( iconlarge%INDEX%.png );
-	icon-image-align: top;
-	*/
 	layout: center | vertical-center | newline-after;
 	min-height: 30%;
 }
@@ -180,6 +138,23 @@ focused {
 	font-size: medium;
 }
 
+alertcontent {
+	font-color: fontColor;
+	font-size: small;
+	font-style: bold;
+	text-effect: shadow;
+}
+
+.messageAlertTitle {
+	padding-top: 20px;
+	font-color: fontColor;
+	font-style: bold;
+	font-size: normal;
+}
+
+.messageAlertMenuBar {
+	background-color: fontColor;
+}
 
 .messageAlert {
 	padding: 20px;
@@ -202,24 +177,6 @@ focused {
 	//#endif
 }
 
-.messageAlertTitle {
-	padding-top: 20px;
-	font-color: fontColor;
-	font-style: bold;
-	font-size: normal;
-}
-
-.messageAlertMenuBar {
-	background-color: fontColor;
-}
-
-alertcontent {
-	font-color: fontColor;
-	font-size: small;
-	font-style: bold;
-	text-effect: shadow;
-}
-
 .input {
 	margin: 1;
 	background-color: bgColor;
@@ -234,7 +191,7 @@ alertcontent {
 
 info {
 	margin: 1;
-	font-color: gray;
+	font-color: fontColor;
 	layout: right;
 }
 
@@ -286,8 +243,6 @@ middlecommand extends leftcommand {
 	font-style: bold;
 }
 
-
-
 /**
   * the menu style is a predefined style for
   * designing the fullscreen-menu.
@@ -312,8 +267,6 @@ menu {
 	font-style: bold;
 	view-type: slide-up;
 }
-
-
 
 /**
   * The menuItem style is a predefined style
@@ -388,7 +341,7 @@ menuItem:hover {
 }
 
 .choiceItem {
-	font-color: gray;
+	font-color: translucentBrightFontColor;
 	font-style: bold;
 	text-wrap: false;
 	font-size: medium;
@@ -435,8 +388,7 @@ menuItem:hover {
 		type: round-rect;
 		color: darkTranslucentBgColor;
 	}
-	
-}
+	}
 
 .filterCards:hover {
 	/*padding: 3;

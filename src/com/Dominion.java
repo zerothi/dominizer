@@ -34,12 +34,12 @@ public class Dominion {
 
 	private Dominion() {
 		expansions = new Cards[4];
-		presets = new CardPresets[4]; // Promo cards doesn't have preset! The last is used when reading user presets!
+		presets = new CardPresets[4]; // Promo cards doesn't have preset! The last is used when reading user presets!	
 		presets[0] = new CardPresets(5);
 		presets[0].setPreset(0, Locale.get("preset.base.FirstGame"), new int[][] { 
 			new int[] {0,  2}, new int[] {0, 11}, new int[] {0, 12}, new int[] {0, 13}, new int[] {0, 14}, 
 			new int[] {0, 16}, new int[] {0, 17}, new int[] {0, 21}, new int[] {0, 23}, new int[] {0, 24} });
-		presets[0].setPreset(1, Locale.get("preset.base.BigMoney"), new int[][] { 
+		presets[0].setPreset(1, Locale.get("preset.base.BigMoney"),  new int[][] { 
 			new int[] {0,  0}, new int[] {0,  1}, new int[] {0,  3}, new int[] {0,  4}, new int[] {0,  6}, 
 			new int[] {0,  9}, new int[] {0, 11}, new int[] {0, 13}, new int[] {0, 15}, new int[] {0, 20} });
 		presets[0].setPreset(2, Locale.get("preset.base.Interaction"), new int[][] { 
@@ -264,10 +264,12 @@ public class Dominion {
 	public Cards getPreset(int presetDeck, int preset) {
 		//#debug info
 		System.out.println("fetching preset: " + presetDeck + " and " + preset);
-		this.selectedCards = new Cards(10, Cards.IS_NOT_SET);
+		this.selectedCards = new Cards(presets[presetDeck].size(), Cards.IS_NOT_SET);
 		for ( int i = 0 ; i < presets[presetDeck].size() ; i++ ) {
 			//#debug info
 			System.out.println("selecting expansion: " + presets[presetDeck].getPresetCardExpansion(preset, i) + " and card: " + presets[presetDeck].getPresetCardPlacement(preset, i));
+			//#debug info
+			System.out.println("card: " + expansions[presets[presetDeck].getPresetCardExpansion(preset, i)].getName(presets[presetDeck].getPresetCardPlacement(preset, i)));
 			selectedCards.setCard(i, expansions[presets[presetDeck].getPresetCardExpansion(preset, i)].getCard(presets[presetDeck].getPresetCardPlacement(preset, i)));
 		}
 		return sortCards(selectedCards, SORT_EXPANSION);
@@ -279,7 +281,6 @@ public class Dominion {
 				if ( presets[i].getPresetName(j).equals(presetName) )
 					return this.getPreset(i, j);
 		return null;
-
 	}
 
 	public CardPresets getPreset(int preset) {

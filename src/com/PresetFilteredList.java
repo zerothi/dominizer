@@ -17,7 +17,7 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 
 	public PresetFilteredList(String title, int listType) {
-		//#style filterCards
+		//#style mainScreen
 		super(title, listType);
 		this.addCommand(selectCmd);
 		this.addCommand(quickRandomizeCardsCmd);
@@ -61,9 +61,9 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 	}
 
 	public void commandAction(Command cmd, Displayable disp) {
-		if ( cmd == quickRandomizeCardsCmd ) {
+		if ( cmd.equals(quickRandomizeCardsCmd) ) {
 			this.focus((new Random(System.currentTimeMillis())).nextInt(this.size()));
-		} else if ( cmd == selectCmd ) {
+		} else if ( cmd.equals(selectCmd) ) {
 			ShowCardsForm.instance().viewCards(Dominion.instance().getPreset(this.getString(this.getCurrentIndex())));
 			GameApp.instance().changeToScreen(ShowCardsForm.instance());
 		}

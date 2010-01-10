@@ -6,19 +6,6 @@ import de.enough.polish.util.Locale;
 
 
 public class Cards {
-	public static final int IS_SET = 1;
-	public static final int IS_NOT_SET = 0;
-	public static final int NAME = 0;
-	public static final int COST = 1;
-	public static final int TYPE_ACTION = 0;
-	public static final int TYPE_ACTION_ATTACK = 1;
-	public static final int TYPE_ACTION_REACTION = 2;
-	public static final int TYPE_VICTORY = 3;
-	public static final int TYPE_ACTION_TREASURY = 4;
-	public static final int TYPE_ACTION_VICTORY = 5;
-	public static final int TYPE_TREASURY_VICTORY = 6;
-	public static final int TYPE_ACTION_DURATION = 7;
-	
 	
 	private String[] name = null;
 	private String[] expansion = null;
@@ -289,6 +276,12 @@ public class Cards {
 	}
 	
 	public void setCard(int index, Object[] cardInfo) {
+		for ( int i = 0 ; i < 12 ; i++ ) {
+			if ( cardInfo[i] == null ) {
+				//#debug info 
+				System.out.println("cardinfo " + i + " is null ");
+			}
+		}
 		if ( cardInfo[0] == null ) {
 			//#debug info 
 			System.out.println("cardinfo 0 is null ");
@@ -402,4 +395,18 @@ public class Cards {
 		}
 		return null;
 	}
+	
+	public static final int IS_SET = 1;
+	public static final int IS_NOT_SET = 0;
+	public static final int NAME = 0;
+	public static final int COST = 1;
+	public static final int TYPE_ACTION = 0;
+	public static final int TYPE_ACTION_ATTACK = 1;
+	public static final int TYPE_ACTION_REACTION = 2;
+	public static final int TYPE_VICTORY = 3;
+	public static final int TYPE_ACTION_TREASURY = 4;
+	public static final int TYPE_ACTION_VICTORY = 5;
+	public static final int TYPE_TREASURY_VICTORY = 6;
+	public static final int TYPE_ACTION_DURATION = 7;
+
 }

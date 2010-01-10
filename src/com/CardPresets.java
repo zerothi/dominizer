@@ -6,7 +6,7 @@ package com;
 
 /**
  * @author nick
- *
+ *presets[presetDeck].size()
  */
 public class CardPresets {
 	private int[][][] presets = null;
@@ -16,7 +16,7 @@ public class CardPresets {
 		if ( 0 < size ) {
 			presets = new int[size][10][2];
 			presetNames = new String[size];
-		}
+		} 
 	}
 	
 	public int[][] getPreset(int preset) {
@@ -47,6 +47,12 @@ public class CardPresets {
 	
 	public void setPreset(int index, String name, int[][] preset) {
 		presetNames[index] = name;
+		for ( int i = 0 ; i < preset.length ; i++ ) {
+			for ( int j = 0 ; j < preset[i].length ; j++ ) {
+				//#debug info
+				System.out.println("PRESET: " + i + "," + j + ". INFO: " + preset[i][j]);
+			}
+		}
 		presets[index] = preset;
 	}
 	
