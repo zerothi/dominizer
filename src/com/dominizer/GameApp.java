@@ -14,16 +14,19 @@ import javax.microedition.rms.RecordStoreFullException;
 import javax.microedition.rms.RecordStoreNotFoundException;
 
 import com.BlackMarketForm;
+import com.Cards;
 import com.Dominion;
 import com.DominionException;
 import com.EditCardsFilteredList;
 import com.GameCalendarForm;
+import com.InputForm;
 import com.PresetFilteredList;
 import com.QuickRandomizeForm;
 import com.SettingsRecordStorage;
 import com.ShowCardsForm;
 
 import de.enough.polish.ui.FilteredList;
+import de.enough.polish.ui.List;
 import de.enough.polish.ui.Screen;
 import de.enough.polish.ui.TabListener;
 import de.enough.polish.ui.TabbedFormListener;
@@ -43,15 +46,25 @@ import de.enough.polish.util.Locale;
  */
 public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	
+	
+	public static final int TAB_QUICK = 0;
+	public static final int TAB_EDIT = 1;
+	public static final int TAB_PRESET = 2;
+	
 	private static GameApp app = null;
 	private Display display = null;
 	private Alert alert = null;
 	private TabbedPane tabbedPane = null;
 	private int currentTab = 0;
+	
+	public QuickRandomizeForm qrF = null;
+	public EditCardsFilteredList ecFL = null;
+	public PresetFilteredList pFL = null;
 
 	public GameApp() {
 		super();
 		app = this;
+		//new SettingsRecordStorage().deleteRecordStore(Locale.get("rms.file.preset"));
 		//#debug info
 		System.out.println("initialisation done.");
 	}
@@ -63,9 +76,9 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	}
 
 	public void showRandomizedCards() {
-		if ( !Dominion.instance().getPlayingStates()[0] && Dominion.instance().getPlayingStates()[1] && !Dominion.instance().getPlayingStates()[2] && !Dominion.instance().getPlayingStates()[3] )
+		if ( !Dominion.I().getExpansionPlayingStates()[0] && Dominion.I().getExpansionPlayingStates()[1] && !Dominion.I().getExpansionPlayingStates()[2] && !Dominion.I().getExpansionPlayingStates()[3] )
 			showAlert(Locale.get("alert.QuickSelectExpansions.OnlyPromoSelected"));
-		else if ( !Dominion.instance().getPlayingStates()[0] && !Dominion.instance().getPlayingStates()[1] && !Dominion.instance().getPlayingStates()[2] && !Dominion.instance().getPlayingStates()[3] )
+		else if ( !Dominion.I().getExpansionPlayingStates()[0] && !Dominion.I().getExpansionPlayingStates()[1] && !Dominion.I().getExpansionPlayingStates()[2] && !Dominion.I().getExpansionPlayingStates()[3] )
 			showAlert(Locale.get("alert.QuickSelectExpansions.NoneSelected"));
 		else {
 			ShowCardsForm.instance().reRandomize();
@@ -75,7 +88,8 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 
 	public void showCurrentSelectedCards() {
 		try {
-			ShowCardsForm.instance().viewCards(Dominion.instance().getCurrentlySelected());		
+			ShowCardsForm.instance().viewCards(Dominion.I().getCurrentlySelected());
+			changeToScreen(ShowCardsForm.instance());
 		} catch (DominionException exp) {
 			//#debug info
 			System.out.println(exp.toString());
@@ -86,7 +100,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	public void showBlackMarketDeck(int previousScreen) {
 		//updateSelectedQuickRandom();
 		BlackMarketForm bmForm = new BlackMarketForm(Locale.get("screen.BlackMarket.title"));
-		bmForm.setBlackMarketDeck(Dominion.instance().getBlackMarketDeck());
+		bmForm.setBlackMarketDeck(Dominion.I().getBlackMarketDeck());
 		changeToScreen(bmForm);
 		currentTab = previousScreen;
 	}
@@ -116,24 +130,38 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		this.tabbedPane = new TabbedPane(null);
 		this.tabbedPane.addTabListener(this);
 		this.tabbedPane.setTabbedFormListener(this);
+		//Locale.get("tab.Quick.title")
+		qrF = new QuickRandomizeForm(null, List.MULTIPLE);
 		//#style tabIcon
-		this.tabbedPane.addTab(new QuickRandomizeForm(Locale.get("tab.Quick.title")), null, Locale.get("app.name"));
+		this.tabbedPane.addTab(qrF, null, Locale.get("app.name"));
+		//Locale.get("tab.EditCards.title")
+		ecFL = new EditCardsFilteredList(null, FilteredList.MULTIPLE);
 		//#style tabIcon
-		this.tabbedPane.addTab(new PresetFilteredList(Locale.get("tab.Preset.title"), FilteredList.IMPLICIT), null, Locale.get("screen.PresetCards.title"));
+		this.tabbedPane.addTab(ecFL, null, Locale.get("screen.EditCards.title"));
+		//Locale.get("tab.Preset.title")
+		pFL = new PresetFilteredList(null, FilteredList.IMPLICIT);
 		//#style tabIcon
-		this.tabbedPane.addTab(new EditCardsFilteredList(Locale.get("tab.EditCards.title"), FilteredList.MULTIPLE), null, Locale.get("screen.EditCards.title"));
-		//#style tabIcon
-		this.tabbedPane.addTab(new GameCalendarForm(Locale.get("tab.Calendar.title")), null, Locale.get("screen.Calendar.title"));
-		changeToScreen(this.tabbedPane);
+		this.tabbedPane.addTab(pFL, null, Locale.get("screen.PresetCards.title"));
+		//Locale.get("tab.Calendar.title")
+		///#style tabIcon
+		//this.tabbedPane.addTab(new GameCalendarForm(null), null, Locale.get("screen.Calendar.title"));
+		String tmp = null;
+		tmp = new SettingsRecordStorage().readKey(Locale.get("rms.file.settings"), Locale.get("rms.lasttab"));
+		if ( tmp != null )
+			currentTab = Integer.parseInt(tmp);
+		tabbedPane.setFocus(currentTab);
+		changeToScreen(null);
 	}
-
+	
+	public int getCurrentTab() {
+		return currentTab;
+	}
+	
 	protected void pauseApp() {
 		DeviceControl.lightOff();
 	}
 
-	protected void destroyApp(boolean sunconditional) throws MIDletStateChangeException {
-		// just quit
-	}
+	protected void destroyApp(boolean unconditional) throws MIDletStateChangeException {}
 
 	/**
 	 * @param string
@@ -166,12 +194,28 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		alert.setCommandListener(cmdListener);
 		display.setCurrent(alert);
 	}
+	
+	/**
+	 * @param string
+	 */
+	public void showInputDialog(String message, CommandListener cmdListener) {
+		changeToScreen(InputForm.instance().instance(message, cmdListener));
+	}
 
 	public void quit() {
 		SettingsRecordStorage srs = new SettingsRecordStorage();
 		try {
-			srs.writeExpansions(Dominion.instance().getPlayingStates());
-			srs.writeExpansionCards(Dominion.instance().getNumberOfExpansionCards());
+			srs.writeExpansions(Dominion.I().getExpansionPlayingStates());
+			srs.writeExpansionCards(Dominion.I().getNumberOfExpansionCards());
+			//#debug info 
+			System.out.println(Dominion.I().getAvailableAsSave());
+			srs.writeData(Locale.get("rms.file.settings"), Locale.get("rms.available"), Dominion.I().getAvailableAsSave());
+			//#debug info 
+			System.out.println("current tab: " + currentTab);
+			srs.writeData(Locale.get("rms.file.settings"), Locale.get("rms.lasttab"), "" + currentTab);
+			//#debug info 
+			System.out.println("preferred sort: " + Cards.COMPARE_PREFERED);
+			srs.writeData(Locale.get("rms.file.settings"), Locale.get("rms.preferredsort"), "" + Cards.COMPARE_PREFERED);
 		} catch (RecordStoreFullException e) {
 		} catch (RecordStoreNotFoundException e) {
 		} catch (RecordStoreException e) {
@@ -181,15 +225,26 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		notifyDestroyed();
 	}
 
-	public void tabChangeEvent(Screen scr) {
-		// TODO Auto-generated method stub		
+	public void tabChangeEvent(Screen scr) {}
+	
+	public void changeToTab(int tab) {
+		this.tabbedPane.setCurrentTab(tab);
+		this.tabbedPane.setFocus(tab);
+		currentTab = tab;
 	}
 
 	public void notifyTabChangeCompleted(int from, int to) {
-		currentTab = to;	
+		if ( to == -1 )
+			return;
+		currentTab = to;
 	}
 
 	public boolean notifyTabChangeRequested(int from, int to) {
+		if ( to == TAB_EDIT ) {
+			ecFL.updateCards(false);
+			//#debug info
+			System.out.println("Updating cards");
+		}
 		return true;
 	}
 }

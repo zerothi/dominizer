@@ -23,27 +23,22 @@ backgrounds {
 		color: transparent;
 		flake-color: white;
 	}
-
 	titleGradient {
 		type: vertical-gradient;
 		top-color: splitTop;
 		bottom-color: splitBot;
 	}
-	
 	tableSelection {
 		color: #ffc;
 	}
-	
 	alertTop {
 		type: round-rect;
 		color: #fff;
 	}
-	
 	alertBg {
 		type: round-rect;
 		color: #a333;
 	}
-	
 	alertOverlay {
 		color: #9fff;
 	}
@@ -55,7 +50,7 @@ backgrounds {
   * for all screen-titles.
   */
 title {
-	max-width: 56%;
+	max-width: 0%;
 	padding: 2;
 	font-face: proportional;
 	font-size: normal;
@@ -64,6 +59,23 @@ title {
 	border: none;
 	layout: horizontal-center | horizontal-expand;
 	background: titleGradient;
+}
+
+.behindTitle extends title{
+	max-width: 100%;
+}
+
+
+label {
+	background {
+		color: brightBgColor;
+	}
+	font {
+		style: bold;
+		color: fontColor;
+		size: small;
+	}
+	layout: expand | center;	
 }
 
 /**
@@ -83,7 +95,7 @@ focused {
 	}
 	font {
 		style: bold;
-		color: fontColor;
+		color: translucentBrightFontColor;
 		size: small;
 	}
 	layout: expand | center;	
@@ -92,7 +104,6 @@ focused {
 
 .mainScreen {
 	title-menu: true;
-	repaint-previous-screen: true;
 	padding: 2;
 	padding-left: 10;
 	padding-right: 10;
@@ -103,6 +114,29 @@ focused {
 		top-color: splitTop;
 		bottom-color: splitBot;
 	}
+	choice-color: evenBrightColor;
+}
+
+.behindScreen extends mainScreen {
+	title-menu: false;
+	title-style: behindTitle;
+}
+
+.mainPopupScreen extends mainScreen {
+	title-menu: false;
+	margin-right: 10;
+	margin-left: 10;
+	layout: horizontal-center | bottom | horizontal-shrink | vertical-shrink;
+	repaint-previous-screen: true;
+}
+
+listItem {
+	font {
+		style: bold;
+		color: fontColor;
+		size: small;
+	}
+	layout: expand | center;
 }
 
 /**
@@ -135,7 +169,7 @@ focused {
 
 .mainItem {
 	font-color: translucentBrightFontColor;
-	font-size: medium;
+	font-size: small;
 }
 
 alertcontent {
@@ -228,15 +262,9 @@ leftcommand {
 	font-style: plain;
 	font-size: small;
 }
-
-/**
- * Commands within the menubar on the right side
- */
-rightcommand extends leftcommand
-{
+rightcommand extends leftcommand {
 	layout: right;
 }
-
 middlecommand extends leftcommand {
 	layout: center;
 	padding-top: 1;
@@ -284,9 +312,6 @@ menuItem {
 		style: bold;
 	}
 	layout: left;
-	/*
-	label-style: menuLabel;
-	*/
 }
 
 /**
@@ -296,79 +321,6 @@ menuItem:hover {
 	background-color: eevenBrightColor;
 	font-color: translucentFontColor;
 	layout: left | horizontal-expand;
-	/*
-	label-style: menuLabelFocused;
-	include-label: true;
-	*/
-}
-
-/*
-.menuLabel {
-	padding: 3;
-	font-color: fontColor;
-	font-style: bold;
-}
-
-.menuLabelFocused {
-	padding: 2;
-	font-color: brightFontColor;
-	font-style: bold;
-	border {
-		type: circle;
-		width: 1;
-		color: brightFontColor;
-	}
-}
-
-*/
-
-.choiceGroup {
-	label-style: choiceGroupLabel;
-	background-type: round-rect;
-	background-color: darkTranslucentBgColor;
-	include-label: true;
-	layout: expand;
-	align-heights: true;
-	view-type: horizontal-choice;
-	/*horizontalview-arrow-position: none;
-	horizontalview-left-arrow: url( arrow-left.png );
-	horizontalview-right-arrow: url( arrow-right.png );
-	*/
-}
-
-.choiceGroup:hover {
-	background-color: translucentBgColor;
-}
-
-.choiceItem {
-	font-color: translucentBrightFontColor;
-	font-style: bold;
-	text-wrap: false;
-	font-size: medium;
-}
-
-.choiceItem:hover {
-	font-color: black;
-	font-size: medium;
-}
-
-.choiceItem:pressed {
-	background-color: darkTranslucentBgColor;
-	font-color: translucentBrightFontColor;
-	font-size: medium;
-}
-
-.choiceItemChecked {
-	background-type: round-rect;
-	background-color: darkTranslucentBgColor;
-	font-color: translucentBrightFontColor;
-	font-size: medium;
-}
-
-.choiceGroupLabel {
-	font-style: plain;
-	font-size: small;
-	layout: newline-after;
 }
 
 .filterCards {
@@ -388,11 +340,10 @@ menuItem:hover {
 		type: round-rect;
 		color: darkTranslucentBgColor;
 	}
-	}
+	choice-color: translucentBgColor;
+}
 
 .filterCards:hover {
-	/*padding: 3;
-	padding-left: 5;*/
 	background-color: translucentBgColor;
 	font-color: translucentBrightFontColor;
 	layout: left | expand;	
@@ -402,7 +353,6 @@ menuItem:hover {
 	margin-left: 2;
 	margin-right: 2;
 	font-color: translucentBrightFontColor;
-	/*before: url( search.png );*/
 	background {
 		color: bgColor;
 		border-color: black;
@@ -418,7 +368,6 @@ menuItem:hover {
 	font-color: translucentBrightFontColor;
 	background-color: bgColor;
 }
-
 
 .defaultTable {
 	padding: 0;
@@ -522,7 +471,7 @@ menuItem:hover {
 .tabIcon {
 	margin: 1px;
 	padding: 2px;
-	max-width: 25%;
+	max-width: 33.3%;
 	layout: expand | center | vertical-center;
 	font-size: small;
 	font-color: fontColor;

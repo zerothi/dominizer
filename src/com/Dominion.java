@@ -22,9 +22,7 @@ public class Dominion {
 	public static final int INTRIGUE = 2;
 	public static final int SEASIDE = 3;
 	public static final int USER = 10;
-	public static final int SORT_EXPANSION = 0;
-	public static final int SORT_NAME = 1;
-	public static final int SORT_COST = 2;
+
 	private Cards[] expansions = null;
 	private Cards selectedCards = null;
 	private CardPresets[] presets = null;
@@ -108,17 +106,19 @@ public class Dominion {
 		System.out.println("reading seaside");
 		readResource(SEASIDE, "seaside", 26);
 		//#debug info
-		System.out.println("size seaside: " + expansions[3].size()+ ". Third name: " + expansions[3].getName(2));
-		readUserPresets();
+		System.out.println("size seaside: " + expansions[3].size());
+		//#debug info
+		System.out.println("reading settings cards");
+		readSettings();
 	}
 
-	public static Dominion instance() {
+	public static Dominion I() {
 		if ( dom == null )
 			dom = new Dominion();
 		return dom;
 	}
 
-	public boolean[] getPlayingStates() {
+	public boolean[] getExpansionPlayingStates() {
 		return playingExpansions;
 	}
 
@@ -166,22 +166,14 @@ public class Dominion {
 		}
 		while ( selected < numberOfRandomCards ) {
 			selectedElement = selector.nextInt(TOTAL_CARDS);
-			if ( selectedElement < expansions[0].size() )
-				tmpSum = 0;
-			else if ( selectedElement < (expansions[0].size() + expansions[1].size()) ) {
-				selectedElement -= expansions[0].size();
-				tmpSum = 1;
-			} else if ( selectedElement < (expansions[0].size() + expansions[1].size() + expansions[2].size()) ) {
-				selectedElement -= (expansions[0].size() + expansions[1].size());
-				tmpSum = 2;
-			} else if ( selectedElement < (expansions[0].size() + expansions[1].size() + expansions[2].size() + expansions[3].size()) ) {
-				selectedElement -= (expansions[0].size() + expansions[1].size() + expansions[2].size());
-				tmpSum = 3;
-			}
+			tmpSum = getLinearExpansionIndex(selectedElement);
+			selectedElement = getLinearCardIndex(selectedElement);
 			//#debug info
-			System.out.println("choosing expansion: " + tmpSum + ". together with card: " + selectedElement);
-			if ( playingExpansions[tmpSum] && expansions[tmpSum].isAvailable(selectedElement) && 
+			System.out.println("TRYING expansion: " + tmpSum + ". together with card: " + selectedElement);
+			if ( expansions[tmpSum].isAvailable(selectedElement) && 
 					!selectedCards.contains(expansions[tmpSum].getName(selectedElement)) ) {
+				//#debug info
+				System.out.println("choosing expansion: " + tmpSum + ". together with card: " + selectedElement);
 				expansions[tmpSum].setPlaying(selectedElement, true);
 				this.selectedCards.setCard(selected, expansions[tmpSum].getCard(selectedElement));
 				selected++;
@@ -219,21 +211,39 @@ public class Dominion {
 		if ( this.selectedCards == null )
 			return "";
 		StringBuffer sb = new StringBuffer(50);
-		double action = 0.00, attack = 0.00, reaction = 0.00, treasury = 0.00, victory = 0.00, duration = 0.00;
+		int action = 0, attack = 0, reaction = 0, treasury = 0, victory = 0, duration = 0;
 		for ( int i = 0 ; i < selectedCards.size() ; i++ ) {
-			action += (selectedCards.isAction(i) ? 1 / selectedCards.size() : 0);
-			attack += (selectedCards.isAttack(i) ? 1 / selectedCards.size() : 0);
-			reaction += (selectedCards.isReaction(i) ? 1 / selectedCards.size() : 0);
-			treasury += (selectedCards.isTreasure(i) ? 1 / selectedCards.size() : 0);
-			victory += (selectedCards.isVictory(i) ? 1 / selectedCards.size() : 0);
-			duration += (selectedCards.isDuration(i) ? 1 / selectedCards.size() : 0);
+			if ( selectedCards.isAction(i) )
+				action++;
+			if ( selectedCards.isAttack(i) )
+				attack++;
+			if ( selectedCards.isReaction(i) )
+				reaction++;
+			if ( selectedCards.isTreasure(i) )
+				treasury++;
+			if ( selectedCards.isVictory(i) )
+				victory++;
+			if ( selectedCards.isDuration(i) )
+				duration++;
 		}
-		sb.append("Action: \t" + action + ".\n");
-		sb.append("Attack: \t" + attack + ".\n");
-		sb.append("Reaction: \t" + reaction + ".\n");
-		sb.append("Treasury: \t" + treasury + ".\n");
-		sb.append("Victory: \t" + victory + ".\n");
-		sb.append("Duration: \t" + duration + ".");
+		sb.append("Action    : ");
+		if ( action < 10 ) sb.append(" ");
+		sb.append("" + action + " / " + selectedCards.size() + ".\n");
+		sb.append("Attack    : ");
+		if ( attack < 10 ) sb.append(" ");
+		sb.append("" + attack + " / " + selectedCards.size() + ".\n");
+		sb.append("Reaction  : ");
+		if ( reaction < 10 )	sb.append(" ");
+		sb.append("" + reaction + " / " + selectedCards.size() + ".\n");
+		sb.append("Treasury  : ");
+		if ( treasury < 10 ) sb.append(" ");
+		sb.append("" + treasury + " / " + selectedCards.size() + ".\n");
+		sb.append("Victory   : ");
+		if ( victory < 10 ) sb.append(" ");
+		sb.append("" + victory + " / " + selectedCards.size() + ".\n");
+		sb.append("Duration  : ");
+		if ( duration < 10 )	sb.append(" ");
+		sb.append("" + duration + " / " + selectedCards.size() + ".\n");
 		return sb.toString();
 	}
 
@@ -241,7 +251,7 @@ public class Dominion {
 		Object[] tmp = null;
 		for ( int j = 0; j < cards.size(); j++ ) { 
 			for ( int i = j + 1; i < cards.size(); i++ ) { 
-				if ( Cards.compare( cards.getCard(i), cards.getCard(j), Cards.NAME) < 0) {
+				if ( Cards.compare( cards.getCard(i), cards.getCard(j), sortMethod) < 0) {
 					tmp = (Object[]) cards.getCard(j);
 					/*//#debug info
 					System.out.println("Switching : " + tmp[0] + " og " + cards.getName(i));*/
@@ -264,15 +274,15 @@ public class Dominion {
 	public Cards getPreset(int presetDeck, int preset) {
 		//#debug info
 		System.out.println("fetching preset: " + presetDeck + " and " + preset);
-		this.selectedCards = new Cards(presets[presetDeck].size(), Cards.IS_NOT_SET);
-		for ( int i = 0 ; i < presets[presetDeck].size() ; i++ ) {
+		this.selectedCards = new Cards(presets[presetDeck].size(preset), Cards.IS_NOT_SET);
+		for ( int i = 0 ; i < presets[presetDeck].size(preset) ; i++ ) {
 			//#debug info
 			System.out.println("selecting expansion: " + presets[presetDeck].getPresetCardExpansion(preset, i) + " and card: " + presets[presetDeck].getPresetCardPlacement(preset, i));
 			//#debug info
 			System.out.println("card: " + expansions[presets[presetDeck].getPresetCardExpansion(preset, i)].getName(presets[presetDeck].getPresetCardPlacement(preset, i)));
 			selectedCards.setCard(i, expansions[presets[presetDeck].getPresetCardExpansion(preset, i)].getCard(presets[presetDeck].getPresetCardPlacement(preset, i)));
 		}
-		return sortCards(selectedCards, SORT_EXPANSION);
+		return sortCards(selectedCards, Cards.COMPARE_PREFERED);
 	}
 
 	public Cards getPreset(String presetName) {
@@ -301,10 +311,26 @@ public class Dominion {
 			for ( int j = 0 ; j < expansions[i].size() ; j++ )
 				for ( int k = 0 ; k < selectedCards.size() ; k++ )
 					if ( selectedCards.getName(k).equals(expansions[i].getName(j)) )
-						sb.append(SettingsRecordStorage.MEDIUM_SPLITTER + i + SettingsRecordStorage.SMALL_SPLITTER + j);
+						sb.append("" + SettingsRecordStorage.MEDIUM_SPLITTER + i + SettingsRecordStorage.SMALL_SPLITTER + j);
 		return sb.toString();
 	}
-
+	
+	public String getAvailableAsSave() {
+		StringBuffer sb = new StringBuffer(TOTAL_CARDS);
+		for ( int i = 0 ; i < expansions.length ; i++ )
+			for ( int j = 0 ; j < expansions[i].size() ; j++ )
+				sb.append("" + ( expansions[i].isAvailable(j) ? "1" : "0" ));
+		return sb.toString();
+	}
+	
+	public String getPresetAsInfo(int presetDeck, int preset) {
+		StringBuffer sb = new StringBuffer(140);
+		for ( int i = 0 ; i < presets[presetDeck].size(preset) ; i++ ) {
+			sb.append("" + expansions[presets[presetDeck].getPreset(preset)[i][0]].getName(presets[presetDeck].getPreset(preset)[i][1]) + "\n");
+		}
+		return sb.toString();
+	}
+	
 	public static String getExpansionName(int expansion) {
 		switch ( expansion ) {
 		case BASE:
@@ -325,11 +351,42 @@ public class Dominion {
 	}
 
 	public Cards getCurrentlySelected() throws DominionException {
-		if ( selectedCards == null | selectedCards.size() != numberOfRandomCards ) 
-			throw new DominionException("No currently selected cards.");
-		return this.selectedCards;
+		return getCurrentlySelected(Cards.COMPARE_PREFERED);
 	}
 	
+	public Cards getCurrentlySelected(int sortMethod) throws DominionException {
+		if ( selectedCards == null | selectedCards.size() != numberOfRandomCards ) 
+			throw new DominionException("No currently selected cards.");
+		return sortCards(selectedCards, sortMethod);
+	}
+	
+	public int getLinearCardIndex(int i) {
+		if ( i < 0 )
+			return -1;
+		if ( i < expansions[0].size() )
+			return i;
+		else if ( i < expansions[0].size() + expansions[1].size() )
+			return i - expansions[0].size();
+		else if ( i < expansions[0].size() + expansions[1].size() + expansions[2].size() )
+			return i - expansions[1].size() - expansions[0].size();
+		else if ( i < expansions[0].size() + expansions[1].size() + expansions[2].size() + expansions[3].size() )
+			return i - expansions[2].size() - expansions[1].size() - expansions[0].size();
+		else return -1;
+	}
+	
+	public int getLinearExpansionIndex(int i) {
+		if ( i < 0 )
+			return -1;
+		if ( i < expansions[0].size() )
+			return 0;
+		else if ( i < expansions[0].size() + expansions[1].size() )
+			return 1;
+		else if ( i < expansions[0].size() + expansions[1].size() + expansions[2].size() )
+			return 2;
+		else if ( i < expansions[0].size() + expansions[1].size() + expansions[2].size() + expansions[3].size() )
+			return 3;
+		else return -1;
+	}
 	public int getExpansions() {
 		return expansions.length;
 	}
@@ -418,41 +475,99 @@ public class Dominion {
 		}
 	}
 
-	private void readUserPresets() {
-		Vector settings = null;
+	private void readSettings() {
+		Vector dataPresets = null;
 		try {
-			settings = new SettingsRecordStorage().readData(Locale.get("rms.file.preset"));
+			dataPresets = new SettingsRecordStorage().readData(Locale.get("rms.file.preset"));
 		} catch (RecordStoreFullException e) {
-			settings = null;
+			dataPresets = null;
 		} catch (RecordStoreException e) {
-			settings = null;
+			dataPresets = null;
 		}
-		if ( settings == null ) {
+		if ( dataPresets == null ) {
 			//#debug info
 			System.out.println("Read user settings: settings is null");
 			presets[3] = null;
-			return;
-		}
-		presets[3] = new CardPresets(settings.size());
-		int[][] preset = new int[10][2];
-		int start = 0;
-		for ( int i = 0 ; i < settings.size() ; i++ ) {
-			if ( settings.elementAt(i).toString().startsWith(Locale.get("rms.preset")) ) {
+		} else {
+			//#debug info
+			System.out.println("Read user settings: settings is size=" + dataPresets.size());
+			presets[3] = new CardPresets(dataPresets.size());
+			int[][] preset;
+			int numberOfPresets = 0;
+			int start;
+			for ( int i = 0 ; i < dataPresets.size() ; i++ ) {
 				//#debug info
-				System.out.println("getExpansions: " + settings.elementAt(i).toString());
+				System.out.println("presets: " + dataPresets.elementAt(i).toString());
+				start = 0;
+				preset = new int[10][2];
 				for (int k = 0 ; k < 10 ; k++ ) {
-					start = settings.elementAt(i).toString().indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start);
+					start = dataPresets.elementAt(i).toString().indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1);
 					if ( k == 9 )
-						preset[k] = getCardInfo(settings.elementAt(i).toString().substring(start));
+						preset[k] = getCardInfo(dataPresets.elementAt(i).toString().substring(start,
+								dataPresets.elementAt(i).toString().indexOf(SettingsRecordStorage.BIG_SPLITTER, start + 1)));
 					else
-						preset[k] = getCardInfo(settings.elementAt(i).toString().substring(start, 
-								settings.elementAt(i).toString().indexOf(SettingsRecordStorage.MEDIUM_SPLITTER)));
+						preset[k] = getCardInfo(dataPresets.elementAt(i).toString().substring(start, 
+								dataPresets.elementAt(i).toString().indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1)));
 				}
+				presets[3].setPreset(numberOfPresets, dataPresets.elementAt(i).toString().substring(0,
+						dataPresets.elementAt(i).toString().indexOf(SettingsRecordStorage.BIG_SPLITTER)),
+						preset);
+				numberOfPresets++;
 			}
 		}
+		//#debug info
+		System.out.println("finished reading presets successfully\nstart reading expansion states");
+		String tmp = new SettingsRecordStorage().readKey(Locale.get("rms.file.settings"), Locale.get("rms.expansions"));
+		//#debug info
+		System.out.println("expansions: " + tmp);
+		if ( tmp != null ) {
+			playingExpansions[0] = tmp.substring(0, 1).equals("1");
+			playingExpansions[1] = tmp.substring(1, 2).equals("1");
+			playingExpansions[2] = tmp.substring(2, 3).equals("1");
+			playingExpansions[3] = tmp.substring(3).equals("1");
+		}
+		//#debug info
+		System.out.println("finished reading expansion states successfully\nstart reading number of cards");
+		
+		tmp = new SettingsRecordStorage().readKey(Locale.get("rms.file.settings"), Locale.get("rms.expansions.usedcards"));
+		//#debug info
+		System.out.println("usedcards: " + tmp);
+		if ( tmp != null ) {
+			setCardsUsedForExpansion(0, Integer.parseInt(tmp.substring(0, 1)));
+			setCardsUsedForExpansion(1, Integer.parseInt(tmp.substring(1, 2)));
+			setCardsUsedForExpansion(2, Integer.parseInt(tmp.substring(2, 3)));
+			setCardsUsedForExpansion(3, Integer.parseInt(tmp.substring(3, 4)));
+		}
+		//#debug info
+		System.out.println("finished reading number of cards succesfully\nstart reading available cards");
+		
+		tmp = new SettingsRecordStorage().readKey(Locale.get("rms.file.settings"), Locale.get("rms.available"));
+		//#debug info
+		System.out.println("available from " + tmp);
+		if ( tmp != null ) {
+			int k = 0;
+			for ( int i = 0 ; i < expansions.length ; i++ )
+				for ( int j = 0 ; j < expansions[i].size() ; j++ ) {
+					expansions[i].setAvailable(j, tmp.substring(k, k + 1).equals("1"));
+					k++;
+				}
+		}
+		//#debug info
+		System.out.println("finished reading available cards\nread preferred sort");
+		
+		tmp = new SettingsRecordStorage().readKey(Locale.get("rms.file.settings"), Locale.get("rms.preferredsort"));
+		//#debug info
+		System.out.println("sort: " + tmp);
+		if ( tmp != null ) {
+			Cards.COMPARE_PREFERED = Integer.parseInt(tmp);
+		}
+		//#debug info
+		System.out.println("finished reading preferred sort succesfully");
 	}
 
 	private int[] getCardInfo(String card) {
+		//#debug info
+		System.out.println("the read card info: " + card);
 		return new int[] {
 				Integer.valueOf(card.substring(card.indexOf(SettingsRecordStorage.MEDIUM_SPLITTER) + 1, card.indexOf(SettingsRecordStorage.SMALL_SPLITTER))).intValue(), 
 				Integer.valueOf(card.substring(card.indexOf(SettingsRecordStorage.SMALL_SPLITTER) + 1 )).intValue()

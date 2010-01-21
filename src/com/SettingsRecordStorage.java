@@ -28,10 +28,9 @@ public class SettingsRecordStorage {
 			try {
 				store.closeRecordStore();
 			} catch (RecordStoreNotOpenException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				// Already closed
 			} catch (RecordStoreException e) {
-				// TODO Auto-generated catch block
+				// This is an actual error
 				e.printStackTrace();
 			} finally {
 				store = null;
@@ -65,7 +64,24 @@ public class SettingsRecordStorage {
 		sb.append(BIG_SPLITTER);
 		sb.append(preset);
 		sb.append(BIG_SPLITTER);
-		return writeData(Locale.get("rms.file.preset"), Locale.get("rms.preset"), sb.toString());
+		return writeData(Locale.get("rms.file.preset"), null, sb.toString());
+	}
+	
+	public String readKey(String recordStore, String key) {
+		Vector data = null;
+		try {
+			data = readData(recordStore);
+		} catch (RecordStoreFullException e) {
+		} catch (RecordStoreException e) {
+		}
+		if ( data == null ) {
+			return null;
+		}
+		for ( int i = 0 ; i < data.size() ; i++ ) {
+			if ( data.elementAt(i).toString().startsWith(key) )
+				return data.elementAt(i).toString().substring(key.length() + 1);
+		}
+		return null;
 	}
 
 	public Vector readData(String recordStore) throws RecordStoreFullException, RecordStoreException {
@@ -82,8 +98,6 @@ public class SettingsRecordStorage {
 			RecordEnumeration re = store.enumerateRecords(null, null, false);
 			data = new Vector(store.getNumRecords());
 			while ( re.hasNextElement() ) {
-				//#debug info
-				System.out.println("try reading record #= ");
 				tmpByte = re.nextRecord();
 				if ( tmpByte != null ) {
 					//#debug info
@@ -122,10 +136,20 @@ public class SettingsRecordStorage {
 		try {
 			store = RecordStore.openRecordStore(recordStore, true);
 			if ( data != null )
-				for ( int i = 0 ; i < data.size() ; i++ )
-					if ( !data.elementAt(i).toString().startsWith(key) )
-						store.addRecord(data.elementAt(i).toString().getBytes(), 0, data.elementAt(i).toString().getBytes().length);
-			store.addRecord(new String(key + BIG_SPLITTER + record).getBytes(), 0, new String(key + BIG_SPLITTER + record).getBytes().length);
+				for ( int i = 0 ; i < data.size() ; i++ ) {
+					if ( key != null ) {
+						if ( !data.elementAt(i).toString().startsWith(key) )
+							store.addRecord(data.elementAt(i).toString().getBytes(), 0, data.elementAt(i).toString().getBytes().length);
+					} else {
+						if ( !data.elementAt(i).toString().startsWith(record) )
+							store.addRecord(data.elementAt(i).toString().getBytes(), 0, data.elementAt(i).toString().getBytes().length);
+					}
+				}
+			if ( key != null ) {
+				store.addRecord(new String(key + BIG_SPLITTER + record).getBytes(), 0, new String(key + BIG_SPLITTER + record).getBytes().length);
+			} else {
+				store.addRecord(new String(record).getBytes(), 0, new String(record).getBytes().length);
+			}
 			//#debug info
 			System.out.println("Succes");
 		} catch (Exception e) {
@@ -135,6 +159,33 @@ public class SettingsRecordStorage {
 		}
 		data = null;
 		return succes;
+	}
+	
+	public boolean deleteKey(String recordStore, String key) {
+		Vector data = null;
+		try {
+			data = readData(recordStore);
+		} catch (RecordStoreFullException e) {
+		} catch (RecordStoreException e) {
+		}
+		if ( data == null ) {
+			return true;
+		}
+		deleteRecordStore(recordStore);
+		for ( int i = 0 ; i < data.size() ; i++ ) {
+			if ( !data.elementAt(i).toString().startsWith(key) ) {
+				try {
+					writeData(recordStore, null, data.elementAt(i).toString());
+				} catch (RecordStoreFullException e) {
+					return false;
+				} catch (RecordStoreNotFoundException e) {
+					return false;
+				} catch (RecordStoreException e) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	public void deleteRecordStore(String recordStore) {

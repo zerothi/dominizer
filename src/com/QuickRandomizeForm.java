@@ -1,19 +1,14 @@
 package com;
 
 import java.io.IOException;
-import java.util.Vector;
 
 import javax.microedition.lcdui.Canvas;
-import javax.microedition.lcdui.ChoiceGroup;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Image;
-import javax.microedition.lcdui.Item;
-import javax.microedition.lcdui.ItemStateListener;
-import javax.microedition.rms.RecordStoreException;
-import javax.microedition.rms.RecordStoreFullException;
+import javax.microedition.lcdui.List;
+import javax.microedition.lcdui.Ticker;
 
 import com.dominizer.GameApp;
 
@@ -28,85 +23,55 @@ import de.enough.polish.util.Locale;
  * @author nick
  *
  */
-public class QuickRandomizeForm extends Form implements CommandListener, ItemStateListener {
+public class QuickRandomizeForm extends List implements CommandListener {
 
-	private ChoiceGroup quickGameRandomizerCG = null;
-	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.SCREEN, 0);
-	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.BACK, 10);
+	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
+	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
 	private boolean[] flags = new boolean[4];
-
-	public QuickRandomizeForm(String title) {
+	
+	public QuickRandomizeForm(String title, int listType) {
 		//#style mainScreen
-		super(title);
-		// Setting up the QuickGame Randomizer
-		//#style filterCards
-		this.quickGameRandomizerCG = new ChoiceGroup(Locale.get("tab.Quick.QuickSelectExpansions"), ChoiceGroup.MULTIPLE);
+		super(title, listType);
+		this.setTicker(new Ticker(Locale.get("app.name")));
 		try {
-			//style choiceItem 
-			this.quickGameRandomizerCG.append(Dominion.getExpansionName(0), Image.createImage("/ba.png"));
-			//style choiceItem 
-			this.quickGameRandomizerCG.append(Dominion.getExpansionName(1), Image.createImage("/pr.png"));
-			//style choiceItem 
-			this.quickGameRandomizerCG.append(Dominion.getExpansionName(2), Image.createImage("/in.png"));
-			//style choiceItem 
-			this.quickGameRandomizerCG.append(Dominion.getExpansionName(3), Image.createImage("/se.png"));
+			//#style label
+			this.append(Dominion.getExpansionName(0), Image.createImage("/ba.png"));
+			//#style label
+			this.append(Dominion.getExpansionName(1), Image.createImage("/pr.png"));
+			//#style label
+			this.append(Dominion.getExpansionName(2), Image.createImage("/in.png"));
+			//#style label
+			this.append(Dominion.getExpansionName(3), Image.createImage("/se.png"));
 		} catch (IOException e) {
-			//style choiceItem 
-			this.quickGameRandomizerCG.append(Dominion.getExpansionName(0), null);
-			//style choiceItem 
-			this.quickGameRandomizerCG.append(Dominion.getExpansionName(1), null);
-			//style choiceItem 
-			this.quickGameRandomizerCG.append(Dominion.getExpansionName(2), null);
-			//style choiceItem 
-			this.quickGameRandomizerCG.append(Dominion.getExpansionName(3), null);
+			//#style label
+			this.append(Dominion.getExpansionName(0), null);
+			//#style label
+			this.append(Dominion.getExpansionName(1), null);
+			//#style label
+			this.append(Dominion.getExpansionName(2), null);
+			//#style label
+			this.append(Dominion.getExpansionName(3), null);
 		}
-		this.quickGameRandomizerCG.addCommand(this.quickRandomizeCardsCmd);
-		this.readExpansionSettings();
+		for ( int i = 0 ; i < Dominion.I().getExpansions() ; i++ ) {
+			if ( Dominion.I().getNumberOfExpansionCards()[i] > 0 ) {
+				//#style label
+				this.set(i, Dominion.getExpansionName(i) + " " + Dominion.I().getNumberOfExpansionCards()[i], this.getImage(i));
+				this.setSelectedIndex(i, Dominion.I().getExpansionPlayingStates()[i]);
+			} else {
+				//#style label
+				this.set(i, Dominion.getExpansionName(i), this.getImage(i));
+			}	
+		}
+		this.addCommand(this.quickRandomizeCardsCmd);
 		this.addCommand(this.quitCmd);
 		this.setCommandListener(this);
-		this.setItemStateListener(this);
-		this.append(this.quickGameRandomizerCG);
-	}
-
-	public void readExpansionSettings() {
-		Vector settings = null;
-		try {
-			settings = new SettingsRecordStorage().readData(Locale.get("rms.file.settings"));
-		} catch (RecordStoreFullException e) {
-			settings = null;
-		} catch (RecordStoreException e) {
-			settings = null;
-		}
-		if ( settings == null ) {
-			//#debug info
-			System.out.println("SettingsRecordStorage: getExpansions : settings is null");
-		} else {
-			for ( int i = 0 ; i < settings.size() ; i++ ) {
-				if ( settings.elementAt(i).toString().startsWith(Locale.get("rms.expansions")) ) {
-					//#debug info
-					System.out.println("getExpansions: " + settings.elementAt(i).toString());
-					Dominion.instance().getPlayingStates()[0] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 1, Locale.get("rms.expansions").length() + 2).equals("1");
-					Dominion.instance().getPlayingStates()[1] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 2, Locale.get("rms.expansions").length() + 3).equals("1");
-					Dominion.instance().getPlayingStates()[2] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 3, Locale.get("rms.expansions").length() + 4).equals("1");
-					Dominion.instance().getPlayingStates()[3] = settings.elementAt(i).toString().substring(Locale.get("rms.expansions").length() + 4).equals("1");
-				} else if ( settings.elementAt(i).toString().startsWith(Locale.get("rms.expansions.usedcards")) ) {
-					Dominion.instance().setCardsUsedForExpansion(0, parseInt(settings.elementAt(i).toString().substring(Locale.get("rms.expansions.usedcards").length() + 1, Locale.get("rms.expansions.usedcards").length() + 2)));
-					Dominion.instance().setCardsUsedForExpansion(1, parseInt(settings.elementAt(i).toString().substring(Locale.get("rms.expansions.usedcards").length() + 2, Locale.get("rms.expansions.usedcards").length() + 3)));
-					Dominion.instance().setCardsUsedForExpansion(2, parseInt(settings.elementAt(i).toString().substring(Locale.get("rms.expansions.usedcards").length() + 3, Locale.get("rms.expansions.usedcards").length() + 4)));
-					Dominion.instance().setCardsUsedForExpansion(3, parseInt(settings.elementAt(i).toString().substring(Locale.get("rms.expansions.usedcards").length() + 4)));
-				}
-			}
-		}
-		this.quickGameRandomizerCG.setSelectedFlags(Dominion.instance().getPlayingStates());
-		this.setCardsFromExpansion(0, Dominion.instance().getNumberOfExpansionCards()[0]);
-		this.setCardsFromExpansion(1, Dominion.instance().getNumberOfExpansionCards()[1]);
-		this.setCardsFromExpansion(2, Dominion.instance().getNumberOfExpansionCards()[2]);
-		this.setCardsFromExpansion(3, Dominion.instance().getNumberOfExpansionCards()[3]);
 	}
 
 	public void commandAction(Command cmd, Displayable screen) {
-		GameApp.instance().showInfo("Screen CommandAction", 1000);
 		if ( cmd.equals(this.quickRandomizeCardsCmd) ) {
+			this.getSelectedFlags(flags);
+			Dominion.I().setExpansionPlayingState(flags);
+			GameApp.instance().ecFL.updateCards(false);
 			GameApp.instance().showRandomizedCards();
 		} else if ( cmd.equals(this.quitCmd) )
 			GameApp.instance().quit();
@@ -134,34 +99,31 @@ public class QuickRandomizeForm extends Form implements CommandListener, ItemSta
 	private void setCardsFromExpansion(int numberCards) {
 		//#debug info
 		System.out.println("trying to set cards from expansion");
-		this.setCardsFromExpansion(UiAccess.getFocusedIndex(this.quickGameRandomizerCG), numberCards);
-		UiAccess.repaint(this.quickGameRandomizerCG);
+		this.setCardsFromExpansion(UiAccess.getFocusedIndex(this), numberCards);
+		
 	}
 
 	private void setCardsFromExpansion(int expansion, int numberOfCards) {
 		if ( -1 < expansion ) {
-			//#debug info
-			System.out.println("expansion found " + expansion);
 			if ( expansion == 1 && numberOfCards > 2 )
 				GameApp.instance().showAlert(Locale.get("alert.CardsFromExpansion.Promo"));
 			else {
-				if ( numberOfCards > 0 )
-					this.quickGameRandomizerCG.set(expansion, Dominion.getExpansionName(expansion) + " " + numberOfCards, this.quickGameRandomizerCG.getImage(expansion));
-				else
-					this.quickGameRandomizerCG.set(expansion, Dominion.getExpansionName(expansion), this.quickGameRandomizerCG.getImage(expansion));
-				Dominion.instance().setCardsUsedForExpansion(expansion, numberOfCards);
+				if ( numberOfCards > 0 ) {
+					//#style label
+					this.set(expansion, Dominion.getExpansionName(expansion) + " " + numberOfCards, this.getImage(expansion));
+					Dominion.I().setExpansionPlayingState(expansion, true);
+				} else {
+					//#style label
+					this.set(expansion, Dominion.getExpansionName(expansion), this.getImage(expansion));
+				}
+				this.setSelectedIndex(expansion, Dominion.I().getExpansionPlayingStates()[expansion]);
+				Dominion.I().setCardsUsedForExpansion(expansion, numberOfCards);
 			}
-		}
-	}
-
-	private static int parseInt(String value) {
-		return Integer.parseInt(value);		
-	}
-
-	public void itemStateChanged(Item item) {
-		if ( item.equals(quickGameRandomizerCG) ) {
-			this.quickGameRandomizerCG.getSelectedFlags(flags);
-			Dominion.instance().setExpansionPlayingState(flags);
+			if ( expansion == 0 )
+				UiAccess.setFocusedIndex(this, 1);
+			else 
+				UiAccess.setFocusedIndex(this, 0);
+			UiAccess.setFocusedIndex(this, expansion);
 		}
 	}
 }

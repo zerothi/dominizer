@@ -6,7 +6,7 @@ import de.enough.polish.util.Locale;
 
 
 public class Cards {
-	
+
 	private String[] name = null;
 	private String[] expansion = null;
 	/*
@@ -301,22 +301,50 @@ public class Cards {
 	}
 	
 	public static int compare(Object[] first, Object[] compareTo, int method) {
-		if ( first[1].toString().equals(compareTo[1].toString()) )
+		switch ( method ) {
+		case COMPARE_EXPANSION_NAME:
+			if ( compare(first, compareTo, COMPARE_EXPANSION) == 0 )
+				return compare(first, compareTo, COMPARE_NAME);
+			else return compare(first, compareTo, COMPARE_EXPANSION);
+		case COMPARE_EXPANSION_COST:
+			if ( compare(first, compareTo, COMPARE_EXPANSION) == 0 )
+				return compare(first, compareTo, COMPARE_COST);
+			else return compare(first, compareTo, COMPARE_EXPANSION);
+		case COMPARE_COST_EXPANSION:
+			if ( compare(first, compareTo, COMPARE_COST) == 0 )
+				return compare(first, compareTo, COMPARE_EXPANSION);
+			else return compare(first, compareTo, COMPARE_COST);
+		case COMPARE_COST_NAME:
+			if ( compare(first, compareTo, COMPARE_COST) == 0 )
+				return compare(first, compareTo, COMPARE_NAME);
+			else return compare(first, compareTo, COMPARE_COST);
+		case COMPARE_EXPANSION:
+			if ( first[1].toString().equals(compareTo[1].toString()) )
+				return 0;
+			else if ( first[1].toString().equals(Locale.get("rms.base")) )
+				return -1;
+			else if ( first[1].toString().equals(Locale.get("rms.promo")) )
+				if ( compareTo[1].toString().equals(Locale.get("rms.base")) )
+					return 1;
+				else
+					return -1;
+			else if ( first[1].toString().equals(Locale.get("rms.intrigue")) )
+				if ( compareTo[1].toString().equals(Locale.get("rms.base")) || compareTo[1].toString().equals(Locale.get("rms.promo")) )
+					return 1;
+				else
+					return -1;
+			else if ( first[1].toString().equals(Locale.get("rms.seaside")) )
+				return 1;
+			else return 1;
+		case COMPARE_COST:
+			if ( ((Integer) first[2]).intValue() > ((Integer) compareTo[2]).intValue() )
+				return 1;
+			else if ( ((Integer) first[2]).intValue() < ((Integer) compareTo[2]).intValue() )
+				return -1;
+			else return 0;
+		case COMPARE_NAME:
 			return first[0].toString().compareTo(compareTo[0].toString());
-		else if ( first[1].toString().equals(Locale.get("rms.base")) )
-			return -1;
-		else if ( first[1].toString().equals(Locale.get("rms.promo")) )
-			if ( compareTo[1].toString().equals(Locale.get("rms.base")) )
-				return 1;
-			else
-				return -1;
-		else if ( first[1].toString().equals(Locale.get("rms.intrigue")) )
-			if ( compareTo[1].toString().equals(Locale.get("rms.base")) || compareTo[1].toString().equals(Locale.get("rms.promo")) )
-				return 1;
-			else
-				return -1;
-		else if ( first[1].toString().equals(Locale.get("rms.seaside")) )
-			return 1;
+		}
 		return 0;
 	}
 	
@@ -395,11 +423,19 @@ public class Cards {
 		}
 		return null;
 	}
+	public static final int COMPARE_EXPANSION_NAME = 0;
+	public static final int COMPARE_EXPANSION_COST = 1;
+	public static final int COMPARE_NAME = 2;
+	public static final int COMPARE_COST_NAME = 3;
+	public static final int COMPARE_COST_EXPANSION = 4;
+	
+	public static final int COMPARE_COST = 10;
+	public static final int COMPARE_EXPANSION = 11;
+	
+	public static int COMPARE_PREFERED = COMPARE_EXPANSION_NAME;
 	
 	public static final int IS_SET = 1;
 	public static final int IS_NOT_SET = 0;
-	public static final int NAME = 0;
-	public static final int COST = 1;
 	public static final int TYPE_ACTION = 0;
 	public static final int TYPE_ACTION_ATTACK = 1;
 	public static final int TYPE_ACTION_REACTION = 2;

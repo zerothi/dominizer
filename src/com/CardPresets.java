@@ -47,12 +47,6 @@ public class CardPresets {
 	
 	public void setPreset(int index, String name, int[][] preset) {
 		presetNames[index] = name;
-		for ( int i = 0 ; i < preset.length ; i++ ) {
-			for ( int j = 0 ; j < preset[i].length ; j++ ) {
-				//#debug info
-				System.out.println("PRESET: " + i + "," + j + ". INFO: " + preset[i][j]);
-			}
-		}
 		presets[index] = preset;
 	}
 	
@@ -60,5 +54,11 @@ public class CardPresets {
 		if ( presetNames == null )
 			return 0;
 		return presetNames.length;
+	}
+	
+	public int size(int i) {
+		if ( presetNames == null )
+			return 0;
+		return presets[i].length;
 	}
 }
