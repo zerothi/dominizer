@@ -287,10 +287,12 @@ public class Dominion {
 		return presets.length;
 	}
 
-	public Cards getPreset(int presetDeck, int preset) {
+	public boolean selectPreset(int presetDeck, int preset) {
 		//#debug info
 		System.out.println("fetching preset: " + presetDeck + " and " + preset);
 		this.selectedCards = new Cards(presets[presetDeck].size(preset), Cards.IS_NOT_SET);
+		if ( presetDeck > presets.length | preset >= presets[presetDeck].size() )
+			return false;
 		for ( int i = 0 ; i < presets[presetDeck].size(preset) ; i++ ) {
 			//#debug info
 			System.out.println("selecting expansion: " + presets[presetDeck].getPresetCardExpansion(preset, i) + " and card: " + presets[presetDeck].getPresetCardPlacement(preset, i));
@@ -298,15 +300,15 @@ public class Dominion {
 			System.out.println("card: " + expansions[presets[presetDeck].getPresetCardExpansion(preset, i)].getName(presets[presetDeck].getPresetCardPlacement(preset, i)));
 			selectedCards.setCard(i, expansions[presets[presetDeck].getPresetCardExpansion(preset, i)].getCard(presets[presetDeck].getPresetCardPlacement(preset, i)));
 		}
-		return sortCards(selectedCards, Cards.COMPARE_PREFERED);
+		return true;
 	}
 
-	public Cards getPreset(String presetName) {
+	public boolean selectPreset(String presetName) {
 		for ( int i = 0 ; i < presets.length ; i++ )
 			for ( int j = 0 ; j < presets[i].size() ; j++ )
 				if ( presets[i].getPresetName(j).equals(presetName) )
-					return this.getPreset(i, j);
-		return null;
+					return this.selectPreset(i, j);
+		return false;
 	}
 
 	public CardPresets getPreset(int preset) {

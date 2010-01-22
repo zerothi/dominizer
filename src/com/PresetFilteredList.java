@@ -102,8 +102,8 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 				return;
 			}
 		} else if ( cmd.equals(selectCmd) ) {
-			ShowCardsForm.instance().viewCards(Dominion.I().getPreset(this.getString(this.getCurrentIndex())));
-			GameApp.instance().changeToScreen(ShowCardsForm.instance());
+			if ( Dominion.I().selectPreset(this.getString(this.getCurrentIndex())) )
+				GameApp.instance().showCurrentSelectedCards();
 		} else if ( cmd.equals(quitCmd) ) {
 			GameApp.instance().quit();
 		} else if ( cmd.equals(deleteCmd) ) {

@@ -211,18 +211,6 @@ alertcontent {
 	//#endif
 }
 
-.input {
-	margin: 1;
-	background-color: bgColor;
-	layout: expand;
-}
-
-.input:hover {
-	margin: 0;
-	background-color: yellow;
-	border-color: black;
-}
-
 info {
 	margin: 1;
 	font-color: fontColor;

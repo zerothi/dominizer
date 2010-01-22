@@ -68,7 +68,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 	}
 
 	public void reRandomize() {
-		Dominion.I().randomizeCards(Cards.COMPARE_EXPANSION_NAME);
+		Dominion.I().randomizeCards(Cards.COMPARE_PREFERED);
 		try {
 			this.viewCards(Dominion.I().getCurrentlySelected());
 		} catch (DominionException e) {
@@ -122,7 +122,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 		else if ( cmd.equals(this.randomizeCmd) )
 			this.reRandomize();
 		else if ( cmd.equals(this.blackMarketCmd) )
-			GameApp.instance().showBlackMarketDeck(-1);
+			GameApp.instance().showBlackMarketDeck(GameApp.SHOWCARDS);
 		else if ( cmd.equals(this.showInfoCmd) )
 			GameApp.instance().showInfo(Dominion.I().getSelectedInfo(), Alert.FOREVER);
 		else if ( cmd.equals(this.saveCmd) ) {

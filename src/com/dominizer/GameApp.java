@@ -61,6 +61,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	public QuickRandomizeForm qrF = null;
 	public EditCardsFilteredList ecFL = null;
 	public PresetFilteredList pFL = null;
+	public BlackMarketForm bmF = null;
 
 	public GameApp() {
 		super();
@@ -102,9 +103,9 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 
 	public void showBlackMarketDeck(int previousScreen) {
 		//updateSelectedQuickRandom();
-		BlackMarketForm bmForm = new BlackMarketForm(Locale.get("screen.BlackMarket.title"));
-		bmForm.setBlackMarketDeck(Dominion.I().getBlackMarketDeck());
-		changeToScreen(bmForm);
+		bmF = new BlackMarketForm(Locale.get("screen.BlackMarket.title"));
+		bmF.setBlackMarketDeck(Dominion.I().getBlackMarketDeck());
+		changeToScreen(bmF);
 		currentTab = previousScreen;
 	}
 

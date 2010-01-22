@@ -344,8 +344,8 @@ public class Cards {
 			else return 0;
 		case COMPARE_NAME:
 			return first[0].toString().compareTo(compareTo[0].toString());
+		default: return compare(first, compareTo, COMPARE_EXPANSION_NAME);
 		}
-		return 0;
 	}
 	
 	public boolean contains(String cardName) {
