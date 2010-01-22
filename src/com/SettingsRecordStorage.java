@@ -9,87 +9,85 @@ import javax.microedition.rms.RecordStoreFullException;
 import javax.microedition.rms.RecordStoreNotFoundException;
 import javax.microedition.rms.RecordStoreNotOpenException;
 
-import de.enough.polish.util.Locale;
-
 public class SettingsRecordStorage {
+	
+	private static SettingsRecordStorage srs = null;
 	public static final char BIG_SPLITTER = ':';
 	public static final char MEDIUM_SPLITTER = ';';
 	public static final char SMALL_SPLITTER = '#';
 	public static final char OPTION_SPLITTER = '=';
 
+	private static String currentStore = null;
 	private static Vector data = null;
 	private static RecordStore store = null;
 	private static byte[] tmpByte = null;
 
-	public SettingsRecordStorage() {
+	
+	private SettingsRecordStorage() {
 		super();
-		data = null;
-		if ( store != null ) {
-			try {
-				store.closeRecordStore();
-			} catch (RecordStoreNotOpenException e) {
-				// Already closed
-			} catch (RecordStoreException e) {
-				// This is an actual error
-				e.printStackTrace();
-			} finally {
-				store = null;
-			}
-		}
-	}
-
-	public boolean writeExpansions(boolean[] expansions) throws RecordStoreFullException, RecordStoreNotFoundException,
-	RecordStoreException {
-		StringBuffer sb = new StringBuffer(4);
-		sb.append(expansions[0] ? "1" : "0");
-		sb.append(expansions[1] ? "1" : "0");
-		sb.append(expansions[2] ? "1" : "0");
-		sb.append(expansions[3] ? "1" : "0");
-		return writeData(Locale.get("rms.file.settings"), Locale.get("rms.expansions"), sb.toString());
-	}
-
-	public boolean writeExpansionCards(int[] expansionCards) throws RecordStoreFullException, RecordStoreNotFoundException,
-	RecordStoreException {
-		StringBuffer sb = new StringBuffer(4);
-		sb.append(expansionCards[0]);
-		sb.append(expansionCards[1]);
-		sb.append(expansionCards[2]);
-		sb.append(expansionCards[3]);
-		return writeData(Locale.get("rms.file.settings"), Locale.get("rms.expansions.usedcards"), sb.toString());
-	}
-
-	public boolean savePreset(String presetName, String preset) throws RecordStoreFullException, RecordStoreNotFoundException, RecordStoreException {
-		StringBuffer sb = new StringBuffer(100);
-		sb.append(presetName);
-		sb.append(BIG_SPLITTER);
-		sb.append(preset);
-		sb.append(BIG_SPLITTER);
-		return writeData(Locale.get("rms.file.preset"), null, sb.toString());
 	}
 	
-	public String readKey(String recordStore, String key) {
-		Vector data = null;
+	public static SettingsRecordStorage instance() {
+		if ( srs == null )
+			srs = new SettingsRecordStorage();
+		return srs;
+	}
+	
+	public boolean changeToRecordStore(String recordStore) {
 		try {
-			data = readData(recordStore);
-		} catch (RecordStoreFullException e) {
+			if ( store != null && !store.getName().equals(recordStore) ) {
+				data = null;
+				store.closeRecordStore();
+			}
+		} catch (RecordStoreNotOpenException e) {
+			// Already closed
 		} catch (RecordStoreException e) {
+			// This is an actual error
+			e.printStackTrace();
+		} finally {
+			try {
+				//#debug info
+				System.out.println("opening record store");
+				store = RecordStore.openRecordStore(recordStore, true);
+				currentStore = recordStore;
+				data = readData();
+				store.closeRecordStore();
+				return true;
+			} catch (RecordStoreFullException e) {
+				store = null;
+				//#debug info
+				System.out.println("error read");
+			} catch (RecordStoreNotFoundException e) {
+				store = null;
+				//#debug info
+				System.out.println("error read");
+			} catch (RecordStoreException e) {
+				store = null;
+				//#debug info
+				System.out.println("error read");
+			}
 		}
-		if ( data == null ) {
+		return false;
+	}
+	
+	public String readKey(String key) {
+		if ( data == null )
 			return null;
-		}
-		for ( int i = 0 ; i < data.size() ; i++ ) {
+		for ( int i = 0 ; i < data.size() ; i++ )
 			if ( data.elementAt(i).toString().startsWith(key) )
 				return data.elementAt(i).toString().substring(key.length() + 1);
-		}
 		return null;
 	}
 
-	public Vector readData(String recordStore) throws RecordStoreFullException, RecordStoreException {
+	public Vector data() {
+		return data;
+	}
+	
+	private Vector readData() throws RecordStoreFullException, RecordStoreException {
 		data = null;
+		if ( store == null )
+			return data;
 		try {
-			//#debug info
-			System.out.println("opening record store");
-			store = RecordStore.openRecordStore(recordStore, true);
 			//#debug info
 			System.out.println("found " + store.getNumRecords() + " records");
 			if ( store.getNumRecords() == 0 ) {
@@ -101,7 +99,7 @@ public class SettingsRecordStorage {
 				tmpByte = re.nextRecord();
 				if ( tmpByte != null ) {
 					//#debug info
-					System.out.println("Found record: " + new String(tmpByte));
+					System.out.println("found record: " + new String(tmpByte));
 					data.addElement(new String(tmpByte));
 				}
 			}
@@ -109,83 +107,85 @@ public class SettingsRecordStorage {
 			//#debug info
 			System.out.println("store exception happened. " + rms.toString());
 			data = null;
-		} finally {
-			store.closeRecordStore();
-			//#debug info
-			System.out.println("succesfull close of store");
 		}
 		return data;
 	}
-
-
-	public boolean writeData(String recordStore, String key, String record) throws RecordStoreFullException, RecordStoreNotFoundException,
-	RecordStoreException {
-		boolean succes = true;
-		//#debug info
-		System.out.println("Writing record: " + record);
-		try {
-			data = readData(recordStore);
-		} catch (RecordStoreFullException rms) {
-			//#debug info
-			System.out.println("error read");
-		} catch (RecordStoreException rms) {
-			//#debug info
-			System.out.println("error read");
+	
+	public void addData(String key, String record) {
+		if ( data == null )
+			data = new Vector(1);
+		for ( int i = 0 ; i < data.size() ; i++ ) {
+			if ( key != null ) {
+				if ( data.elementAt(i).toString().startsWith(key) ) {
+					//#debug info
+					System.out.println("overwriting data. key= " + key + " record= " + record);
+					data.setElementAt(key + BIG_SPLITTER + record, i);
+					return;
+				}
+			} else {
+				if ( data.elementAt(i).toString().startsWith(record) ) {
+					//#debug info
+					System.out.println("overwriting data. record= " + record);
+					data.setElementAt(record, i);
+					return;
+				}
+			}
 		}
-		this.deleteRecordStore(recordStore);
+		if ( key != null ) {
+			//#debug info
+			System.out.println("adding data. key= " + key + " record= " + record);
+			data.addElement(key + BIG_SPLITTER + record);
+		} else {
+			//#debug info
+			System.out.println("adding data. record= " + record);
+			data.addElement(record);
+		}
+	}
+
+	public boolean writeData() throws RecordStoreFullException, RecordStoreNotFoundException, RecordStoreException {
+		boolean succes = true;
+		this.deleteRecordStore(currentStore);
+		store = RecordStore.openRecordStore(currentStore, true);
 		try {
-			store = RecordStore.openRecordStore(recordStore, true);
 			if ( data != null )
 				for ( int i = 0 ; i < data.size() ; i++ ) {
-					if ( key != null ) {
-						if ( !data.elementAt(i).toString().startsWith(key) )
-							store.addRecord(data.elementAt(i).toString().getBytes(), 0, data.elementAt(i).toString().getBytes().length);
-					} else {
-						if ( !data.elementAt(i).toString().startsWith(record) )
-							store.addRecord(data.elementAt(i).toString().getBytes(), 0, data.elementAt(i).toString().getBytes().length);
-					}
+					store.addRecord(data.elementAt(i).toString().getBytes(), 0, data.elementAt(i).toString().getBytes().length);
 				}
-			if ( key != null ) {
-				store.addRecord(new String(key + BIG_SPLITTER + record).getBytes(), 0, new String(key + BIG_SPLITTER + record).getBytes().length);
-			} else {
-				store.addRecord(new String(record).getBytes(), 0, new String(record).getBytes().length);
-			}
 			//#debug info
 			System.out.println("Succes");
 		} catch (Exception e) {
 			succes = false;
-		} finally {
-			store.closeRecordStore();
 		}
-		data = null;
 		return succes;
 	}
 	
-	public boolean deleteKey(String recordStore, String key) {
-		Vector data = null;
-		try {
-			data = readData(recordStore);
-		} catch (RecordStoreFullException e) {
-		} catch (RecordStoreException e) {
-		}
-		if ( data == null ) {
-			return true;
-		}
-		deleteRecordStore(recordStore);
-		for ( int i = 0 ; i < data.size() ; i++ ) {
-			if ( !data.elementAt(i).toString().startsWith(key) ) {
-				try {
-					writeData(recordStore, null, data.elementAt(i).toString());
-				} catch (RecordStoreFullException e) {
-					return false;
-				} catch (RecordStoreNotFoundException e) {
-					return false;
-				} catch (RecordStoreException e) {
-					return false;
-				}
+	public void closeRecord() {
+		if ( store != null ) {
+			data = null;
+			try {
+				store.closeRecordStore();
+			} catch (RecordStoreNotOpenException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (RecordStoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
-		return true;
+	}
+	
+	public boolean deleteData(String key) {
+		if ( data == null )
+			return false;
+		for ( int i = 0 ; i < data.size() ; i++ ) {
+			if ( data.elementAt(i).toString().startsWith(key) ) {
+				data.removeElementAt(i);
+				//#debug info
+				System.out.println("deleted the key=" + key);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void deleteRecordStore(String recordStore) {

@@ -55,7 +55,6 @@ public class ShowCardsForm extends Form implements CommandListener {
 		UiAccess.addSubCommand( this.sortNameCmd, this.sortCmd, this );
 		UiAccess.addSubCommand( this.sortCostExpCmd, this.sortCmd, this );
 		UiAccess.addSubCommand( this.sortCostNameCmd, this.sortCmd, this );
-		//this.addCommand(this.saveCmd);
 		this.addCommand(this.backCmd);
 		this.table.setSelectionMode(TableItem.SELECTION_MODE_NONE);//SELECTION_MODE_CELL);
 		this.append(this.table);
@@ -129,9 +128,11 @@ public class ShowCardsForm extends Form implements CommandListener {
 		else if ( cmd.equals(this.saveCmd) ) {
 			GameApp.instance().showInputDialog(Locale.get("screen.RandomizedCards.InputMessage"), this);
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.ok"))) {
-			if ( InputForm.instance().getInput() != null ) {
+			if ( !InputForm.instance().getInput().equals("") ) {
+				SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.preset"));
+				SettingsRecordStorage.instance().addData(InputForm.instance().getInput(), Dominion.I().getCurrentAsPresetSave());
 				try {
-					new SettingsRecordStorage().savePreset(InputForm.instance().getInput() , Dominion.I().getCurrentAsPresetSave());
+					SettingsRecordStorage.instance().writeData();
 				} catch (RecordStoreFullException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

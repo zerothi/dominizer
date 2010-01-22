@@ -7,6 +7,9 @@ import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
+import javax.microedition.rms.RecordStoreException;
+import javax.microedition.rms.RecordStoreFullException;
+import javax.microedition.rms.RecordStoreNotFoundException;
 
 import com.dominizer.GameApp;
 
@@ -104,7 +107,21 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 		} else if ( cmd.equals(quitCmd) ) {
 			GameApp.instance().quit();
 		} else if ( cmd.equals(deleteCmd) ) {
-			new SettingsRecordStorage().deleteKey(Locale.get("rms.file.preset"), this.getString(this.getCurrentIndex()));
+			SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.preset"));
+			SettingsRecordStorage.instance().deleteData(this.getString(this.getCurrentIndex()));
+			try {
+				SettingsRecordStorage.instance().writeData();
+			} catch (RecordStoreFullException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (RecordStoreNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (RecordStoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			SettingsRecordStorage.instance().closeRecord();
 			this.focus(this.getCurrentIndex() - 1);
 			this.delete(this.getCurrentIndex() + 1);
 			GameApp.instance().changeToTab(GameApp.TAB_QUICK);

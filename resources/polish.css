@@ -127,7 +127,7 @@ focused {
 	margin-right: 10;
 	margin-left: 10;
 	layout: horizontal-center | bottom | horizontal-shrink | vertical-shrink;
-	repaint-previous-screen: true;
+	repaint-previous-screen: false;
 }
 
 listItem {
@@ -565,4 +565,17 @@ menuItem:hover {
 .calendarDayInactive:hover {
 	background-color: #666;
 	font-color: #fff;
+}
+
+/**
+ * Blackmarket ticker
+ */
+.mainTicker {
+	ticker-step: 3;
+	padding-horizontal: 5;
+	layout: vertical-center;
+	font-color: translucentBrightFontColor;
+	font-size: small;
+	text-effect: shadow;
+	text-shadow-color: translucentFontColor;
 }

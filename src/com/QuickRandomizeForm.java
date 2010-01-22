@@ -27,12 +27,11 @@ public class QuickRandomizeForm extends List implements CommandListener {
 
 	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
-	private boolean[] flags = new boolean[4];
+	public boolean[] flags = new boolean[4];
 	
 	public QuickRandomizeForm(String title, int listType) {
 		//#style mainScreen
 		super(title, listType);
-		this.setTicker(new Ticker(Locale.get("app.name")));
 		try {
 			//#style label
 			this.append(Dominion.getExpansionName(0), Image.createImage("/ba.png"));
@@ -56,11 +55,11 @@ public class QuickRandomizeForm extends List implements CommandListener {
 			if ( Dominion.I().getNumberOfExpansionCards()[i] > 0 ) {
 				//#style label
 				this.set(i, Dominion.getExpansionName(i) + " " + Dominion.I().getNumberOfExpansionCards()[i], this.getImage(i));
-				this.setSelectedIndex(i, Dominion.I().getExpansionPlayingStates()[i]);
 			} else {
 				//#style label
 				this.set(i, Dominion.getExpansionName(i), this.getImage(i));
-			}	
+			}
+			this.setSelectedIndex(i, Dominion.I().getExpansionPlayingStates()[i]);
 		}
 		this.addCommand(this.quickRandomizeCardsCmd);
 		this.addCommand(this.quitCmd);

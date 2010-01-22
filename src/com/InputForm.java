@@ -6,7 +6,6 @@ package com;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Form;
-import javax.microedition.lcdui.StringItem;
 import javax.microedition.lcdui.TextField;
 
 import de.enough.polish.util.Locale;
@@ -18,15 +17,13 @@ import de.enough.polish.util.Locale;
 public class InputForm extends Form {
 	private static InputForm iF = null;
 	private static TextField tF = null;
-	private static StringItem sI = null;
+	
 	
 	private InputForm(String title) {
 		//#style mainPopupScreen
 		super(title);
 		this.addCommand(new Command(Locale.get("polish.command.ok"), Command.OK, 1));
 		this.addCommand(new Command(Locale.get("polish.command.cancel"), Command.CANCEL, 1));
-		sI = new StringItem("", "");
-		this.append(sI);
 		tF = new TextField(Locale.get("screen.Input.inputname"), "", 20, TextField.ANY);
 		this.append(tF);
 	}
@@ -43,8 +40,7 @@ public class InputForm extends Form {
 	public static InputForm instance(String title, String message, CommandListener cmdListener) {
 		if ( iF == null )
 			iF = new InputForm(title);
-		iF.setTitle(title);
-		sI.setLabel(message);
+		tF.setLabel(message);
 		iF.setCommandListener(cmdListener);
 		return iF;
 	}

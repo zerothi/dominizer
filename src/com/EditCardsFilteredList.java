@@ -28,7 +28,8 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 			for ( int cardNumber = 0 ; cardNumber < Dominion.I().getExpansion(i).size() ; cardNumber++ ) {
 				try {
 					//#style label
-					this.append(Dominion.I().getExpansion(i).getName(cardNumber), Image.createImage("/" + Dominion.I().getExpansion(i).getExpansion(cardNumber) + ".png"));
+					this.append(Dominion.I().getExpansion(i).getName(cardNumber), Image.createImage("/" + Dominion.I().getExpansion(i).getExpansion(cardNumber) + 
+							Dominion.I().getExpansion(i).getCardType(cardNumber) + ".png"));
 				} catch (IOException e) {
 					//#style label
 					this.append(Dominion.I().getExpansion(i).getName(cardNumber), null);
@@ -66,6 +67,8 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 	
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(randomizeCmd) ) {
+			//#debug info
+			System.out.println("IAA M TRULY CALLED");
 			updateCards(true);
 			Dominion.I().randomizeCards(Cards.COMPARE_EXPANSION_NAME);
 			GameApp.instance().showCurrentSelectedCards();

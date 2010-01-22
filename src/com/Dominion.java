@@ -7,10 +7,6 @@ package com;
 //#endif
 import java.io.InputStreamReader;
 import java.util.Random;
-import java.util.Vector;
-
-import javax.microedition.rms.RecordStoreException;
-import javax.microedition.rms.RecordStoreFullException;
 
 import de.enough.polish.util.Locale;
 
@@ -29,7 +25,8 @@ public class Dominion {
 	private int numberOfRandomCards = 10;
 	private boolean[] playingExpansions = new boolean[] {true, true, true, true};
 	private int[] numberOfCardsFromExp = new int[] {0, 0, 0, 0};
-
+	private StringBuffer sb;
+	
 	private Dominion() {
 		expansions = new Cards[4];
 		presets = new CardPresets[4]; // Promo cards doesn't have preset! The last is used when reading user presets!	
@@ -121,21 +118,31 @@ public class Dominion {
 	public boolean[] getExpansionPlayingStates() {
 		return playingExpansions;
 	}
+	
+	public String getExpansionPlayingStatesAsSave() {
+		sb = new StringBuffer(4);
+		sb.append(playingExpansions[0] ? "1" : "0");
+		sb.append(playingExpansions[1] ? "1" : "0");
+		sb.append(playingExpansions[2] ? "1" : "0");
+		sb.append(playingExpansions[3] ? "1" : "0");
+		return sb.toString();
+	}
 
-	public void setExpansionPlayingState(int expansion, boolean isAvailable) {
-		playingExpansions[expansion] = isAvailable;
-		for (int i = 0 ; i < expansions[expansion].size() ; i++ ) {
-			expansions[expansion].setAvailable(i, isAvailable);
-			expansions[expansion].setBlackMarketAvailable(i, isAvailable);
+	public void setExpansionPlayingState(int exp, boolean isAvailable) {
+		if ( playingExpansions[exp] != isAvailable ) {
+			//#debug info
+			System.out.println("setting playing state: " + exp + " = " + isAvailable);
+			playingExpansions[exp] = isAvailable;
+			for (int i = 0 ; i < expansions[exp].size() ; i++ ) {
+				expansions[exp].setAvailable(i, isAvailable);
+				expansions[exp].setBlackMarketAvailable(i, isAvailable);
+			}
 		}
 	}
 
 	public void setExpansionPlayingState(boolean[] isAvailable) {
-		for (int exp = 0 ; exp < isAvailable.length ; exp++ ) {
-			//#debug info
-			System.out.println("setting playing state: " + exp + ". =" + isAvailable[exp]);	
-			setExpansionPlayingState(exp, isAvailable[exp]);
-		}
+		for (int i = 0 ; i < isAvailable.length ; i++ )
+			setExpansionPlayingState(i, isAvailable[i]);
 	}
 
 	public void randomizeCards(int sortMethod) {
@@ -205,6 +212,15 @@ public class Dominion {
 
 	public void setCardsUsedForExpansion(int expansion, int numberOfCards) {
 		numberOfCardsFromExp[expansion] = numberOfCards;
+	}
+	
+	public String getCardsUsedForExpansionAsSave() {
+		sb = new StringBuffer(4);
+		sb.append(numberOfCardsFromExp[0]);
+		sb.append(numberOfCardsFromExp[1]);
+		sb.append(numberOfCardsFromExp[2]);
+		sb.append(numberOfCardsFromExp[3]);
+		return sb.toString();
 	}
 
 	public String getSelectedInfo() {
@@ -476,48 +492,41 @@ public class Dominion {
 	}
 
 	private void readSettings() {
-		Vector dataPresets = null;
-		try {
-			dataPresets = new SettingsRecordStorage().readData(Locale.get("rms.file.preset"));
-		} catch (RecordStoreFullException e) {
-			dataPresets = null;
-		} catch (RecordStoreException e) {
-			dataPresets = null;
-		}
-		if ( dataPresets == null ) {
+		SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.preset"));
+		if ( SettingsRecordStorage.instance().data() == null ) {
 			//#debug info
 			System.out.println("Read user settings: settings is null");
 			presets[3] = null;
 		} else {
 			//#debug info
-			System.out.println("Read user settings: settings is size=" + dataPresets.size());
-			presets[3] = new CardPresets(dataPresets.size());
+			System.out.println("Read user settings: settings is size=" + SettingsRecordStorage.instance().data().size());
+			presets[3] = new CardPresets(SettingsRecordStorage.instance().data().size());
 			int[][] preset;
 			int numberOfPresets = 0;
 			int start;
-			for ( int i = 0 ; i < dataPresets.size() ; i++ ) {
+			for ( int i = 0 ; i < SettingsRecordStorage.instance().data().size() ; i++ ) {
 				//#debug info
-				System.out.println("presets: " + dataPresets.elementAt(i).toString());
+				System.out.println("presets: " + SettingsRecordStorage.instance().data().elementAt(i).toString());
 				start = 0;
 				preset = new int[10][2];
 				for (int k = 0 ; k < 10 ; k++ ) {
-					start = dataPresets.elementAt(i).toString().indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1);
+					start = SettingsRecordStorage.instance().data().elementAt(i).toString().indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1);
 					if ( k == 9 )
-						preset[k] = getCardInfo(dataPresets.elementAt(i).toString().substring(start,
-								dataPresets.elementAt(i).toString().indexOf(SettingsRecordStorage.BIG_SPLITTER, start + 1)));
+						preset[k] = getCardInfo(SettingsRecordStorage.instance().data().elementAt(i).toString().substring(start));
 					else
-						preset[k] = getCardInfo(dataPresets.elementAt(i).toString().substring(start, 
-								dataPresets.elementAt(i).toString().indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1)));
+						preset[k] = getCardInfo(SettingsRecordStorage.instance().data().elementAt(i).toString().substring(start, 
+								SettingsRecordStorage.instance().data().elementAt(i).toString().indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1)));
 				}
-				presets[3].setPreset(numberOfPresets, dataPresets.elementAt(i).toString().substring(0,
-						dataPresets.elementAt(i).toString().indexOf(SettingsRecordStorage.BIG_SPLITTER)),
+				presets[3].setPreset(numberOfPresets, SettingsRecordStorage.instance().data().elementAt(i).toString().substring(0,
+						SettingsRecordStorage.instance().data().elementAt(i).toString().indexOf(SettingsRecordStorage.BIG_SPLITTER)),
 						preset);
 				numberOfPresets++;
 			}
 		}
 		//#debug info
 		System.out.println("finished reading presets successfully\nstart reading expansion states");
-		String tmp = new SettingsRecordStorage().readKey(Locale.get("rms.file.settings"), Locale.get("rms.expansions"));
+		SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.settings"));
+		String tmp = SettingsRecordStorage.instance().readKey(Locale.get("rms.expansions"));
 		//#debug info
 		System.out.println("expansions: " + tmp);
 		if ( tmp != null ) {
@@ -529,7 +538,7 @@ public class Dominion {
 		//#debug info
 		System.out.println("finished reading expansion states successfully\nstart reading number of cards");
 		
-		tmp = new SettingsRecordStorage().readKey(Locale.get("rms.file.settings"), Locale.get("rms.expansions.usedcards"));
+		tmp = SettingsRecordStorage.instance().readKey(Locale.get("rms.expansions.usedcards"));
 		//#debug info
 		System.out.println("usedcards: " + tmp);
 		if ( tmp != null ) {
@@ -541,7 +550,7 @@ public class Dominion {
 		//#debug info
 		System.out.println("finished reading number of cards succesfully\nstart reading available cards");
 		
-		tmp = new SettingsRecordStorage().readKey(Locale.get("rms.file.settings"), Locale.get("rms.available"));
+		tmp = SettingsRecordStorage.instance().readKey(Locale.get("rms.available"));
 		//#debug info
 		System.out.println("available from " + tmp);
 		if ( tmp != null ) {
@@ -555,7 +564,7 @@ public class Dominion {
 		//#debug info
 		System.out.println("finished reading available cards\nread preferred sort");
 		
-		tmp = new SettingsRecordStorage().readKey(Locale.get("rms.file.settings"), Locale.get("rms.preferredsort"));
+		tmp = SettingsRecordStorage.instance().readKey(Locale.get("rms.preferredsort"));
 		//#debug info
 		System.out.println("sort: " + tmp);
 		if ( tmp != null ) {
