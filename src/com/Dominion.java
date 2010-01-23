@@ -194,7 +194,7 @@ public class Dominion {
 		int total = 0;
 		for ( int i = 0; i < expansions.length ; i++ ) 
 			for ( int j = 0; j < expansions[i].size(); j++ ) 
-				if ( expansions[i].isBlackMarketAvailable(j) && ! expansions[i].isPlaying(j) )
+				if ( expansions[i].isBlackMarketAvailable(j) && !expansions[i].isPlaying(j) )
 					total++;
 		Cards blackMarket = new Cards(total, Cards.IS_NOT_SET);
 		total = 0;
@@ -202,7 +202,7 @@ public class Dominion {
 		int randomize = selector.nextInt(blackMarket.size());
 		for ( int i = 0; i < expansions.length ; i++ )
 			for ( int j = 0; j < expansions[i].size(); j++ ) 
-				if ( expansions[i].isBlackMarketAvailable(j) && ! expansions[i].isPlaying(j) ) {
+				if ( expansions[i].isBlackMarketAvailable(j) && !expansions[i].isPlaying(j) ) {
 					while ( blackMarket.getName(randomize) != null )
 						randomize = selector.nextInt(blackMarket.size());
 					blackMarket.setCard(randomize, expansions[i].getCard(j) );

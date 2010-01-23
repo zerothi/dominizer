@@ -33,7 +33,7 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 		this.addCommand(quitCmd);
 		this.setCommandListener(this);
 		for ( int i = 0 ; i < Dominion.I().presetSize() ; i++ )
-			this.addPresets(Dominion.I().getPreset(i), i == Dominion.I().presetSize() - 1);
+				this.addPresets(Dominion.I().getPreset(i), i == Dominion.I().presetSize() - 1);
 	}
 
 	public void addPresets(CardPresets cardPreset, boolean isUser) {
@@ -42,9 +42,8 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 		for ( int i = 0 ; i < cardPreset.size() ; i++ ) {
 			//#style label
 			this.append(cardPreset.getPresetName(i), null);
-			if ( isUser ) {
+			if ( isUser )
 				this.getItem(this.size() - 1).addCommand(deleteCmd);
-			}
 		}
 	}
 	

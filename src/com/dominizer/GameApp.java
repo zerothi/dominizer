@@ -103,7 +103,6 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 
 	public void showBlackMarketDeck(int previousScreen) {
 		//updateSelectedQuickRandom();
-		bmF = new BlackMarketForm(Locale.get("screen.BlackMarket.title"));
 		bmF.setBlackMarketDeck(Dominion.I().getBlackMarketDeck());
 		changeToScreen(bmF);
 		currentTab = previousScreen;
@@ -147,6 +146,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		//Locale.get("tab.Calendar.title")
 		///#style tabIcon
 		//this.tabbedPane.addTab(new GameCalendarForm(null), null, Locale.get("screen.Calendar.title"));
+		bmF = new BlackMarketForm(Locale.get("screen.BlackMarket.title"), List.IMPLICIT);
 		SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.settings"));
 		if ( SettingsRecordStorage.instance().readKey(Locale.get("rms.lasttab")) != null )
 			currentTab = Integer.parseInt(SettingsRecordStorage.instance().readKey(Locale.get("rms.lasttab")));

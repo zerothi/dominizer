@@ -124,9 +124,11 @@ focused {
 
 .mainPopupScreen extends mainScreen {
 	title-menu: false;
-	margin-right: 10;
-	margin-left: 10;
-	layout: horizontal-center | bottom | horizontal-shrink | vertical-shrink;
+	margin-right: 0;
+	margin-left: 0;
+	padding-left: 2;
+	padding-right: 2;
+	layout: horizontal-center | bottom | horizontal-shrink | vertical-shrink | newline-after;
 	repaint-previous-screen: false;
 }
 
@@ -559,7 +561,7 @@ menuItem:hover {
  * Blackmarket ticker
  */
 .mainTicker {
-	ticker-step: 3;
+	ticker-step: 4;
 	padding-horizontal: 5;
 	layout: vertical-center;
 	font-color: translucentBrightFontColor;
