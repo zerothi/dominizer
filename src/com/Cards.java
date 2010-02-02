@@ -307,17 +307,21 @@ public class Cards {
 				return compare(first, compareTo, COMPARE_NAME);
 			else return compare(first, compareTo, COMPARE_EXPANSION);
 		case COMPARE_EXPANSION_COST:
-			if ( compare(first, compareTo, COMPARE_EXPANSION) == 0 )
-				return compare(first, compareTo, COMPARE_COST);
-			else return compare(first, compareTo, COMPARE_EXPANSION);
-		case COMPARE_COST_EXPANSION:
-			if ( compare(first, compareTo, COMPARE_COST) == 0 )
+			if ( compare(first, compareTo, COMPARE_EXPANSION) != 0 )
 				return compare(first, compareTo, COMPARE_EXPANSION);
-			else return compare(first, compareTo, COMPARE_COST);
+			if ( compare(first, compareTo, COMPARE_COST) != 0 )
+				return compare(first, compareTo, COMPARE_COST);
+			return compare(first, compareTo, COMPARE_NAME);
+		case COMPARE_COST_EXPANSION:
+			if ( compare(first, compareTo, COMPARE_COST) != 0 )
+				return compare(first, compareTo, COMPARE_COST);
+			if ( compare(first, compareTo, COMPARE_EXPANSION) != 0 )
+				return compare(first, compareTo, COMPARE_EXPANSION);
+			return compare(first, compareTo, COMPARE_NAME);
 		case COMPARE_COST_NAME:
-			if ( compare(first, compareTo, COMPARE_COST) == 0 )
-				return compare(first, compareTo, COMPARE_NAME);
-			else return compare(first, compareTo, COMPARE_COST);
+			if ( compare(first, compareTo, COMPARE_COST) != 0 )
+				return compare(first, compareTo, COMPARE_COST);
+			return compare(first, compareTo, COMPARE_NAME);
 		case COMPARE_EXPANSION:
 			if ( first[1].toString().equals(compareTo[1].toString()) )
 				return 0;

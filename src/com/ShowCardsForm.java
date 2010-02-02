@@ -27,6 +27,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 	private TableItem table = null;
 	private Command randomizeCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 	private Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.OK, 1);
+	
 	private Command sortCmd = new Command( Locale.get("cmd.Sort.Main"), Command.SCREEN, 5);
 	private Command showInfoCmd = new Command( Locale.get("cmd.ShowChosenCardInfo"), Command.ITEM, 2);
 	private Command sortExpNameCmd = new Command( Locale.get("cmd.Sort.ExpName"), Command.ITEM, 2);
@@ -34,6 +35,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 	private Command sortNameCmd = new Command( Locale.get("cmd.Sort.Name"), Command.ITEM, 4);
 	private Command sortCostNameCmd = new Command( Locale.get("cmd.Sort.CostName"), Command.ITEM, 5);
 	private Command sortCostExpCmd = new Command( Locale.get("cmd.Sort.CostExp"), Command.ITEM, 6);
+	private Command anotherSetCmd = new Command( Locale.get("cmd.AnotherSet"), Command.ITEM, 6);
 	private Command saveCmd = new Command( Locale.get("cmd.SaveAsPreset"), Command.ITEM, 7);
 	
 	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 10);
@@ -49,6 +51,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 		this.table = new TableItem();
 		this.addCommand(this.randomizeCmd);
 		this.addCommand(this.showInfoCmd);
+		this.addCommand(this.anotherSetCmd);
 		this.addCommand(this.sortCmd);
 		UiAccess.addSubCommand( this.sortExpNameCmd, this.sortCmd, this );
 		UiAccess.addSubCommand( this.sortExpCostCmd, this.sortCmd, this );
@@ -68,8 +71,8 @@ public class ShowCardsForm extends Form implements CommandListener {
 	}
 
 	public void reRandomize() {
-		Dominion.I().randomizeCards(Cards.COMPARE_PREFERED);
 		try {
+			Dominion.I().randomizeCards();
 			this.viewCards(Dominion.I().getCurrentlySelected());
 		} catch (DominionException e) {
 			GameApp.instance().showAlert(e.toString());
@@ -89,6 +92,8 @@ public class ShowCardsForm extends Form implements CommandListener {
 		this.table.set(2, 0, Locale.get("table.heading.Cost"));
 		//#debug
 		System.out.println("adding card information");
+		if ( cards == null )
+			return;
 		for (int cardNumber = 0 ; cardNumber < cards.size() ; cardNumber++ ) {
 			//#style tableCell
 			this.table.set(0, cardNumber + 1, cards.getName(cardNumber));
@@ -123,7 +128,11 @@ public class ShowCardsForm extends Form implements CommandListener {
 			this.reRandomize();
 		else if ( cmd.equals(this.blackMarketCmd) )
 			GameApp.instance().showBlackMarketDeck(GameApp.SHOWCARDS);
-		else if ( cmd.equals(this.showInfoCmd) )
+		else if ( cmd.equals(this.anotherSetCmd) ) {
+			Dominion.RANDOMIZE_COMPLETELY_NEW = false;
+			this.reRandomize();
+			Dominion.RANDOMIZE_COMPLETELY_NEW = true;
+		} else if ( cmd.equals(this.showInfoCmd) )
 			GameApp.instance().showInfo(Dominion.I().getSelectedInfo(), Alert.FOREVER);
 		else if ( cmd.equals(this.saveCmd) ) {
 			GameApp.instance().showInputDialog(Locale.get("screen.RandomizedCards.InputMessage"), this);

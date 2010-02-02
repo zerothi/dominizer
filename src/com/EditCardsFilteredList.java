@@ -70,8 +70,12 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 			//#debug info
 			System.out.println("IAA M TRULY CALLED");
 			updateCards(true);
-			Dominion.I().randomizeCards(Cards.COMPARE_EXPANSION_NAME);
-			GameApp.instance().showCurrentSelectedCards();
+			try {
+				Dominion.I().randomizeCards();
+				GameApp.instance().showCurrentSelectedCards();
+			} catch (DominionException exp) {
+				GameApp.instance().showAlert(exp.toString());
+			}
 		} else if ( cmd.equals(quitCmd) ) {
 			GameApp.instance().quit();
 		}

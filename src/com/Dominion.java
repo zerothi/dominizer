@@ -1,6 +1,5 @@
 package com;
 
-
 //#if polish.android
 //#= import android.content.res.Resources;
 //#= import java.nio.charset.Charset;
@@ -18,6 +17,7 @@ public class Dominion {
 	public static final int INTRIGUE = 2;
 	public static final int SEASIDE = 3;
 	public static final int USER = 10;
+	public static boolean RANDOMIZE_COMPLETELY_NEW = true;
 
 	private Cards[] expansions = null;
 	private Cards selectedCards = null;
@@ -144,29 +144,37 @@ public class Dominion {
 		for (int i = 0 ; i < isAvailable.length ; i++ )
 			setExpansionPlayingState(i, isAvailable[i]);
 	}
+	
+	public void randomizeCards() throws DominionException {
+		randomizeCards(Cards.COMPARE_PREFERED);
+	}
 
-	public void randomizeCards(int sortMethod) {
-		this.resetIsPlaying();
+	public void randomizeCards(int sortMethod) throws DominionException {
+		if ( RANDOMIZE_COMPLETELY_NEW )
+			this.resetIsPlaying();
+		checkAvailability();
+		Cards.COMPARE_PREFERED = sortMethod;
+		int i = 0;
 		this.selectedCards = new Cards(numberOfRandomCards, Cards.IS_NOT_SET);
 		int selectedElement = 0;
 		Random selector = new Random(System.currentTimeMillis());
 		int selected = 0;
 		int tmpSum = 0;
-		for ( int i = 0 ; i < expansions.length ; i++ ) {
+		for ( i = 0 ; i < expansions.length ; i++ ) {
 			if ( playingExpansions[i] & 0 < numberOfCardsFromExp[i] ) {
-				//#debug info
-				System.out.println("starting selecting for expansion: " + i);
 				tmpSum += numberOfCardsFromExp[i];
 				while ( selected < tmpSum && selected < numberOfRandomCards ) {
 					selectedElement = selector.nextInt(expansions[i].size());
 					//#debug info
-					System.out.println("try selecting" + selectedElement);
-					if ( expansions[i].isAvailable(selectedElement) && !selectedCards.contains(expansions[i].getName(selectedElement)) ) {
+					System.out.println("try: " + i + " - " + selectedElement);
+					if ( expansions[i].isAvailable(selectedElement) 
+							& !selectedCards.contains(expansions[i].getName(selectedElement)) 
+							& !expansions[i].isPlaying(selectedElement) ) {
 						expansions[i].setPlaying(selectedElement, true);
 						this.selectedCards.setCard(selected, expansions[i].getCard(selectedElement));
 						selected++;
 						//#debug info
-						System.out.println("expansion: " + i + ". selected: " + selected);
+						System.out.println("selected: " + i + " - " + selected);
 					}
 				}
 			}
@@ -177,8 +185,9 @@ public class Dominion {
 			selectedElement = getLinearCardIndex(selectedElement);
 			//#debug info
 			System.out.println("TRYING expansion: " + tmpSum + ". together with card: " + selectedElement);
-			if ( expansions[tmpSum].isAvailable(selectedElement) && 
-					!selectedCards.contains(expansions[tmpSum].getName(selectedElement)) ) {
+			if ( expansions[tmpSum].isAvailable(selectedElement)
+					& !selectedCards.contains(expansions[tmpSum].getName(selectedElement)) 
+					& !expansions[tmpSum].isPlaying(selectedElement) ) {
 				//#debug info
 				System.out.println("choosing expansion: " + tmpSum + ". together with card: " + selectedElement);
 				expansions[tmpSum].setPlaying(selectedElement, true);
@@ -187,7 +196,29 @@ public class Dominion {
 			}
 		}
 		selector = null;
-		sortCards(this.selectedCards, sortMethod);
+	}
+	
+	private void checkAvailability() throws DominionException {
+		int tmp, sum;
+		sum = 0;
+		tmp = 0;
+		for ( int i = 0 ; i < expansions.length ; i++ ) {
+			sum += tmp;
+			tmp = 0;
+			for ( int j = 0 ; j < expansions[i].size() ; j++ ) {
+				if ( expansions[i].isAvailable(j) 
+						& !expansions[i].isPlaying(j) )
+					tmp++;
+			}
+			if ( tmp < numberOfCardsFromExp[i] & playingExpansions[i] ) {
+				String t = getExpansionName(i);
+				throw new DominionException(Locale.get("alert.Randomization.Availability", t));
+			}
+		}
+		if ( sum < numberOfRandomCards ) {
+			String t = "" + sum;
+			throw new DominionException(Locale.get("alert.Randomization.TotalAvailability", t));
+		}
 	}
 
 	public Cards getBlackMarketDeck() {
@@ -244,22 +275,22 @@ public class Dominion {
 		}
 		sb.append("Action    : ");
 		if ( action < 10 ) sb.append(" ");
-		sb.append("" + action + " / " + selectedCards.size() + ".\n");
+		sb.append("" + action + " / " + selectedCards.size() + "\n");
 		sb.append("Attack    : ");
 		if ( attack < 10 ) sb.append(" ");
-		sb.append("" + attack + " / " + selectedCards.size() + ".\n");
+		sb.append("" + attack + " / " + selectedCards.size() + "\n");
 		sb.append("Reaction  : ");
-		if ( reaction < 10 )	sb.append(" ");
-		sb.append("" + reaction + " / " + selectedCards.size() + ".\n");
+		if ( reaction < 10 ) sb.append(" ");
+		sb.append("" + reaction + " / " + selectedCards.size() + "\n");
 		sb.append("Treasury  : ");
 		if ( treasury < 10 ) sb.append(" ");
-		sb.append("" + treasury + " / " + selectedCards.size() + ".\n");
+		sb.append("" + treasury + " / " + selectedCards.size() + "\n");
 		sb.append("Victory   : ");
 		if ( victory < 10 ) sb.append(" ");
-		sb.append("" + victory + " / " + selectedCards.size() + ".\n");
+		sb.append("" + victory + " / " + selectedCards.size() + "\n");
 		sb.append("Duration  : ");
-		if ( duration < 10 )	sb.append(" ");
-		sb.append("" + duration + " / " + selectedCards.size() + ".\n");
+		if ( duration < 10 ) sb.append(" ");
+		sb.append("" + duration + " / " + selectedCards.size() + "\n");
 		return sb.toString();
 	}
 
@@ -269,8 +300,6 @@ public class Dominion {
 			for ( int i = j + 1; i < cards.size(); i++ ) { 
 				if ( Cards.compare( cards.getCard(i), cards.getCard(j), sortMethod) < 0) {
 					tmp = (Object[]) cards.getCard(j);
-					/*//#debug info
-					System.out.println("Switching : " + tmp[0] + " og " + cards.getName(i));*/
 					cards.setCard(j, cards.getCard(i)); 
 					cards.setCard(i, tmp);
 				}
@@ -318,7 +347,7 @@ public class Dominion {
 	public void resetIsPlaying() {
 		for ( int i = 0 ; i < expansions.length ; i++ )
 			for ( int j = 0 ; j < expansions[i].size() ; j++ )
-				expansions[i].setPlaying(j, false);
+					expansions[i].setPlaying(j, false);
 	}
 
 	public String getCurrentAsPresetSave() {

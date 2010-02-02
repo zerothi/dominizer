@@ -46,7 +46,6 @@ import de.enough.polish.util.Locale;
  */
 public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	
-	
 	public static final int TAB_QUICK = 0;
 	public static final int TAB_EDIT = 1;
 	public static final int TAB_PRESET = 2;
@@ -95,11 +94,9 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 			ShowCardsForm.instance().viewCards(Dominion.I().getCurrentlySelected());
 			changeToScreen(ShowCardsForm.instance());
 		} catch (DominionException exp) {
-			//#debug info
-			System.out.println(exp.toString());
+			showAlert(exp.toString());
 		}
 	}
-
 
 	public void showBlackMarketDeck(int previousScreen) {
 		//updateSelectedQuickRandom();

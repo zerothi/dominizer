@@ -39,6 +39,7 @@ screen.Input.defaultmessage=
 screen.Input.inputname=Input:
 cmd.Randomize.Show=Randomize
 cmd.ShowChosenCardInfo=Show info
+cmd.AnotherSet=Another Set
 cmd.SaveAsPreset=Save
 cmd.Options.Main=Options
 cmd.Sort.Main=Sort
@@ -69,6 +70,8 @@ alert.Settings.CouldNotBeSaved=Settings could not be saved!\nSorry.
 alert.QuickSelectExpansions.OnlyPromoSelected=You have only selected Promo's.\nSelect more!
 alert.QuickSelectExpansions.NoneSelected=You have not selected any expansions.\nSelect at least one!
 alert.CardsFromExpansion.Promo=You cannot have more than 2 cards from the Promo deck.\nUse fewer!
+alert.Randomization.Availability=Your available cards in '{0}' does not match your minimum card requirement.\nCorrect input!
+alert.Randomization.TotalAvailability=You only have {0} available cards in total.\nNo more sets can be generated!
 
 ################
 #

@@ -63,20 +63,20 @@ public class BlackMarketForm extends List implements CommandListener {
 	private void addNextCard(int number) {
 		//#debug info
 		System.out.println("add next card. remaining: " + number);
-		if ( this.blackMarketDeck.size() == 0 )
-			this.deleteAll();
-		else if ( this.blackMarketDeck.size() < number )
+		if ( blackMarketDeck.size() == 0 )
+			deleteAll();
+		else if ( blackMarketDeck.size() < number )
 			return;
-		else if ( this.currentlyReachedCard < this.blackMarketDeck.size() ) {
+		else if ( currentlyReachedCard < blackMarketDeck.size() ) {
 			//#debug info
 			System.out.println("just added. remaining: " + number);
 			//#style label
-			this.append(this.blackMarketDeck.elementAt(this.getIndexCard(this.currentlyReachedCard)).toString(), null);
-			this.currentlyReachedCard++;
+			append(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard)).toString(), null);
+			currentlyReachedCard++;
 		} else if ( this.blackMarketDeck.size() <= this.currentlyReachedCard ) {
 			//#debug info
 			System.out.println("size to large. remaining: " + number);
-			this.currentlyReachedCard = 0;
+			currentlyReachedCard = 0;
 			if ( number != 0 )
 				addNextCard(0);
 		}
@@ -191,11 +191,13 @@ public class BlackMarketForm extends List implements CommandListener {
 			//#debug info
 			System.out.println("adding commands for selecting");
 			this.removeCommand(this.drawCardsCmd);
+			this.removeCommand(this.cancelBuyCmd);
 			this.addCommand(this.selectCardCmd);
 			this.setSelectCommand(this.selectCardCmd);
 		} else {
 			//#debug info
 			System.out.println("adding commands for drawing");
+			this.removeCommand(this.drawCardsCmd);
 			this.removeCommand(this.selectCardCmd);
 			if ( 0 < blackMarketDeck.size() ) {
 				//#debug info

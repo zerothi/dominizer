@@ -150,7 +150,7 @@ listItem {
   */
 .mainCommand {
 	padding: 0;
-	padding-vertical: 5;
+	padding-vertical: 8;
 	layout: center | vertical-center | newline-after;
 	min-height: 30%;
 }
@@ -348,6 +348,14 @@ menuItem:hover {
 		border-color: black;
 	}
 	layout: expand | left;
+}
+
+
+.inputTextField {
+	padding: 5;
+	font-color: translucentBrightFontColor;
+	background-color: bgColor;
+	layout: expand | center;
 }
 
 .filterPopupStyle {
