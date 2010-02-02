@@ -211,7 +211,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 				SettingsRecordStorage.instance().addData(Locale.get("rms.expansions.usedcards"), Dominion.I().getCardsUsedForExpansionAsSave());
 				SettingsRecordStorage.instance().addData(Locale.get("rms.available"), Dominion.I().getAvailableAsSave());
 				SettingsRecordStorage.instance().addData(Locale.get("rms.lasttab"), "" + currentTab);
-				SettingsRecordStorage.instance().addData(Locale.get("rms.preferredsort"), "" + Cards.COMPARE_PREFERED);
+				SettingsRecordStorage.instance().addData(Locale.get("rms.preferredsort"), "" + Cards.COMPARE_PREFERRED);
 				SettingsRecordStorage.instance().writeData();
 				SettingsRecordStorage.instance().closeRecord();
 			}

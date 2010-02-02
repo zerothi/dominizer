@@ -436,7 +436,7 @@ public class Cards {
 	public static final int COMPARE_COST = 10;
 	public static final int COMPARE_EXPANSION = 11;
 	
-	public static int COMPARE_PREFERED = COMPARE_EXPANSION_NAME;
+	public static int COMPARE_PREFERRED = COMPARE_EXPANSION_NAME;
 	
 	public static final int IS_SET = 1;
 	public static final int IS_NOT_SET = 0;

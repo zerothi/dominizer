@@ -18,17 +18,15 @@ public class InputForm extends Form {
 	private static InputForm iF = null;
 	private static TextField tF = null;
 	
-	
 	private InputForm(String title) {
 		//#style mainPopupScreen
 		super(title);
 		this.addCommand(new Command(Locale.get("polish.command.ok"), Command.OK, 1));
 		this.addCommand(new Command(Locale.get("polish.command.cancel"), Command.CANCEL, 1));
 		//#style inputTextField
-		tF = new TextField(Locale.get("screen.Input.inputname"), "", 20, TextField.ANY);
+		tF = new TextField(Locale.get("screen.Input.inputname"), "Input Name", 15, TextField.ANY);
 		this.append(tF);
 	}
-	
 	
 	public static InputForm instance() {
 		return instance(Locale.get("screen.Input.title"), Locale.get("screen.Input.defaultmessage"), null);
@@ -50,5 +48,9 @@ public class InputForm extends Form {
 		if ( tF.getString().trim().equals("") )
 			return null;
 		return tF.getString().trim();
+	}
+	
+	public void clearInput() {
+		tF.setString("");
 	}
 }

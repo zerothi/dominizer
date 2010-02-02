@@ -141,19 +141,19 @@ public class Dominion {
 	}
 
 	public void setExpansionPlayingState(boolean[] isAvailable) {
-		for (int i = 0 ; i < isAvailable.length ; i++ )
+		for (int i = 0 ; i < playingExpansions.length ; i++ )
 			setExpansionPlayingState(i, isAvailable[i]);
 	}
 	
 	public void randomizeCards() throws DominionException {
-		randomizeCards(Cards.COMPARE_PREFERED);
+		randomizeCards(Cards.COMPARE_PREFERRED);
 	}
 
 	public void randomizeCards(int sortMethod) throws DominionException {
 		if ( RANDOMIZE_COMPLETELY_NEW )
-			this.resetIsPlaying();
+			this.resetIsPlaying(0);
 		checkAvailability();
-		Cards.COMPARE_PREFERED = sortMethod;
+		Cards.COMPARE_PREFERRED = sortMethod;
 		int i = 0;
 		this.selectedCards = new Cards(numberOfRandomCards, Cards.IS_NOT_SET);
 		int selectedElement = 0;
@@ -344,10 +344,17 @@ public class Dominion {
 		return presets[preset];
 	}
 
-	public void resetIsPlaying() {
+	public void resetIsPlaying(int method) {
 		for ( int i = 0 ; i < expansions.length ; i++ )
 			for ( int j = 0 ; j < expansions[i].size() ; j++ )
-					expansions[i].setPlaying(j, false);
+				if ( expansions[i].isPlaying(j) )
+					if ( RANDOMIZE_COMPLETELY_NEW | selectedCards == null | method == 0)
+						expansions[i].setPlaying(j, false);
+					else if ( method == 1)
+						for ( int k = 0 ; k < selectedCards.size() ; k++ )
+							if ( expansions[i].getName(j).equals(selectedCards.getName(k) ) )
+								expansions[i].setPlaying(j, false);
+					
 	}
 
 	public String getCurrentAsPresetSave() {
@@ -398,7 +405,7 @@ public class Dominion {
 	}
 
 	public Cards getCurrentlySelected() throws DominionException {
-		return getCurrentlySelected(Cards.COMPARE_PREFERED);
+		return getCurrentlySelected(Cards.COMPARE_PREFERRED);
 	}
 	
 	public Cards getCurrentlySelected(int sortMethod) throws DominionException {
@@ -459,27 +466,16 @@ public class Dominion {
 		int start = 0;
 		int cardRead = 0;
 		try {
-			//#if polish.android
-			//#= try {
-			//#= if ( exp == 0 )
-			//#= 	isr = new InputStreamReader(new Resources(null, null, null).openRawResource(com.dominizer.R.raw.base), Charset.forName("UTF-8"));
-			//#= else if ( exp == 1 )
-			//#= 	isr = new InputStreamReader(new Resources(null, null, null).openRawResource(com.dominizer.R.raw.promo), Charset.forName("UTF-8"));
-			//#= else if ( exp == 2 )
-			//#= 	isr = new InputStreamReader(new Resources(null, null, null).openRawResource(com.dominizer.R.raw.intrigue), Charset.forName("UTF-8"));
-			//#= else if ( exp == 3 )
-			//#= 	isr = new InputStreamReader(new Resources(null, null, null).openRawResource(com.dominizer.R.raw.seaside), Charset.forName("UTF-8"));
-			//#= } catch (Resources.NotFoundException e) {
-			//#= 	//#debug info
-			//#=    System.out.println("Resource hasn't been found");
-			//#= }
-			//#else
+			//#debug info
+			System.out.println("reading " + fileName);
 			isr = new InputStreamReader(this.getClass().getResourceAsStream("/" + fileName),"UTF8");
-			//#endif
+			
 			int ch;
 			while ( (ch = isr.read()) > -1 ) {
 				sb.append((char)ch);
 				if ( (char)ch == ';' ) {
+					//#debug info
+					System.out.println("processing " + sb.toString());
 					expansions[exp].setName(cardRead, sb.toString().substring(start, sb.toString().indexOf(":", start)).trim());
 					start = sb.toString().indexOf(":", start) + 1;
 					expansions[exp].setExpansion(sb.toString().substring(start, sb.toString().indexOf(":", start)));
@@ -499,8 +495,7 @@ public class Dominion {
 					expansions[exp].setDuration(cardRead, isTrue(sb.toString().substring(start, sb.toString().indexOf(";", start))));
 					sb.delete(0, sb.toString().length());
 					start = 0;
-					/*
-					//debug info
+					//#debug info
 					System.out.println("expansions[" + exp + "].name(" + cardRead + "): " + expansions[exp].getName(cardRead) + ". Action? " + expansions[exp].isAction(cardRead)+
 							". Attack? " + expansions[exp].isAttack(cardRead) +
 							". Reaction? " + expansions[exp].isReaction(cardRead) +
@@ -508,7 +503,6 @@ public class Dominion {
 							". Treasury? " + expansions[exp].isTreasure(cardRead) +
 							". Duration? " + expansions[exp].isDuration(cardRead)
 							);
-					 */
 					cardRead++;
 				} else if ( (char)ch == '\n' ) {
 					sb.delete(0, sb.toString().length() - 1);
@@ -599,7 +593,7 @@ public class Dominion {
 		//#debug info
 		System.out.println("sort: " + tmp);
 		if ( tmp != null ) {
-			Cards.COMPARE_PREFERED = Integer.parseInt(tmp);
+			Cards.COMPARE_PREFERRED = Integer.parseInt(tmp);
 		}
 		//#debug info
 		System.out.println("finished reading preferred sort succesfully");

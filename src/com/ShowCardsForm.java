@@ -40,10 +40,9 @@ public class ShowCardsForm extends Form implements CommandListener {
 	
 	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 10);
 	//private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
-
-
+	
 	private ShowCardsForm(String title) {
-		//#style behindScreen
+		//#style behindTitle
 		super(title);
 		//#debug
 		System.out.println("showing cards initialize");
@@ -65,8 +64,9 @@ public class ShowCardsForm extends Form implements CommandListener {
 	}
 	
 	public static ShowCardsForm instance() {
-		if ( scF == null )
-			scF = new ShowCardsForm(Locale.get("screen.RandomizedCards.title"));
+		if ( scF == null ) {
+			scF = new ShowCardsForm(null);//Locale.get("screen.RandomizedCards.title")
+		}
 		return scF;
 	}
 
@@ -80,7 +80,8 @@ public class ShowCardsForm extends Form implements CommandListener {
 	}
 
 	public void viewCards(Cards cards) {
-		this.removeCommand(blackMarketCmd);
+		if ( Dominion.RANDOMIZE_COMPLETELY_NEW )
+			this.removeCommand(blackMarketCmd);
 		this.table.setDimension(3, cards.size() + 1);
 		//#debug
 		System.out.println("adding header");
@@ -122,22 +123,28 @@ public class ShowCardsForm extends Form implements CommandListener {
 	}
 
 	public void commandAction(Command cmd, Displayable disp) {
-		if ( cmd.equals(this.backCmd) )
+		if ( cmd.equals(this.backCmd) ) {
+			Dominion.RANDOMIZE_COMPLETELY_NEW = true;
 			GameApp.instance().changeToScreen(null);
-		else if ( cmd.equals(this.randomizeCmd) )
+		} else if ( cmd.equals(this.randomizeCmd) ) {
+			Dominion.I().resetIsPlaying(1);
 			this.reRandomize();
-		else if ( cmd.equals(this.blackMarketCmd) )
+		} else if ( cmd.equals(this.blackMarketCmd) )
 			GameApp.instance().showBlackMarketDeck(GameApp.SHOWCARDS);
 		else if ( cmd.equals(this.anotherSetCmd) ) {
 			Dominion.RANDOMIZE_COMPLETELY_NEW = false;
 			this.reRandomize();
-			Dominion.RANDOMIZE_COMPLETELY_NEW = true;
+			this.removeCommand(randomizeCmd);
+			randomizeCmd = new Command( Locale.get("cmd.Randomize.Set"), Command.BACK, 0);
+			this.addCommand(randomizeCmd);
 		} else if ( cmd.equals(this.showInfoCmd) )
 			GameApp.instance().showInfo(Dominion.I().getSelectedInfo(), Alert.FOREVER);
 		else if ( cmd.equals(this.saveCmd) ) {
 			GameApp.instance().showInputDialog(Locale.get("screen.RandomizedCards.InputMessage"), this);
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.ok"))) {
-			if ( !InputForm.instance().getInput().equals("") ) {
+			if ( InputForm.instance().getInput().indexOf(SettingsRecordStorage.BIG_SPLITTER) > 0 )
+				GameApp.instance().showAlert(Locale.get("alert.Randomization.Save.IllegalChar"));
+			else if ( !InputForm.instance().getInput().equals("") ) {
 				SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.preset"));
 				SettingsRecordStorage.instance().addData(InputForm.instance().getInput(), Dominion.I().getCurrentAsPresetSave());
 				try {
@@ -154,34 +161,36 @@ public class ShowCardsForm extends Form implements CommandListener {
 				}
 			}
 			GameApp.instance().changeToScreen(this);
+		} else if ( cmd.getLabel().equals(Locale.get("polish.command.clear"))) {
+			InputForm.instance().clearInput();
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel"))) {
 			GameApp.instance().changeToScreen(this);
 		} else if ( cmd.equals(this.sortExpNameCmd) ) {
 			try {
 				this.viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_EXPANSION_NAME));
-				Cards.COMPARE_PREFERED = Cards.COMPARE_EXPANSION_NAME;
+				Cards.COMPARE_PREFERRED = Cards.COMPARE_EXPANSION_NAME;
 			} catch (DominionException e) {
 				// this will never happen as you cannot come to the showscreen without randomizing
 			}
 		} else if ( cmd.equals(this.sortExpCostCmd) ) {
 			try {
 				this.viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_EXPANSION_COST));
-				Cards.COMPARE_PREFERED = Cards.COMPARE_EXPANSION_COST;
+				Cards.COMPARE_PREFERRED = Cards.COMPARE_EXPANSION_COST;
 			} catch (DominionException e) {}
 		} else if ( cmd.equals(this.sortNameCmd) ) {
 			try {
 				this.viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_NAME));
-				Cards.COMPARE_PREFERED = Cards.COMPARE_NAME;
+				Cards.COMPARE_PREFERRED = Cards.COMPARE_NAME;
 			} catch (DominionException e) {}
 		} else if ( cmd.equals(this.sortCostNameCmd) ) {
 			try {
 				this.viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_COST_NAME));
-				Cards.COMPARE_PREFERED = Cards.COMPARE_COST_NAME;
+				Cards.COMPARE_PREFERRED = Cards.COMPARE_COST_NAME;
 			} catch (DominionException e) {}
 		} else if ( cmd.equals(this.sortCostExpCmd) ) {
 			try {
 				this.viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_COST_EXPANSION));
-				Cards.COMPARE_PREFERED = Cards.COMPARE_COST_EXPANSION;
+				Cards.COMPARE_PREFERRED = Cards.COMPARE_COST_EXPANSION;
 			} catch (DominionException e) {}
 		}
 	}

@@ -1,6 +1,7 @@
 colors {
 	bgColor:  					rgb(0,10,25);
 	brightBgColor:  			rgb(0,25,50);
+	hiddenBrightBgColor:  		rgb(100,125,150);
 	evenBrightColor: 			rgb(10,45,65);
 	eevenBrightColor: 			rgb(40,70,95);
 	translucentBgColor:  		argb(130, 165,190,247);
@@ -8,6 +9,7 @@ colors {
 	/* Font Colors*/
 	titleFontColor: 			rgb(175,210,247);
 	fontColor: 					rgb( 66, 85,148);
+	hiddenFontColor: 			rgb(166,185,248);
 	brightFontColor: 			white; 
 	translucentFontColor:  		argb(130, 165,190,247);
 	translucentBrightFontColor: argb(150, 175,210,247);
@@ -61,7 +63,8 @@ title {
 	background: titleGradient;
 }
 
-.behindTitle extends title{
+.behindTitle extends title {
+	min-width: 0%;
 	max-width: 100%;
 }
 
@@ -73,6 +76,18 @@ label {
 	font {
 		style: bold;
 		color: fontColor;
+		size: small;
+	}
+	layout: expand | center;	
+}
+
+.hiddenLabel extends label {
+	background {
+		color: hiddenBrightBgColor;
+	}
+	font {
+		style: bold;
+		color: hiddenFontColor;
 		size: small;
 	}
 	layout: expand | center;	
@@ -123,13 +138,14 @@ focused {
 }
 
 .mainPopupScreen extends mainScreen {
+	repaint-previous-screen: false;
 	title-menu: false;
 	margin-right: 0;
 	margin-left: 0;
 	padding-left: 2;
 	padding-right: 2;
 	layout: horizontal-center | bottom | horizontal-shrink | vertical-shrink | newline-after;
-	repaint-previous-screen: false;
+	
 }
 
 listItem {
@@ -216,7 +232,7 @@ alertcontent {
 info {
 	margin: 1;
 	font-color: fontColor;
-	layout: right;
+	layout: left;
 }
 
 /*************   MENU BAR     *************/
@@ -274,6 +290,7 @@ middlecommand extends leftcommand {
   */
 menu {
 	margin-left: 2;
+	margin-bottom: 4;
 	padding: 2;
 	background {
 		type: round-rect;
@@ -284,6 +301,11 @@ menu {
 	font-color: translucentFontColor;
 	font-style: bold;
 	view-type: slide-up;
+}
+menu1 extends menu {
+	background {
+		color: evenBrightColor;
+	}
 }
 
 /**
@@ -350,12 +372,11 @@ menuItem:hover {
 	layout: expand | left;
 }
 
-
 .inputTextField {
 	padding: 5;
 	font-color: translucentBrightFontColor;
 	background-color: bgColor;
-	layout: expand | center;
+	layout: expand | left;
 }
 
 .filterPopupStyle {

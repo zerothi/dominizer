@@ -112,5 +112,7 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 		}
 		Dominion.I().getExpansion(Dominion.I().getLinearExpansionIndex(index)).setAvailable(
 				Dominion.I().getLinearCardIndex(index), this.getItem(index).isSelected);
+		Dominion.I().getExpansion(Dominion.I().getLinearExpansionIndex(index)).setBlackMarketAvailable(
+				Dominion.I().getLinearCardIndex(index), this.getItem(index).isSelected);
 	}
 }

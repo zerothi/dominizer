@@ -114,7 +114,7 @@
 				<!-- You can set localized variables in the resources/messages.txt files as well.  -->
 				<variables includeAntProperties="true">
 					<!--//#= private static final String UPDATE_URL = "${ update-url }";-->
-					<variable name="polish.TextField.useDirectInput" value="true" />
+					<variable name="polish.TextField.useDirectInput" value="true" unless="polish.hasPointerEvents or ${ isOS(Windows) }"/>
 					<variable name="polish.TextField.supportSymbolsEntry" value="false" />	
 					<variable name="polish.TextField.Symbols" value="&quot;@#()&lt;&gt;&amp;;,.:!/\~$%^*" />
 					<variable name="polish.TextField.allowNativeModeSwitch" value="true" />	
@@ -122,7 +122,7 @@
 					<variable name="javac.target" value="1.5" if="polish.android" />
 					<variable name="javac.source" value="1.3" unless="polish.android" />
 					<variable name="javac.target" value="1.3" unless="polish.android" />
-					<variable name="polish.FullScreen" value="false" if="polish.android" />
+					<variable name="polish.FullScreen" value="false" if="${ isOS( Windows ) } or polish.android" />
 					<!--variable name="polish.ScreenInfo.enable" value="true"/-->
 					<variable name="polish.MenuBar.useExtendedMenuBar" value="true"/>
 					<variable name="polish.ChoiceGroup.suppressMarkCommands" value="true"/>
