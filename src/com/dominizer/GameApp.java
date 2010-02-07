@@ -84,6 +84,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 			showAlert(Locale.get("alert.QuickSelectExpansions.NoneSelected"));
 		else {
 			currentTab = this.getCurrentTab();
+			Dominion.I().resetIsPlaying(true);
 			ShowCardsForm.instance().reRandomize();
 			changeToScreen(ShowCardsForm.instance());
 		}
@@ -99,7 +100,6 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	}
 
 	public void showBlackMarketDeck(int previousScreen) {
-		//updateSelectedQuickRandom();
 		bmF.setBlackMarketDeck(Dominion.I().getBlackMarketDeck());
 		changeToScreen(bmF);
 		currentTab = previousScreen;

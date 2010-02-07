@@ -26,6 +26,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 	private static ShowCardsForm scF = null;
 	private TableItem table = null;
 	private Command randomizeCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
+	private Command randomizeSetCmd = new Command( Locale.get("cmd.Randomize.Set"), Command.BACK, 0);
 	private Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.OK, 1);
 	
 	private Command sortCmd = new Command( Locale.get("cmd.Sort.Main"), Command.SCREEN, 5);
@@ -80,8 +81,6 @@ public class ShowCardsForm extends Form implements CommandListener {
 	}
 
 	public void viewCards(Cards cards) {
-		if ( Dominion.RANDOMIZE_COMPLETELY_NEW )
-			this.removeCommand(blackMarketCmd);
 		this.table.setDimension(3, cards.size() + 1);
 		//#debug
 		System.out.println("adding header");
@@ -95,11 +94,13 @@ public class ShowCardsForm extends Form implements CommandListener {
 		System.out.println("adding card information");
 		if ( cards == null )
 			return;
+		if ( Dominion.I().hasBlackMarketPlaying() )
+			this.addCommand(blackMarketCmd);
+		else
+			this.removeCommand(blackMarketCmd);
 		for (int cardNumber = 0 ; cardNumber < cards.size() ; cardNumber++ ) {
 			//#style tableCell
 			this.table.set(0, cardNumber + 1, cards.getName(cardNumber));
-			if ( cards.getName(cardNumber).equals(Locale.get("card.BlackMarket")) )
-				this.addCommand(blackMarketCmd);
 			try {
 				//#style tableCell
 				this.table.set(1, cardNumber + 1, new ImageItem(null, 
@@ -125,18 +126,25 @@ public class ShowCardsForm extends Form implements CommandListener {
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(this.backCmd) ) {
 			Dominion.RANDOMIZE_COMPLETELY_NEW = true;
+			this.removeCommand(randomizeSetCmd);
+			this.removeCommand(randomizeCmd);
+			this.addCommand(randomizeCmd);
 			GameApp.instance().changeToScreen(null);
 		} else if ( cmd.equals(this.randomizeCmd) ) {
-			Dominion.I().resetIsPlaying(1);
+			Dominion.I().resetIsPlaying(true);
+			this.reRandomize();
+		} else if ( cmd.equals(this.randomizeSetCmd) ) {
+			Dominion.I().resetIsPlaying(false);
 			this.reRandomize();
 		} else if ( cmd.equals(this.blackMarketCmd) )
 			GameApp.instance().showBlackMarketDeck(GameApp.SHOWCARDS);
 		else if ( cmd.equals(this.anotherSetCmd) ) {
 			Dominion.RANDOMIZE_COMPLETELY_NEW = false;
+			//Dominion.I().resetIsPlaying(false);
 			this.reRandomize();
 			this.removeCommand(randomizeCmd);
-			randomizeCmd = new Command( Locale.get("cmd.Randomize.Set"), Command.BACK, 0);
-			this.addCommand(randomizeCmd);
+			this.removeCommand(randomizeSetCmd);
+			this.addCommand(randomizeSetCmd);
 		} else if ( cmd.equals(this.showInfoCmd) )
 			GameApp.instance().showInfo(Dominion.I().getSelectedInfo(), Alert.FOREVER);
 		else if ( cmd.equals(this.saveCmd) ) {

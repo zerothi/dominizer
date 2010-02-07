@@ -169,11 +169,15 @@ listItem {
 	padding-vertical: 8;
 	layout: center | vertical-center | newline-after;
 	min-height: 30%;
+	//#if polish.android
+		font-size: medium;
+	//#else
+		font-size: small;
+	//#endif
 }
 
 .mainCommand:hover {
 	font-style: bold;
-	font-size: small;
 	font-color: fontColor;
 	text-effect: shadow;
 }
@@ -192,7 +196,11 @@ listItem {
 
 alertcontent {
 	font-color: fontColor;
-	font-size: small;
+	//#if polish.android
+		font-size: medium;
+	//#else
+		font-size: small;
+	//#endif
 	font-style: bold;
 	text-effect: shadow;
 }
@@ -266,7 +274,11 @@ leftcommand {
 	padding-bottom: 0;
 	font-color: translucentFontColor;
 	font-style: plain;
-	font-size: small;
+	//#if polish.android
+		font-size: medium;
+	//#else
+		font-size: small;
+	//#endif
 }
 rightcommand extends leftcommand {
 	layout: right;
@@ -422,7 +434,11 @@ menuItem:hover {
 .tableHeading {
 	font-color: translucentFontColor;
 	font-style: bold;
-	font-size: small;
+	//#if polish.android
+		font-size: medium;
+	//#else
+		font-size: small;
+	//#endif
 	table {
 		line-color: evenBrightColor;
 	}
