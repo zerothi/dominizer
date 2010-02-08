@@ -3,8 +3,7 @@
 # App Specific translations
 #
 ################
-tab.Quick.title=Quick
-tab.Quick.QuickSelectExpansions=Expansions Used:
+
 tab.Preset.title=Presets
 tab.EditCards.title=Edit Cards
 tab.Settings.title=Settings
@@ -12,19 +11,15 @@ tab.Calendar.title=Calendar
 table.heading.Name=Name
 table.heading.Expansion=Exp.
 table.heading.Cost=$
-table.heading.Type=?
 table.heading.ActionCard=A
 table.heading.VictoryCard=V
 table.heading.TreasuryCard=T
 table.heading.ReactionCard=R
 table.heading.AttackCard=A
 table.heading.DurationCard=D
-screen.PresetCards.title=Preset Cards
+table.heading.PotionCard=P
 screen.RandomizedCards.title=Randomized Cards
 screen.RandomizedCards.InputMessage=Saved preset name:
-screen.EditCards.title=Edit Cards
-screen.EditCards.ChoiceExp=Expansion:
-screen.EditCards.ChoiceCurrentlySelected=Selected Card:
 screen.BlackMarket.title=Black Market
 screen.BlackMarket.DrawTextInfo=Please draw cards. 
 screen.BlackMarket.ChooseNone=None
@@ -33,7 +28,6 @@ screen.BlackMarket.InfoMessage=You have chosen:
 screen.BlackMarket.DeckEmpty=Black Market deck is empty. 
 screen.BlackMarket.CancelBuy=Will you redo the buy?\n
 screen.BlackMarket.Ticker=< {0}Bought / Left: {1} / {2} >
-screen.Calendar.title=Calendar
 screen.Input.title=Input
 screen.Input.defaultmessage=
 screen.Input.inputname=Input:
@@ -52,8 +46,6 @@ cmd.Sort.CostExp=Cost - Exp
 cmd.Percentage.Main=Percentage {0}
 cmd.Percentage.Remove=Remove
 cmd.Percentage.Use=Use {0}%
-cmd.EditCards.ChooseExpansion=Switch to
-cmd.EditCards.Toggle=Toggle
 cmd.Preset.ShowInfo=Show Cards
 cmd.Preset.DeletePreset=Delete
 cmd.Calendar.AddGame=Add Game
@@ -61,7 +53,6 @@ cmd.BlackMarket=Black Market Deck
 cmd.BlackMarket.Draw=Draw New
 cmd.BlackMarket.CancelBuy=Cancel Buy
 cmd.BlackMarket.Show=Show BM deck
-cmd.EditSingleCards.Show=Edit Cards
 cmd.Back=Back
 cmd.ShowLog=Show Log
 cmd.Quit=Quit

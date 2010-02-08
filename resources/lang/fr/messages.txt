@@ -3,8 +3,12 @@
 # App Specific translations
 #
 ################
-mainScreen.ChoiceWhatToDo=Que faire?
-mainScreen.QuickSelectExpansions=Extensions utilisées:
+
+### Translate here please
+tab.Preset.title=Presets
+tab.EditCards.title=Edit Cards
+tab.Settings.title=Settings
+tab.Calendar.title=Calendar
 table.heading.Name=Nom
 table.heading.Expansion=Ext.
 table.heading.Cost=€
@@ -14,34 +18,63 @@ table.heading.TreasuryCard=T
 table.heading.ReactionCard=R
 table.heading.AttackCard=A
 table.heading.DurationCard=D
+### Translate here please
+table.heading.PotionCard=P
 screen.RandomizedCards.title=Cartes aléatoires
-screen.EditSingleCards.title=Editer les cartes
-screen.EditSingleCards.ChoiceCurrentlySelected=Carte sélectionnée:
+### Translate here please
+screen.RandomizedCards.InputMessage=Saved preset name:
 screen.BlackMarket.title=Marché noir
 screen.BlackMarket.DrawTextInfo=S'il vous plaît tirer des cartes
 screen.BlackMarket.ChooseNone=Nul
 screen.BlackMarket.ChooseCards=Choisir une carte:
 screen.BlackMarket.InfoMessage=Vous avez choisi: 
 screen.BlackMarket.DeckEmpty=Black Market deck est vide
+### Translate here please
 screen.BlackMarket.CancelBuy=Will you redo the buy?\n
+screen.BlackMarket.Ticker=< {0}Bought / Left: {1} / {2} >
+screen.Input.title=Input
+screen.Input.defaultmessage=
+screen.Input.inputname=Input:
 cmd.Randomize=Mélanger
+### Translate here please
+cmd.Randomize.Set=Rand. Set
+cmd.ShowChosenCardInfo=Show info
+cmd.AnotherSet=Another Set
+cmd.SaveAsPreset=Save
+cmd.Options.Main=Options
+cmd.Sort.Main=Sort
+cmd.Sort.ExpName=Exp. - Name
+cmd.Sort.ExpCost=Exp. - Cost
+cmd.Sort.Name=Name
+cmd.Sort.CostName=Cost - Name
+cmd.Sort.CostExp=Cost - Exp
+cmd.Percentage.Main=Percentage {0}
+cmd.Percentage.Remove=Remove
+cmd.Percentage.Use=Use {0}%
+cmd.Preset.ShowInfo=Show Cards
+cmd.Preset.DeletePreset=Delete
+cmd.Calendar.AddGame=Add Game
 cmd.BlackMarket=Black Market Deck
 cmd.BlackMarket.Draw=Draw New
 cmd.BlackMarket.CancelBuy=Annuler acheter
 cmd.BlackMarket.Show=Show BM deck
-cmd.EditSingleCards=Editer
 cmd.Back=Retour
 cmd.ShowLog=Afficher le journal
 cmd.Quit=Quitter
 cmd.switch=Basculer
 alert.alert=Alerte
 alert.info=Info
+### Translate here please
 alert.confirmation=Confirm
 alert.Settings.CouldNotBeRead=Settings could not be read!\nSorry.
 alert.Settings.CouldNotBeSaved=Settings could not be saved!\nSorry.
 alert.QuickSelectExpansions.OnlyPromoSelected=Vous n'avez sélectionné que des cartes promotionnelles.\nElargissez votre sélection !
 alert.QuickSelectExpansions.NoneSelected=Vous n'avez sélectionné aucune extension.\nChoisissez-en au moins une !
+### Translate here please
 alert.CardsFromExpansion.Promo=You cannot have more than 2 cards from the Promo deck.\nUse fewer!
+alert.Randomization.Save.IllegalChar=Your save name can not contain the character '#'.\nPlease supply another name.
+alert.Randomization.Availability=Your available cards in '{0}' does not match your minimum card requirement.\nCorrect input!
+alert.Randomization.TotalAvailability=You only have {0} available cards in total.\nNo more sets can be generated!
 
 ################
 #
@@ -53,7 +86,30 @@ base=Base
 promo=Promo
 intrigue=Intrigue
 seaside=Rivages
+### Translate here please
+alchemy=Alchemy
+prosperity=Prosperity
 card.BlackMarket=Marché noir
+
+
+### Translate here please
+preset.base.FirstGame=First Game
+preset.base.BigMoney=Big Money
+preset.base.Interaction=Interaction
+preset.base.SizeDistortion=Size Distortion
+preset.base.VillageSquare=Village Square
+preset.intrigue.VictoryDance=Victory Dance
+preset.intrigue.SecretSchemes=Secret Schemes
+preset.intrigue.BestWishes=Best Wishes
+preset.intrigue.Deconstruction=Deconstruction
+preset.intrigue.HandMadness=Hand Madness
+preset.intrigue.Underlings=Underlings
+preset.seaside.HighSeas=High Seas
+preset.seaside.BuriedTreasure=Buried Treasure
+preset.seaside.Shipwrecks=Shipwrecks
+preset.seaside.ReachForTomorrow=Reach For Tomorrow
+preset.seaside.Repetition=Repetition
+preset.seaside.GiveAndTake=Give and Take
 
 ################
 #

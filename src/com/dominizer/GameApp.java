@@ -135,11 +135,11 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		//Locale.get("tab.EditCards.title")
 		ecFL = new EditCardsFilteredList(null, FilteredList.MULTIPLE);
 		//#style tabIcon
-		this.tabbedPane.addTab(ecFL, null, Locale.get("screen.EditCards.title"));
+		this.tabbedPane.addTab(ecFL, null, Locale.get("tab.EditCards.title"));
 		//Locale.get("tab.Preset.title")
 		pFL = new PresetFilteredList(null, FilteredList.IMPLICIT);
 		//#style tabIcon
-		this.tabbedPane.addTab(pFL, null, Locale.get("screen.PresetCards.title"));
+		this.tabbedPane.addTab(pFL, null, Locale.get("tab.Preset.title"));
 		//Locale.get("tab.Calendar.title")
 		///#style tabIcon
 		//this.tabbedPane.addTab(new GameCalendarForm(null), null, Locale.get("screen.Calendar.title"));
