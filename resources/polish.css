@@ -44,6 +44,25 @@ backgrounds {
 	alertOverlay {
 		color: #9fff;
 	}
+	percentageText {
+		type: text;
+		text: 0%;
+		text-style: textPercentage;
+		anchor: right;
+		color: transparent;
+		x-offset: -1;
+		y-offset: 0;
+	}
+	plainBg {
+		color: brightBgColor;
+	}
+	selectedBg {
+		type: round-rect;
+		arc: 8;
+		color: brightBgColor;
+		border-color: fontColor;
+		border-width: 2;
+	}
 }
 
 
@@ -78,10 +97,21 @@ label {
 		color: fontColor;
 		size: small;
 	}
-	layout: expand | center;	
+	layout: center | expand;	
+}
+
+.labelHold extends label {
+	background {
+		type: horizontal-gradient;
+		left-color: eevenBrightColor;
+		right-color: brightBgColor;
+		start: 0%;
+		end: 100%;
+	}	
 }
 
 .hiddenLabel extends label {
+	padding: 5;
 	background {
 		color: hiddenBrightBgColor;
 	}
@@ -90,7 +120,7 @@ label {
 		color: hiddenFontColor;
 		size: small;
 	}
-	layout: expand | center;	
+	layout: expand | center;
 }
 
 /**
@@ -101,21 +131,14 @@ label {
   */
 focused {
 	padding: 5;
-	background {
-		type: round-rect;
-		arc: 8;
-		color: brightBgColor;
-		border-color: fontColor;
-		border-width: 2;
-	}
+	background: selectedBg;
 	font {
 		style: bold;
 		color: translucentBrightFontColor;
 		size: small;
 	}
-	layout: expand | center;	
+	layout: expand | center;
 }
-
 
 .mainScreen {
 	title-menu: true;
@@ -458,6 +481,16 @@ menuItem:hover {
 .tableCell:hover {
 	background {
 		color: evenBrightColor;
+	}
+}
+
+.tableCellHold extends tableCell {
+	background {
+		type: horizontal-gradient;
+		left-color: hiddenBrightBgColor;
+		right-color: evenBrightColor;
+		start: 0%;
+		end: 100%;
 	}
 }
 

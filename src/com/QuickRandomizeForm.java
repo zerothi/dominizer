@@ -26,7 +26,7 @@ public class QuickRandomizeForm extends List implements CommandListener {
 
 	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
-	public boolean[] flags = new boolean[5];
+	public boolean[] flags = new boolean[6];
 	
 	public QuickRandomizeForm(String title, int listType) {
 		//#style mainScreen
@@ -52,6 +52,8 @@ public class QuickRandomizeForm extends List implements CommandListener {
 		}
 		//#style label
 		this.append("Alchemy", null);
+		//#style label
+		this.append("Prosperity", null);
 		for ( int i = 0 ; i < Dominion.I().getExpansions() ; i++ ) {
 			if ( Dominion.I().getNumberOfExpansionCards()[i] > 0 ) {
 				//#style label
@@ -104,7 +106,7 @@ public class QuickRandomizeForm extends List implements CommandListener {
 	}
 
 	private void setCardsFromExpansion(int expansion, int numberOfCards) {
-		if ( -1 < expansion | expansion < Dominion.I().getExpansions() ) {
+		if ( -1 < expansion & expansion < Dominion.I().getExpansions() ) {
 			if ( expansion == 1 && numberOfCards > 2 )
 				GameApp.instance().showAlert(Locale.get("alert.CardsFromExpansion.Promo"));
 			else {

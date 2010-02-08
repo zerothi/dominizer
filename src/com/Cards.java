@@ -25,6 +25,7 @@ public class Cards {
 	 * #5 = Duration
 	 */
 	private boolean[][] isSpecific = null;
+	private int[] percentage = null;
 
 	public Cards(int size, int isSet) {
 		name = new String[size];
@@ -39,6 +40,7 @@ public class Cards {
 			expansion = new String[1];
 		else
 			expansion = new String[size];
+		percentage = new int[size];
 	}
 
 	/**
@@ -80,6 +82,20 @@ public class Cards {
 		this.expansion[index] = expansion;
 	}
 	
+	/**
+	 * @return the percentage
+	 */
+	public int getPercentage(int index) {
+		return percentage[index];
+	}
+
+	/**
+	 * @param percentage the percentage to set
+	 */
+	public void setPercentage(int index, int percentage) {
+		this.percentage[index] = percentage;
+	}
+
 	/**
 	 * @param game
 	 *            the game to set
@@ -275,6 +291,16 @@ public class Cards {
 		return tmp;
 	}
 	
+	public int fromExpansion(int exp) {
+		int tmp = 0;
+		for ( int i = 0 ; i < size() ; i++ ) {
+			if ( this.getExpansion(i) != null )
+				if ( this.getExpansion(i).equals(Cards.getExpansionName(exp)) )
+					tmp++;
+		}
+		return tmp;
+	}
+	
 	public void setCard(int index, Object[] cardInfo) {
 		for ( int i = 0 ; i < 12 ; i++ ) {
 			if ( cardInfo[i] == null ) {
@@ -427,6 +453,26 @@ public class Cards {
 		}
 		return null;
 	}
+	
+	public static String getExpansionName(int expansion) {
+		switch (expansion) {
+		case Dominion.BASE:
+			return "ba";
+		case Dominion.PROMO:
+			return "pr";
+		case Dominion.INTRIGUE:
+			return "in";
+		case Dominion.SEASIDE:
+			return "se";
+		case Dominion.ALCHEMY:
+			return "al";
+		case Dominion.PROSPERITY:
+			return "po";
+		default:
+			return "";
+		}
+	}
+	
 	public static final int COMPARE_EXPANSION_NAME = 0;
 	public static final int COMPARE_EXPANSION_COST = 1;
 	public static final int COMPARE_NAME = 2;

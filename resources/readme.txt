@@ -1,5 +1,5 @@
 The Format for cards are 
-Name:Expansion:Cost:ActionCard?:VictoryCard?:CoinCard?:AttackCard?:ReactionCard?:Duration?;
+Name:Expansion:Cost:ActionCard?:VictoryCard?:TreasureCard?:AttackCard?:ReactionCard?:DurationCard?;
 
 In the preset file the format is this:
 <Name>:<Exp>,<CardID>:<Exp>,<CardID>:<Exp>,<CardID>:<Exp>,<CardID>:<Exp>,<CardID>:<Exp>,<CardID>:<Exp>,<CardID>:<Exp>,<CardID>:<Exp>,<CardID>:<Exp>,<CardID>;

@@ -28,9 +28,9 @@
 	<!-- the device for the test mode - you can define it on the command-line
 	     using the -D switch, e.g. ant -Ddevice=Generic/midp2 emulator -->
 	<!--property name="device" value="Generic/AnyPhone"/-->
-	<property name="device" value="Generic/Android"/>
-	<!--property name="device" value="Nokia/Series40E3"/-->
-	<!--property name="devices" value="Generic/Android,Generic/AnyPhone,Generic/WindowsMobile,Nokia/Series40E3,Sony-Ericsson/JavaPlatform7,Sony-Ericsson/JavaPlatform8"/-->
+	<!--property name="device" value="Generic/Android"/-->
+	<property name="device" value="Nokia/Series40E3"/>
+	<!--property name="devices" value="Generic/Android,Generic/AnyPhone,Native/WindowsMobile,Nokia/Series40E3,Sony-Ericsson/JavaPlatform7,Sony-Ericsson/JavaPlatform8"/-->
 	<!--property name="devices" value="Nokia/Series40E3"/-->
 
 
@@ -212,6 +212,8 @@
 	<target name="compileAll" description="Builds All" depends="clean, enableAll, j2mepolish" />
 	<target name="compileNokia" description="Builds All" depends="clean, enableNokia, j2mepolish" />
 	<target name="compileAndroid" description="Builds All" depends="clean, enableAndroid, j2mepolish" />
+	<target name="compileWindows" description="Builds All" depends="clean, enableWindows, j2mepolish" />
+	<target name="compile6303" description="Builds All" depends="clean, enable6303, j2mepolish" />
 	
 	<target name="quickbuild" description="Quick builds for one" depends="enableQuick, j2mepolish, emuGeneric" />
 	
@@ -236,8 +238,15 @@
 		<property name="devices" value="Nokia/Series40E3"/>
 	</target>
 	
+	<target name="enable6303">
+		<property name="devices" value="Nokia/6303_classic"/>
+	</target>
+	
 	<target name="enableAndroid">
 		<property name="devices" value="Generic/Android"/>
+	</target>
+	<target name="enableWindows">
+		<property name="devices" value="Native/WindowsMobile"/>
 	</target>
 		
 	<!-- Call this target first to skip the obfuscation step, call the emulator and start the debugger, e.g. ant enableDebug j2mepolish-->

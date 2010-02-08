@@ -4,12 +4,14 @@ package com;
 
 import java.io.IOException;
 
+import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.ImageItem;
+import javax.microedition.lcdui.StringItem;
 import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreFullException;
 import javax.microedition.rms.RecordStoreNotFoundException;
@@ -99,8 +101,13 @@ public class ShowCardsForm extends Form implements CommandListener {
 		else
 			this.removeCommand(blackMarketCmd);
 		for (int cardNumber = 0 ; cardNumber < cards.size() ; cardNumber++ ) {
-			//#style tableCell
-			this.table.set(0, cardNumber + 1, cards.getName(cardNumber));
+			if ( Dominion.I().isHold(cards.getName(cardNumber)) ) {
+				//#style tableCellHold
+				this.table.set(0, cardNumber + 1, cards.getName(cardNumber));
+			} else {
+				//#style tableCell
+				this.table.set(0, cardNumber + 1, cards.getName(cardNumber));
+			}
 			try {
 				//#style tableCell
 				this.table.set(1, cardNumber + 1, new ImageItem(null, 
@@ -126,6 +133,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(this.backCmd) ) {
 			Dominion.RANDOMIZE_COMPLETELY_NEW = true;
+			Dominion.I().resetHoldCards();
 			this.removeCommand(randomizeSetCmd);
 			this.removeCommand(randomizeCmd);
 			this.addCommand(randomizeCmd);
@@ -140,7 +148,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 			GameApp.instance().showBlackMarketDeck(GameApp.SHOWCARDS);
 		else if ( cmd.equals(this.anotherSetCmd) ) {
 			Dominion.RANDOMIZE_COMPLETELY_NEW = false;
-			//Dominion.I().resetIsPlaying(false);
+			Dominion.I().resetHoldCards();
 			this.reRandomize();
 			this.removeCommand(randomizeCmd);
 			this.removeCommand(randomizeSetCmd);
@@ -200,6 +208,43 @@ public class ShowCardsForm extends Form implements CommandListener {
 				this.viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_COST_EXPANSION));
 				Cards.COMPARE_PREFERRED = Cards.COMPARE_COST_EXPANSION;
 			} catch (DominionException e) {}
+		}
+	}
+	
+	public void keyPressed(int keyCode) {
+		switch (keyCode) {
+		case Canvas.KEY_NUM0:
+		case Canvas.KEY_NUM1:
+		case Canvas.KEY_NUM2:
+		case Canvas.KEY_NUM3:
+		case Canvas.KEY_NUM4:
+		case Canvas.KEY_NUM5:
+		case Canvas.KEY_NUM6:
+		case Canvas.KEY_NUM7:
+		case Canvas.KEY_NUM8:
+		case Canvas.KEY_NUM9:
+			this.holdCard(keyCode - Canvas.KEY_NUM0);
+			break;
+		default:
+			//#= super.keyPressed(keyCode);
+		}
+	}
+	
+	public void holdCard(int card) {
+		String cardName;
+		if ( card == 0 )
+			card = 10;
+		cardName = ((StringItem) this.table.get(0, card)).getText();
+		if ( Dominion.I().holdCard(cardName) ) {
+			//#style tableCellHold
+			this.table.set(0, card, cardName);
+			//#debug info
+			System.out.println("holding card: " + cardName);
+		} else {
+			//#style tableCell
+			this.table.set(0, card, cardName);
+			//#debug info
+			System.out.println("deholding card: " + cardName);
 		}
 	}
 }
