@@ -152,7 +152,7 @@ focused {
 		top-color: splitTop;
 		bottom-color: splitBot;
 	}
-	choice-color: evenBrightColor;
+	choice-color: eevenBrightColor;
 }
 
 .behindScreen extends mainScreen {
@@ -160,13 +160,17 @@ focused {
 	title-style: behindTitle;
 }
 
-.mainPopupScreen extends mainScreen {
+.mainPopupScreen {
 	repaint-previous-screen: false;
-	title-menu: false;
-	margin-right: 0;
-	margin-left: 0;
-	padding-left: 2;
-	padding-right: 2;
+	padding: 2;
+	padding-left: 10;
+	padding-right: 10;
+	font-color: translucentFontColor;
+	background {
+		type: vertical-gradient;
+		top-color: splitTop;
+		bottom-color: splitBot;
+	}
 	layout: horizontal-center | bottom | horizontal-shrink | vertical-shrink | newline-after;
 	
 }
@@ -429,15 +433,14 @@ menuItem:hover {
 	padding-horizontal: 6;
 	font-color: translucentFontColor;
 	font-size: small;
-	table {
-		selected-background: tableSelection;
-		line-color: evenBrightColor;
-	}
+	table-selected-background: tableSelection;
+	table-line-color: eevenBrightColor;
 	background {
 		type: round-rect;
 		color: brightBgColor;
+		anchor: center;
 	}
-	layout: center | vshrink;
+	layout: expand | center | vshrink;
 }
 
 .defaultTable:hover {
@@ -647,3 +650,43 @@ menuItem:hover {
 	text-effect: shadow;
 	text-shadow-color: translucentFontColor;
 }
+
+/**
+ * The Gauge
+ */
+.formGauge extends mainScreen {
+	title-menu: false;
+	padding-left: 5;
+	padding-right: 5;
+	font-size: large;
+}
+
+.loadingGauge {
+	/*view-type: gauge-horizontal-icons;
+	gauge-horizontal-icons-count: 10;
+	gauge-horizontal-icons-image: url( trea1.png );
+	gauge-horizontal-icons-highlight-image: url( trea3.png );
+	gauge-horizontal-icons-highlight-center-image: url( trea6.png );
+	gauge-horizontal-icons-highlight-count: 3;
+	gauge-horizontal-icons-interval: 75;*/
+	gauge-background-color: bgColor;
+	gauge-animation-mode: leftright;
+	gauge-gap-color: hiddenBrightBgColor;
+	gauge-color: eevenBrightColor;
+	background-anchor: h-center | v-center;
+	background: selectedBg;
+	label-style: labelLoadingGauge;
+	layout: horizontal-center | horizontal-expand;
+}
+.labelLoadingGauge extends label {
+	font-size: large;
+}
+.inputGauge extends loadingGauge {
+	label-style: labelGauge;
+}
+
+.labelGauge extends label {
+	font-size: medium;
+}
+
+	

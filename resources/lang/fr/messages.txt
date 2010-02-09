@@ -62,10 +62,12 @@ cmd.Back=Retour
 cmd.ShowLog=Afficher le journal
 cmd.Quit=Quitter
 cmd.switch=Basculer
+### Translate here please
+alert.loading=Loading
 alert.alert=Alerte
 alert.info=Info
-### Translate here please
 alert.confirmation=Confirm
+### Translate here please
 alert.Settings.CouldNotBeRead=Settings could not be read!\nSorry.
 alert.Settings.CouldNotBeSaved=Settings could not be saved!\nSorry.
 alert.QuickSelectExpansions.OnlyPromoSelected=Vous n'avez sélectionné que des cartes promotionnelles.\nElargissez votre sélection !

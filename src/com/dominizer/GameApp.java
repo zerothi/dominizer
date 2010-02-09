@@ -6,7 +6,6 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Form;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 import javax.microedition.rms.RecordStoreException;
@@ -18,7 +17,7 @@ import com.Cards;
 import com.Dominion;
 import com.DominionException;
 import com.EditCardsFilteredList;
-import com.GameCalendarForm;
+import com.GaugeForm;
 import com.InputForm;
 import com.PresetFilteredList;
 import com.QuickRandomizeForm;
@@ -124,6 +123,11 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 
 	protected void startApp() throws MIDletStateChangeException {
 		display = Display.getDisplay(this);
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading"));
+		display.setCurrent(GaugeForm.instance());
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.cards"));
+		Dominion.I().getExpansions();
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.gui"));
 		//#style tabbedPane
 		this.tabbedPane = new TabbedPane(null);
 		this.tabbedPane.addTabListener(this);
@@ -144,6 +148,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		///#style tabIcon
 		//this.tabbedPane.addTab(new GameCalendarForm(null), null, Locale.get("screen.Calendar.title"));
 		bmF = new BlackMarketForm(Locale.get("screen.BlackMarket.title"), List.IMPLICIT);
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.gui.settings"));
 		SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.settings"));
 		if ( SettingsRecordStorage.instance().readKey(Locale.get("rms.lasttab")) != null )
 			currentTab = Integer.parseInt(SettingsRecordStorage.instance().readKey(Locale.get("rms.lasttab")));
@@ -152,6 +157,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 			tabbedPane.setFocus(currentTab);
 		//#debug info
 		System.out.println("setting display");
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.finished"));
 		display.setCurrent(tabbedPane);
 	}
 	

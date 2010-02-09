@@ -18,9 +18,11 @@ import javax.microedition.rms.RecordStoreNotFoundException;
 
 import com.dominizer.GameApp;
 
+import de.enough.polish.event.GestureEvent;
 import de.enough.polish.ui.Alert;
 import de.enough.polish.ui.TableItem;
 import de.enough.polish.ui.UiAccess;
+import de.enough.polish.util.DeviceControl;
 import de.enough.polish.util.Locale;
 
 public class ShowCardsForm extends Form implements CommandListener {
@@ -51,6 +53,15 @@ public class ShowCardsForm extends Form implements CommandListener {
 		System.out.println("showing cards initialize");
 		//#style defaultTable
 		this.table = new TableItem();
+		this.table.setDimension(3, 11);
+		//#debug
+		System.out.println("adding header");
+		//#style tableHeading
+		this.table.set(0, 0, Locale.get("table.heading.Name"));
+		//#style tableHeading
+		this.table.set(1, 0, Locale.get("table.heading.Expansion"));
+		//#style tableHeading
+		this.table.set(2, 0, Locale.get("table.heading.Cost"));
 		this.addCommand(this.randomizeCmd);
 		this.addCommand(this.showInfoCmd);
 		this.addCommand(this.anotherSetCmd);
@@ -83,19 +94,19 @@ public class ShowCardsForm extends Form implements CommandListener {
 	}
 
 	public void viewCards(Cards cards) {
-		this.table.setDimension(3, cards.size() + 1);
-		//#debug
-		System.out.println("adding header");
-		//#style tableHeading
-		this.table.set(0, 0, Locale.get("table.heading.Name"));
-		//#style tableHeading
-		this.table.set(1, 0, Locale.get("table.heading.Expansion"));
-		//#style tableHeading
-		this.table.set(2, 0, Locale.get("table.heading.Cost"));
 		//#debug
 		System.out.println("adding card information");
-		if ( cards == null )
+		if ( cards == null ) {
+			for (int cardNumber = 0 ; cardNumber < 10 ; cardNumber++ ) {
+				//#style tableCell
+				this.table.set(0, cardNumber + 1, "");
+				//#style tableCell
+				this.table.set(1, cardNumber + 1, "");
+				//#style tableCell
+				this.table.set(2, cardNumber + 1, "");
+			}
 			return;
+		}
 		if ( Dominion.I().hasBlackMarketPlaying() )
 			this.addCommand(blackMarketCmd);
 		else
@@ -128,6 +139,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 			this.removeCommand(saveCmd);
 		else
 			this.addCommand(saveCmd);
+		DeviceControl.lightOn();
 	}
 
 	public void commandAction(Command cmd, Displayable disp) {
@@ -245,6 +257,12 @@ public class ShowCardsForm extends Form implements CommandListener {
 			this.table.set(0, card, cardName);
 			//#debug info
 			System.out.println("deholding card: " + cardName);
+		}
+	}
+	
+	protected void handleGesture(int gesture, int x, int y) {
+		if ( gesture == GestureEvent.GESTURE_SWIPE_RIGHT) {
+			this.reRandomize();
 		}
 	}
 }

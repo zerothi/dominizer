@@ -19,7 +19,7 @@ import de.enough.polish.util.Locale;
 public class EditCardsFilteredList extends FilteredList implements CommandListener {
 	
 	private Command randomizeCmd = new Command(Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
-	
+	//#if polish.android
 	private Command percentage05Cmd = new Command( Locale.get("cmd.Percentage.Main", "0-50%"), Command.SCREEN, 2);
 	private Command per0Cmd = new Command( Locale.get("cmd.Percentage.Remove"), Command.ITEM, 1);
 	private Command per1Cmd = new Command( Locale.get("cmd.Percentage.Use", "10"), Command.ITEM, 2);
@@ -33,6 +33,9 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 	private Command per8Cmd = new Command( Locale.get("cmd.Percentage.Use", "80"), Command.ITEM, 3);
 	private Command per9Cmd = new Command( Locale.get("cmd.Percentage.Use", "90"), Command.ITEM, 4);
 	private Command per10Cmd = new Command( Locale.get("cmd.Percentage.Use", "100"), Command.ITEM, 5);
+	//#else
+	private Command perGaugeCmd = new Command( Locale.get("cmd.Percentage.Gauge"), Command.SCREEN, 1);
+	//#endif
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
 	private int tmp;
 	
@@ -56,6 +59,8 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 			}
 		}
 		this.addCommand(randomizeCmd);
+		this.addCommand(perGaugeCmd);
+		//#if polish.android
 		this.addCommand(percentage05Cmd);
 		UiAccess.addSubCommand( this.per0Cmd, this.percentage05Cmd, this );
 		UiAccess.addSubCommand( this.per1Cmd, this.percentage05Cmd, this );
@@ -69,6 +74,9 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 		UiAccess.addSubCommand( this.per8Cmd, this.percentage610Cmd, this );
 		UiAccess.addSubCommand( this.per9Cmd, this.percentage610Cmd, this );
 		UiAccess.addSubCommand( this.per10Cmd, this.percentage610Cmd, this );
+		//#else
+		this.addCommand(perGaugeCmd);
+		//#endif
 		this.addCommand(quitCmd);
 		this.setCommandListener(this);
 	}
@@ -102,8 +110,7 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 			System.out.println("I AM TRULY CALLED");
 			updateCards(true);
 			GameApp.instance().showRandomizedCards();
-		} else if ( cmd.equals(quitCmd) ) {
-			GameApp.instance().quit();
+		//#if polish.android
 		} else if ( cmd.equals(per0Cmd) ) {
 			this.setPercentage(Dominion.I().getLinearExpansionIndex(this.getCurrentIndex()),
 					Dominion.I().getLinearCardIndex(this.getCurrentIndex()), 0);
@@ -137,6 +144,27 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 		} else if ( cmd.equals(per10Cmd) ) {
 			this.setPercentage(Dominion.I().getLinearExpansionIndex(this.getCurrentIndex()),
 					Dominion.I().getLinearCardIndex(this.getCurrentIndex()), 10);
+		//#else
+		} else if ( cmd.equals(perGaugeCmd) ) {
+			tmp = this.getCurrentIndex();
+			String tmpS = Dominion.I().getExpansion(
+					Dominion.I().getLinearExpansionIndex(tmp)).getName(Dominion.I().getLinearCardIndex(tmp));
+			GaugeForm.instance().setGauge(Locale.get("gauge.card.percentage", tmpS), true, 10, 0);
+			GaugeForm.instance().setGaugeValue(
+					Dominion.I().getExpansion(Dominion.I().getLinearExpansionIndex(tmp)).getPercentage(
+							Dominion.I().getLinearCardIndex(tmp)));
+			GaugeForm.instance().setCommandListener(this);
+			GameApp.instance().changeToScreen(GaugeForm.instance());
+			tmpS = null;
+		} else if ( cmd.getLabel().equals(Locale.get("polish.command.ok")) ) {
+			GameApp.instance().changeToScreen(null);
+			this.setPercentage(tmp, Dominion.I().getLinearExpansionIndex(tmp),
+					Dominion.I().getLinearCardIndex(tmp), GaugeForm.instance().getGaugeValue());
+		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel")) ) {
+			GameApp.instance().changeToScreen(null);
+		//#endif
+		} else if ( cmd.equals(quitCmd) ) {
+			GameApp.instance().quit();
 		}
 	}
 	

@@ -23,7 +23,8 @@ public class InputForm extends Form {
 		super(title);
 		this.addCommand(new Command(Locale.get("polish.command.ok"), Command.OK, 1));
 		this.addCommand(new Command(Locale.get("polish.command.cancel"), Command.CANCEL, 1));
-		//#style inputTextField
+		// #style inputTextField
+		
 		tF = new TextField(Locale.get("screen.Input.inputname"), "Input Name", 15, TextField.ANY);
 		this.append(tF);
 	}

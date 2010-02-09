@@ -99,26 +99,31 @@ public class Dominion {
 		presets[2].setPreset(5, Locale.get("preset.seaside.GiveAndTake"), new int[][] {
 			new int[] { 0, 10 }, new int[] { 0, 11 }, new int[] { 0, 15 }, new int[] { 0, 22 }, new int[] { 3,  0 }, 
 			new int[] { 3,  6 }, new int[] { 3,  8 }, new int[] { 3,  9 }, new int[] { 3, 18 }, new int[] { 3, 20 } });
-		// #debug info
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("base"));
+		//#debug info
 		System.out.println("reading base");
 		readResource(BASE, "base", 25);
-		// #debug info
+		//#debug info
 		System.out.println("size base: " + expansions[0].size());
-		// #debug info
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("promo"));
+		//#debug info
 		System.out.println("reading promo");
 		readResource(PROMO, "promo", 2);
-		// #debug info
+		//#debug info
 		System.out.println("size promo: " + expansions[1].size());
-		// #debug info
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("intrigue"));
+		//#debug info
 		System.out.println("reading intrigue");
 		readResource(INTRIGUE, "intrigue", 25);
-		// #debug info
+		//#debug info
 		System.out.println("size intrigue: " + expansions[2].size());
-		// #debug info
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("seaside"));
+		//#debug info
 		System.out.println("reading seaside");
 		readResource(SEASIDE, "seaside", 26);
-		// #debug info
+		//#debug info
 		System.out.println("size seaside: " + expansions[3].size());
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.cards.settings"));
 		// #debug info
 		System.out.println("reading settings cards");
 		readSettings();

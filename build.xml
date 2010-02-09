@@ -117,7 +117,8 @@
 					<variable name="polish.TextField.useDirectInput" value="true" unless="polish.hasPointerEvents or ${ isOS(Windows) }"/>
 					<variable name="polish.TextField.supportSymbolsEntry" value="false" />	
 					<variable name="polish.TextField.Symbols" value="&quot;@#()&lt;&gt;&amp;;,.:!/\~$%^*" />
-					<variable name="polish.TextField.allowNativeModeSwitch" value="true" />	
+					<variable name="polish.TextField.allowNativeModeSwitch" value="true" />
+					<variable name="polish.Item.ShowCommandsOnHold" value="true" />
 					<variable name="javac.source" value="1.5" if="polish.android" />
 					<variable name="javac.target" value="1.5" if="polish.android" />
 					<variable name="javac.source" value="1.3" unless="polish.android" />
@@ -138,7 +139,7 @@
 						<!--locale name="da" encoding="UTF-8"/-->
 						<locale name="en" encoding="UTF-8"/>
 						<locale name="de" encoding="UTF-8"/>
-						<locale name="pl" encoding="UTF-8"/>
+						<!--locale name="pl" encoding="UTF-8"/-->
 						<locale name="fr" encoding="UTF-8"/>
 						<locale name="ch_SC" encoding="UTF-8"/>
 						<locale name="ch_TC" encoding="UTF-8"/>
@@ -231,7 +232,7 @@
 	</target>
 	
 	<target name="enableAll">
-		<property name="devices" value="Generic/Android,Generic/AnyPhone,Generic/WindowsMobile,Nokia/Series40E3,Sony-Ericsson/JavaPlatform7,Sony-Ericsson/JavaPlatform8"/>
+		<property name="devices" value="Generic/AnyPhone,Nokia/Series40E3,Sony-Ericsson/JavaPlatform7,Generic/WindowsMobile,Generic/Android"/>
 	</target>
 	
 	<target name="enableNokia">
