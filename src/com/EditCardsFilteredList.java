@@ -59,7 +59,6 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 			}
 		}
 		this.addCommand(randomizeCmd);
-		this.addCommand(perGaugeCmd);
 		//#if polish.android
 		this.addCommand(percentage05Cmd);
 		UiAccess.addSubCommand( this.per0Cmd, this.percentage05Cmd, this );
