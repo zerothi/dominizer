@@ -3,59 +3,55 @@
 # App Specific translations
 #
 ################
-### Translate here please
-tab.Preset.title=Presets
-tab.EditCards.title=Edit Cards
-tab.Settings.title=Settings
-tab.Calendar.title=Calendar
+
+tab.Preset.title=Voreinstellungen
+tab.EditCards.title=Karten bearbeiten
+tab.Settings.title=Einstellungen
+tab.Calendar.title=Kalender
 table.heading.Name=Name
 table.heading.Expansion=Erw.
-table.heading.Cost=€
-table.heading.ActionCard=A
+table.heading.Cost=Kosten
+table.heading.ActionCard=Akt
 table.heading.VictoryCard=S
 table.heading.TreasuryCard=G
 table.heading.ReactionCard=R
-table.heading.AttackCard=A
+table.heading.AttackCard=Ang
 table.heading.DurationCard=D
-### Translate here please
-table.heading.PotionCard=P
+table.heading.PotionCard=T
 screen.RandomizedCards.title=Zufällige Karten
-### Translate here please
-screen.RandomizedCards.InputMessage=Saved preset name:
+screen.RandomizedCards.InputMessage=Gespeicherter Set-Name:
 screen.BlackMarket.title=Schwarzmarkt
 screen.BlackMarket.DrawTextInfo=Bitte Karten ziehen
 screen.BlackMarket.ChooseNone=Keine
 screen.BlackMarket.ChooseCards=Wähle eine Karte:
 screen.BlackMarket.InfoMessage=Deine Auswahl:
 screen.BlackMarket.DeckEmpty=Der Schwarzmarkt-Stapel ist verbraucht
-screen.BlackMarket.CancelBuy=Wollen Sie abbrechen kaufen?\n
-### Translate here please (not {x})
-screen.BlackMarket.Ticker=< {0}Bought / Left: {1} / {2} >
-screen.Input.title=Input
+screen.BlackMarket.CancelBuy=Wollen Sie das Kaufen abbrechen?\n
+screen.BlackMarket.Ticker=< {0}Gekauft / Links: {1} / {2} >
+screen.Input.title=Eingabe
 screen.Input.defaultmessage=
-screen.Input.inputname=Input:
+screen.Input.inputname=Eingabe:
 cmd.Randomize.Show=Zufalls-Set
-### Translate here please
-cmd.Randomize.Set=Rand. Set
-cmd.ShowChosenCardInfo=Show info
-cmd.AnotherSet=Another Set
-cmd.SaveAsPreset=Save
-cmd.Options.Main=Options
-cmd.Sort.Main=Sort
-cmd.Sort.ExpName=Exp. - Name
-cmd.Sort.ExpCost=Exp. - Cost
+cmd.Randomize.Set=Zufalls-Set
+cmd.ShowChosenCardInfo=Info zeigen
+cmd.AnotherSet=Neues Set
+cmd.SaveAsPreset=Sichern
+cmd.Options.Main=Optionen
+cmd.Sort.Main=Sortieren
+cmd.Sort.ExpName=Erw. - Name
+cmd.Sort.ExpCost=Erw. - Kosten
 cmd.Sort.Name=Name
-cmd.Sort.CostName=Cost - Name
-cmd.Sort.CostExp=Cost - Exp
-cmd.Percentage.Main=Percentage {0}
-cmd.Percentage.Remove=Remove
-cmd.Percentage.Use=Use {0}%
-cmd.Preset.ShowInfo=Show Cards
-cmd.Preset.DeletePreset=Delete
-cmd.Calendar.AddGame=Add Game
+cmd.Sort.CostName=Kosten - Name
+cmd.Sort.CostExp=Kosten - Erw.
+cmd.Percentage.Main=Prozentsatz {0}
+cmd.Percentage.Remove=Entferne
+cmd.Percentage.Use=Nutze {0}%
+cmd.Preset.ShowInfo=Zeige Karten
+cmd.Preset.DeletePreset=Lösche Voreinstellungen
+cmd.Calendar.AddGame=Spiel hinzufügen
 cmd.BlackMarket=Schwarzmarkt-Stapel
 cmd.BlackMarket.Draw=Neu auswählen
-cmd.BlackMarket.CancelBuy=Abbrechen kaufen
+cmd.BlackMarket.CancelBuy=Kaufvorgang abbrechen
 cmd.BlackMarket.Show=Zeige Schwarzmarkt-Stapel
 cmd.Back=Zurück
 cmd.ShowLog=Zeige Log
@@ -63,20 +59,18 @@ cmd.Quit=Beenden
 cmd.switch=Wechseln
 alert.alert=Achtung
 alert.info=Info
-### Translate here please
-alert.confirmation=Confirm
+alert.confirmation=Bestätigung
 alert.Settings.CouldNotBeRead=Die Einstellungen konnten leider\nnicht geladen werden!
-alert.Settings.CouldNotBeSaved=Die Einstellungen konnten leider\nnicht gespeichert werden
+alert.Settings.CouldNotBeSaved=Die Einstellungen konnten leider\nnicht gespeichert werden!
 alert.QuickSelectExpansions.OnlyPromoSelected=Es können nicht ausschließlich\nPromokarten ausgewählt werden!
 alert.QuickSelectExpansions.NoneSelected=Es wurde keine Erweiterung ausgewählt.\nBitte mindestens eine auswählen!
-alert.CardsFromExpansion.Promo=You cannot have more than 2 cards from the Promo deck.\nUse fewer!
-### Translate here please
-alert.Randomization.Save.IllegalChar=Your save name can not contain the character '#'.\nPlease supply another name.
-alert.Randomization.Availability=Your available cards in '{0}' does not match your minimum card requirement.\nCorrect input!
-alert.Randomization.TotalAvailability=You only have {0} available cards in total.\nNo more sets can be generated!
+alert.CardsFromExpansion.Promo=Das Promo-Deck besteht nicht aus so vielen Karten.\nWähle weniger!
+alert.Randomization.Save.IllegalChar=Es kann nicht unter einem Namen mit '#' gespeichert werden.\nBitte einen anderen Namen wählen.
+alert.Randomization.Availability=In '{0}' sind nicht genügend Karten vorhanden um das gewünschte Minimum zu erfüllen.\nBitte berichtigen!
+alert.Randomization.TotalAvailability=Du hast nur noch {0} Karten zur Verfügung.\nSo können keine Sets mehr generiert werden!
 
 # Expansion=Erweiterung
-# Cost=
+# Cost=Kosten
 # Action=Aktion
 # Victory=Siegpunkt
 # Treasury=Geld
@@ -93,29 +87,28 @@ base=Was für eine Welt
 promo=Promo
 intrigue=Die Intrige
 seaside=Seaside
-### Translate here please
+### No yet known
 alchemy=Alchemy
 prosperity=Prosperity
 card.BlackMarket=Schwarzmarkt
 
-### Translate here please
-preset.base.FirstGame=First Game
-preset.base.BigMoney=Big Money
-preset.base.Interaction=Interaction
-preset.base.SizeDistortion=Size Distortion
-preset.base.VillageSquare=Village Square
-preset.intrigue.VictoryDance=Victory Dance
-preset.intrigue.SecretSchemes=Secret Schemes
-preset.intrigue.BestWishes=Best Wishes
-preset.intrigue.Deconstruction=Deconstruction
-preset.intrigue.HandMadness=Hand Madness
-preset.intrigue.Underlings=Underlings
-preset.seaside.HighSeas=High Seas
-preset.seaside.BuriedTreasure=Buried Treasure
-preset.seaside.Shipwrecks=Shipwrecks
-preset.seaside.ReachForTomorrow=Reach For Tomorrow
-preset.seaside.Repetition=Repetition
-preset.seaside.GiveAndTake=Give and Take
+preset.base.FirstGame=Erstes Spiel
+preset.base.BigMoney=Grosses Geld
+preset.base.Interaction=Interaktion
+preset.base.SizeDistortion=Im Wandel
+preset.base.VillageSquare=Dorfplatz
+preset.intrigue.VictoryDance=Siegestanz
+preset.intrigue.SecretSchemes=Geheime Pläne
+preset.intrigue.BestWishes=Beste Wünsche
+preset.intrigue.Deconstruction=Demontage
+preset.intrigue.HandMadness=Eine Hand voll
+preset.intrigue.Underlings=Untergebene
+preset.seaside.HighSeas=Auf hoher See
+preset.seaside.BuriedTreasure=Vergrabene Schätze
+preset.seaside.Shipwrecks=Schiffswracks
+preset.seaside.ReachForTomorrow=Griff nach den Sternen
+preset.seaside.Repetition=Wiederholungen
+preset.seaside.GiveAndTake=Geben und Nehmen
 
 ################
 #

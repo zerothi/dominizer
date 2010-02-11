@@ -13,6 +13,7 @@ colors {
 	brightFontColor: 			white; 
 	translucentFontColor:  		argb(130, 165,190,247);
 	translucentBrightFontColor: argb(150, 175,210,247);
+	completelyTransparentColor: argb(255, 0 ,0 ,0);
 	
 	maskColor: 					red;
 	splitTop: 					brightBgColor;
@@ -161,7 +162,7 @@ focused {
 }
 
 .mainPopupScreen {
-	repaint-previous-screen: false;
+	repaint-previous-screen: true;
 	padding: 2;
 	padding-left: 10;
 	padding-right: 10;
@@ -171,8 +172,7 @@ focused {
 		top-color: splitTop;
 		bottom-color: splitBot;
 	}
-	layout: horizontal-center | bottom | horizontal-shrink | vertical-shrink | newline-after;
-	
+	layout: bottom | vertical-shrink;
 }
 
 listItem {
@@ -415,7 +415,7 @@ menuItem:hover {
 	padding: 5;
 	font-color: translucentBrightFontColor;
 	background-color: bgColor;
-	layout: expand | left;
+	layout: horizontal-shrink | center;
 }
 
 .filterPopupStyle {
@@ -544,7 +544,11 @@ menuItem:hover {
 	padding: 2px;
 	max-width: 33.3%;
 	layout: expand | center | vertical-center;
-	font-size: small;
+	//#if polish.android
+		font-size: medium;
+	//#else
+		font-size: small;
+	//#endif
 	font-color: fontColor;
 }
 
@@ -654,27 +658,28 @@ menuItem:hover {
 /**
  * The Gauge
  */
-.formGauge extends mainScreen {
+.formGauge extends mainPopupScreen {
 	title-menu: false;
 	padding-left: 5;
 	padding-right: 5;
 	font-size: large;
+	layout: horizontal-center | vertical-center | vertical-shrink;
 }
 
 .loadingGauge {
-	/*view-type: gauge-horizontal-icons;
-	gauge-horizontal-icons-count: 10;
-	gauge-horizontal-icons-image: url( trea1.png );
-	gauge-horizontal-icons-highlight-image: url( trea3.png );
-	gauge-horizontal-icons-highlight-center-image: url( trea6.png );
-	gauge-horizontal-icons-highlight-count: 3;
-	gauge-horizontal-icons-interval: 75;*/
 	gauge-background-color: bgColor;
 	gauge-animation-mode: leftright;
 	gauge-gap-color: hiddenBrightBgColor;
 	gauge-color: eevenBrightColor;
 	background-anchor: h-center | v-center;
 	background: selectedBg;
+	border {
+		type: drop-shadow;
+		inner-color: brightBgColor;
+		outer-color: eevenBrightColor;
+		width: 5;
+		orientation: all;
+	}
 	label-style: labelLoadingGauge;
 	layout: horizontal-center | horizontal-expand;
 }
@@ -682,6 +687,7 @@ menuItem:hover {
 	font-size: large;
 }
 .inputGauge extends loadingGauge {
+	repaint-previous-screen: true;
 	label-style: labelGauge;
 }
 
