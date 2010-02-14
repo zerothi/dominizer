@@ -43,6 +43,7 @@ Workshop=24
 # This is Promo game:
 Black Market=0
 Envoy=1
+Stash=2
 
 # This is Intrigue game:
 Baron=0

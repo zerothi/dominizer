@@ -1,82 +1,77 @@
+                                                                     
+                                                                     
+                                                                     
+                                             
 ################
 #
 # App Specific translations
 #
 ################
-
-### Translate here please
-tab.Preset.title=Presets
-tab.EditCards.title=Edit Cards
-tab.Settings.title=Settings
-tab.Calendar.title=Calendar
+tab.Preset.title=Sets personnalisés
+tab.EditCards.title=Éditer les cartes
+tab.Settings.title=Réglages
+tab.Calendar.title=Calendrier
 table.heading.Name=Nom
 table.heading.Expansion=Ext.
-table.heading.Cost=€
+table.heading.Cost=Coût
 table.heading.ActionCard=A
 table.heading.VictoryCard=V
 table.heading.TreasuryCard=T
 table.heading.ReactionCard=R
 table.heading.AttackCard=A
 table.heading.DurationCard=D
-### Translate here please
 table.heading.PotionCard=P
 screen.RandomizedCards.title=Cartes aléatoires
-### Translate here please
-screen.RandomizedCards.InputMessage=Saved preset name:
+screen.RandomizedCards.InputMessage=Nom du set personnalisé :
 screen.BlackMarket.title=Marché noir
-screen.BlackMarket.DrawTextInfo=S'il vous plaît tirer des cartes
-screen.BlackMarket.ChooseNone=Nul
-screen.BlackMarket.ChooseCards=Choisir une carte:
-screen.BlackMarket.InfoMessage=Vous avez choisi: 
-screen.BlackMarket.DeckEmpty=Black Market deck est vide
-### Translate here please
-screen.BlackMarket.CancelBuy=Will you redo the buy?\n
+screen.BlackMarket.DrawTextInfo=Tirez des cartes
+screen.BlackMarket.ChooseNone=Aucune
+screen.BlackMarket.ChooseCards=Choisissez une carte :
+screen.BlackMarket.InfoMessage=Vous avez choisi : 
+screen.BlackMarket.DeckEmpty=La pile du marché noir est vide
+screen.BlackMarket.CancelBuy=Voulez-vous annuler l'achat ?\n
 screen.BlackMarket.Ticker=< {0}Bought / Left: {1} / {2} >
 screen.Input.title=Input
 screen.Input.defaultmessage=
 screen.Input.inputname=Input:
 cmd.Randomize=Mélanger
-### Translate here please
-cmd.Randomize.Set=Rand. Set
-cmd.ShowChosenCardInfo=Show info
-cmd.AnotherSet=Another Set
-cmd.SaveAsPreset=Save
+cmd.Randomize.Set=Set au hasard
+cmd.ShowChosenCardInfo=Montrer les infos
+cmd.AnotherSet=Autre set
+cmd.SaveAsPreset=Sauver
 cmd.Options.Main=Options
-cmd.Sort.Main=Sort
-cmd.Sort.ExpName=Exp. - Name
-cmd.Sort.ExpCost=Exp. - Cost
-cmd.Sort.Name=Name
-cmd.Sort.CostName=Cost - Name
-cmd.Sort.CostExp=Cost - Exp
-cmd.Percentage.Main=Percentage {0}
-cmd.Percentage.Remove=Remove
-cmd.Percentage.Use=Use {0}%
-cmd.Preset.ShowInfo=Show Cards
-cmd.Preset.DeletePreset=Delete
-cmd.Calendar.AddGame=Add Game
-cmd.BlackMarket=Black Market Deck
-cmd.BlackMarket.Draw=Draw New
-cmd.BlackMarket.CancelBuy=Annuler acheter
-cmd.BlackMarket.Show=Show BM deck
+cmd.Sort.Main=Trier
+cmd.Sort.ExpName=Ext. - Nom
+cmd.Sort.ExpCost=Ext. - Coût
+cmd.Sort.Name=Nom
+cmd.Sort.CostName=Coût - Nom
+cmd.Sort.CostExp=Coût - Ext.
+cmd.Percentage.Main=Pourcentage {0}
+cmd.Percentage.Remove=Enlever
+cmd.Percentage.Use=Utiliser {0}%
+cmd.Preset.ShowInfo=Montrer les cartes
+cmd.Preset.DeletePreset=Effacer
+cmd.Calendar.AddGame=Ajouter un jeu
+cmd.BlackMarket=Pile du marché noir
+cmd.BlackMarket.Draw=Piocher une nouvelle carte
+cmd.BlackMarket.CancelBuy=Annuler l'achat
+cmd.BlackMarket.Show=Montrer la pile du marché noir
 cmd.Back=Retour
 cmd.ShowLog=Afficher le journal
 cmd.Quit=Quitter
 cmd.switch=Basculer
-### Translate here please
-alert.loading=Loading
+alert.loading=Chargement
 alert.alert=Alerte
 alert.info=Info
-alert.confirmation=Confirm
-### Translate here please
-alert.Settings.CouldNotBeRead=Settings could not be read!\nSorry.
-alert.Settings.CouldNotBeSaved=Settings could not be saved!\nSorry.
-alert.QuickSelectExpansions.OnlyPromoSelected=Vous n'avez sélectionné que des cartes promotionnelles.\nElargissez votre sélection !
+alert.confirmation=Confirmer
+alert.Settings.CouldNotBeRead=Les réglages n'ont pas pu être chargés !\nDésolé.
+alert.Settings.CouldNotBeSaved=Les réglages n'ont pas pu être sauvés !\nDésolé.
+alert.QuickSelectExpansions.OnlyPromoSelected=Vous n'avez choisi que des cartes promotionnelles.\nÉlargissez votre sélection !
 alert.QuickSelectExpansions.NoneSelected=Vous n'avez sélectionné aucune extension.\nChoisissez-en au moins une !
-### Translate here please
-alert.CardsFromExpansion.Promo=You cannot have more than 2 cards from the Promo deck.\nUse fewer!
-alert.Randomization.Save.IllegalChar=Your save name can not contain the character '#'.\nPlease supply another name.
-alert.Randomization.Availability=Your available cards in '{0}' does not match your minimum card requirement.\nCorrect input!
-alert.Randomization.TotalAvailability=You only have {0} available cards in total.\nNo more sets can be generated!
+alert.CardsFromExpansion.Promo=Vous ne pouvez pas choisir plus de 3 cartes promotionnelles.\nSélectionnez-en moins !
+alert.Randomization.Save.IllegalChar=Le caractère '#' ne peut pas être utilisé.\nVeuillez choisir un autre nom.
+alert.Randomization.Availability=Les cartes disponibles dans '{0}' sont moins nombreuses que votre nombre minimal souhaité.\nCorrigez vos choix !
+alert.Randomization.TotalAvailability=Vous n'avez que {0} cartes disponibles au total.\nAucun autre set ne peut plus être généré !
 
 ################
 #
@@ -89,29 +84,29 @@ promo=Promo
 intrigue=Intrigue
 seaside=Rivages
 ### Translate here please
-alchemy=Alchemy
-prosperity=Prosperity
+alchemy=Alchimie
+prosperity=Prosperité
 card.BlackMarket=Marché noir
 
 
 ### Translate here please
-preset.base.FirstGame=First Game
-preset.base.BigMoney=Big Money
+preset.base.FirstGame=Les premières parties
+preset.base.BigMoney=Richesses et trésors
 preset.base.Interaction=Interaction
-preset.base.SizeDistortion=Size Distortion
-preset.base.VillageSquare=Village Square
-preset.intrigue.VictoryDance=Victory Dance
-preset.intrigue.SecretSchemes=Secret Schemes
-preset.intrigue.BestWishes=Best Wishes
-preset.intrigue.Deconstruction=Deconstruction
-preset.intrigue.HandMadness=Hand Madness
-preset.intrigue.Underlings=Underlings
-preset.seaside.HighSeas=High Seas
-preset.seaside.BuriedTreasure=Buried Treasure
-preset.seaside.Shipwrecks=Shipwrecks
-preset.seaside.ReachForTomorrow=Reach For Tomorrow
-preset.seaside.Repetition=Repetition
-preset.seaside.GiveAndTake=Give and Take
+preset.base.SizeDistortion=Changement de taille
+preset.base.VillageSquare=Place du Village
+preset.intrigue.VictoryDance=Danse de la victoire
+preset.intrigue.SecretSchemes=Manigances
+preset.intrigue.BestWishes=Meilleurs voeux
+preset.intrigue.Deconstruction=Déconstruction
+preset.intrigue.HandMadness=La corruption du pouvoir
+preset.intrigue.Underlings=Subalternes
+preset.seaside.HighSeas=Haute mer
+preset.seaside.BuriedTreasure=Trésors enfouis
+preset.seaside.Shipwrecks=Naufrages
+preset.seaside.ReachForTomorrow=En route vers l'aventure
+preset.seaside.Repetition=À répétitions
+preset.seaside.GiveAndTake=Donnant donnant
 
 ################
 #

@@ -25,46 +25,26 @@ import de.enough.polish.util.Locale;
 public class QuickRandomizeForm extends List implements CommandListener {
 
 	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
+	private Command gaugeCmd = new Command( Locale.get("cmd.SetCards.Gauge"), Command.SCREEN, 1);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
 	public boolean[] flags = new boolean[6];
+	private int tmp = 0;
 	
 	public QuickRandomizeForm(String title, int listType) {
 		//#style mainScreen
 		super(title, listType);
-		try {
-			//#style label
-			this.append(Dominion.getExpansionName(0), Image.createImage("/ba.png"));
-			//#style label
-			this.append(Dominion.getExpansionName(1), Image.createImage("/pr.png"));
-			//#style label
-			this.append(Dominion.getExpansionName(2), Image.createImage("/in.png"));
-			//#style label
-			this.append(Dominion.getExpansionName(3), Image.createImage("/se.png"));
-		} catch (IOException e) {
-			//#style label
-			this.append(Dominion.getExpansionName(0), null);
-			//#style label
-			this.append(Dominion.getExpansionName(1), null);
-			//#style label
-			this.append(Dominion.getExpansionName(2), null);
-			//#style label
-			this.append(Dominion.getExpansionName(3), null);
-		}
-		//#style label
-		this.append("Alchemy", null);
-		//#style label
-		this.append("Prosperity", null);
-		for ( int i = 0 ; i < Dominion.I().getExpansions() ; i++ ) {
-			if ( Dominion.I().getNumberOfExpansionCards()[i] > 0 ) {
+		for ( tmp = 0 ; tmp < Dominion.I().getExpansions() ; tmp++ ) {
+			if ( Dominion.I().getNumberOfExpansionCards()[tmp] > 0 ) {
 				//#style label
-				this.set(i, Dominion.getExpansionName(i) + " " + Dominion.I().getNumberOfExpansionCards()[i], this.getImage(i));
+				this.append(Dominion.getExpansionName(tmp) + " " + Dominion.I().getNumberOfExpansionCards()[tmp], Dominion.getExpansionImage(tmp));
 			} else {
 				//#style label
-				this.set(i, Dominion.getExpansionName(i), this.getImage(i));
+				this.append(Dominion.getExpansionName(tmp), Dominion.getExpansionImage(tmp));
 			}
-			this.setSelectedIndex(i, Dominion.I().getExpansionPlayingStates()[i]);
+			this.setSelectedIndex(tmp, Dominion.I().getExpansionPlayingStates()[tmp]);
 		}
 		this.addCommand(this.quickRandomizeCardsCmd);
+		this.addCommand(this.gaugeCmd);
 		this.addCommand(this.quitCmd);
 		this.setCommandListener(this);
 	}
@@ -75,6 +55,22 @@ public class QuickRandomizeForm extends List implements CommandListener {
 			Dominion.I().setExpansionPlayingState(flags);
 			GameApp.instance().ecFL.updateCards(false);
 			GameApp.instance().showRandomizedCards();
+		} else if ( cmd.equals(gaugeCmd) ) {
+			tmp = UiAccess.getFocusedIndex(this);
+			String tmpS = Dominion.getExpansionName(tmp);
+			if ( tmp == Dominion.PROMO )
+				GaugeForm.instance().setGauge(Locale.get("gauge.expansion.setCards", tmpS), true, 3, 0);
+			else
+				GaugeForm.instance().setGauge(Locale.get("gauge.expansion.setCards", tmpS), true, 10, 0);
+			GaugeForm.instance().setGaugeValue(Dominion.I().getNumberOfExpansionCards()[tmp]);
+			GaugeForm.instance().setCommandListener(this);
+			GameApp.instance().changeToScreen(GaugeForm.instance());
+			tmpS = null;
+		} else if ( cmd.getLabel().equals(Locale.get("polish.command.ok")) ) {
+			GameApp.instance().changeToScreen(null);
+			this.setCardsFromExpansion(tmp, GaugeForm.instance().getGaugeValue());
+		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel")) ) {
+			GameApp.instance().changeToScreen(null);
 		} else if ( cmd.equals(this.quitCmd) )
 			GameApp.instance().quit();
 	}
@@ -105,27 +101,27 @@ public class QuickRandomizeForm extends List implements CommandListener {
 		
 	}
 
-	private void setCardsFromExpansion(int expansion, int numberOfCards) {
-		if ( -1 < expansion & expansion < Dominion.I().getExpansions() ) {
-			if ( expansion == 1 && numberOfCards > 2 )
+	private void setCardsFromExpansion(int exp, int numberOfCards) {
+		if ( -1 < exp & exp < Dominion.I().getExpansions() ) {
+			if ( Dominion.I().getExpansion(exp).size() < numberOfCards )
 				GameApp.instance().showAlert(Locale.get("alert.CardsFromExpansion.Promo"));
 			else {
 				if ( numberOfCards > 0 ) {
 					//#style label
-					this.set(expansion, Dominion.getExpansionName(expansion) + " " + numberOfCards, this.getImage(expansion));
-					Dominion.I().setExpansionPlayingState(expansion, true);
+					this.set(exp, Dominion.getExpansionName(exp) + " " + numberOfCards, this.getImage(exp));
+					Dominion.I().setExpansionPlayingState(exp, true);
 				} else {
 					//#style label
-					this.set(expansion, Dominion.getExpansionName(expansion), this.getImage(expansion));
+					this.set(exp, Dominion.getExpansionName(exp), this.getImage(exp));
 				}
-				this.setSelectedIndex(expansion, Dominion.I().getExpansionPlayingStates()[expansion]);
-				Dominion.I().setCardsUsedForExpansion(expansion, numberOfCards);
+				this.setSelectedIndex(exp, Dominion.I().getExpansionPlayingStates()[exp]);
+				Dominion.I().setCardsUsedForExpansion(exp, numberOfCards);
 			}
-			if ( expansion == 0 )
+			if ( exp == 0 )
 				UiAccess.setFocusedIndex(this, 1);
 			else 
 				UiAccess.setFocusedIndex(this, 0);
-			UiAccess.setFocusedIndex(this, expansion);
+			UiAccess.setFocusedIndex(this, exp);
 		}
 	}
 }

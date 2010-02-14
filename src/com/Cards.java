@@ -2,13 +2,11 @@ package com;
 
 import javax.microedition.lcdui.Image;
 
-import de.enough.polish.util.Locale;
-
 
 public class Cards {
 
 	private String[] name = null;
-	private String[] expansion = null;
+	private int[] expansion = null;
 	/*
 	 * #0 = Is Playing
 	 * #1 = Is Selected for availability
@@ -28,19 +26,21 @@ public class Cards {
 	private int[] percentage = null;
 
 	public Cards(int size, int isSet) {
-		name = new String[size];
-		isGamingRelated = new boolean[size][3];
-		cost = new int[size];
-		isSpecific = new boolean[size][6];
-		for ( int i = 0 ; i < size ; i++ ) {
-			isGamingRelated[i][1] = true;
-			isGamingRelated[i][2] = true;
+		if ( size > 0 ) {
+			name = new String[size];
+			isGamingRelated = new boolean[size][3];
+			cost = new int[size];
+			isSpecific = new boolean[size][6];
+			for ( int i = 0 ; i < size ; i++ ) {
+				isGamingRelated[i][1] = true;
+				isGamingRelated[i][2] = true;
+			}
+			if ( isSet == IS_SET )
+				expansion = new int[1];
+			else
+				expansion = new int[size];
+			percentage = new int[size];
 		}
-		if ( isSet == IS_SET )
-			expansion = new String[1];
-		else
-			expansion = new String[size];
-		percentage = new int[size];
 	}
 
 	/**
@@ -61,14 +61,16 @@ public class Cards {
 	/**
 	 * @return the game
 	 */
-	public String getExpansion() {
-		return expansion[0];
+	public int getExpansion() {
+		if ( expansion != null)
+			return expansion[0];
+		return -1;
 	}
 	
 	/**
 	 * @return the game
 	 */
-	public String getExpansion(int index) {
+	public int getExpansion(int index) {
 		if ( expansion.length == 1 )
 			return expansion[0];
 		return expansion[index];
@@ -78,7 +80,7 @@ public class Cards {
 	 * @param game
 	 *            the game to set
 	 */
-	public void setExpansion(int index, String expansion) {
+	public void setExpansion(int index, int expansion) {
 		this.expansion[index] = expansion;
 	}
 	
@@ -100,7 +102,7 @@ public class Cards {
 	 * @param game
 	 *            the game to set
 	 */
-	public void setExpansion(String expansion) {
+	public void setExpansion(int expansion) {
 		this.expansion[0] = expansion;
 	}
 	
@@ -277,7 +279,7 @@ public class Cards {
 	public Object[] getCard(int index) {
 		Object[] tmp = new Object[12];
 		tmp[0] = getName(index);
-		tmp[1] = getExpansion(index);
+		tmp[1] = new Integer(getExpansion(index));
 		tmp[2] = new Integer(getCost(index));
 		tmp[3] = new Boolean(isAction(index));
 		tmp[4] = new Boolean(isVictory(index));
@@ -294,8 +296,8 @@ public class Cards {
 	public int fromExpansion(int exp) {
 		int tmp = 0;
 		for ( int i = 0 ; i < size() ; i++ ) {
-			if ( this.getExpansion(i) != null )
-				if ( this.getExpansion(i).equals(Cards.getExpansionName(exp)) )
+			if ( this.getExpansion(i) > -1 )
+				if ( this.getExpansion(i) == exp )
 					tmp++;
 		}
 		return tmp;
@@ -313,7 +315,7 @@ public class Cards {
 			System.out.println("cardinfo 0 is null ");
 		}
 		this.setName(index, cardInfo[0].toString());
-		this.setExpansion(index, cardInfo[1].toString());
+		this.setExpansion(index, ((Integer)cardInfo[1]).intValue());
 		this.setCost(index, ((Integer)cardInfo[2]).intValue());	
 		this.setAction(index, ((Boolean)cardInfo[3]).booleanValue());
 		this.setVictory(index, ((Boolean)cardInfo[4]).booleanValue());
@@ -349,23 +351,11 @@ public class Cards {
 				return compare(first, compareTo, COMPARE_COST);
 			return compare(first, compareTo, COMPARE_NAME);
 		case COMPARE_EXPANSION:
-			if ( first[1].toString().equals(compareTo[1].toString()) )
-				return 0;
-			else if ( first[1].toString().equals(Locale.get("rms.base")) )
-				return -1;
-			else if ( first[1].toString().equals(Locale.get("rms.promo")) )
-				if ( compareTo[1].toString().equals(Locale.get("rms.base")) )
-					return 1;
-				else
-					return -1;
-			else if ( first[1].toString().equals(Locale.get("rms.intrigue")) )
-				if ( compareTo[1].toString().equals(Locale.get("rms.base")) || compareTo[1].toString().equals(Locale.get("rms.promo")) )
-					return 1;
-				else
-					return -1;
-			else if ( first[1].toString().equals(Locale.get("rms.seaside")) )
+			if ( ((Integer) first[1]).intValue() > ((Integer) compareTo[1]).intValue() )
 				return 1;
-			else return 1;
+			else if ( ((Integer) first[1]).intValue() < ((Integer) compareTo[1]).intValue() )
+				return -1;
+			else return 0;
 		case COMPARE_COST:
 			if ( ((Integer) first[2]).intValue() > ((Integer) compareTo[2]).intValue() )
 				return 1;
@@ -391,6 +381,8 @@ public class Cards {
 	}
 	
 	public int size() {
+		if ( name == null )
+			return 0;
 		return name.length;
 	}
 	
@@ -454,24 +446,7 @@ public class Cards {
 		return null;
 	}
 	
-	public static String getExpansionName(int expansion) {
-		switch (expansion) {
-		case Dominion.BASE:
-			return "ba";
-		case Dominion.PROMO:
-			return "pr";
-		case Dominion.INTRIGUE:
-			return "in";
-		case Dominion.SEASIDE:
-			return "se";
-		case Dominion.ALCHEMY:
-			return "al";
-		case Dominion.PROSPERITY:
-			return "po";
-		default:
-			return "";
-		}
-	}
+	
 	
 	public static final int COMPARE_EXPANSION_NAME = 0;
 	public static final int COMPARE_EXPANSION_COST = 1;
@@ -494,5 +469,6 @@ public class Cards {
 	public static final int TYPE_ACTION_VICTORY = 5;
 	public static final int TYPE_TREASURY_VICTORY = 6;
 	public static final int TYPE_ACTION_DURATION = 7;
+	public static final int TYPE_POTION = 8;
 
 }

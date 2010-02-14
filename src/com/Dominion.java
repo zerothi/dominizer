@@ -1,19 +1,22 @@
 package com;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Random;
+
+import javax.microedition.lcdui.Image;
 
 import de.enough.polish.util.Locale;
 
 public class Dominion {
 	private static Dominion dom = null;
-	public static final int TOTAL_CARDS = 78;
-	public static final int BASE = 0;
-	public static final int PROMO = 1;
-	public static final int INTRIGUE = 2;
-	public static final int SEASIDE = 3;
-	public static final int ALCHEMY = 4;
-	public static final int PROSPERITY = 5;
+	public static final int TOTAL_CARDS = 79;
+	public static final int BASE = 0; // has 25 cards
+	public static final int INTRIGUE = 1; // has 25 cards
+	public static final int SEASIDE = 2; // has 26 cards
+	public static final int ALCHEMY = 3;
+	public static final int PROSPERITY = 4;
+	public static final int PROMO = 5; // has 3 cards
 	public static final int USER = 10;
 	public static boolean RANDOMIZE_COMPLETELY_NEW = true;
 	private Random selector = null;
@@ -23,8 +26,8 @@ public class Dominion {
 	private int[][] holdCards = new int[10][2];
 	private CardPresets[] presets = null;
 	private int numberOfRandomCards = 10;
-	private boolean[] playingExpansions = new boolean[] { true, true, true, true };
-	private int[] numberOfCardsFromExp = new int[] { 0, 0, 0, 0 };
+	private boolean[] playingExpansions = new boolean[] { true, true, true, true, true, false };
+	private int[] numberOfCardsFromExp = new int[] { 0, 0, 0, 0, 0, 0 };
 	private StringBuffer sb;
 
 	
@@ -36,7 +39,7 @@ public class Dominion {
 	
 	private Dominion() {
 		selector = new Random(2005023);
-		expansions = new Cards[4];
+		expansions = new Cards[6];
 		for ( int i = 0 ; i < holdCards.length ; i++ ) {
 			holdCards[i][0] = -1;
 			holdCards[i][1] = -1;
@@ -45,58 +48,58 @@ public class Dominion {
 		 * last is used when reading user presets!
 		 */ 
 		presets = new CardPresets[4]; 
-		presets[0] = new CardPresets(5);
-		presets[0].setPreset(0, Locale.get("preset.base.FirstGame"), new int[][] { 
+		presets[BASE] = new CardPresets(5);
+		presets[BASE].setPreset(0, Locale.get("preset.base.FirstGame"), new int[][] { 
 			new int[] { 0,  2 }, new int[] { 0, 11 }, new int[] { 0, 12 }, new int[] { 0, 13 }, new int[] { 0, 14 }, 
 			new int[] { 0, 16 }, new int[] { 0, 17 }, new int[] { 0, 21 }, new int[] { 0, 23 }, new int[] { 0, 24 } });
-		presets[0].setPreset(1, Locale.get("preset.base.BigMoney"), new int[][] { 
+		presets[BASE].setPreset(1, Locale.get("preset.base.BigMoney"), new int[][] { 
 			new int[] { 0, 0 }, new int[] { 0,  1 }, new int[] { 0,  3 }, new int[] { 0,  4 }, new int[] { 0,  6 }, 
 			new int[] { 0, 9 }, new int[] { 0, 11 }, new int[] { 0, 13 }, new int[] { 0, 15 }, new int[] { 0, 20 } });
-		presets[0].setPreset(2, Locale.get("preset.base.Interaction"), new int[][] { 
+		presets[BASE].setPreset(2, Locale.get("preset.base.Interaction"), new int[][] { 
 			new int[] { 0,  1 }, new int[] { 0,  3 }, new int[] { 0,  5 }, new int[] { 0,  7 }, new int[] { 0, 10 }, 
 			new int[] { 0, 12 }, new int[] { 0, 14 }, new int[] { 0, 18 }, new int[] { 0, 23 }, new int[] { 0, 24 } });
-		presets[0].setPreset(3, Locale.get("preset.base.SizeDistortion"), new int[][] {
+		presets[BASE].setPreset(3, Locale.get("preset.base.SizeDistortion"), new int[][] {
 			new int[] { 0,  2 }, new int[] { 0,  4 }, new int[] { 0,  6 }, new int[] { 0,  8 }, new int[] { 0,  9 }, 
 			new int[] { 0, 19 }, new int[] { 0, 21 }, new int[] { 0, 22 }, new int[] { 0, 23 }, new int[] { 0, 24 } });
-		presets[0].setPreset(4, Locale.get("preset.base.VillageSquare"), new int[][] {
+		presets[BASE].setPreset(4, Locale.get("preset.base.VillageSquare"), new int[][] {
 			new int[] { 0,  1 }, new int[] { 0,  2 }, new int[] { 0,  7 }, new int[] { 0, 10 }, new int[] { 0, 11 }, 
 			new int[] { 0, 16 }, new int[] { 0, 17 }, new int[] { 0, 20 }, new int[] { 0, 21 }, new int[] { 0, 23 } });
-		presets[1] = new CardPresets(6);
-		presets[1].setPreset(0, Locale.get("preset.intrigue.VictoryDance"), new int[][] {
+		presets[INTRIGUE] = new CardPresets(6);
+		presets[INTRIGUE].setPreset(0, Locale.get("preset.intrigue.VictoryDance"), new int[][] {
 			new int[] { 2,  1 }, new int[] { 2,  5 }, new int[] { 2,  6 }, new int[] { 2,  7 }, new int[] { 2,  8 }, 
 			new int[] { 2,  9 }, new int[] { 2, 12 }, new int[] { 2, 13 }, new int[] { 2, 15 }, new int[] { 2, 23 } });
-		presets[1].setPreset(1, Locale.get("preset.intrigue.SecretSchemes"), new int[][] {
+		presets[INTRIGUE].setPreset(1, Locale.get("preset.intrigue.SecretSchemes"), new int[][] {
 			new int[] { 2,  2 }, new int[] { 2,  7 }, new int[] { 2,  8 }, new int[] { 2, 13 }, new int[] { 2, 14 }, 
 			new int[] { 2, 17 }, new int[] { 2, 18 }, new int[] { 2, 20 }, new int[] { 2, 21 }, new int[] { 2, 22 } });
-		presets[1].setPreset(2, Locale.get("preset.intrigue.BestWishes"), new int[][] {
+		presets[INTRIGUE].setPreset(2, Locale.get("preset.intrigue.BestWishes"), new int[][] {
 			new int[] { 2,  3 }, new int[] { 2,  4 }, new int[] { 2,  9 }, new int[] { 2, 15 }, new int[] { 2, 17 }, 
 			new int[] { 2, 18 }, new int[] { 2, 20 }, new int[] { 2, 21 }, new int[] { 2, 23 }, new int[] { 2, 24 } });
-		presets[1].setPreset(3, Locale.get("preset.intrigue.Deconstruction"), new int[][] {
+		presets[INTRIGUE].setPreset(3, Locale.get("preset.intrigue.Deconstruction"), new int[][] {
 			new int[] { 0, 16 }, new int[] { 0, 18 }, new int[] { 0, 19 }, new int[] { 0, 20 }, new int[] { 2,  1 }, 
 			new int[] { 2, 10 }, new int[] { 2, 14 }, new int[] { 2, 16 }, new int[] { 2, 19 }, new int[] { 2, 20 } });
-		presets[1].setPreset(4, Locale.get("preset.intrigue.HandMadness"), new int[][] {
+		presets[INTRIGUE].setPreset(4, Locale.get("preset.intrigue.HandMadness"), new int[][] {
 			new int[] { 0,  1 }, new int[] { 0,  3 }, new int[] { 0,  5 }, new int[] { 0, 12 }, new int[] { 0, 13 }, 
 			new int[] { 2,  4 }, new int[] { 2, 11 }, new int[] { 2, 12 }, new int[] { 2, 18 }, new int[] { 2, 20 } });
-		presets[1].setPreset(5, Locale.get("preset.intrigue.Underlings"), new int[][] {
+		presets[INTRIGUE].setPreset(5, Locale.get("preset.intrigue.Underlings"), new int[][] {
 			new int[] { 0,  2 }, new int[] { 0,  7 }, new int[] { 0, 10 }, new int[] { 0, 22 }, new int[] { 2,  0 }, 
 			new int[] { 2,  9 }, new int[] { 2, 11 }, new int[] { 2, 12 }, new int[] { 2, 13 }, new int[] { 2, 18 } });
-		presets[2] = new CardPresets(6);
-		presets[2].setPreset(0, Locale.get("preset.seaside.HighSeas"), new int[][] {
+		presets[SEASIDE] = new CardPresets(6);
+		presets[SEASIDE].setPreset(0, Locale.get("preset.seaside.HighSeas"), new int[][] {
 			new int[] { 3,  1 }, new int[] { 3,  2 }, new int[] { 3,  4 }, new int[] { 3,  5 }, new int[] { 3,  8 }, 
 			new int[] { 3,  9 }, new int[] { 3, 11 }, new int[] { 3, 17 }, new int[] { 3, 20 }, new int[] { 3, 25 } });
-		presets[2].setPreset(1, Locale.get("preset.seaside.BuriedTreasure"), new int[][] {
+		presets[SEASIDE].setPreset(1, Locale.get("preset.seaside.BuriedTreasure"), new int[][] {
 			new int[] { 3,  0 }, new int[] { 3,  3 }, new int[] { 3,  6 }, new int[] { 3, 10 }, new int[] { 3, 15 }, 
 			new int[] { 3, 16 }, new int[] { 3, 21 }, new int[] { 3, 22 }, new int[] { 3, 24 }, new int[] { 3, 25 } });
-		presets[2].setPreset(2, Locale.get("preset.seaside.Shipwrecks"), new int[][] {
+		presets[SEASIDE].setPreset(2, Locale.get("preset.seaside.Shipwrecks"), new int[][] {
 			new int[] { 3,  7 }, new int[] { 3, 12 }, new int[] { 3, 13 }, new int[] { 3, 14 }, new int[] { 3, 16 }, 
 			new int[] { 3, 18 }, new int[] { 3, 19 }, new int[] { 3, 20 }, new int[] { 3, 23 }, new int[] { 3, 24 } });
-		presets[2].setPreset(3, Locale.get("preset.seaside.ReachForTomorrow"), new int[][] {
+		presets[SEASIDE].setPreset(3, Locale.get("preset.seaside.ReachForTomorrow"), new int[][] {
 			new int[] { 0,  0 }, new int[] { 0,  2 }, new int[] { 0,  5 }, new int[] { 0, 21 }, new int[] { 0, 18 }, 
 			new int[] { 3,  3 }, new int[] { 3,  7 }, new int[] { 3, 11 }, new int[] { 3, 19 }, new int[] { 3, 22 } });
-		presets[2].setPreset(4, Locale.get("preset.seaside.Repetition"), new int[][] {
+		presets[SEASIDE].setPreset(4, Locale.get("preset.seaside.Repetition"), new int[][] {
 			new int[] { 0,  3 }, new int[] { 0,  7 }, new int[] { 0, 12 }, new int[] { 0, 24 }, new int[] { 3,  2 }, 
 			new int[] { 3,  5 }, new int[] { 3, 15 }, new int[] { 3, 16 }, new int[] { 3, 17 }, new int[] { 3, 23 } });
-		presets[2].setPreset(5, Locale.get("preset.seaside.GiveAndTake"), new int[][] {
+		presets[SEASIDE].setPreset(5, Locale.get("preset.seaside.GiveAndTake"), new int[][] {
 			new int[] { 0, 10 }, new int[] { 0, 11 }, new int[] { 0, 15 }, new int[] { 0, 22 }, new int[] { 3,  0 }, 
 			new int[] { 3,  6 }, new int[] { 3,  8 }, new int[] { 3,  9 }, new int[] { 3, 18 }, new int[] { 3, 20 } });
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("base"));
@@ -104,25 +107,37 @@ public class Dominion {
 		System.out.println("reading base");
 		readResource(BASE, "base", 25);
 		//#debug info
-		System.out.println("size base: " + expansions[0].size());
-		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("promo"));
-		//#debug info
-		System.out.println("reading promo");
-		readResource(PROMO, "promo", 2);
-		//#debug info
-		System.out.println("size promo: " + expansions[1].size());
+		System.out.println("size base: " + expansions[BASE].size());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("intrigue"));
 		//#debug info
 		System.out.println("reading intrigue");
 		readResource(INTRIGUE, "intrigue", 25);
 		//#debug info
-		System.out.println("size intrigue: " + expansions[2].size());
+		System.out.println("size intrigue: " + expansions[INTRIGUE].size());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("seaside"));
 		//#debug info
 		System.out.println("reading seaside");
 		readResource(SEASIDE, "seaside", 26);
 		//#debug info
-		System.out.println("size seaside: " + expansions[3].size());
+		System.out.println("size seaside: " + expansions[SEASIDE].size());
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("alchemy"));
+		//#debug info
+		System.out.println("reading alchemy");
+		readResource(ALCHEMY, "alchemy", 0); // real 13
+		//#debug info
+		System.out.println("size alchemy: " + expansions[ALCHEMY].size());
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("prosperity"));
+		//#debug info
+		System.out.println("reading prosperity");
+		readResource(PROSPERITY, "prosperity", 0); // real supposedly 25
+		//#debug info
+		System.out.println("size prosperity: " + expansions[PROSPERITY].size());
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("promo"));
+		//#debug info
+		System.out.println("reading promo");
+		readResource(PROMO, "promo", 3);
+		//#debug info
+		System.out.println("size promo: " + expansions[PROMO].size());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.cards.settings"));
 		// #debug info
 		System.out.println("reading settings cards");
@@ -210,11 +225,13 @@ public class Dominion {
 	}
 
 	public String getCardsUsedForExpansionAsSave() {
-		sb = new StringBuffer(4);
+		sb = new StringBuffer(6);
 		sb.append(numberOfCardsFromExp[0]);
 		sb.append(numberOfCardsFromExp[1]);
 		sb.append(numberOfCardsFromExp[2]);
 		sb.append(numberOfCardsFromExp[3]);
+		sb.append(numberOfCardsFromExp[4]);
+		sb.append(numberOfCardsFromExp[5]);
 		return sb.toString();
 	}
 
@@ -250,11 +267,13 @@ public class Dominion {
 	}
 
 	public String getExpansionPlayingStatesAsSave() {
-		sb = new StringBuffer(4);
+		sb = new StringBuffer(6);
 		sb.append(playingExpansions[0] ? "1" : "0");
 		sb.append(playingExpansions[1] ? "1" : "0");
 		sb.append(playingExpansions[2] ? "1" : "0");
 		sb.append(playingExpansions[3] ? "1" : "0");
+		sb.append(playingExpansions[4] ? "1" : "0");
+		sb.append(playingExpansions[5] ? "1" : "0");
 		return sb.toString();
 	}
 
@@ -263,38 +282,34 @@ public class Dominion {
 	}
 
 	public int getLinearCardIndex(int i) {
+		int tmp = 0;		
 		if (i < 0)
 			return -1;
-		if (i < expansions[0].size())
-			return i;
-		else if (i < expansions[0].size() + expansions[1].size())
-			return i - expansions[0].size();
-		else if (i < expansions[0].size() + expansions[1].size()
-				+ expansions[2].size())
-			return i - expansions[1].size() - expansions[0].size();
-		else if (i < expansions[0].size() + expansions[1].size()
-				+ expansions[2].size() + expansions[3].size())
-			return i - expansions[2].size() - expansions[1].size()
-					- expansions[0].size();
-		else
-			return -1;
+		for ( int j = 0 ; j < expansions.length ; j++ ) {
+			tmp += expansions[j].size();
+			if ( i < tmp ) {
+				//#debug info
+				System.out.println("the returned statement is Card: " + (i - tmp + expansions[j].size()));
+				return i - tmp + expansions[j].size();
+			}
+		}
+		return -1;
 	}
 
 	public int getLinearExpansionIndex(int i) {
+		int tmp = 0;		
 		if (i < 0)
 			return -1;
-		if (i < expansions[0].size())
-			return 0;
-		else if (i < expansions[0].size() + expansions[1].size())
-			return 1;
-		else if (i < expansions[0].size() + expansions[1].size()
-				+ expansions[2].size())
-			return 2;
-		else if (i < expansions[0].size() + expansions[1].size()
-				+ expansions[2].size() + expansions[3].size())
-			return 3;
-		else
-			return -1;
+		for ( int j = 0 ; j < expansions.length ; j++ ) {
+			tmp += expansions[j].size();
+			if ( i < tmp ) {
+				//#debug info
+				System.out.println("the returned statement is Exp: " + j);
+				return j;
+			}
+				
+		}
+		return -1;
 	}
 
 	public int[] getNumberOfExpansionCards() {
@@ -363,12 +378,12 @@ public class Dominion {
 		sb.append("Duration  : ");
 		if (duration < 10)
 			sb.append(" ");
-		sb.append("" + duration + " / " + selectedCards.size() + "\n");
+		sb.append("" + duration + " / " + selectedCards.size());
 		return sb.toString();
 	}
 
 	public boolean hasBlackMarketPlaying() {
-		return expansions[1].isPlaying(0);
+		return expansions[PROMO].isPlaying(0);
 	}
 	
 	public boolean isHold(String cardName) {
@@ -417,7 +432,7 @@ public class Dominion {
 	
 	public boolean selectCard(int exp, int card, int placement) {
 		// #debug info
-		System.out.println("try: " + exp + " - " + exp);
+		System.out.println("try: " + exp + " - " + card);
 		if ( expansions[exp].isAvailable(card) 
 				& !selectedCards.contains(expansions[exp].getName(card))
 				& !expansions[exp].isPlaying(card) ) {
@@ -478,7 +493,7 @@ public class Dominion {
 		//#debug info
 		System.out.println("using minimum expansion cards");
 		for ( i = 0 ; i < expansions.length ; i++ ) {
-			if ( playingExpansions[i] & 0 < numberOfCardsFromExp[i] ) {
+			if ( playingExpansions[i] & 0 < numberOfCardsFromExp[i] & expansions[i].size() > 0) {
 				while ( selectedCards.fromExpansion(i) < numberOfCardsFromExp[i] && selected < numberOfRandomCards ) {
 					selectedElement = selector.nextInt(expansions[i].size());
 					if ( selectCard(i, selectedElement, selected) ) {
@@ -522,8 +537,7 @@ public class Dominion {
 					expansions[exp].setName(cardRead, sb.toString().substring(
 							start, sb.toString().indexOf(":", start)).trim());
 					start = sb.toString().indexOf(":", start) + 1;
-					expansions[exp].setExpansion(sb.toString().substring(
-							start, sb.toString().indexOf(":", start)));
+					expansions[exp].setExpansion(exp); // have removed the need for the expansion names! Consider removing them!
 					start = sb.toString().indexOf(":", start) + 1;
 					expansions[exp].setCost(cardRead, 
 							Integer.parseInt(sb.toString().substring(
@@ -627,7 +641,9 @@ public class Dominion {
 			playingExpansions[0] = tmp.substring(0, 1).equals("1");
 			playingExpansions[1] = tmp.substring(1, 2).equals("1");
 			playingExpansions[2] = tmp.substring(2, 3).equals("1");
-			playingExpansions[3] = tmp.substring(3).equals("1");
+			playingExpansions[3] = tmp.substring(3, 4).equals("1");
+			playingExpansions[4] = tmp.substring(4, 5).equals("1");
+			playingExpansions[5] = tmp.substring(5).equals("1");
 		}
 		// #debug info
 		System.out.println("finished reading expansion states successfully\nstart reading number of cards");
@@ -639,6 +655,8 @@ public class Dominion {
 			setCardsUsedForExpansion(1, Integer.parseInt(tmp.substring(1, 2)));
 			setCardsUsedForExpansion(2, Integer.parseInt(tmp.substring(2, 3)));
 			setCardsUsedForExpansion(3, Integer.parseInt(tmp.substring(3, 4)));
+			setCardsUsedForExpansion(4, Integer.parseInt(tmp.substring(4, 5)));
+			setCardsUsedForExpansion(5, Integer.parseInt(tmp.substring(5, 6)));
 		}
 		// #debug info
 		System.out.println("finished reading number of cards succesfully\nstart reading available cards");
@@ -791,6 +809,38 @@ public class Dominion {
 		return card;
 	}
 	
+	public Image getCardTypeImage(int exp, int card) {
+		try {
+			return Image.createImage("/" + Dominion.getExpansionImageName(exp) + 
+					Dominion.I().getExpansion(exp).getCardType(card) + ".png");
+		} catch (IOException expc) {
+			try {
+				return Image.createImage("/" + Dominion.getExpansionImageName(exp) + ".png");
+			} catch (IOException e) {
+				return null;
+			}
+		}
+	}
+	
+	public static String getExpansionImageName(int expansion) {
+		switch (expansion) {
+		case Dominion.BASE:
+			return "ba";
+		case Dominion.PROMO:
+			return "pr";
+		case Dominion.INTRIGUE:
+			return "in";
+		case Dominion.SEASIDE:
+			return "se";
+		case Dominion.ALCHEMY:
+			return "al";
+		case Dominion.PROSPERITY:
+			return "po";
+		default:
+			return null;
+		}
+	}
+	
 	public static String getExpansionName(int expansion) {
 		switch (expansion) {
 		case BASE:
@@ -807,6 +857,14 @@ public class Dominion {
 			return Locale.get("prosperity");
 		default:
 			return "";
+		}
+	}
+	
+	public static Image getExpansionImage(int expansion) {
+		try {
+			return Image.createImage("/" + Dominion.getExpansionImageName(expansion) + ".png");
+		} catch (IOException exp) {
+			return null;
 		}
 	}
 }

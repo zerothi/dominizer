@@ -86,7 +86,7 @@ public class GaugeForm extends Form {
 		case Canvas.KEY_NUM7:
 		case Canvas.KEY_NUM8:
 		case Canvas.KEY_NUM9:
-			this.setGaugeValue(keyCode - Canvas.KEY_NUM0);
+			this.setGaugeValue((keyCode - Canvas.KEY_NUM0));
 			break;
 		default:
 			//#= super.keyPressed(keyCode);

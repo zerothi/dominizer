@@ -24,7 +24,7 @@
 	<!-- import global properties                                 -->
 	<property file="${polish.home}/global.properties" />
 
-	<property name="debugLang" value="en"/>
+	<property name="debugLang" value="de"/>
 	<!-- the device for the test mode - you can define it on the command-line
 	     using the -D switch, e.g. ant -Ddevice=Generic/midp2 emulator -->
 	<!--property name="device" value="Generic/AnyPhone"/-->
@@ -107,7 +107,7 @@
 					key="npakey"
 					keystore="ant/npa-release.keystore"
 					password="${password}"
-					unless="test or donotsign"
+					unless="test or donotsign or debug"
 				/>
 				<!--="polish.android"-->
 				<!-- project-wide variables - used for preprocessing.  -->
@@ -138,11 +138,11 @@
 					<localization unless="debug or app.quick">
 						<!--locale name="da" encoding="UTF-8"/-->
 						<locale name="en" encoding="UTF-8"/>
-						<!--locale name="de" encoding="UTF-8"/-->
+						<locale name="de" encoding="UTF-8"/>
 						<!--locale name="pl" encoding="UTF-8"/-->
 						<!--locale name="fr" encoding="UTF-8"/-->
 						<!--locale name="ch_SC" encoding="UTF-8"/-->
-						<locale name="ch_TC" encoding="UTF-8"/>
+						<!--locale name="ch_TC" encoding="UTF-8"/-->
 						<!--locale name="christmas" encoding="UTF-8"/-->
 						<!--locale name="zombinion" encoding="UTF-8"/-->
 					</localization>
@@ -198,6 +198,13 @@
 	<target name="emuGeneric"
 		description="invokes the emulator">
 		<exec executable="${wtk.runmidlet}" dir="./${dist.root.dir}" spawn="true">
+		    <arg value="./Generic-AnyPhone-Dominizer-${debugLang}.jad"/>
+		</exec>
+	</target>
+	
+	<target name="emuNokia"
+		description="invokes the emulator">
+		<exec executable="${wtk.runmidlet}" dir="./${dist.root.dir}" spawn="true">
 		    <arg value="./Nokia-Series40E3-Dominizer-${debugLang}.jad"/>
 		</exec>
 	</target>
@@ -205,8 +212,7 @@
 	<target name="emuAndroid"
 		description="invokes the emulator">
 		<exec executable="${android.home}/tools/adb" dir="./${dist.root.dir}" spawn="true">
-			<arg value="install"/>
-			<arg value="./Generic-android-Dominizer-${debugLang}.apk"/>
+			<arg value="install ./Generic-android-Dominizer-${debugLang}.apk"/>
 		</exec>
 	</target>
 	
@@ -215,6 +221,7 @@
 	<target name="compileNokia" description="Builds Nokia" depends="clean, enableNokia, j2mepolish" />
 	<target name="compileAndroid" description="Builds Android" depends="clean, enableAndroid, j2mepolish" />
 	<target name="compileiPhone" description="Builds iPhone" depends="clean, enableiPhone, j2mepolish" />
+	<target name="compileTouch" description="Builds Touch" depends="clean, enableTouch, j2mepolish" />
 	<target name="compileWindows" description="Builds Windows" depends="clean, enableWindows, j2mepolish" />
 	<target name="compile6303" description="Builds Nokia 6303" depends="clean, enable6303, j2mepolish" />
 	
@@ -233,7 +240,7 @@
 		<property name="app.quick" value="true" />
 	</target>
 	
-	<target name="enableAll" depends="dosign">
+	<target name="enableAll" depends="donotsign">
 		<property name="devices" value="Generic/AnyPhone,Nokia/Series40E3,Sony-Ericsson/JavaPlatform7,Generic/Android"/>
 	</target>
 	
@@ -241,11 +248,11 @@
 		<property name="devices" value="Generic/AnyPhone"/>
 	</target>
 	
-	<target name="enableNokia" depends="dosign">
+	<target name="enableNokia" depends="donotsign">
 		<property name="devices" value="Nokia/Series40E3"/>
 	</target>
 	
-	<target name="enable6303" depends="dosign">
+	<target name="enable6303" depends="donotsign">
 		<property name="devices" value="Nokia/6303_classic"/>
 	</target>
 	
@@ -255,6 +262,9 @@
 	
 	<target name="enableAndroid" depends="dosign">
 		<property name="devices" value="Generic/Android"/>
+	</target>
+	<target name="enableTouch" depends="donotsign">
+		<property name="devices" value="Generic/AnyTouch_240x248,Generic/AnyTouch_320x480,Generic/AnyTouch_480x800"/>
 	</target>
 	<target name="enableWindows" depends="donotsign">
 		<property name="devices" value="Dom/WindowsMobile5.0,Dom/WindowsMobile6.0,Dom/WindowsMobile6.5"/>

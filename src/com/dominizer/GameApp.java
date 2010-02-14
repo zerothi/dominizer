@@ -108,7 +108,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		if ( alert != null )
 			alert = null;
 		if ( displayable == null )
-			changeToScreen(tabbedPane);
+			this.changeToScreen(this.tabbedPane);
 		else
 			display.setCurrent(displayable);
 	}
@@ -117,7 +117,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		if ( currentTab == SHOWCARDS )
 			changeToScreen(ShowCardsForm.instance());
 		else
-			changeToScreen(tabbedPane);
+			this.changeToScreen(this.tabbedPane);
 		//notifyTabChangeRequested(0, currentTab);
 	}
 

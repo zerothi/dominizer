@@ -32,7 +32,7 @@ backgrounds {
 		bottom-color: splitBot;
 	}
 	tableSelection {
-		color: #ffc;
+		color: eevenBrightColor;
 	}
 	alertTop {
 		type: round-rect;
@@ -100,6 +100,11 @@ label {
 	}
 	layout: center | expand;	
 }
+@media touchscreen {
+	label {	
+		font-size: medium;
+	}
+}
 
 .labelHold extends label {
 	background {
@@ -139,6 +144,11 @@ focused {
 		size: small;
 	}
 	layout: expand | center;
+}
+@media touchscreen {
+	focused {	
+		font-size: medium;
+	}
 }
 
 .mainScreen {
@@ -183,6 +193,11 @@ listItem {
 	}
 	layout: expand | center;
 }
+@media touchscreen {
+	listItem {	
+		font-size: medium;
+	}
+}
 
 /**
   * The .mainCommand style is also a static style, which
@@ -196,40 +211,39 @@ listItem {
 	padding-vertical: 8;
 	layout: center | vertical-center | newline-after;
 	min-height: 30%;
-	//#if polish.android
-		font-size: medium;
-	//#else
-		font-size: small;
-	//#endif
+	font-size: small;
 }
-
 .mainCommand:hover {
 	font-style: bold;
 	font-color: fontColor;
 	text-effect: shadow;
 }
-
-.mainCommand:pressed {
-	background-color: bgColor;
-	font-color: fontColor;
-	view-type: particle;
+@media touchscreen {
+	.mainCommand {
+		font-size: large;
+	}
 }
-
 
 .mainItem {
 	font-color: translucentBrightFontColor;
 	font-size: small;
 }
+@media touchscreen {
+	.mainItem {	
+		font-size: medium;
+	}
+}
 
 alertcontent {
 	font-color: fontColor;
-	//#if polish.android
-		font-size: medium;
-	//#else
-		font-size: small;
-	//#endif
+	font-size: small;
 	font-style: bold;
 	text-effect: shadow;
+}
+@media touchscreen {
+	alertcontent {	
+		font-size: medium;
+	}
 }
 
 .messageAlertTitle {
@@ -257,11 +271,6 @@ alertcontent {
 	overlay-background: alertOverlay;
 	title-style: messageAlertTitle;
 	menubar-style: messageAlertMenuBar;
-	//#if polish.midp2
-		screen-change-animation: fade;
-	//#else
-		screen-change-animation: right;
-	//#endif
 }
 
 info {
@@ -316,6 +325,24 @@ middlecommand extends leftcommand {
 	font-style: bold;
 }
 
+@media touchscreen {
+	leftcommand {
+		padding-top: 2px;
+		padding-bottom: 2px;
+		font-size: large;
+	}
+	rightcommand {
+		padding-top: 2px;
+		padding-bottom: 2px;
+		font-size: large;
+	}
+	middlecommand {
+		padding-top: 2px;
+		padding-bottom: 2px;
+		font-size: large;
+	}
+}
+
 /**
   * the menu style is a predefined style for
   * designing the fullscreen-menu.
@@ -339,11 +366,14 @@ menu {
 	}
 	font-color: translucentFontColor;
 	font-style: bold;
-	view-type: slide-up;
+	expand-items: true;
+	view-type: none;
 }
-menu1 extends menu {
-	background {
-		color: evenBrightColor;
+@media touchscreen {
+	menu {
+		padding-top: 4px;
+		padding-bottom: 4px;
+		font-size: large;
 	}
 }
 
@@ -365,6 +395,7 @@ menuItem {
 	layout: left;
 }
 
+
 /**
   * A focused menuItem
   */
@@ -373,6 +404,19 @@ menuItem:hover {
 	font-color: translucentFontColor;
 	layout: left | horizontal-expand;
 }
+/** adapt styles for touchscreen devices dynamically: */
+@media touchscreen {
+	menuItem {
+		padding-top: 4px;
+		padding-bottom: 4px;
+		font-size: large;
+	}
+	menuItem:hover {
+		padding-top: 4px;
+		padding-bottom: 4px;
+		font-size: large;
+	}
+}	
 
 .filterCards {
 	title-menu: true;
@@ -429,35 +473,32 @@ menuItem:hover {
 
 .defaultTable {
 	padding: 0;
-	padding-vertical: 0;
 	padding-horizontal: 6;
 	font-color: translucentFontColor;
 	font-size: small;
-	table-selected-background: tableSelection;
+	table-selected-row-background: selectedBg;
 	table-line-color: eevenBrightColor;
+	expand-items: true;
 	background {
 		type: round-rect;
 		color: brightBgColor;
 		anchor: center;
 	}
-	layout: expand | center | vshrink;
-}
-
-.defaultTable:hover {
-	padding: 0;
-	padding-vertical: 0;
-	padding-horizontal: 6;
 	border {
 		type: round-rect;
 		width: 2;
 		color: translucentBgColor;
 	}
-	background {
-		color: bgColor;
+	layout: horizontal-expand | horizontal-center | vshrink;
+}
+@media touchscreen {
+	.defaultTable {	
+		font-size: medium;
 	}
 }
-
 .tableHeading {
+	margin: 0px;
+	padding: 0px;
 	font-color: translucentFontColor;
 	font-style: bold;
 	//#if polish.android
@@ -465,15 +506,13 @@ menuItem:hover {
 	//#else
 		font-size: small;
 	//#endif
-	table {
-		line-color: evenBrightColor;
-	}
 }
 
 .tableHeading:hover {
 	background {
 		color: bgColor;
 	}
+	layout: vertical-shrink | horizontal-expand;
 }
 
 .tableCell extends tableHeading {
@@ -498,13 +537,31 @@ menuItem:hover {
 }
 
 .tableCellCentered extends tableCell {
-	layout: center;
+	layout: vertical-shrink | center;
 	background {
 		type: radial-gradient;
 		outer-color: #a98934;
 		inner-color: #e9d363;
 	}
 }
+
+@media touchscreen {
+	.tableHeading {
+		padding-top: 4px;
+		padding-bottom: 4px;
+		font-size: large;
+	}
+	.tableCell {
+		padding-top: 4px;
+		padding-bottom: 4px;
+		font-size: medium;
+	}
+	.tableCellHold {
+		padding-top: 4px;
+		padding-bottom: 4px;
+		font-size: medium;
+	}
+}	
 
 .tableBoolean {
 	padding: 2px;
@@ -544,11 +601,7 @@ menuItem:hover {
 	padding: 2px;
 	max-width: 33.3%;
 	layout: expand | center | vertical-center;
-	//#if polish.android
-		font-size: medium;
-	//#else
-		font-size: small;
-	//#endif
+	font-size: small;
 	font-color: fontColor;
 }
 
@@ -567,26 +620,18 @@ menuItem:hover {
 	font-color: titleFontColor;
 }
 
-.tabIcon:landscape {
-	text-visible: false;
-}
-
-.tabIcon:landscape:hover {
-	padding: 1px;
-	background {
-		type: round-rect;
-		arc: 8;
-		color: brightBgColor;
+@media touchscreen {
+	.tabIcon {
+		padding-top: 4px;
+		padding-bottom: 4px;
+		font-size: medium;
 	}
-	border {
-		type: round-rect;
-		arc: 8;
-		color: translucentBgColor;
+	.tabIcon:hover {
+		padding-top: 4px;
+		padding-bottom: 4px;
+		font-size: medium;
 	}
-	font-color: titleFontColor;
-}
-
-
+}	
 
 /* Calendar */
 .calendar {
@@ -654,6 +699,12 @@ menuItem:hover {
 	text-effect: shadow;
 	text-shadow-color: translucentFontColor;
 }
+@media touchscreen {
+	.mainTicker {
+		font-size: medium;
+	}
+}
+
 
 /**
  * The Gauge
@@ -683,6 +734,11 @@ menuItem:hover {
 	label-style: labelLoadingGauge;
 	layout: horizontal-center | horizontal-expand;
 }
+@media touchscreen {
+	.mainTicker {
+		font-size: medium;
+	}
+}
 .labelLoadingGauge extends label {
 	font-size: large;
 }
@@ -695,4 +751,4 @@ menuItem:hover {
 	font-size: medium;
 }
 
-	
+.keyMode {}
