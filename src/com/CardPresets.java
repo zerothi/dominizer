@@ -11,12 +11,27 @@ package com;
 public class CardPresets {
 	private int[][][] presets = null;
 	private String[] presetNames = null;
-	
+	private int expansion = -1;
+
 	public CardPresets(int size) {
 		if ( 0 < size ) {
 			presets = new int[size][10][2];
 			presetNames = new String[size];
 		} 
+	}
+	
+	/**
+	 * @return the expansion
+	 */
+	public int getExpansion() {
+		return expansion;
+	}
+
+	/**
+	 * @param expansion the expansion to set
+	 */
+	public void setExpansion(int expansion) {
+		this.expansion = expansion;
 	}
 	
 	public int[][] getPreset(int preset) {

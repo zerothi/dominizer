@@ -5,7 +5,7 @@
 ################
 
 tab.Preset.title=Voreinstellungen
-tab.EditCards.title=Karten bearbeiten
+tab.EditCards.title=Karten ein- / ausschließen
 tab.Settings.title=Einstellungen
 tab.Calendar.title=Kalender
 table.heading.Name=Name
@@ -57,14 +57,14 @@ cmd.Back=Zurück
 cmd.ShowLog=Zeige Log
 cmd.Quit=Beenden
 cmd.switch=Wechseln
-gauge.loading=Loading
-gauge.loading.cards=Loading Cards
-gauge.loading.cards.settings=Loading Card Settings
-gauge.loading.gui=Loading GUI
-gauge.loading.gui.settings=Loading GUI Settings
-gauge.loading.finished=Finished Loading
-gauge.card.percentage=Set {0}'s percentage
-gauge.expansion.setCards=Minimum {0} cards
+gauge.loading=Ladevorgang
+gauge.loading.cards=Lade Karten
+gauge.loading.cards.settings=Lade Karten-Einstellungen
+gauge.loading.gui=Lade Oberfläche
+gauge.loading.gui.settings=Lade Einstellungen der Oberfläche
+gauge.loading.finished=Laden beendet
+gauge.card.percentage=Prozentsatz {0} setzen
+gauge.expansion.setCards=Minimum {0} Karten
 alert.alert=Achtung
 alert.info=Info
 alert.confirmation=Bestätigung

@@ -166,10 +166,12 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	}
 	
 	protected void pauseApp() {
-		DeviceControl.lightOff();
+		//DeviceControl.lightOff();
 	}
 
-	protected void destroyApp(boolean unconditional) throws MIDletStateChangeException {}
+	protected void destroyApp(boolean unconditional) throws MIDletStateChangeException {
+		quit();
+	}
 
 	/**
 	 * @param string

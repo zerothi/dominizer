@@ -26,7 +26,7 @@ public class Dominion {
 	private int[][] holdCards = new int[10][2];
 	private CardPresets[] presets = null;
 	private int numberOfRandomCards = 10;
-	private boolean[] playingExpansions = new boolean[] { true, true, true, true, true, false };
+	private boolean[] playingExpansions = new boolean[] { true, true, true, true, true, true };
 	private int[] numberOfCardsFromExp = new int[] { 0, 0, 0, 0, 0, 0 };
 	private StringBuffer sb;
 
@@ -49,6 +49,7 @@ public class Dominion {
 		 */ 
 		presets = new CardPresets[4]; 
 		presets[BASE] = new CardPresets(5);
+		presets[BASE].setExpansion(BASE);
 		presets[BASE].setPreset(0, Locale.get("preset.base.FirstGame"), new int[][] { 
 			new int[] { 0,  2 }, new int[] { 0, 11 }, new int[] { 0, 12 }, new int[] { 0, 13 }, new int[] { 0, 14 }, 
 			new int[] { 0, 16 }, new int[] { 0, 17 }, new int[] { 0, 21 }, new int[] { 0, 23 }, new int[] { 0, 24 } });
@@ -65,43 +66,45 @@ public class Dominion {
 			new int[] { 0,  1 }, new int[] { 0,  2 }, new int[] { 0,  7 }, new int[] { 0, 10 }, new int[] { 0, 11 }, 
 			new int[] { 0, 16 }, new int[] { 0, 17 }, new int[] { 0, 20 }, new int[] { 0, 21 }, new int[] { 0, 23 } });
 		presets[INTRIGUE] = new CardPresets(6);
+		presets[INTRIGUE].setExpansion(INTRIGUE);
 		presets[INTRIGUE].setPreset(0, Locale.get("preset.intrigue.VictoryDance"), new int[][] {
-			new int[] { 2,  1 }, new int[] { 2,  5 }, new int[] { 2,  6 }, new int[] { 2,  7 }, new int[] { 2,  8 }, 
-			new int[] { 2,  9 }, new int[] { 2, 12 }, new int[] { 2, 13 }, new int[] { 2, 15 }, new int[] { 2, 23 } });
+			new int[] { 1,  1 }, new int[] { 1,  5 }, new int[] { 1,  6 }, new int[] { 1,  7 }, new int[] { 1,  8 }, 
+			new int[] { 1,  9 }, new int[] { 1, 12 }, new int[] { 1, 13 }, new int[] { 1, 15 }, new int[] { 1, 23 } });
 		presets[INTRIGUE].setPreset(1, Locale.get("preset.intrigue.SecretSchemes"), new int[][] {
-			new int[] { 2,  2 }, new int[] { 2,  7 }, new int[] { 2,  8 }, new int[] { 2, 13 }, new int[] { 2, 14 }, 
-			new int[] { 2, 17 }, new int[] { 2, 18 }, new int[] { 2, 20 }, new int[] { 2, 21 }, new int[] { 2, 22 } });
+			new int[] { 1,  2 }, new int[] { 1,  7 }, new int[] { 1,  8 }, new int[] { 1, 13 }, new int[] { 1, 14 }, 
+			new int[] { 1, 17 }, new int[] { 1, 18 }, new int[] { 1, 20 }, new int[] { 1, 21 }, new int[] { 1, 22 } });
 		presets[INTRIGUE].setPreset(2, Locale.get("preset.intrigue.BestWishes"), new int[][] {
-			new int[] { 2,  3 }, new int[] { 2,  4 }, new int[] { 2,  9 }, new int[] { 2, 15 }, new int[] { 2, 17 }, 
-			new int[] { 2, 18 }, new int[] { 2, 20 }, new int[] { 2, 21 }, new int[] { 2, 23 }, new int[] { 2, 24 } });
+			new int[] { 1,  3 }, new int[] { 1,  4 }, new int[] { 1,  9 }, new int[] { 1, 15 }, new int[] { 1, 17 }, 
+			new int[] { 1, 18 }, new int[] { 1, 20 }, new int[] { 1, 21 }, new int[] { 1, 23 }, new int[] { 1, 24 } });
 		presets[INTRIGUE].setPreset(3, Locale.get("preset.intrigue.Deconstruction"), new int[][] {
-			new int[] { 0, 16 }, new int[] { 0, 18 }, new int[] { 0, 19 }, new int[] { 0, 20 }, new int[] { 2,  1 }, 
-			new int[] { 2, 10 }, new int[] { 2, 14 }, new int[] { 2, 16 }, new int[] { 2, 19 }, new int[] { 2, 20 } });
+			new int[] { 0, 16 }, new int[] { 0, 18 }, new int[] { 0, 19 }, new int[] { 0, 20 }, new int[] { 1,  1 }, 
+			new int[] { 1, 10 }, new int[] { 1, 14 }, new int[] { 1, 16 }, new int[] { 1, 19 }, new int[] { 1, 20 } });
 		presets[INTRIGUE].setPreset(4, Locale.get("preset.intrigue.HandMadness"), new int[][] {
 			new int[] { 0,  1 }, new int[] { 0,  3 }, new int[] { 0,  5 }, new int[] { 0, 12 }, new int[] { 0, 13 }, 
-			new int[] { 2,  4 }, new int[] { 2, 11 }, new int[] { 2, 12 }, new int[] { 2, 18 }, new int[] { 2, 20 } });
+			new int[] { 1,  4 }, new int[] { 1, 11 }, new int[] { 1, 12 }, new int[] { 1, 18 }, new int[] { 1, 20 } });
 		presets[INTRIGUE].setPreset(5, Locale.get("preset.intrigue.Underlings"), new int[][] {
-			new int[] { 0,  2 }, new int[] { 0,  7 }, new int[] { 0, 10 }, new int[] { 0, 22 }, new int[] { 2,  0 }, 
-			new int[] { 2,  9 }, new int[] { 2, 11 }, new int[] { 2, 12 }, new int[] { 2, 13 }, new int[] { 2, 18 } });
+			new int[] { 0,  2 }, new int[] { 0,  7 }, new int[] { 0, 10 }, new int[] { 0, 22 }, new int[] { 1,  0 }, 
+			new int[] { 1,  9 }, new int[] { 1, 11 }, new int[] { 1, 12 }, new int[] { 1, 13 }, new int[] { 1, 18 } });
 		presets[SEASIDE] = new CardPresets(6);
+		presets[SEASIDE].setExpansion(SEASIDE);
 		presets[SEASIDE].setPreset(0, Locale.get("preset.seaside.HighSeas"), new int[][] {
-			new int[] { 3,  1 }, new int[] { 3,  2 }, new int[] { 3,  4 }, new int[] { 3,  5 }, new int[] { 3,  8 }, 
-			new int[] { 3,  9 }, new int[] { 3, 11 }, new int[] { 3, 17 }, new int[] { 3, 20 }, new int[] { 3, 25 } });
+			new int[] { 2,  1 }, new int[] { 2,  2 }, new int[] { 2,  4 }, new int[] { 2,  5 }, new int[] { 2,  8 }, 
+			new int[] { 2,  9 }, new int[] { 2, 11 }, new int[] { 2, 17 }, new int[] { 2, 20 }, new int[] { 2, 25 } });
 		presets[SEASIDE].setPreset(1, Locale.get("preset.seaside.BuriedTreasure"), new int[][] {
-			new int[] { 3,  0 }, new int[] { 3,  3 }, new int[] { 3,  6 }, new int[] { 3, 10 }, new int[] { 3, 15 }, 
-			new int[] { 3, 16 }, new int[] { 3, 21 }, new int[] { 3, 22 }, new int[] { 3, 24 }, new int[] { 3, 25 } });
+			new int[] { 2,  0 }, new int[] { 2,  3 }, new int[] { 2,  6 }, new int[] { 2, 10 }, new int[] { 2, 15 }, 
+			new int[] { 2, 16 }, new int[] { 2, 21 }, new int[] { 2, 22 }, new int[] { 2, 24 }, new int[] { 2, 25 } });
 		presets[SEASIDE].setPreset(2, Locale.get("preset.seaside.Shipwrecks"), new int[][] {
-			new int[] { 3,  7 }, new int[] { 3, 12 }, new int[] { 3, 13 }, new int[] { 3, 14 }, new int[] { 3, 16 }, 
-			new int[] { 3, 18 }, new int[] { 3, 19 }, new int[] { 3, 20 }, new int[] { 3, 23 }, new int[] { 3, 24 } });
+			new int[] { 2,  7 }, new int[] { 2, 12 }, new int[] { 2, 13 }, new int[] { 2, 14 }, new int[] { 2, 16 }, 
+			new int[] { 2, 18 }, new int[] { 2, 19 }, new int[] { 2, 20 }, new int[] { 2, 23 }, new int[] { 2, 24 } });
 		presets[SEASIDE].setPreset(3, Locale.get("preset.seaside.ReachForTomorrow"), new int[][] {
 			new int[] { 0,  0 }, new int[] { 0,  2 }, new int[] { 0,  5 }, new int[] { 0, 21 }, new int[] { 0, 18 }, 
-			new int[] { 3,  3 }, new int[] { 3,  7 }, new int[] { 3, 11 }, new int[] { 3, 19 }, new int[] { 3, 22 } });
+			new int[] { 2,  3 }, new int[] { 2,  7 }, new int[] { 2, 11 }, new int[] { 2, 19 }, new int[] { 2, 22 } });
 		presets[SEASIDE].setPreset(4, Locale.get("preset.seaside.Repetition"), new int[][] {
-			new int[] { 0,  3 }, new int[] { 0,  7 }, new int[] { 0, 12 }, new int[] { 0, 24 }, new int[] { 3,  2 }, 
-			new int[] { 3,  5 }, new int[] { 3, 15 }, new int[] { 3, 16 }, new int[] { 3, 17 }, new int[] { 3, 23 } });
+			new int[] { 0,  3 }, new int[] { 0,  7 }, new int[] { 0, 12 }, new int[] { 0, 24 }, new int[] { 2,  2 }, 
+			new int[] { 2,  5 }, new int[] { 2, 15 }, new int[] { 2, 16 }, new int[] { 2, 17 }, new int[] { 2, 23 } });
 		presets[SEASIDE].setPreset(5, Locale.get("preset.seaside.GiveAndTake"), new int[][] {
-			new int[] { 0, 10 }, new int[] { 0, 11 }, new int[] { 0, 15 }, new int[] { 0, 22 }, new int[] { 3,  0 }, 
-			new int[] { 3,  6 }, new int[] { 3,  8 }, new int[] { 3,  9 }, new int[] { 3, 18 }, new int[] { 3, 20 } });
+			new int[] { 0, 10 }, new int[] { 0, 11 }, new int[] { 0, 15 }, new int[] { 0, 22 }, new int[] { 2,  0 }, 
+			new int[] { 2,  6 }, new int[] { 2,  8 }, new int[] { 2,  9 }, new int[] { 2, 18 }, new int[] { 2, 20 } });
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("base"));
 		//#debug info
 		System.out.println("reading base");
@@ -328,7 +331,10 @@ public class Dominion {
 	}
 
 	public String getPresetAsInfo(int presetDeck, int preset) {
-		StringBuffer sb = new StringBuffer(140);
+		StringBuffer sb = new StringBuffer(200);
+		if ( presets[presetDeck].getExpansion() > -1 ) {
+			sb.append(presets[presetDeck].getPresetName(preset) + ":\n");
+		}
 		for (int i = 0; i < presets[presetDeck].size(preset); i++) {
 			sb.append("" + expansions[presets[presetDeck].getPreset(preset)[i][0]].getName(
 					presets[presetDeck].getPreset(preset)[i][1]) + "\n");
