@@ -27,13 +27,13 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 	public PresetFilteredList(String title, int listType) {
 		//#style mainScreen
 		super(title, listType);
-		this.addCommand(selectCmd);
-		this.addCommand(infoCmd);
-		this.addCommand(quickRandomizeCardsCmd);
-		this.addCommand(quitCmd);
-		this.setCommandListener(this);
+		addCommand(selectCmd);
+		addCommand(infoCmd);
+		addCommand(quickRandomizeCardsCmd);
+		addCommand(quitCmd);
+		setCommandListener(this);
 		for ( int i = 0 ; i < Dominion.I().presetSize() ; i++ )
-				this.addPresets(Dominion.I().getPreset(i));
+				addPresets(Dominion.I().getPreset(i));
 	}
 
 	public void addPresets(CardPresets cardPreset) {
@@ -42,11 +42,11 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 		for ( int i = 0 ; i < cardPreset.size() ; i++ ) {
 			if ( cardPreset.getExpansion() > -1 ) { 
 				//#style label
-				this.append(cardPreset.getPresetName(i), Dominion.getExpansionImage(cardPreset.getExpansion()));
+				append(cardPreset.getPresetName(i), Dominion.getExpansionImage(cardPreset.getExpansion()));
 			} else {
 				//#style label
-				this.append(cardPreset.getPresetName(i), null);
-				this.getItem(this.size() - 1).addCommand(deleteCmd);
+				append(cardPreset.getPresetName(i), null);
+				getItem(size() - 1).addCommand(deleteCmd);
 			}
 		}
 	}
@@ -54,23 +54,23 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 	public void keyPressed(int keyCode) {
 		switch (keyCode) {
 		case Canvas.KEY_STAR:
-			if (this.getCurrentIndex() + 3 < this.size() )
-				this.focus(this.getCurrentIndex() + 3);
+			if (getCurrentIndex() + 3 < size() )
+				focus(getCurrentIndex() + 3);
 			else
-				this.focus(0);
+				focus(0);
 			break;
 		case Canvas.KEY_POUND:
 			tmp = Dominion.I().getPreset(0).size();
-			if ( tmp - 1 < this.getCurrentIndex() )
+			if ( tmp - 1 < getCurrentIndex() )
 				tmp += Dominion.I().getPreset(1).size();
-			if ( tmp - 1 < this.getCurrentIndex() ) {
+			if ( tmp - 1 < getCurrentIndex() ) {
 				tmp += Dominion.I().getPreset(2).size();
 				if ( Dominion.I().getPreset(3) == null )
 					tmp = 0;
 			}
-			if ( tmp <= this.getCurrentIndex() )
+			if ( tmp <= getCurrentIndex() )
 				tmp = 0;
-			this.focus(tmp);
+			focus(tmp);
 			break;
 		default:
 			//#= super.keyPressed(keyCode);
@@ -79,39 +79,39 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(quickRandomizeCardsCmd) ) {
-			this.focus((new Random(System.currentTimeMillis())).nextInt(this.size()));
+			focus((new Random(System.currentTimeMillis())).nextInt(size()));
 		} else if ( cmd.equals(infoCmd) ) {
 			tmp = Dominion.I().getPreset(0).size();
-			if ( this.getCurrentIndex() < tmp ) {
-				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(0, this.getCurrentIndex()), Alert.FOREVER);
+			if ( getCurrentIndex() < tmp ) {
+				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(0, getCurrentIndex()), Alert.FOREVER);
 				return;
 			}
 			tmp += Dominion.I().getPreset(1).size();
-			if ( this.getCurrentIndex() < tmp ) {
+			if ( getCurrentIndex() < tmp ) {
 				tmp = Dominion.I().getPreset(0).size();
-				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(1, this.getCurrentIndex() - tmp), Alert.FOREVER);
+				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(1, getCurrentIndex() - tmp), Alert.FOREVER);
 				return;
 			}
 			tmp += Dominion.I().getPreset(2).size();
-			if ( this.getCurrentIndex() < tmp ) {
+			if ( getCurrentIndex() < tmp ) {
 				tmp = Dominion.I().getPreset(1).size() + Dominion.I().getPreset(0).size();
-				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(2, this.getCurrentIndex() - tmp), Alert.FOREVER);
+				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(2, getCurrentIndex() - tmp), Alert.FOREVER);
 				return;
 			}
 			tmp += Dominion.I().getPreset(3).size();
-			if ( this.getCurrentIndex() < tmp ) {
+			if ( getCurrentIndex() < tmp ) {
 				tmp = Dominion.I().getPreset(2).size() + Dominion.I().getPreset(1).size() + Dominion.I().getPreset(0).size();
-				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(3, this.getCurrentIndex() - tmp), Alert.FOREVER);
+				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(3, getCurrentIndex() - tmp), Alert.FOREVER);
 				return;
 			}
 		} else if ( cmd.equals(selectCmd) ) {
-			if ( Dominion.I().selectPreset(this.getString(this.getCurrentIndex())) )
+			if ( Dominion.I().selectPreset(getString(getCurrentIndex())) )
 				GameApp.instance().showCurrentSelectedCards();
 		} else if ( cmd.equals(quitCmd) ) {
 			GameApp.instance().quit();
 		} else if ( cmd.equals(deleteCmd) ) {
 			SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.preset"));
-			SettingsRecordStorage.instance().deleteData(this.getString(this.getCurrentIndex()));
+			SettingsRecordStorage.instance().deleteData(getString(getCurrentIndex()));
 			try {
 				SettingsRecordStorage.instance().writeData();
 			} catch (RecordStoreFullException e) {
@@ -125,8 +125,8 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 				e.printStackTrace();
 			}
 			SettingsRecordStorage.instance().closeRecord();
-			this.focus(this.getCurrentIndex() - 1);
-			this.delete(this.getCurrentIndex() + 1);
+			focus(getCurrentIndex() - 1);
+			delete(getCurrentIndex() + 1);
 			GameApp.instance().changeToTab(GameApp.TAB_QUICK);
 			GameApp.instance().changeToTab(GameApp.TAB_PRESET);
 		}

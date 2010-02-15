@@ -28,34 +28,34 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 				//#debug info
 				System.out.println("exp: " + Dominion.I().getExpansion(i).getExpansion(cardNumber));
 				//#style label
-				this.append(Dominion.I().getExpansion(i).getName(cardNumber), Dominion.I().getCardTypeImage(i, cardNumber));
-				this.setSelectedIndex(this.size() - 1, Dominion.I().getExpansion(i).isAvailable(cardNumber));
-				this.setPercentage(this.size() - 1, i, cardNumber, Dominion.I().getExpansion(i).getPercentage(cardNumber));
+				append(Dominion.I().getExpansion(i).getName(cardNumber), Dominion.I().getCardTypeImage(i, cardNumber));
+				setSelectedIndex(size() - 1, Dominion.I().getExpansion(i).isAvailable(cardNumber));
+				setPercentage(size() - 1, i, cardNumber, Dominion.I().getExpansion(i).getPercentage(cardNumber));
 			}
 		}
-		this.addCommand(randomizeCmd);
-		this.addCommand(perGaugeCmd);
-		this.addCommand(quitCmd);
-		this.setCommandListener(this);
+		addCommand(randomizeCmd);
+		addCommand(perGaugeCmd);
+		addCommand(quitCmd);
+		setCommandListener(this);
 	}
 	
 	public void keyPressed(int keyCode) {
 		switch (keyCode) {
 		case Canvas.KEY_STAR:
-			if (this.getCurrentIndex() + 10 < this.size() )
-				this.focus(this.getCurrentIndex() + 10);
+			if (getCurrentIndex() + 10 < size() )
+				focus(getCurrentIndex() + 10);
 			else
-				this.focus(0);
+				focus(0);
 			break;
 		case Canvas.KEY_POUND:
 			tmp = 0;
-			switch ( Dominion.I().getLinearExpansionIndex(this.getCurrentIndex()) ) {
+			switch ( Dominion.I().getLinearExpansionIndex(getCurrentIndex()) ) {
 			case 3:	tmp = 0; break;
 			case 2:	tmp += Dominion.I().getExpansion(2).size();
 			case 1:	tmp += Dominion.I().getExpansion(1).size();
 			case 0:	tmp += Dominion.I().getExpansion(0).size();
 			}
-			this.focus(tmp);
+			focus(tmp);
 			break;
 		default:
 			//#= super.keyPressed(keyCode);
@@ -69,7 +69,7 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 			updateCards(true);
 			GameApp.instance().showRandomizedCards();
 		} else if ( cmd.equals(perGaugeCmd) ) {
-			tmp = this.getCurrentIndex();
+			tmp = getCurrentIndex();
 			String tmpS = Dominion.I().getExpansion(
 					Dominion.I().getLinearExpansionIndex(tmp)).getName(Dominion.I().getLinearCardIndex(tmp));
 			GaugeForm.instance().setGauge(Locale.get("gauge.card.percentage", tmpS), true, 10, 0);
@@ -81,7 +81,7 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 			tmpS = null;
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.ok")) ) {
 			GameApp.instance().changeToScreen(null);
-			this.setPercentage(tmp, Dominion.I().getLinearExpansionIndex(tmp),
+			setPercentage(tmp, Dominion.I().getLinearExpansionIndex(tmp),
 					Dominion.I().getLinearCardIndex(tmp), GaugeForm.instance().getGaugeValue());
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel")) ) {
 			GameApp.instance().changeToScreen(null);
@@ -93,14 +93,14 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 	public void setPercentage(int index, int exp, int card, int deciPercentage) {
 		if ( deciPercentage > 0 ) {
 			//#style label
-			this.set(index, Dominion.I().getExpansion(exp).getName(card) + " " + deciPercentage * 10 + "%", this.getImage(index));
+			set(index, Dominion.I().getExpansion(exp).getName(card) + " " + deciPercentage * 10 + "%", getImage(index));
 			Dominion.I().getExpansion(exp).setPercentage(card, deciPercentage);
 		} else {
 			//#style label
-			this.set(index, Dominion.I().getExpansion(exp).getName(card), this.getImage(index));
+			set(index, Dominion.I().getExpansion(exp).getName(card), getImage(index));
 			Dominion.I().getExpansion(exp).setPercentage(card, 0);
 		}
-		if ( index == 0 && this.size() > 1 )
+		if ( index == 0 && size() > 1 )
 			UiAccess.setFocusedIndex(this, 1);
 		else 
 			UiAccess.setFocusedIndex(this, 0);
@@ -108,21 +108,21 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 	}
 	
 	public void setPercentage(int exp, int card, int deciPercentage) {
-		this.setPercentage(this.getCurrentIndex(), exp, card, deciPercentage);
+		setPercentage(getCurrentIndex(), exp, card, deciPercentage);
 	}
 	
 	public void updateCards(boolean localUpdate) {
 		if ( localUpdate ) {
-			for ( int i = 0 ; i < this.size() ; i++ ) {
-				this.changeCard(i, this.getItem(i).isSelected, false);
+			for ( int i = 0 ; i < size() ; i++ ) {
+				changeCard(i, getItem(i).isSelected, false);
 			}
 		} else {
-			for ( int i = 0 ; i < this.size() ; i++ ) {
+			for ( int i = 0 ; i < size() ; i++ ) {
 				/*///#debug info
 				System.out.println("redoing: " + Dominion.I().getExpansion(
 						Dominion.I().getLinearExpansionIndex(i)).isAvailable(
 						Dominion.I().getLinearCardIndex(i)));*/
-				this.changeCard(i, Dominion.I().getExpansion(
+				changeCard(i, Dominion.I().getExpansion(
 						Dominion.I().getLinearExpansionIndex(i)).isAvailable(
 						Dominion.I().getLinearCardIndex(i))
 						, false);
@@ -134,15 +134,15 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 		if ( index < 0 ) 
 			return;
 		if ( switchState ) {
-			this.setSelectedIndex(index, !Dominion.I().getExpansion(
-				Dominion.I().getLinearExpansionIndex(this.getCurrentIndex())).isAvailable(
-						Dominion.I().getLinearCardIndex(this.getCurrentIndex())));
+			setSelectedIndex(index, !Dominion.I().getExpansion(
+				Dominion.I().getLinearExpansionIndex(getCurrentIndex())).isAvailable(
+						Dominion.I().getLinearCardIndex(getCurrentIndex())));
 		} else {
-			this.setSelectedIndex(index, isAvailable);
+			setSelectedIndex(index, isAvailable);
 		}
 		Dominion.I().getExpansion(Dominion.I().getLinearExpansionIndex(index)).setAvailable(
-				Dominion.I().getLinearCardIndex(index), this.getItem(index).isSelected);
+				Dominion.I().getLinearCardIndex(index), getItem(index).isSelected);
 		Dominion.I().getExpansion(Dominion.I().getLinearExpansionIndex(index)).setBlackMarketAvailable(
-				Dominion.I().getLinearCardIndex(index), this.getItem(index).isSelected);
+				Dominion.I().getLinearCardIndex(index), getItem(index).isSelected);
 	}
 }

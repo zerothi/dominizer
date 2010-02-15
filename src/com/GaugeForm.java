@@ -31,7 +31,7 @@ public class GaugeForm extends Form {
 		super(label);
 		//#style loadingGauge
 		g = new Gauge(null, false, Gauge.INDEFINITE,Gauge.CONTINUOUS_RUNNING);
-		this.append(g);
+		append(g);
 	}
 	
 	public static GaugeForm instance() {
@@ -45,17 +45,17 @@ public class GaugeForm extends Form {
 	}
 	
 	public void setGauge(String label, boolean interactive, int maxValue, int initialValue) {
-		this.deleteAll();
+		deleteAll();
 		if ( interactive ) {
 			//#style inputGauge
 			g = new Gauge(label, interactive, maxValue, initialValue);
-			this.addCommand(okCmd);
-			this.addCommand(cancelCmd);
+			addCommand(okCmd);
+			addCommand(cancelCmd);
 		} else {
 			//#style loadingGauge
 			g = new Gauge(label, interactive, maxValue, initialValue);
 		}
-		this.append(g);
+		append(g);
 	}
 	
 	public void setGaugeLabel(String label) {
@@ -71,7 +71,7 @@ public class GaugeForm extends Form {
 	}
 	
 	public void addCommandListener(CommandListener cmdListener) {
-		this.setCommandListener(cmdListener);
+		setCommandListener(cmdListener);
 	}
 	
 	public void keyPressed(int keyCode) {
@@ -86,7 +86,7 @@ public class GaugeForm extends Form {
 		case Canvas.KEY_NUM7:
 		case Canvas.KEY_NUM8:
 		case Canvas.KEY_NUM9:
-			this.setGaugeValue((keyCode - Canvas.KEY_NUM0));
+			setGaugeValue((keyCode - Canvas.KEY_NUM0));
 			break;
 		default:
 			//#= super.keyPressed(keyCode);

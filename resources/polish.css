@@ -743,7 +743,6 @@ menuItem:hover {
 	font-size: large;
 }
 .inputGauge extends loadingGauge {
-	repaint-previous-screen: true;
 	label-style: labelGauge;
 }
 

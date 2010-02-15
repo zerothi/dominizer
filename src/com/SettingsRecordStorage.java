@@ -144,7 +144,7 @@ public class SettingsRecordStorage {
 
 	public boolean writeData() throws RecordStoreFullException, RecordStoreNotFoundException, RecordStoreException {
 		boolean succes = true;
-		this.deleteRecordStore(currentStore);
+		deleteRecordStore(currentStore);
 		store = RecordStore.openRecordStore(currentStore, true);
 		try {
 			if ( data != null )

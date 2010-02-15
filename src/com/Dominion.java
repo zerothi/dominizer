@@ -239,7 +239,7 @@ public class Dominion {
 	}
 
 	public String getCurrentAsPresetSave() {
-		if (this.selectedCards == null)
+		if (selectedCards == null)
 			return "";
 		StringBuffer sb = new StringBuffer(50);
 		for (int i = 0; i < expansions.length; i++)
@@ -343,7 +343,7 @@ public class Dominion {
 	}
 
 	public String getSelectedInfo() {
-		if (this.selectedCards == null)
+		if (selectedCards == null)
 			return "";
 		StringBuffer sb = new StringBuffer(50);
 		int action = 0, attack = 0, reaction = 0, treasury = 0, victory = 0, duration = 0;
@@ -446,11 +446,11 @@ public class Dominion {
 			if ( placement == -1 ) {
 				for ( int i = 0 ; i < selectedCards.size() ; i++ )
 					if ( selectedCards.getName(i) == null ) {
-						this.selectedCards.setCard(i, expansions[exp].getCard(card));
+						selectedCards.setCard(i, expansions[exp].getCard(card));
 						return true;
 					}
 			} else {
-				this.selectedCards.setCard(placement, expansions[exp].getCard(card));
+				selectedCards.setCard(placement, expansions[exp].getCard(card));
 				return true;
 			}
 		}
@@ -482,9 +482,9 @@ public class Dominion {
 		checkAvailability();
 		Cards.COMPARE_PREFERRED = sortMethod;
 		int i = 0;
-		this.selectedCards = new Cards(numberOfRandomCards, Cards.IS_NOT_SET);
+		selectedCards = new Cards(numberOfRandomCards, Cards.IS_NOT_SET);
 		int selectedElement = 0;
-		this.selector.setSeed(System.currentTimeMillis());
+		selector.setSeed(System.currentTimeMillis());
 		int selected = 0;
 		int tmpSum = 0;
 		//#debug info
@@ -533,7 +533,7 @@ public class Dominion {
 		try {
 			// #debug info
 			System.out.println("reading " + fileName);
-			isr = new InputStreamReader(this.getClass().getResourceAsStream("/" + fileName), "UTF8");
+			isr = new InputStreamReader(getClass().getResourceAsStream("/" + fileName), "UTF8");
 			int ch;
 			while ((ch = isr.read()) > -1) {
 				sb.append((char) ch);
@@ -731,7 +731,7 @@ public class Dominion {
 	public boolean selectPreset(int presetDeck, int preset) {
 		// #debug info
 		System.out.println("fetching preset: " + presetDeck + " and " + preset);
-		this.selectedCards = new Cards(presets[presetDeck].size(preset),
+		selectedCards = new Cards(presets[presetDeck].size(preset),
 				Cards.IS_NOT_SET);
 		if (presetDeck > presets.length | preset >= presets[presetDeck].size())
 			return false;
@@ -749,7 +749,7 @@ public class Dominion {
 		for (int i = 0; i < presets.length; i++)
 			for (int j = 0; j < presets[i].size(); j++)
 				if (presets[i].getPresetName(j).equals(presetName))
-					return this.selectPreset(i, j);
+					return selectPreset(i, j);
 		return false;
 	}
 

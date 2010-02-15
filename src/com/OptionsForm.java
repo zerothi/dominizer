@@ -21,19 +21,19 @@ public class OptionsForm extends List implements CommandListener{
 		//#style mainScreen
 		super(title, listType);
 		//#style label
-		this.append("Attack Cards", null);
+		append("Attack Cards", null);
 		//#style label
-		this.append("Victory Cards", null);
+		append("Victory Cards", null);
 		//#style label
-		this.append("Treasure Cards", null);
+		append("Treasure Cards", null);
 		//#style label
-		this.append("Reaction Cards", null);
+		append("Reaction Cards", null);
 		//#style label
-		this.append("Duration Cards", null);
+		append("Duration Cards", null);
 		//#style label
-		this.append("Trash Cards", null);
+		append("Trash Cards", null);
 		//#style label
-		this.append("Reaction if Attack", null);
+		append("Reaction if Attack", null);
 	}
 
 	public void commandAction(Command cmd, Displayable disp) {

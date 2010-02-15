@@ -50,30 +50,30 @@ public class ShowCardsForm extends Form implements CommandListener {
 		//#debug
 		System.out.println("showing cards initialize");
 		//#style defaultTable
-		this.table = new TableItem();
-		this.table.setDimension(3, 11);
+		table = new TableItem();
+		table.setDimension(3, 11);
 		//#debug
 		System.out.println("adding header");
 		//#style tableHeading
-		this.table.set(0, 0, Locale.get("table.heading.Name"));
+		table.set(0, 0, Locale.get("table.heading.Name"));
 		//#style tableHeading
-		this.table.set(1, 0, Locale.get("table.heading.Expansion"));
+		table.set(1, 0, Locale.get("table.heading.Expansion"));
 		//#style tableHeading
-		this.table.set(2, 0, Locale.get("table.heading.Cost"));
-		this.addCommand(this.randomizeCmd);
-		this.addCommand(this.showInfoCmd);
-		this.addCommand(this.anotherSetCmd);
-		this.addCommand(this.sortCmd);		
-		UiAccess.addSubCommand( this.sortExpNameCmd, this.sortCmd, this );
-		UiAccess.addSubCommand( this.sortExpCostCmd, this.sortCmd, this );
-		UiAccess.addSubCommand( this.sortNameCmd, this.sortCmd, this );
-		UiAccess.addSubCommand( this.sortCostExpCmd, this.sortCmd, this );
-		UiAccess.addSubCommand( this.sortCostNameCmd, this.sortCmd, this );
-		this.addCommand(this.saveCmd);
-		this.addCommand(this.backCmd);
-		this.table.setSelectionMode(TableItem.SELECTION_MODE_NONE);//SELECTION_MODE_CELL);
-		this.append(this.table);
-		this.setCommandListener(this);
+		table.set(2, 0, Locale.get("table.heading.Cost"));
+		addCommand(randomizeCmd);
+		addCommand(showInfoCmd);
+		addCommand(anotherSetCmd);
+		addCommand(sortCmd);		
+		UiAccess.addSubCommand( sortExpNameCmd, sortCmd, this );
+		UiAccess.addSubCommand( sortExpCostCmd, sortCmd, this );
+		UiAccess.addSubCommand( sortNameCmd, sortCmd, this );
+		UiAccess.addSubCommand( sortCostExpCmd, sortCmd, this );
+		UiAccess.addSubCommand( sortCostNameCmd, sortCmd, this );
+		addCommand(saveCmd);
+		addCommand(backCmd);
+		table.setSelectionMode(TableItem.SELECTION_MODE_NONE);//SELECTION_MODE_CELL);
+		append(table);
+		setCommandListener(this);
 	}
 	
 	public static ShowCardsForm instance() {
@@ -86,7 +86,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 	public void reRandomize() {
 		try {
 			Dominion.I().randomizeCards();
-			this.viewCards(Dominion.I().getCurrentlySelected());
+			viewCards(Dominion.I().getCurrentlySelected());
 		} catch (DominionException e) {
 			GameApp.instance().showAlert(e.toString());
 		}
@@ -98,79 +98,82 @@ public class ShowCardsForm extends Form implements CommandListener {
 		if ( cards == null ) {
 			for (int cardNumber = 0 ; cardNumber < 10 ; cardNumber++ ) {
 				//#style tableCell
-				this.table.set(0, cardNumber + 1, "");
+				table.set(0, cardNumber + 1, "");
 				//#style tableCell
-				this.table.set(1, cardNumber + 1, "");
+				table.set(1, cardNumber + 1, "");
 				//#style tableCell
-				this.table.set(2, cardNumber + 1, "");
+				table.set(2, cardNumber + 1, "");
 			}
 			return;
 		}
+		table.setVisible(false);
 		if ( Dominion.I().hasBlackMarketPlaying() )
-			this.addCommand(blackMarketCmd);
+			addCommand(blackMarketCmd);
 		else
-			this.removeCommand(blackMarketCmd);
+			removeCommand(blackMarketCmd);
 		for (int cardNumber = 0 ; cardNumber < cards.size() ; cardNumber++ ) {
 			if ( Dominion.I().isHold(cards.getName(cardNumber)) ) {
 				//#style tableCellHold
-				this.table.set(0, cardNumber + 1, cards.getName(cardNumber));
+				table.set(0, cardNumber + 1, cards.getName(cardNumber));
 			} else {
 				//#style tableCell
-				this.table.set(0, cardNumber + 1, cards.getName(cardNumber));
+				table.set(0, cardNumber + 1, cards.getName(cardNumber));
 			}
 			try {
 				//#style tableCell
-				this.table.set(1, cardNumber + 1, new ImageItem(null, 
+				table.set(1, cardNumber + 1, new ImageItem(null, 
 						Image.createImage("/" +	Dominion.getExpansionImageName(cards.getExpansion(cardNumber)) 
 								+ cards.getCardType(cardNumber) + ".png"), ImageItem.PLAIN, null));
 			} catch (IOException e) {
-				this.table.set(1, cardNumber + 1, Dominion.getExpansionName(cards.getExpansion(cardNumber)));
+				table.set(1, cardNumber + 1, Dominion.getExpansionName(cards.getExpansion(cardNumber)));
 			}
 			try {
 				//#style tableCellCentered
-				this.table.set(2, cardNumber + 1, new ImageItem(null, 
+				table.set(2, cardNumber + 1, new ImageItem(null, 
 						Image.createImage("/trea" + new Integer(cards.getCost(cardNumber)).toString() + ".png"), ImageItem.PLAIN, null));
 			} catch (IOException e) {
 				//#style tableCellCentered
-				this.table.set(2, cardNumber + 1, new Integer(cards.getCost(cardNumber)));
+				table.set(2, cardNumber + 1, new Integer(cards.getCost(cardNumber)));
 			}
 		}
+		table.updateInternalArea();
+		table.setVisible(true);
 	}
 
 	public void commandAction(Command cmd, Displayable disp) {
-		if ( cmd.equals(this.backCmd) ) {
+		if ( cmd.equals(backCmd) ) {
 			Dominion.RANDOMIZE_COMPLETELY_NEW = true;
 			Dominion.I().resetHoldCards();
 			try {
-				this.removeCommand(randomizeSetCmd);
+				removeCommand(randomizeSetCmd);
 			} catch (Exception e) {}
 			try {
-				this.removeCommand(randomizeCmd);				
+				removeCommand(randomizeCmd);				
 			} catch (Exception e) {}
-			this.addCommand(randomizeCmd);
+			addCommand(randomizeCmd);
 			GameApp.instance().changeToScreen(null);
-		} else if ( cmd.equals(this.randomizeCmd) ) {
+		} else if ( cmd.equals(randomizeCmd) ) {
 			Dominion.I().resetIsPlaying(true);
-			this.reRandomize();
-		} else if ( cmd.equals(this.randomizeSetCmd) ) {
+			reRandomize();
+		} else if ( cmd.equals(randomizeSetCmd) ) {
 			Dominion.I().resetIsPlaying(false);
-			this.reRandomize();
-		} else if ( cmd.equals(this.blackMarketCmd) )
+			reRandomize();
+		} else if ( cmd.equals(blackMarketCmd) )
 			GameApp.instance().showBlackMarketDeck(GameApp.SHOWCARDS);
-		else if ( cmd.equals(this.anotherSetCmd) ) {
+		else if ( cmd.equals(anotherSetCmd) ) {
 			Dominion.RANDOMIZE_COMPLETELY_NEW = false;
 			Dominion.I().resetHoldCards();
-			this.reRandomize();
+			reRandomize();
 			try {
-				this.removeCommand(randomizeSetCmd);
+				removeCommand(randomizeSetCmd);
 			} catch (Exception e) {}
 			try {
-				this.removeCommand(randomizeCmd);				
+				removeCommand(randomizeCmd);				
 			} catch (Exception e) {}
-			this.addCommand(randomizeSetCmd);
-		} else if ( cmd.equals(this.showInfoCmd) )
+			addCommand(randomizeSetCmd);
+		} else if ( cmd.equals(showInfoCmd) )
 			GameApp.instance().showInfo(Dominion.I().getSelectedInfo(), Alert.FOREVER);
-		else if ( cmd.equals(this.saveCmd) ) {
+		else if ( cmd.equals(saveCmd) ) {
 			GameApp.instance().showInputDialog(Locale.get("screen.RandomizedCards.InputMessage"), this);
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.ok"))) {
 			if ( InputForm.instance().getInput().indexOf(SettingsRecordStorage.BIG_SPLITTER) > 0 )
@@ -196,31 +199,31 @@ public class ShowCardsForm extends Form implements CommandListener {
 			InputForm.instance().clearInput();
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel"))) {
 			GameApp.instance().changeToScreen(this);
-		} else if ( cmd.equals(this.sortExpNameCmd) ) {
+		} else if ( cmd.equals(sortExpNameCmd) ) {
 			try {
-				this.viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_EXPANSION_NAME));
+				viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_EXPANSION_NAME));
 				Cards.COMPARE_PREFERRED = Cards.COMPARE_EXPANSION_NAME;
 			} catch (DominionException e) {
 				// this will never happen as you cannot come to the showscreen without randomizing
 			}
-		} else if ( cmd.equals(this.sortExpCostCmd) ) {
+		} else if ( cmd.equals(sortExpCostCmd) ) {
 			try {
-				this.viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_EXPANSION_COST));
+				viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_EXPANSION_COST));
 				Cards.COMPARE_PREFERRED = Cards.COMPARE_EXPANSION_COST;
 			} catch (DominionException e) {}
-		} else if ( cmd.equals(this.sortNameCmd) ) {
+		} else if ( cmd.equals(sortNameCmd) ) {
 			try {
-				this.viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_NAME));
+				viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_NAME));
 				Cards.COMPARE_PREFERRED = Cards.COMPARE_NAME;
 			} catch (DominionException e) {}
-		} else if ( cmd.equals(this.sortCostNameCmd) ) {
+		} else if ( cmd.equals(sortCostNameCmd) ) {
 			try {
-				this.viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_COST_NAME));
+				viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_COST_NAME));
 				Cards.COMPARE_PREFERRED = Cards.COMPARE_COST_NAME;
 			} catch (DominionException e) {}
-		} else if ( cmd.equals(this.sortCostExpCmd) ) {
+		} else if ( cmd.equals(sortCostExpCmd) ) {
 			try {
-				this.viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_COST_EXPANSION));
+				viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_COST_EXPANSION));
 				Cards.COMPARE_PREFERRED = Cards.COMPARE_COST_EXPANSION;
 			} catch (DominionException e) {}
 		}
@@ -238,7 +241,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 		case Canvas.KEY_NUM7:
 		case Canvas.KEY_NUM8:
 		case Canvas.KEY_NUM9:
-			this.holdCard(keyCode - Canvas.KEY_NUM0);
+			holdCard(keyCode - Canvas.KEY_NUM0);
 			break;
 		default:
 			//#= super.keyPressed(keyCode);
@@ -249,15 +252,15 @@ public class ShowCardsForm extends Form implements CommandListener {
 		String cardName;
 		if ( card == 0 )
 			card = 10;
-		cardName = ((StringItem) this.table.get(0, card)).getText();
+		cardName = ((StringItem) table.get(0, card)).getText();
 		if ( Dominion.I().holdCard(cardName) ) {
 			//#style tableCellHold
-			this.table.set(0, card, cardName);
+			table.set(0, card, cardName);
 			//#debug info
 			System.out.println("holding card: " + cardName);
 		} else {
 			//#style tableCell
-			this.table.set(0, card, cardName);
+			table.set(0, card, cardName);
 			//#debug info
 			System.out.println("deholding card: " + cardName);
 		}

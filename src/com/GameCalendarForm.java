@@ -25,9 +25,9 @@ public class GameCalendarForm extends Form implements CommandListener {
 		super(title);
 		//#style calendar
 		calendar = new CalendarItem();
-		this.append(calendar);
-		this.addCommand(addGameCmd);
-		this.setCommandListener(this);
+		append(calendar);
+		addCommand(addGameCmd);
+		setCommandListener(this);
 	}
 	
 	/**

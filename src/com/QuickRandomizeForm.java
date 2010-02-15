@@ -1,12 +1,9 @@
 package com;
 
-import java.io.IOException;
-
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.List;
 
 import com.dominizer.GameApp;
@@ -36,22 +33,22 @@ public class QuickRandomizeForm extends List implements CommandListener {
 		for ( tmp = 0 ; tmp < Dominion.I().getExpansions() ; tmp++ ) {
 			if ( Dominion.I().getNumberOfExpansionCards()[tmp] > 0 ) {
 				//#style label
-				this.append(Dominion.getExpansionName(tmp) + " " + Dominion.I().getNumberOfExpansionCards()[tmp], Dominion.getExpansionImage(tmp));
+				append(Dominion.getExpansionName(tmp) + " " + Dominion.I().getNumberOfExpansionCards()[tmp], Dominion.getExpansionImage(tmp));
 			} else {
 				//#style label
-				this.append(Dominion.getExpansionName(tmp), Dominion.getExpansionImage(tmp));
+				append(Dominion.getExpansionName(tmp), Dominion.getExpansionImage(tmp));
 			}
-			this.setSelectedIndex(tmp, Dominion.I().getExpansionPlayingStates()[tmp]);
+			setSelectedIndex(tmp, Dominion.I().getExpansionPlayingStates()[tmp]);
 		}
-		this.addCommand(this.quickRandomizeCardsCmd);
-		this.addCommand(this.gaugeCmd);
-		this.addCommand(this.quitCmd);
-		this.setCommandListener(this);
+		addCommand(quickRandomizeCardsCmd);
+		addCommand(gaugeCmd);
+		addCommand(quitCmd);
+		setCommandListener(this);
 	}
 
 	public void commandAction(Command cmd, Displayable screen) {
-		if ( cmd.equals(this.quickRandomizeCardsCmd) ) {
-			this.getSelectedFlags(flags);
+		if ( cmd.equals(quickRandomizeCardsCmd) ) {
+			getSelectedFlags(flags);
 			Dominion.I().setExpansionPlayingState(flags);
 			GameApp.instance().ecFL.updateCards(false);
 			GameApp.instance().showRandomizedCards();
@@ -68,7 +65,7 @@ public class QuickRandomizeForm extends List implements CommandListener {
 			tmpS = null;
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.ok")) ) {
 			GameApp.instance().changeToScreen(null);
-			this.setCardsFromExpansion(tmp, GaugeForm.instance().getGaugeValue());
+			setCardsFromExpansion(tmp, GaugeForm.instance().getGaugeValue());
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel")) ) {
 			GameApp.instance().changeToScreen(null);
 		} else if ( cmd.equals(this.quitCmd) )
@@ -87,7 +84,7 @@ public class QuickRandomizeForm extends List implements CommandListener {
 		case Canvas.KEY_NUM7:
 		case Canvas.KEY_NUM8:
 		case Canvas.KEY_NUM9:
-			this.setCardsFromExpansion(keyCode - Canvas.KEY_NUM0);
+			setCardsFromExpansion(keyCode - Canvas.KEY_NUM0);
 			break;
 		default:
 			//#= super.keyPressed(keyCode);
@@ -97,7 +94,7 @@ public class QuickRandomizeForm extends List implements CommandListener {
 	private void setCardsFromExpansion(int numberCards) {
 		//#debug info
 		System.out.println("trying to set cards from expansion");
-		this.setCardsFromExpansion(UiAccess.getFocusedIndex(this), numberCards);
+		setCardsFromExpansion(UiAccess.getFocusedIndex(this), numberCards);
 		
 	}
 
@@ -108,13 +105,13 @@ public class QuickRandomizeForm extends List implements CommandListener {
 			else {
 				if ( numberOfCards > 0 ) {
 					//#style label
-					this.set(exp, Dominion.getExpansionName(exp) + " " + numberOfCards, this.getImage(exp));
+					set(exp, Dominion.getExpansionName(exp) + " " + numberOfCards, getImage(exp));
 					Dominion.I().setExpansionPlayingState(exp, true);
 				} else {
 					//#style label
-					this.set(exp, Dominion.getExpansionName(exp), this.getImage(exp));
+					set(exp, Dominion.getExpansionName(exp), getImage(exp));
 				}
-				this.setSelectedIndex(exp, Dominion.I().getExpansionPlayingStates()[exp]);
+				setSelectedIndex(exp, Dominion.I().getExpansionPlayingStates()[exp]);
 				Dominion.I().setCardsUsedForExpansion(exp, numberOfCards);
 			}
 			if ( exp == 0 )

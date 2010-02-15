@@ -82,7 +82,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		else if ( !Dominion.I().getExpansionPlayingStates()[0] && !Dominion.I().getExpansionPlayingStates()[1] && !Dominion.I().getExpansionPlayingStates()[2] && !Dominion.I().getExpansionPlayingStates()[3] )
 			showAlert(Locale.get("alert.QuickSelectExpansions.NoneSelected"));
 		else {
-			currentTab = this.getCurrentTab();
+			currentTab = getCurrentTab();
 			Dominion.I().resetIsPlaying(true);
 			ShowCardsForm.instance().reRandomize();
 			changeToScreen(ShowCardsForm.instance());
@@ -108,7 +108,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		if ( alert != null )
 			alert = null;
 		if ( displayable == null )
-			this.changeToScreen(this.tabbedPane);
+			changeToScreen(tabbedPane);
 		else
 			display.setCurrent(displayable);
 	}
@@ -117,7 +117,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		if ( currentTab == SHOWCARDS )
 			changeToScreen(ShowCardsForm.instance());
 		else
-			this.changeToScreen(this.tabbedPane);
+			changeToScreen(tabbedPane);
 		//notifyTabChangeRequested(0, currentTab);
 	}
 
@@ -129,24 +129,24 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		Dominion.I().getExpansions();
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.gui"));
 		//#style tabbedPane
-		this.tabbedPane = new TabbedPane(null);
-		this.tabbedPane.addTabListener(this);
-		this.tabbedPane.setTabbedFormListener(this);
+		tabbedPane = new TabbedPane(null);
+		tabbedPane.addTabListener(this);
+		tabbedPane.setTabbedFormListener(this);
 		//Locale.get("tab.Quick.title")
 		qrF = new QuickRandomizeForm(null, List.MULTIPLE);
 		//#style tabIcon
-		this.tabbedPane.addTab(qrF, null, Locale.get("app.name"));
+		tabbedPane.addTab(qrF, null, Locale.get("app.name"));
 		//Locale.get("tab.EditCards.title")
 		ecFL = new EditCardsFilteredList(null, FilteredList.MULTIPLE);
 		//#style tabIcon
-		this.tabbedPane.addTab(ecFL, null, Locale.get("tab.EditCards.title"));
+		tabbedPane.addTab(ecFL, null, Locale.get("tab.EditCards.title"));
 		//Locale.get("tab.Preset.title")
 		pFL = new PresetFilteredList(null, FilteredList.IMPLICIT);
 		//#style tabIcon
-		this.tabbedPane.addTab(pFL, null, Locale.get("tab.Preset.title"));
+		tabbedPane.addTab(pFL, null, Locale.get("tab.Preset.title"));
 		//Locale.get("tab.Calendar.title")
 		///#style tabIcon
-		//this.tabbedPane.addTab(new GameCalendarForm(null), null, Locale.get("screen.Calendar.title"));
+		//tabbedPane.addTab(new GameCalendarForm(null), null, Locale.get("screen.Calendar.title"));
 		bmF = new BlackMarketForm(Locale.get("screen.BlackMarket.title"), List.IMPLICIT);
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.gui.settings"));
 		SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.settings"));
@@ -234,7 +234,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	public void tabChangeEvent(Screen scr) {}
 	
 	public void changeToTab(int tab) {
-		this.tabbedPane.setFocus(tab);
+		tabbedPane.setFocus(tab);
 		currentTab = tab;
 	}
 

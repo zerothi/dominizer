@@ -118,7 +118,7 @@ public class Cards {
 	 *            the isPlaying to set
 	 */
 	public void setPlaying(int index, boolean isPlaying) {
-		this.isGamingRelated[index][0] = isPlaying;
+		isGamingRelated[index][0] = isPlaying;
 	}
 
 
@@ -134,7 +134,7 @@ public class Cards {
 	 *            the selected to set
 	 */
 	public void setAvailable(int index, boolean available) {
-		this.isGamingRelated[index][1] = available;
+		isGamingRelated[index][1] = available;
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class Cards {
 	 *            the bmSelected to set
 	 */
 	public void setBlackMarketAvailable(int index, boolean bmAvailable) {
-		this.isGamingRelated[index][2] = bmAvailable;
+		isGamingRelated[index][2] = bmAvailable;
 	}
 
 	/**
@@ -180,7 +180,7 @@ public class Cards {
 	 *            the isAction to set
 	 */
 	public void setAction(int index, boolean isAction) {
-		this.isSpecific[index][0] = isAction;
+		isSpecific[index][0] = isAction;
 	}
 	/**
 	 * @return the isVictory
@@ -194,7 +194,7 @@ public class Cards {
 	 *            the isVictory to set
 	 */
 	public void setVictory(int index, boolean isVictory) {
-		this.isSpecific[index][1] = isVictory;
+		isSpecific[index][1] = isVictory;
 	}
 
 	/**
@@ -209,7 +209,7 @@ public class Cards {
 	 *            the isCoin to set
 	 */
 	public void setTreasure(int index, boolean isCoin) {
-		this.isSpecific[index][2] = isCoin;
+		isSpecific[index][2] = isCoin;
 	}
 
 	/**
@@ -217,7 +217,7 @@ public class Cards {
 	 *            the isAttack to set
 	 */
 	public void setAttack(int index, boolean isAttack) {
-		this.isSpecific[index][3] = isAttack;
+		isSpecific[index][3] = isAttack;
 	}
 
 	/**
@@ -239,7 +239,7 @@ public class Cards {
 	 *            the isReaction to set
 	 */
 	public void setReaction(int index, boolean isReaction) {
-		this.isSpecific[index][4] = isReaction;
+		isSpecific[index][4] = isReaction;
 	}
 	/**
 	 * @return the isDuration
@@ -253,7 +253,7 @@ public class Cards {
 	 *            the isDuration to set
 	 */
 	public void setDuration(int index, boolean isDuration) {
-		this.isSpecific[index][5] = isDuration;
+		isSpecific[index][5] = isDuration;
 	}
 	
 	public int getCardType(int index) {
@@ -296,8 +296,8 @@ public class Cards {
 	public int fromExpansion(int exp) {
 		int tmp = 0;
 		for ( int i = 0 ; i < size() ; i++ ) {
-			if ( this.getExpansion(i) > -1 )
-				if ( this.getExpansion(i) == exp )
+			if ( getExpansion(i) > -1 )
+				if ( getExpansion(i) == exp )
 					tmp++;
 		}
 		return tmp;
@@ -314,18 +314,18 @@ public class Cards {
 			//#debug info 
 			System.out.println("cardinfo 0 is null ");
 		}
-		this.setName(index, cardInfo[0].toString());
-		this.setExpansion(index, ((Integer)cardInfo[1]).intValue());
-		this.setCost(index, ((Integer)cardInfo[2]).intValue());	
-		this.setAction(index, ((Boolean)cardInfo[3]).booleanValue());
-		this.setVictory(index, ((Boolean)cardInfo[4]).booleanValue());
-		this.setTreasure(index, ((Boolean)cardInfo[5]).booleanValue());
-		this.setAttack(index, ((Boolean)cardInfo[6]).booleanValue());
-		this.setReaction(index, ((Boolean)cardInfo[7]).booleanValue());
-		this.setDuration(index, ((Boolean)cardInfo[8]).booleanValue());
-		this.setPlaying(index, ((Boolean)cardInfo[9]).booleanValue());
-		this.setAvailable(index, ((Boolean)cardInfo[10]).booleanValue());
-		this.setBlackMarketAvailable(index, ((Boolean)cardInfo[11]).booleanValue());
+		setName(index, cardInfo[0].toString());
+		setExpansion(index, ((Integer)cardInfo[1]).intValue());
+		setCost(index, ((Integer)cardInfo[2]).intValue());	
+		setAction(index, ((Boolean)cardInfo[3]).booleanValue());
+		setVictory(index, ((Boolean)cardInfo[4]).booleanValue());
+		setTreasure(index, ((Boolean)cardInfo[5]).booleanValue());
+		setAttack(index, ((Boolean)cardInfo[6]).booleanValue());
+		setReaction(index, ((Boolean)cardInfo[7]).booleanValue());
+		setDuration(index, ((Boolean)cardInfo[8]).booleanValue());
+		setPlaying(index, ((Boolean)cardInfo[9]).booleanValue());
+		setAvailable(index, ((Boolean)cardInfo[10]).booleanValue());
+		setBlackMarketAvailable(index, ((Boolean)cardInfo[11]).booleanValue());
 	}
 	
 	public static int compare(Object[] first, Object[] compareTo, int method) {
@@ -369,15 +369,15 @@ public class Cards {
 	}
 	
 	public boolean contains(String cardName) {
-		for ( int i = 0 ; i < this.size() ; i++ )
-			if ( this.getName(i) != null )
-				if ( this.getName(i).equals(cardName) )
+		for ( int i = 0 ; i < size() ; i++ )
+			if ( getName(i) != null )
+				if ( getName(i).equals(cardName) )
 					return true;
 		return false;
 	}
 	
 	public String toString(int index) {
-		return this.getName(index);
+		return getName(index);
 	}
 	
 	public int size() {
