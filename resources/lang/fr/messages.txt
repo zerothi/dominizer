@@ -1,12 +1,9 @@
-                                                                     
-                                                                     
-                                                                     
-                                             
 ################
 #
 # App Specific translations
 #
 ################
+
 tab.Preset.title=Sets personnalisés
 tab.EditCards.title=Éditer les cartes
 tab.Settings.title=Réglages
@@ -30,7 +27,7 @@ screen.BlackMarket.ChooseCards=Choisissez une carte :
 screen.BlackMarket.InfoMessage=Vous avez choisi : 
 screen.BlackMarket.DeckEmpty=La pile du marché noir est vide
 screen.BlackMarket.CancelBuy=Voulez-vous annuler l'achat ?\n
-screen.BlackMarket.Ticker=< {0}Bought / Left: {1} / {2} >
+screen.BlackMarket.Ticker=< {0}Achetées / Reste: {1} / {2} >
 screen.Input.title=Input
 screen.Input.defaultmessage=
 screen.Input.inputname=Input:
@@ -60,7 +57,14 @@ cmd.Back=Retour
 cmd.ShowLog=Afficher le journal
 cmd.Quit=Quitter
 cmd.switch=Basculer
-alert.loading=Chargement
+gauge.loading=Chargement
+gauge.loading.cards=Chargement des cartes
+gauge.loading.cards.settings=Chargement des paramètres des cartes
+gauge.loading.gui=GUI en chargement
+gauge.loading.gui.settings=Paramètres de la GUI en chargement
+gauge.loading.finished=Chargement terminé
+gauge.card.percentage=Fixer le pourcentage de {0}
+gauge.expansion.setCards=Minimum {0} cartes
 alert.alert=Alerte
 alert.info=Info
 alert.confirmation=Confirmer
@@ -83,13 +87,10 @@ base=Base
 promo=Promo
 intrigue=Intrigue
 seaside=Rivages
-### Translate here please
 alchemy=Alchimie
 prosperity=Prosperité
 card.BlackMarket=Marché noir
 
-
-### Translate here please
 preset.base.FirstGame=Les premières parties
 preset.base.BigMoney=Richesses et trésors
 preset.base.Interaction=Interaction
