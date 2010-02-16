@@ -22,7 +22,7 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 	private Command deleteCmd = new Command( Locale.get("cmd.Preset.DeletePreset"), Command.SCREEN, 9);
 	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
-	private int tmp;
+	private int[] tmp = new int[] { 0, 0};
 	
 	public PresetFilteredList(String title, int listType) {
 		//#style mainScreen
@@ -32,20 +32,20 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 		addCommand(quickRandomizeCardsCmd);
 		addCommand(quitCmd);
 		setCommandListener(this);
-		for ( int i = 0 ; i < Dominion.I().presetSize() ; i++ )
-				addPresets(Dominion.I().getPreset(i));
+		for ( tmp[0] = 0 ; tmp[0] < Dominion.I().presetSize() ; tmp[0]++ )
+				addPresets(Dominion.I().getPreset(tmp[0]));
 	}
 
 	public void addPresets(CardPresets cardPreset) {
 		if ( cardPreset == null )
 			return;
-		for ( int i = 0 ; i < cardPreset.size() ; i++ ) {
+		for ( tmp[1] = 0 ; tmp[1] < cardPreset.size() ; tmp[1]++ ) {
 			if ( cardPreset.getExpansion() > -1 ) { 
 				//#style label
-				append(cardPreset.getPresetName(i), Dominion.getExpansionImage(cardPreset.getExpansion()));
+				append(cardPreset.getPresetName(tmp[1]), Dominion.getExpansionImage(cardPreset.getExpansion()));
 			} else {
 				//#style label
-				append(cardPreset.getPresetName(i), null);
+				append(cardPreset.getPresetName(tmp[1]), null);
 				getItem(size() - 1).addCommand(deleteCmd);
 			}
 		}
@@ -60,17 +60,17 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 				focus(0);
 			break;
 		case Canvas.KEY_POUND:
-			tmp = Dominion.I().getPreset(0).size();
-			if ( tmp - 1 < getCurrentIndex() )
-				tmp += Dominion.I().getPreset(1).size();
-			if ( tmp - 1 < getCurrentIndex() ) {
-				tmp += Dominion.I().getPreset(2).size();
+			tmp[0] = Dominion.I().getPreset(0).size();
+			if ( tmp[0] - 1 < getCurrentIndex() )
+				tmp[0] += Dominion.I().getPreset(1).size();
+			if ( tmp[0] - 1 < getCurrentIndex() ) {
+				tmp[0] += Dominion.I().getPreset(2).size();
 				if ( Dominion.I().getPreset(3) == null )
-					tmp = 0;
+					tmp[0] = 0;
 			}
-			if ( tmp <= getCurrentIndex() )
-				tmp = 0;
-			focus(tmp);
+			if ( tmp[0] <= getCurrentIndex() )
+				tmp[0] = 0;
+			focus(tmp[0]);
 			break;
 		default:
 			//#= super.keyPressed(keyCode);
@@ -81,29 +81,13 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 		if ( cmd.equals(quickRandomizeCardsCmd) ) {
 			focus((new Random(System.currentTimeMillis())).nextInt(size()));
 		} else if ( cmd.equals(infoCmd) ) {
-			tmp = Dominion.I().getPreset(0).size();
-			if ( getCurrentIndex() < tmp ) {
-				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(0, getCurrentIndex()), Alert.FOREVER);
+			if ( getFilterText().length() != 0 ) {
+				GameApp.instance().showAlert(Locale.get("alert.Filter.Availability"));
 				return;
 			}
-			tmp += Dominion.I().getPreset(1).size();
-			if ( getCurrentIndex() < tmp ) {
-				tmp = Dominion.I().getPreset(0).size();
-				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(1, getCurrentIndex() - tmp), Alert.FOREVER);
-				return;
-			}
-			tmp += Dominion.I().getPreset(2).size();
-			if ( getCurrentIndex() < tmp ) {
-				tmp = Dominion.I().getPreset(1).size() + Dominion.I().getPreset(0).size();
-				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(2, getCurrentIndex() - tmp), Alert.FOREVER);
-				return;
-			}
-			tmp += Dominion.I().getPreset(3).size();
-			if ( getCurrentIndex() < tmp ) {
-				tmp = Dominion.I().getPreset(2).size() + Dominion.I().getPreset(1).size() + Dominion.I().getPreset(0).size();
-				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(3, getCurrentIndex() - tmp), Alert.FOREVER);
-				return;
-			}
+			tmp = Dominion.I().getPresetLocation(getString(getCurrentIndex()));
+			if ( tmp[0] == -1 ) return;
+			GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(tmp[0], tmp[1]), Alert.FOREVER);
 		} else if ( cmd.equals(selectCmd) ) {
 			if ( Dominion.I().selectPreset(getString(getCurrentIndex())) )
 				GameApp.instance().showCurrentSelectedCards();

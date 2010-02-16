@@ -18,7 +18,7 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 	private Command randomizeCmd = new Command(Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 	private Command perGaugeCmd = new Command( Locale.get("cmd.Percentage.Gauge"), Command.SCREEN, 1);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
-	private int tmp;
+	private int[] tmp = new int[] { 0, 0};
 	
 	public EditCardsFilteredList(String title, int listType) {
 		//#style mainScreen
@@ -48,14 +48,14 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 				focus(0);
 			break;
 		case Canvas.KEY_POUND:
-			tmp = 0;
+			tmp[0] = 0;
 			switch ( Dominion.I().getLinearExpansionIndex(getCurrentIndex()) ) {
-			case 3:	tmp = 0; break;
-			case 2:	tmp += Dominion.I().getExpansion(2).size();
-			case 1:	tmp += Dominion.I().getExpansion(1).size();
-			case 0:	tmp += Dominion.I().getExpansion(0).size();
+			case 3:	tmp[0] = 0; break;
+			case 2:	tmp[0] += Dominion.I().getExpansion(2).size();
+			case 1:	tmp[0] += Dominion.I().getExpansion(1).size();
+			case 0:	tmp[0] += Dominion.I().getExpansion(0).size();
 			}
-			focus(tmp);
+			focus(tmp[0]);
 			break;
 		default:
 			//#= super.keyPressed(keyCode);
@@ -64,25 +64,25 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 	
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(randomizeCmd) ) {
-			//#debug info
-			System.out.println("I AM TRULY CALLED");
 			updateCards(true);
 			GameApp.instance().showRandomizedCards();
 		} else if ( cmd.equals(perGaugeCmd) ) {
-			tmp = getCurrentIndex();
-			String tmpS = Dominion.I().getExpansion(
-					Dominion.I().getLinearExpansionIndex(tmp)).getName(Dominion.I().getLinearCardIndex(tmp));
+			if ( getFilterText().length() != 0 ) {
+				GameApp.instance().showAlert(Locale.get("alert.Filter.Availability"));
+				return;
+			}
+			tmp[0] = Dominion.I().getLinearExpansionIndex(getCurrentIndex());
+			tmp[1] = Dominion.I().getLinearCardIndex(getCurrentIndex());
+			if ( tmp[0] == -1 ) return;
+			String tmpS = Dominion.I().getExpansion(tmp[0]).getName(tmp[1]);
 			GaugeForm.instance().setGauge(Locale.get("gauge.card.percentage", tmpS), true, 10, 0);
-			GaugeForm.instance().setGaugeValue(
-					Dominion.I().getExpansion(Dominion.I().getLinearExpansionIndex(tmp)).getPercentage(
-							Dominion.I().getLinearCardIndex(tmp)));
+			GaugeForm.instance().setGaugeValue(Dominion.I().getExpansion(tmp[0]).getPercentage(tmp[1]));
 			GaugeForm.instance().setCommandListener(this);
 			GameApp.instance().changeToScreen(GaugeForm.instance());
 			tmpS = null;
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.ok")) ) {
 			GameApp.instance().changeToScreen(null);
-			setPercentage(tmp, Dominion.I().getLinearExpansionIndex(tmp),
-					Dominion.I().getLinearCardIndex(tmp), GaugeForm.instance().getGaugeValue());
+			setPercentage(getCurrentIndex(), tmp[0], tmp[1], GaugeForm.instance().getGaugeValue());
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel")) ) {
 			GameApp.instance().changeToScreen(null);
 		} else if ( cmd.equals(quitCmd) ) {
@@ -105,10 +105,6 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 		else 
 			UiAccess.setFocusedIndex(this, 0);
 		UiAccess.setFocusedIndex(this, index);
-	}
-	
-	public void setPercentage(int exp, int card, int deciPercentage) {
-		setPercentage(getCurrentIndex(), exp, card, deciPercentage);
 	}
 	
 	public void updateCards(boolean localUpdate) {

@@ -50,7 +50,7 @@ cmd.Percentage.Main=Percentage {0}
 cmd.Percentage.Remove=Remove
 cmd.Percentage.Use=Use {0}%
 cmd.Preset.ShowInfo=Show Cards
-cmd.Preset.DeletePreset=Delete
+cmd.Preset.DeletePreset=Delete save
 cmd.Calendar.AddGame=Add Game
 cmd.BlackMarket=Black Market Deck
 cmd.BlackMarket.Draw=Draw New
@@ -79,6 +79,8 @@ alert.CardsFromExpansion.Promo=You cannot have more than 3 cards from the Promo 
 alert.Randomization.Save.IllegalChar=Your save name can not contain the character '#'.\nPlease supply another name.
 alert.Randomization.Availability=Your available cards in '{0}' does not match your minimum card requirement.\nCorrect input!
 alert.Randomization.TotalAvailability=You only have {0} available cards in total.\nNo more sets can be generated!
+
+alert.Filter.Availability=Currently you cannot search and edit at the same time.\nSolution: Clear filter-text.
 
 ################
 #

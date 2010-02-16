@@ -98,7 +98,9 @@ label {
 		color: fontColor;
 		size: small;
 	}
-	layout: center | expand;	
+	layout: center | expand;
+	checkbox-plain: url( ch0.png );
+	checkbox-selected: url( ch1.png );
 }
 @media touchscreen {
 	label {	
@@ -710,6 +712,7 @@ menuItem:hover {
  * The Gauge
  */
 .formGauge extends mainPopupScreen {
+	repaint-previous-screen: false;
 	title-menu: false;
 	padding-left: 5;
 	padding-right: 5;

@@ -208,10 +208,18 @@ public class Dominion {
 	}
 
 	
-	private int[] getCardLocation(String cardName) {
+	public int[] getCardLocation(String cardName) {
 		for ( int i = 0 ; i < expansions.length ; i++ )
 			for ( int j = 0 ; j < expansions[i].size() ; j++ )
 				if ( expansions[i].getName(j).equals(cardName) )
+					return new int[] { i, j};
+		return new int[] { -1, -1};
+	}
+	
+	public int[] getPresetLocation(String presetName) {
+		for ( int i = 0 ; i < presets.length ; i++ )
+			for ( int j = 0 ; j < presets[i].size() ; j++ )
+				if ( presets[i].getPresetName(j).equals(presetName) )
 					return new int[] { i, j};
 		return new int[] { -1, -1};
 	}
