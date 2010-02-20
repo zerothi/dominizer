@@ -362,7 +362,7 @@ menu {
 	}
 	font-color: translucentFontColor;
 	font-style: bold;
-	expand-items: true;
+	view-type: none;
 }
 @media touchscreen {
 	menu {
@@ -488,7 +488,7 @@ menuItem:hover {
 	padding: 0px;
 	font-color: translucentFontColor;
 	font-style: bold;
-	font-size: small;
+	font-size: medium;
 }
 @media touchscreen {
 	.tableHeading {	
@@ -549,15 +549,6 @@ menuItem:hover {
 		font-size: medium;
 	}
 }	
-
-.tableBoolean {
-	padding: 2px;
-	include-label: true;
-	background {
-		type: round-rect;
-		color: silver;
-	}
-}
 
 /**************
  *
