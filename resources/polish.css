@@ -100,6 +100,7 @@ label {
 	checkbox-plain: url( ch0.png );
 	checkbox-selected: url( ch1.png );
 }
+
 @media touchscreen {
 	label {	
 		font-size: medium;
@@ -163,7 +164,6 @@ focused {
 		top-color: splitTop;
 		bottom-color: splitBot;
 	}
-	choice-color: eevenBrightColor;
 }
 
 .behindScreen extends mainScreen {
@@ -213,15 +213,15 @@ listItem {
 	min-height: 30%;
 	font-size: small;
 }
+@media touchscreen {
+	.mainCommand {
+		font-size: medium;
+	}
+}
 .mainCommand:hover {
 	font-style: bold;
 	font-color: fontColor;
 	text-effect: shadow;
-}
-@media touchscreen {
-	.mainCommand {
-		font-size: large;
-	}
 }
 
 .mainItem {
@@ -278,7 +278,7 @@ info {
 	font-color: fontColor;
 	layout: left;
 }
-info:landscape {}
+
 /*************   MENU BAR     *************/
 
 menubar {
@@ -325,17 +325,17 @@ middlecommand extends leftcommand {
 	leftcommand {
 		padding-top: 2px;
 		padding-bottom: 2px;
-		font-size: large;
+		font-size: medium;
 	}
 	rightcommand {
 		padding-top: 2px;
 		padding-bottom: 2px;
-		font-size: large;
+		font-size: medium;
 	}
 	middlecommand {
 		padding-top: 2px;
 		padding-bottom: 2px;
-		font-size: large;
+		font-size: medium;
 	}
 }
 
@@ -363,13 +363,12 @@ menu {
 	font-color: translucentFontColor;
 	font-style: bold;
 	expand-items: true;
-	view-type: none;
 }
 @media touchscreen {
 	menu {
 		padding-top: 4px;
 		padding-bottom: 4px;
-		font-size: large;
+		font-size: medium;
 	}
 }
 
@@ -385,12 +384,11 @@ menuItem {
 	padding-left: 5;
 	font {
 		color: translucentFontColor;
-		size: medium;
+		size: small;
 		style: bold;
 	}
 	layout: left;
 }
-
 
 /**
   * A focused menuItem
@@ -400,19 +398,16 @@ menuItem:hover {
 	font-color: translucentFontColor;
 	layout: left | horizontal-expand;
 }
-/** adapt styles for touchscreen devices dynamically: */
 @media touchscreen {
 	menuItem {
 		padding-top: 4px;
 		padding-bottom: 4px;
-		font-size: large;
+		font-size: medium;
 	}
 	menuItem:hover {
-		padding-top: 4px;
-		padding-bottom: 4px;
-		font-size: large;
+		font-size: medium;
 	}
-}	
+}
 
 .filterCards {
 	title-menu: true;
@@ -497,13 +492,13 @@ menuItem:hover {
 	padding: 0px;
 	font-color: translucentFontColor;
 	font-style: bold;
-	//#if polish.android
-		font-size: medium;
-	//#else
-		font-size: small;
-	//#endif
+	font-size: small;
 }
-
+@media touchscreen {
+	.tableHeading {	
+		font-size: medium;
+	}
+}
 .tableHeading:hover {
 	background {
 		color: bgColor;
