@@ -51,15 +51,6 @@ public class ShowCardsForm extends Form implements CommandListener {
 		System.out.println("showing cards initialize");
 		//#style defaultTable
 		table = new TableItem();
-		table.setDimension(3, 11);
-		//#debug
-		System.out.println("adding header");
-		//#style tableHeading
-		table.set(0, 0, Locale.get("table.heading.Name"));
-		//#style tableHeading
-		table.set(1, 0, Locale.get("table.heading.Expansion"));
-		//#style tableHeading
-		table.set(2, 0, Locale.get("table.heading.Cost"));
 		addCommand(randomizeCmd);
 		addCommand(showInfoCmd);
 		addCommand(anotherSetCmd);
@@ -93,10 +84,11 @@ public class ShowCardsForm extends Form implements CommandListener {
 	}
 
 	public void viewCards(Cards cards) {
+		table.releaseResources();
 		//#debug
 		System.out.println("adding card information");
 		if ( cards == null ) {
-			for (int cardNumber = 0 ; cardNumber < 10 ; cardNumber++ ) {
+			for (int cardNumber = 0 ; cardNumber < table.getNumberOfRows() - 1 ; cardNumber++ ) {
 				//#style tableCell
 				table.set(0, cardNumber + 1, "");
 				//#style tableCell
@@ -106,7 +98,15 @@ public class ShowCardsForm extends Form implements CommandListener {
 			}
 			return;
 		}
-		table.setVisible(false);
+		table.setDimension(3, cards.size() + 1);
+		//#debug
+		System.out.println("adding header");
+		//#style tableHeading
+		table.set(0, 0, Locale.get("table.heading.Name"));
+		//#style tableHeading
+		table.set(1, 0, Locale.get("table.heading.Expansion"));
+		//#style tableHeading
+		table.set(2, 0, Locale.get("table.heading.Cost"));
 		if ( Dominion.I().hasBlackMarketPlaying() )
 			addCommand(blackMarketCmd);
 		else
@@ -136,8 +136,6 @@ public class ShowCardsForm extends Form implements CommandListener {
 				table.set(2, cardNumber + 1, new Integer(cards.getCost(cardNumber)));
 			}
 		}
-		table.updateInternalArea();
-		table.setVisible(true);
 	}
 
 	public void commandAction(Command cmd, Displayable disp) {

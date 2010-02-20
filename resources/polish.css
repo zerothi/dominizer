@@ -23,11 +23,6 @@ colors {
 }
 
 backgrounds {
-	snowflakes {
-		type: snowflakes;
-		color: transparent;
-		flake-color: white;
-	}
 	titleGradient {
 		type: vertical-gradient;
 		top-color: splitTop;
@@ -85,8 +80,6 @@ title {
 	layout: horizontal-center | horizontal-expand;
 	background: titleGradient;
 }
-
-title:landscape {}
 
 .behindTitle extends title {
 	min-width: 0%;
@@ -172,7 +165,6 @@ focused {
 	}
 	choice-color: eevenBrightColor;
 }
-.mainScreen:landscape {}
 
 .behindScreen extends mainScreen {
 	title-menu: false;
@@ -192,7 +184,6 @@ focused {
 	}
 	layout: bottom | vertical-shrink;
 }
-.mainPopupScreen:landscape {}
 
 listItem {
 	font {
@@ -281,7 +272,6 @@ alertcontent {
 	title-style: messageAlertTitle;
 	menubar-style: messageAlertMenuBar;
 }
-.messageAlert:landscape {}
 
 info {
 	margin: 1;
@@ -443,7 +433,7 @@ menuItem:hover {
 	}
 	choice-color: translucentBgColor;
 }
-.filterCards:landscape {}
+
 .filterCards:hover {
 	background-color: translucentBgColor;
 	font-color: translucentBrightFontColor;
@@ -587,7 +577,7 @@ menuItem:hover {
 .tabbedPane {
 	title-menu: true;
 }
-.tabbedPane:landscape {}
+
 .tabbedPaneIcons {
 	view-type: horizontal;
 	background {
@@ -601,7 +591,7 @@ menuItem:hover {
 	}
 	layout: expand;
 }
-.tabbedPaneIcons:landscape {}
+
 .tabIcon {
 	margin: 1px;
 	padding: 2px;
@@ -759,5 +749,3 @@ menuItem:hover {
 .labelGauge extends label {
 	font-size: medium;
 }
-
-.keyMode {}

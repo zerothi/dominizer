@@ -17,6 +17,7 @@ import de.enough.polish.ui.FilteredList;
 import de.enough.polish.util.Locale;
 
 public class PresetFilteredList extends FilteredList implements CommandListener {
+	
 	private Command selectCmd = new Command( Locale.get("polish.command.select"), Command.OK, 0);
 	private Command infoCmd = new Command( Locale.get("cmd.Preset.ShowInfo"), Command.SCREEN, 1);
 	private Command deleteCmd = new Command( Locale.get("cmd.Preset.DeletePreset"), Command.SCREEN, 9);
@@ -34,7 +35,7 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 		//#= setSelectCommand(selectCmd);
 		setCommandListener(this);
 		for ( tmp[0] = 0 ; tmp[0] < Dominion.I().presetSize() ; tmp[0]++ )
-				addPresets(Dominion.I().getPreset(tmp[0]));
+			addPresets(Dominion.I().getPreset(tmp[0]));
 	}
 
 	public void addPresets(CardPresets cardPreset) {

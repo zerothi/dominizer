@@ -35,6 +35,14 @@ colors {
 	splitBot: brightBgColor;
 }
 
+backgrounds {
+	snowflakes {
+		type: snowflakes;
+		color: transparent;
+		flake-color: white;
+	}
+}
+
 .mainScreen {
 	padding: 2;
 	padding-left: 10;

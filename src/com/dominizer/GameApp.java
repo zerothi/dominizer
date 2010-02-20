@@ -30,7 +30,6 @@ import de.enough.polish.ui.Screen;
 import de.enough.polish.ui.TabListener;
 import de.enough.polish.ui.TabbedFormListener;
 import de.enough.polish.ui.TabbedPane;
-import de.enough.polish.util.DeviceControl;
 import de.enough.polish.util.Locale;
 /**
  * <p>The main app for Dominizer</p>
@@ -118,7 +117,6 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 			changeToScreen(ShowCardsForm.instance());
 		else
 			changeToScreen(tabbedPane);
-		//notifyTabChangeRequested(0, currentTab);
 	}
 
 	protected void startApp() throws MIDletStateChangeException {
@@ -152,8 +150,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.settings"));
 		if ( SettingsRecordStorage.instance().readKey(Locale.get("rms.lasttab")) != null )
 			currentTab = Integer.parseInt(SettingsRecordStorage.instance().readKey(Locale.get("rms.lasttab")));
-		if ( currentTab != SHOWCARDS )
-			if ( currentTab > -1 )
+		if ( currentTab != SHOWCARDS & currentTab > -1 )
 			tabbedPane.setFocus(currentTab);
 		//#debug info
 		System.out.println("setting display");
@@ -246,20 +243,25 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	}
 
 	public boolean notifyTabChangeRequested(int from, int to) {
-		if ( from == TAB_QUICK ) {
+		switch ( from ) {
+		case TAB_QUICK:
 			qrF.getSelectedFlags(qrF.flags);
 			Dominion.I().setExpansionPlayingState(qrF.flags);
 			//#debug info
 			System.out.println("updating flags");
-		} else if ( from == TAB_EDIT ) {
+			break;
+		case TAB_EDIT:
 			ecFL.updateCards(true);
 			//#debug info
 			System.out.println("updating cards internal");
+			break;
 		}
-		if ( to == TAB_EDIT ) {
-			ecFL.updateCards(false);
+		switch ( to ) {
+		case TAB_EDIT:
+			ecFL.updateCards(true);
 			//#debug info
 			System.out.println("updating cards external");
+			break;
 		}
 		return true;
 	}
