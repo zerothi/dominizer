@@ -26,18 +26,39 @@ public class GaugeForm extends Form {
 	 * @param maxValue
 	 * @param initialValue
 	 */
-	private GaugeForm(String label) {
-		//#style formGauge
-		super(label);
+	private GaugeForm() {
+		//#style loadForm
+		super(null);
 		//#style loadingGauge
 		g = new Gauge(null, false, Gauge.INDEFINITE,Gauge.CONTINUOUS_RUNNING);
 		append(g);
 	}
 	
-	public static GaugeForm instance() {
-		if ( domG == null )
-			domG = new GaugeForm(null);
+	private GaugeForm(boolean is) {
+		//#style inputGaugeForm
+		super(null);
+		//#style loadingGauge
+		g = new Gauge(null, false, Gauge.INDEFINITE,Gauge.CONTINUOUS_RUNNING);
+		append(g);
+	}
+	
+	public static GaugeForm instance(boolean isLoadForm) {
+		if ( domG != null ) {
+			domG.deleteAll();
+			domG = null;
+		}
+		if ( isLoadForm ) {
+			domG = new GaugeForm();
+		} else {
+			domG = new GaugeForm(true);
+		}
 		return domG;
+	}
+	
+	public static GaugeForm instance() {
+		if ( domG != null )
+			return domG;
+		return instance(true);
 	}
 	
 	public Gauge getGauge() {

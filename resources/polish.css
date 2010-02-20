@@ -1,4 +1,6 @@
 colors {
+	/* the overlay color for background screens */
+	overlay: argb( 136, 0, 0, 0 );
 	bgColor:  					rgb(0,10,25);
 	brightBgColor:  			rgb(0,25,50);
 	hiddenBrightBgColor:  		rgb(100,125,150);
@@ -64,6 +66,7 @@ backgrounds {
 		border-color: fontColor;
 		border-width: 2;
 	}
+	
 }
 
 
@@ -82,6 +85,8 @@ title {
 	layout: horizontal-center | horizontal-expand;
 	background: titleGradient;
 }
+
+title:landscape {}
 
 .behindTitle extends title {
 	min-width: 0%;
@@ -167,6 +172,7 @@ focused {
 	}
 	choice-color: eevenBrightColor;
 }
+.mainScreen:landscape {}
 
 .behindScreen extends mainScreen {
 	title-menu: false;
@@ -186,6 +192,7 @@ focused {
 	}
 	layout: bottom | vertical-shrink;
 }
+.mainPopupScreen:landscape {}
 
 listItem {
 	font {
@@ -274,13 +281,14 @@ alertcontent {
 	title-style: messageAlertTitle;
 	menubar-style: messageAlertMenuBar;
 }
+.messageAlert:landscape {}
 
 info {
 	margin: 1;
 	font-color: fontColor;
 	layout: left;
 }
-
+info:landscape {}
 /*************   MENU BAR     *************/
 
 menubar {
@@ -312,11 +320,7 @@ leftcommand {
 	padding-bottom: 0;
 	font-color: translucentFontColor;
 	font-style: plain;
-	//#if polish.android
-		font-size: medium;
-	//#else
-		font-size: small;
-	//#endif
+	font-size: small;
 }
 rightcommand extends leftcommand {
 	layout: right;
@@ -439,7 +443,7 @@ menuItem:hover {
 	}
 	choice-color: translucentBgColor;
 }
-
+.filterCards:landscape {}
 .filterCards:hover {
 	background-color: translucentBgColor;
 	font-color: translucentBrightFontColor;
@@ -583,7 +587,7 @@ menuItem:hover {
 .tabbedPane {
 	title-menu: true;
 }
-
+.tabbedPane:landscape {}
 .tabbedPaneIcons {
 	view-type: horizontal;
 	background {
@@ -597,7 +601,7 @@ menuItem:hover {
 	}
 	layout: expand;
 }
-
+.tabbedPaneIcons:landscape {}
 .tabIcon {
 	margin: 1px;
 	padding: 2px;
@@ -711,13 +715,16 @@ menuItem:hover {
 /**
  * The Gauge
  */
-.formGauge extends mainPopupScreen {
+.loadForm extends mainPopupScreen {
 	repaint-previous-screen: false;
 	title-menu: false;
 	padding-left: 5;
 	padding-right: 5;
 	font-size: large;
 	layout: horizontal-center | vertical-center | vertical-shrink;
+}
+.inputGaugeForm extends loadForm {
+	repaint-previous-screen: true;
 }
 
 .loadingGauge {

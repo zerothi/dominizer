@@ -159,6 +159,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		System.out.println("setting display");
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.finished"));
 		display.setCurrent(tabbedPane);
+		GaugeForm.instance(false);
 	}
 	
 	public int getCurrentTab() {

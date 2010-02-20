@@ -92,7 +92,6 @@
 			</deviceRequirements>
 			<!-- build settings -->
 			<build symbols="Dominizer" 
-				fullscreen="menu" 
 				usePolishGui="true" 
 				workDir="${dir.work}">
 				<!-- javacTarget="${javac.target}" -->
@@ -109,27 +108,34 @@
 					password="${password}"
 					unless="test or donotsign or debug"
 				/>
+				<sign
+					key="npakey"
+					keystore="ant/npa-release.keystore"
+					password="${password}"
+					if="polish.android"
+				/>
 				<!--="polish.android"-->
 				<!-- project-wide variables - used for preprocessing.  -->
 				<!-- You can set localized variables in the resources/messages.txt files as well.  -->
 				<variables includeAntProperties="true">
 					<!--//#= private static final String UPDATE_URL = "${ update-url }";-->
+					<variable name="polish.FullScreen" value="true" unless="${ isOS( Windows ) }" />
+					<variable name="polish.useMenuFullScreen" value="true" unless="polish.android"/>
 					<variable name="polish.TextField.useDirectInput" value="true" unless="polish.hasPointerEvents or ${ isOS(Windows) }"/>
 					<variable name="polish.TextField.supportSymbolsEntry" value="false" />	
 					<variable name="polish.TextField.Symbols" value="&quot;@#()&lt;&gt;&amp;;,.:!/\~$%^*" />
 					<variable name="polish.TextField.allowNativeModeSwitch" value="true" />
 					<variable name="polish.Item.ShowCommandsOnHold" value="true" />
-					<variable name="javac.source" value="1.5" if="polish.android" />
-					<variable name="javac.target" value="1.5" if="polish.android" />
-					<variable name="javac.source" value="1.3" unless="polish.android" />
-					<variable name="javac.target" value="1.3" unless="polish.android" />
-					<variable name="polish.FullScreen" value="false" if="${ isOS( Windows ) }" />
 					<!--variable name="polish.ScreenInfo.enable" value="true"/-->
 					<variable name="polish.MenuBar.useExtendedMenuBar" value="true"/>
 					<variable name="polish.ChoiceGroup.suppressMarkCommands" value="true"/>
 					<variable name="polish.ChoiceGroup.suppressSelectCommand" value="true"/>
 					<variable name="polish.List.suppressMarkCommands" value="false"/> 
 					<variable name="polish.useScrollBar" value="true" />
+					<variable name="javac.source" value="1.5" if="polish.android" />
+					<variable name="javac.target" value="1.5" if="polish.android" />
+					<variable name="javac.source" value="1.3" unless="polish.android" />
+					<variable name="javac.target" value="1.3" unless="polish.android" />
 				</variables>
 				<resources dir="${resource.dir}" defaultexcludes="yes" excludes="readme.txt">
 					<root dir="${resource.dir}"/>
@@ -138,7 +144,8 @@
 					<localization unless="debug or app.quick">
 						<!--locale name="da" encoding="UTF-8"/-->
 						<locale name="en" encoding="UTF-8"/>
-						<locale name="de" encoding="UTF-8"/>
+						<!--locale name="de" encoding="UTF-8"/-->
+						<!--locale name="es" encoding="UTF-8"/-->
 						<!--locale name="pl" encoding="UTF-8"/-->
 						<!--locale name="fr" encoding="UTF-8"/-->
 						<!--locale name="ch_SC" encoding="UTF-8"/-->
@@ -216,7 +223,7 @@
 		</exec>
 	</target>
 	
-	<target name="compileAll" description="Builds All" depends="clean, enableAll, j2mepolish, enableWindows, j2mepolish" />
+	<target name="compileAll" description="Builds All" depends="clean, enableAll, j2mepolish, enableAndroid, j2mepolish" />
 	<target name="compileGeneric" description="Builds Generic Device" depends="clean, enableGeneric, j2mepolish" />
 	<target name="compileNokia" description="Builds Nokia" depends="clean, enableNokia, j2mepolish" />
 	<target name="compileAndroid" description="Builds Android" depends="clean, enableAndroid, j2mepolish" />
@@ -241,7 +248,7 @@
 	</target>
 	
 	<target name="enableAll" depends="donotsign">
-		<property name="devices" value="Generic/AnyPhone,Nokia/Series40E3,Sony-Ericsson/JavaPlatform7,Generic/Android"/>
+		<property name="devices" value="Generic/AnyPhone,Generic/AnyTouch_320x480,Nokia/Series40E3,Sony-Ericsson/JavaPlatform7"/>
 	</target>
 	
 	<target name="enableGeneric" depends="donotsign">

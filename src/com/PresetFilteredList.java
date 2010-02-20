@@ -31,6 +31,7 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 		addCommand(infoCmd);
 		addCommand(quickRandomizeCardsCmd);
 		addCommand(quitCmd);
+		//#= setSelectCommand(selectCmd);
 		setCommandListener(this);
 		for ( tmp[0] = 0 ; tmp[0] < Dominion.I().presetSize() ; tmp[0]++ )
 				addPresets(Dominion.I().getPreset(tmp[0]));
