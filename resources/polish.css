@@ -389,7 +389,13 @@ menuItem {
 	}
 	layout: left;
 }
-
+@media touchscreen {
+	menuItem {
+		padding-top: 4px;
+		padding-bottom: 4px;
+		font-size: medium;
+	}
+}
 /**
   * A focused menuItem
   */
@@ -397,16 +403,6 @@ menuItem:hover {
 	background-color: eevenBrightColor;
 	font-color: translucentFontColor;
 	layout: left | horizontal-expand;
-}
-@media touchscreen {
-	menuItem {
-		padding-top: 4px;
-		padding-bottom: 4px;
-		font-size: medium;
-	}
-	menuItem:hover {
-		font-size: medium;
-	}
 }
 
 .filterCards {
