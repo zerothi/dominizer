@@ -26,7 +26,7 @@
 	
 	<property name="dir.work" value="build/real" />
 	<property name="resource.dir" value="resources" />
-	<property name="debugLang" value="es"/>
+	<property name="debugLang" value="en"/>
 	<property name="single" value="true"/>
 	<!-- the device for the test mode - you can define it on the command-line
 	     using the -D switch, e.g. ant -Ddevice=Generic/midp2 emulator -->

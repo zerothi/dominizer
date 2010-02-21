@@ -43,6 +43,7 @@ cmd.Sort.ExpCost=Erw. - Kosten
 cmd.Sort.Name=Name
 cmd.Sort.CostName=Kosten - Name
 cmd.Sort.CostExp=Kosten - Erw.
+cmd.Percentage.Gauge=Prozentsatz
 cmd.Percentage.Main=Prozentsatz {0}
 cmd.Percentage.Remove=Entferne
 cmd.Percentage.Use=Nutze {0}%
