@@ -18,7 +18,7 @@ import de.enough.polish.util.Locale;
 public class TableCardForm extends Form implements CommandListener {
 	
 	private TableItem table = null;
-	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.BACK, 8 );
+	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.OK, 8 );
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
 	
 	public TableCardForm(String title) {

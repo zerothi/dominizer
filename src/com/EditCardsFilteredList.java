@@ -15,7 +15,7 @@ import de.enough.polish.util.Locale;
 
 public class EditCardsFilteredList extends FilteredList implements CommandListener {
 	
-	private Command randomizeCmd = new Command(Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
+	private Command randomizeCmd = new Command(Locale.get("cmd.Randomize.Show"), Command.OK, 0);
 	private Command perGaugeCmd = new Command( Locale.get("cmd.Percentage.Gauge"), Command.SCREEN, 1);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
 	private int[] tmp = new int[] { 0, 0};

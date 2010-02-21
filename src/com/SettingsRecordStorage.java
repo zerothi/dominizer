@@ -104,7 +104,7 @@ public class SettingsRecordStorage {
 			}
 		} catch (RecordStoreException rms) {
 			//#debug info
-			System.out.println("store exception happened. " + rms.toString());
+			System.out.println("store exception happened");
 			data = null;
 		}
 		return data;

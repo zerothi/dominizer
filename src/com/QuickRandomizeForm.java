@@ -21,7 +21,7 @@ import de.enough.polish.util.Locale;
  */
 public class QuickRandomizeForm extends List implements CommandListener {
 
-	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
+	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.OK, 0);
 	private Command gaugeCmd = new Command( Locale.get("cmd.SetCards.Gauge"), Command.SCREEN, 1);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
 	public boolean[] flags = new boolean[6];

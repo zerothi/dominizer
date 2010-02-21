@@ -27,9 +27,9 @@ public class ShowCardsForm extends Form implements CommandListener {
 
 	private static ShowCardsForm scF = null;
 	private TableItem table = null;
-	private Command randomizeCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
-	private Command randomizeSetCmd = new Command( Locale.get("cmd.Randomize.Set"), Command.BACK, 0);
-	private Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.OK, 1);
+	private Command randomizeCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.OK, 0);
+	private Command randomizeSetCmd = new Command( Locale.get("cmd.Randomize.Set"), Command.OK, 0);
+	private Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.SCREEN, 1);
 	
 	private Command sortCmd = new Command( Locale.get("cmd.Sort.Main"), Command.SCREEN, 5);
 	private Command showInfoCmd = new Command( Locale.get("cmd.ShowChosenCardInfo"), Command.ITEM, 2);

@@ -95,14 +95,14 @@
 					if="polish.android or dosign"
 				/>
 				<variables includeAntProperties="true">
-					<variable name="javac.source" value="1.5" if="polish.android" />
-					<variable name="javac.target" value="1.5" if="polish.android" />
-					<variable name="javac.source" value="1.3" unless="polish.android" />
-					<variable name="javac.target" value="1.3" unless="polish.android" />
-					<variable name="polish.FullScreen" value="false" if="${ isOS( Windows ) } or polish.android" />
-					<variable name="polish.FullScreen" value="menu" unless="${ isOS( Windows ) } or polish.android" /><!-- "-->
+					<variable name="javac.source" value="1.5" if="polish.android"/>
+					<variable name="javac.target" value="1.5" if="polish.android"/>
+					<variable name="javac.source" value="1.3" unless="polish.android"/>
+					<variable name="javac.target" value="1.3" unless="polish.android"/>
+					<variable name="polish.FullScreen" value="false" if="${ isOS( Windows ) }"/><!-- or polish.android-->
+					<variable name="polish.FullScreen" value="menu" unless="${ isOS( Windows ) }"/><!-- or polish.android-->
 					<variable name="polish.TextField.useVirtualKeyboard" value="true" if="polish.android"/>
-					<variable name="polish.TextField.supportSymbolsEntry" value="false" />
+					<variable name="polish.TextField.supportSymbolsEntry" value="false"/>
 					<variable name="polish.TextField.Symbols" value="&quot;@#()&lt;&gt;&amp;;,.:!/\~$%^*" />
 					<variable name="polish.TextField.allowNativeModeSwitch" value="true" if="polish.hasPointerEvents or ${ isOS(Windows) } or polish.android"/>
 					<variable name="polish.TextField.useDirectInput" value="true" unless="polish.hasPointerEvents or ${ isOS(Windows) } or polish.android"/>
@@ -114,7 +114,9 @@
 					<variable name="polish.ChoiceGroup.suppressMarkCommands" value="true"/>
 					<variable name="polish.ChoiceGroup.suppressSelectCommand" value="true"/>
 					<variable name="polish.List.suppressMarkCommands" value="false"/> 
-					<variable name="polish.useScrollBar" value="true" />
+					<variable name="polish.useScrollBar" value="true"/>
+					<variable name="polish.MenuBar.OptionsPosition" value="right"/>
+					<variable name="polish.MenuBar.OkPosition" value="left"/>
 				</variables>
 				<resources dir="${resource.dir}" defaultexcludes="yes" excludes="readme.txt">
 					<root dir="${resource.dir}"/>
@@ -136,15 +138,14 @@
 						<locale name="zombinion" encoding="UTF-8"/>
 					</localization>
 				</resources>
-
-				<!-- obfuscator settings: do not obfuscate when the test-property is true-->
+				
 				<obfuscator name="ProGuard" unless="debug or info or polish.blackberry">
 					<parameter name="optimize" value="true" />
 					<parameter name="optimizationpasses" value="3"/>
 					<parameter name="dontskipnonpubliclibraryclasses" value=""/>
 					<parameter name="dontusemixedcaseclassnames" value=""/>
 				</obfuscator>
-				<!-- info memory -->
+				
 				<debug if="debug and not final"
 					showLogOnError="true"
 					 verbose="true"
@@ -157,13 +158,13 @@
 				</debug>
 				<debug if="final" showLogOnError="true" level="error">
 				</debug>
-				<!-- user defined JAD attributes can also be used: -->
 				<jad>
 					<attribute name="Nokia-MIDlet-Category" value="Game" if="polish.group.Series40" />
 				</jad>
+				<finalizer name="antcall" target="androidZipAlign" if="polish.android"/>
 			</build>
 
-			<emulator if="debug or info and not polish.android"
+			<emulator if="emulator or debug or info and not polish.android"
 				wait="true"
 				securityDomain="trusted"
 				enableProfiler="false"
@@ -210,7 +211,7 @@
 	<target name="compile 6303" description="Builds Nokia 6303" depends="enableFinal, enable6303, j2mepolish" />
 	
 	<target name="debug Android" description="Builds Android" depends="enableInfo, enableAndroid, j2mepolish" />
-	<target name="debug Nokia" description="debugs the Nokia" depends="enableInfo, enableNokia, j2mepolish" />
+	<target name="debug Nokia" description="debugs the Nokia" depends="enableEmulator, enableNokia, j2mepolish" />
 	<target name="debug Touch" description="debugs the Touch" depends="enableInfo, enableTouch, j2mepolish" />
 	
 	<target name="enableAll" depends="donotsign">
@@ -263,7 +264,38 @@
 		<property name="info" value="true" />
 	</target>
 	
+	<target name="enableEmulator"> 
+		<property name="emulator" value="true" />
+	</target>
+	
 	<target name="enableFinal" depends="clean"> 
 		<property name="final" value="true" />
+	</target>
+	
+	<target name="androidZipAlign">
+		<property name="finalizefile" value="${polish.vendor}-${polish.name}-${app.name}-${polish.locale}.apk"/>
+		<property name="finalize2file" value="${polish.name}-${app.name}-${polish.locale}.apk"/>
+		<echo message="Will now finalize: ${finalizefile}"/>
+		<echo message="To the file      : ${finalize2file}"/>
+		<exec executable="${android.home}/tools/zipalign" dir="./${dist.root.dir}" spawn="false">
+			<arg value="-f"/>
+			<arg value="-v"/>
+			<arg value="4"/>
+			<arg value="${finalizefile}"/>
+			<arg value="${finalize2file}"/>
+		</exec>
+		<exec executable="${android.home}/tools/zipalign" dir="./${dist.root.dir}" spawn="false">
+			<arg value="-c"/>
+			<arg value="-v"/>
+			<arg value="4"/>
+			<arg value="${finalize2file}"/>
+		</exec>
+		<exec executable="rm" dir="./${dist.root.dir}" spawn="false">
+			<arg value="${finalizefile}"/>
+		</exec>
+		<exec executable="mv" dir="./${dist.root.dir}" spawn="false">
+			<arg value="${finalize2file}"/>
+			<arg value="${finalizefile}"/>
+		</exec>
 	</target>
 </project>

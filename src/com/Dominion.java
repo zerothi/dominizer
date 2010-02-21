@@ -539,15 +539,13 @@ public class Dominion {
 		int start = 0;
 		int cardRead = 0;
 		try {
-			//#debug info
-			System.out.println("reading " + fileName);
 			isr = new InputStreamReader(getClass().getResourceAsStream("/" + fileName), "UTF8");
 			int ch;
 			while ((ch = isr.read()) > -1) {
 				sb.append((char) ch);
 				if ((char) ch == ';') {
-					//#debug info
-					System.out.println("processing " + sb.toString());
+					// #debug info
+					//System.out.println("processing " + sb.toString());
 					expansions[exp].setName(cardRead, sb.toString().substring(
 							start, sb.toString().indexOf(":", start)).trim());
 					start = sb.toString().indexOf(":", start) + 1;
@@ -605,7 +603,7 @@ public class Dominion {
 				isr.close();
 		} catch (Exception ex) {
 			//#debug info
-			System.out.println("exception on reading:" + ex);
+			System.out.println("exception on reading");
 		}
 	}
 

@@ -24,7 +24,7 @@ public class BlackMarketForm extends List implements CommandListener {
 	private Command cancelBuyCmd = new Command( Locale.get("cmd.BlackMarket.CancelBuy"), Command.SCREEN, 1);
 	private Command drawCardsCmd = new Command( Locale.get("cmd.BlackMarket.Draw"), Command.OK, 0);
 	private Command selectCardCmd = new Command( Locale.get("polish.command.select"), Command.SCREEN, 2);
-	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.BACK, 0);
+	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 3);
 	private String randomizeCardHolder = null;
 	private Ticker ticker = null;
 	private String[] tickerArgs = null;

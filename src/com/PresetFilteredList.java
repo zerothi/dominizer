@@ -18,10 +18,10 @@ import de.enough.polish.util.Locale;
 
 public class PresetFilteredList extends FilteredList implements CommandListener {
 	
-	private Command selectCmd = new Command( Locale.get("polish.command.select"), Command.OK, 0);
+	private Command selectCmd = new Command( Locale.get("polish.command.select"), Command.SCREEN, 6);
 	private Command infoCmd = new Command( Locale.get("cmd.Preset.ShowInfo"), Command.SCREEN, 1);
-	private Command deleteCmd = new Command( Locale.get("cmd.Preset.DeletePreset"), Command.SCREEN, 9);
-	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
+	private Command deleteCmd = new Command( Locale.get("cmd.Preset.DeletePreset"), Command.SCREEN, 4);
+	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.OK, 0);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
 	private int[] tmp = new int[] { 0, 0};
 	
