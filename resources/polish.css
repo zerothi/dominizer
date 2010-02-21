@@ -483,10 +483,12 @@ menuItem:hover {
 	}
 	layout: horizontal-expand | horizontal-center | vshrink;
 }
+.defaultTable:hover {}
 @media touchscreen {
 	.defaultTable {	
 		font-size: medium;
 	}
+	.defaultTable:hover {}
 }
 .tableHeading {
 	margin: 0px;

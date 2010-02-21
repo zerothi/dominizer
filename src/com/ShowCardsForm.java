@@ -252,24 +252,24 @@ public class ShowCardsForm extends Form implements CommandListener {
 	private void setCommandRandomize(boolean rand) {
 		try {
 			removeCommand(randomizeCmd);
-		} catch (Exception e) {}
+		} catch (Exception e) {}/*
 		try {
 			table.removeCommand(randomizeCmd);
-		} catch (Exception e) {}
+		} catch (Exception e) {}*/
 		try {
 			removeCommand(randomizeSetCmd);
-		} catch (Exception e) {}
+		} catch (Exception e) {}/*
 		try {
 			table.removeCommand(randomizeSetCmd);
-		} catch (Exception e) {}
+		} catch (Exception e) {}*/
 		if ( rand ) {
 			addCommand(randomizeCmd);
-			table.addCommand(randomizeCmd);
-			table.setDefaultCommand(randomizeCmd);
+			/*table.addCommand(randomizeCmd);
+			table.setDefaultCommand(randomizeCmd);*/
 		} else {
 			addCommand(randomizeSetCmd);
-			table.addCommand(randomizeSetCmd);
-			table.setDefaultCommand(randomizeSetCmd);
+			/*table.addCommand(randomizeSetCmd);
+			table.setDefaultCommand(randomizeSetCmd);*/
 		}
 	}
 }	
