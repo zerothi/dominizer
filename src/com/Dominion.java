@@ -142,7 +142,7 @@ public class Dominion {
 		//#debug info
 		System.out.println("size promo: " + expansions[PROMO].size());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.cards.settings"));
-		// #debug info
+		//#debug info
 		System.out.println("reading settings cards");
 		readSettings();
 	}
@@ -225,7 +225,7 @@ public class Dominion {
 	}
 	
 	private int[] getCardInfo(String card) {
-		// #debug info
+		//#debug info
 		System.out.println("the read card info: " + card);
 		return new int[] {
 				Integer.valueOf(card.substring(
@@ -445,7 +445,7 @@ public class Dominion {
 	}
 	
 	public boolean selectCard(int exp, int card, int placement) {
-		// #debug info
+		//#debug info
 		System.out.println("try: " + exp + " - " + card);
 		if ( expansions[exp].isAvailable(card) 
 				& !selectedCards.contains(expansions[exp].getName(card))
@@ -512,7 +512,7 @@ public class Dominion {
 					selectedElement = selector.nextInt(expansions[i].size());
 					if ( selectCard(i, selectedElement, selected) ) {
 						selected++;
-						// #debug info
+						//#debug info
 						System.out.println("selected: " + i + " - " + selected);
 					}
 				}
@@ -525,7 +525,7 @@ public class Dominion {
 			tmpSum = getLinearExpansionIndex(selectedElement);
 			selectedElement = getLinearCardIndex(selectedElement);
 			if ( selectCard(tmpSum, selectedElement, selected) ) {
-				// #debug info
+				//#debug info
 				System.out.println("choosing expansion: " + tmpSum + ". together with card: " + selectedElement);
 				selected++;
 			}
@@ -539,14 +539,14 @@ public class Dominion {
 		int start = 0;
 		int cardRead = 0;
 		try {
-			// #debug info
+			//#debug info
 			System.out.println("reading " + fileName);
 			isr = new InputStreamReader(getClass().getResourceAsStream("/" + fileName), "UTF8");
 			int ch;
 			while ((ch = isr.read()) > -1) {
 				sb.append((char) ch);
 				if ((char) ch == ';') {
-					// #debug info
+					//#debug info
 					System.out.println("processing " + sb.toString());
 					expansions[exp].setName(cardRead, sb.toString().substring(
 							start, sb.toString().indexOf(":", start)).trim());
@@ -582,7 +582,7 @@ public class Dominion {
 									start, sb.toString().indexOf(";", start))));
 					sb.delete(0, sb.toString().length());
 					start = 0;
-					// #debug info
+					//#debug info
 					System.out.println("expansions[" + exp + "].name("
 							+ cardRead + "): "
 							+ expansions[exp].getName(cardRead) + ". Action? "
@@ -604,7 +604,7 @@ public class Dominion {
 			if (isr != null)
 				isr.close();
 		} catch (Exception ex) {
-			// #debug info
+			//#debug info
 			System.out.println("exception on reading:" + ex);
 		}
 	}
@@ -612,11 +612,11 @@ public class Dominion {
 	private void readSettings() {
 		SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.preset"));
 		if (SettingsRecordStorage.instance().data() == null) {
-			// #debug info
+			//#debug info
 			System.out.println("Read user settings: settings is null");
 			presets[3] = null;
 		} else {
-			// #debug info
+			//#debug info
 			System.out.println("Read user settings: settings is size=" + SettingsRecordStorage.instance().data().size());
 			presets[3] = new CardPresets(SettingsRecordStorage.instance()
 					.data().size());
@@ -624,7 +624,7 @@ public class Dominion {
 			int numberOfPresets = 0;
 			int start;
 			for (int i = 0; i < SettingsRecordStorage.instance().data().size(); i++) {
-				// #debug info
+				//#debug info
 				System.out.println("presets: " + SettingsRecordStorage.instance().data().elementAt(i).toString());
 				start = 0;
 				preset = new int[10][2];
@@ -645,11 +645,11 @@ public class Dominion {
 				numberOfPresets++;
 			}
 		}
-		// #debug info
+		//#debug info
 		System.out.println("finished reading presets successfully\nstart reading expansion states");
 		SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.settings"));
 		String tmp = SettingsRecordStorage.instance().readKey(Locale.get("rms.expansions"));
-		// #debug info
+		//#debug info
 		System.out.println("expansions: " + tmp);
 		if (tmp != null) {
 			playingExpansions[0] = tmp.substring(0, 1).equals("1");
@@ -659,10 +659,10 @@ public class Dominion {
 			playingExpansions[4] = tmp.substring(4, 5).equals("1");
 			playingExpansions[5] = tmp.substring(5).equals("1");
 		}
-		// #debug info
+		//#debug info
 		System.out.println("finished reading expansion states successfully\nstart reading number of cards");
 		tmp = SettingsRecordStorage.instance().readKey(Locale.get("rms.expansions.usedcards"));
-		// #debug info
+		//#debug info
 		System.out.println("usedcards: " + tmp);
 		if (tmp != null) {
 			setCardsUsedForExpansion(0, Integer.parseInt(tmp.substring(0, 1)));
@@ -672,11 +672,11 @@ public class Dominion {
 			setCardsUsedForExpansion(4, Integer.parseInt(tmp.substring(4, 5)));
 			setCardsUsedForExpansion(5, Integer.parseInt(tmp.substring(5, 6)));
 		}
-		// #debug info
+		//#debug info
 		System.out.println("finished reading number of cards succesfully\nstart reading available cards");
 
 		tmp = SettingsRecordStorage.instance().readKey(Locale.get("rms.available"));
-		// #debug info
+		//#debug info
 		System.out.println("available from " + tmp);
 		if (tmp != null) {
 			int k = 0;
@@ -686,11 +686,11 @@ public class Dominion {
 					k++;
 				}
 		}
-		// #debug info
+		//#debug info
 		System.out.println("finished reading available cards\nread cards percentages");
 
 		tmp = SettingsRecordStorage.instance().readKey(Locale.get("rms.percentage"));
-		// #debug info
+		//#debug info
 		System.out.println("percentages from " + tmp);
 		if (tmp != null) {
 			int k = 0;
@@ -703,16 +703,16 @@ public class Dominion {
 					k++;
 				}
 		}
-		// #debug info
+		//#debug info
 		System.out.println("finished reading cards percentages succesfully\nstart reading preferred sort");
 		
 		tmp = SettingsRecordStorage.instance().readKey(Locale.get("rms.preferredsort"));
-		// #debug info
+		//#debug info
 		System.out.println("sort: " + tmp);
 		if (tmp != null) {
 			Cards.COMPARE_PREFERRED = Integer.parseInt(tmp);
 		}
-		// #debug info
+		//#debug info
 		System.out.println("finished reading preferred sort succesfully");
 	}
 	
@@ -737,16 +737,16 @@ public class Dominion {
 	}
 
 	public boolean selectPreset(int presetDeck, int preset) {
-		// #debug info
+		//#debug info
 		System.out.println("fetching preset: " + presetDeck + " and " + preset);
 		selectedCards = new Cards(presets[presetDeck].size(preset),
 				Cards.IS_NOT_SET);
 		if (presetDeck > presets.length | preset >= presets[presetDeck].size())
 			return false;
 		for (int i = 0; i < presets[presetDeck].size(preset); i++) {
-			// #debug info
+			//#debug info
 			System.out.println("selecting expansion: " + presets[presetDeck].getPresetCardExpansion(preset, i) + " and card: " + presets[presetDeck].getPresetCardPlacement(preset, i));
-			// #debug info
+			//#debug info
 			System.out.println("card: " + expansions[presets[presetDeck].getPresetCardExpansion(preset, i)].getName(presets[presetDeck].getPresetCardPlacement(preset, i)));
 			selectedCards.setCard(i, expansions[presets[presetDeck].getPresetCardExpansion(preset, i)].getCard(presets[presetDeck].getPresetCardPlacement(preset, i)));
 		}
@@ -772,7 +772,7 @@ public class Dominion {
 
 	public void setExpansionPlayingState(int exp, boolean isAvailable) {
 		if (playingExpansions[exp] != isAvailable) {
-			// #debug info
+			//#debug info
 			System.out.println("setting playing state: " + exp + " = " + isAvailable);
 			playingExpansions[exp] = isAvailable;
 			for (int i = 0; i < expansions[exp].size(); i++) {

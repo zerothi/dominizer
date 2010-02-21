@@ -60,14 +60,14 @@ cmd.switch=Cambiar
 alert.alert=Alerta
 alert.info=Info
 alert.confirmation=Confirmar
-alert.Settings.CouldNotBeRead=La configuración no puede ser leída!\Lo sentimos.
-alert.Settings.CouldNotBeSaved=La configuración no puede ser guardada!\Lo sentimos.
-alert.QuickSelectExpansions.OnlyPromoSelected=Sólo ha seleccionado Promos.\Seleccione más!
-alert.QuickSelectExpansions.NoneSelected=No ha seleccionado ninguna expansión.\Selectione al menos una!
-alert.CardsFromExpansion.Promo=No puede tener más de 2 cartas del mazo de promociones.\Use menos!
-alert.Randomization.Save.IllegalChar=El nombre no puede contener los caracateres '#'.\Por favor ingrese otro nombre.
-alert.Randomization.Availability=Sus cartas disponibles en '{0}' no coinciden con el mínimo requisito de la carta.\Corríjalo!
-alert.Randomization.TotalAvailability=Sólo tiene {0} cartas disponibles en total.\No se pueden generar más sets!
+alert.Settings.CouldNotBeRead=La configuración no puede ser leída!\nLo sentimos.
+alert.Settings.CouldNotBeSaved=La configuración no puede ser guardada!\nLo sentimos.
+alert.QuickSelectExpansions.OnlyPromoSelected=Sólo ha seleccionado Promos.\nSeleccione más!
+alert.QuickSelectExpansions.NoneSelected=No ha seleccionado ninguna expansión.\nSelectione al menos una!
+alert.CardsFromExpansion.Promo=No puede tener más de 3 cartas del mazo de promociones.\nUse menos!
+alert.Randomization.Save.IllegalChar=El nombre no puede contener los caracateres '#'.\nPor favor ingrese otro nombre.
+alert.Randomization.Availability=Sus cartas disponibles en '{0}' no coinciden con el mínimo requisito de la carta.\nCorríjalo!
+alert.Randomization.TotalAvailability=Sólo tiene {0} cartas disponibles en total.\nNo se pueden generar más sets!
 
 ################
 #

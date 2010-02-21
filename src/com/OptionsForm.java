@@ -8,12 +8,17 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.List;
 
+import com.dominizer.GameApp;
+
+import de.enough.polish.util.Locale;
+
 /**
  * @author nick
  *
  */
 public class OptionsForm extends List implements CommandListener{
 	
+	private Command selectCmd = new Command( Locale.get("polish.command.select"), Command.BACK, 0);
 	/**
 	 * 
 	 */
@@ -21,23 +26,13 @@ public class OptionsForm extends List implements CommandListener{
 		//#style mainScreen
 		super(title, listType);
 		//#style label
-		append("Attack Cards", null);
-		//#style label
-		append("Victory Cards", null);
-		//#style label
-		append("Treasure Cards", null);
-		//#style label
-		append("Reaction Cards", null);
-		//#style label
-		append("Duration Cards", null);
-		//#style label
-		append("Trash Cards", null);
-		//#style label
-		append("Reaction if Attack", null);
+		append("Calender", null);
+		addCommand(selectCmd);
 	}
 
 	public void commandAction(Command cmd, Displayable disp) {
-		
+		if ( cmd.equals(selectCmd) ) {
+			GameApp.instance().changeToScreen(GameCalendarForm.I());
+		}
 	}
-
 }

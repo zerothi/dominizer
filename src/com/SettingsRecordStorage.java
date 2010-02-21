@@ -42,8 +42,7 @@ public class SettingsRecordStorage {
 		} catch (RecordStoreNotOpenException e) {
 			// Already closed
 		} catch (RecordStoreException e) {
-			// This is an actual error
-			e.printStackTrace();
+			// TODO Use GameApp.showAlert in this section!
 		} finally {
 			try {
 				//#debug info
@@ -165,11 +164,9 @@ public class SettingsRecordStorage {
 			try {
 				store.closeRecordStore();
 			} catch (RecordStoreNotOpenException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				// TODO Utilize GameApp.showAlert
 			} catch (RecordStoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				// TODO Utilize GameApp.showAlert
 			}
 		}
 	}

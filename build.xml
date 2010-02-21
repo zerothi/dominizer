@@ -23,16 +23,15 @@
 	<property file="ant/project.properties" />
 	<!-- import global properties                                 -->
 	<property file="${polish.home}/global.properties" />
-
-	<property name="debugLang" value="en"/>
+	
+	<property name="dir.work" value="build/real" />
+	<property name="resource.dir" value="resources" />
+	<property name="debugLang" value="es"/>
+	<property name="single" value="true"/>
 	<!-- the device for the test mode - you can define it on the command-line
 	     using the -D switch, e.g. ant -Ddevice=Generic/midp2 emulator -->
 	<!--property name="device" value="Generic/AnyPhone"/-->
 	<!--property name="device" value="Generic/Android"/-->
-	<property name="device" value="Nokia/Series40E3"/>
-	<!--property name="devices" value="Generic/Android,Generic/AnyPhone,Native/WindowsMobile,Nokia/Series40E3,Sony-Ericsson/JavaPlatform7,Sony-Ericsson/JavaPlatform8"/-->
-	<!--property name="devices" value="Nokia/Series40E3"/-->
-
 
 	<!-- Definition of the J2ME Polish task:                      -->
 	<taskdef name="j2mepolish" 
@@ -40,27 +39,14 @@
 		classpath="${polish.home}/lib/enough-j2mepolish-build.jar"
 	/>
 
-	
-	<!--description="Call this target first to skip the obfuscation step and call the emulator, e.g. ant test j2mepolish"-->
-	<target name="test">
-		<property name="test" value="true" />
-		<property name="dir.work" value="build/test" />
-	</target>
-
 	<target name="init">
-		<property name="test" value="false" />
-		<property name="dir.work" value="build/real" />
-		<property name="deploy-url" value="" />
-		<property name="resource.dir" value="resources" />
+		<echo message="Devices: ${devices}"/>
+		<echo message="Device:  ${device}"/>
+		<echo message="Debug:   ${debug}"/>
+		<echo message="Info:    ${info}"/>
+		<echo message="Single:  ${single}"/>
 	</target>
-
-	<!-- In this target the J2ME Polish task is used.             -->
-	<!-- It has 3 sections:                                       -->
-	<!--    1. The info-section defines some general information  -->
-	<!--    2. The deviceRequirements-section chooses the devices -->
-	<!--       for which the application is optimized.            -->
-	<!--    3. The build-section controls the actual build        -->
-	<!--       process.                                           -->
+	
 	<target name="j2mepolish" 
 		depends="init" 
 		description="This is the controller for the J2ME build process.">
@@ -84,15 +70,14 @@
 			<!-- In the test mode the application is build only for the  -->
 			<!-- Generic/midp1 phone, but when the test-property is set to false, -->
 			<!-- the second deviceRequirements will be used instead. -->
-			<deviceRequirements if="debug or app.quick">
+			<deviceRequirements if="debug or info">
 				<requirement name="Identifier" value="${device}" />
 			</deviceRequirements>
-			<deviceRequirements unless="debug or app.quick">
+			<deviceRequirements unless="debug or info">
 				<requirement name="Identifier" value="${devices}" />
 			</deviceRequirements>
 			<!-- build settings -->
 			<build symbols="Dominizer"
-				fullscreen="menu"
 				usePolishGui="true" 
 				workDir="${dir.work}">
 				<!-- javacTarget="${javac.target}" -->
@@ -107,20 +92,23 @@
 					key="npakey"
 					keystore="ant/npa-release.keystore"
 					password="${password}"
-					if="polish.android"
+					if="polish.android or dosign"
 				/>
 				<variables includeAntProperties="true">
 					<variable name="javac.source" value="1.5" if="polish.android" />
 					<variable name="javac.target" value="1.5" if="polish.android" />
 					<variable name="javac.source" value="1.3" unless="polish.android" />
-					<variable name="javac.target" value="1.3" unless="polish.android" />	
-					<variable name="polish.FullScreen" value="true" unless="${ isOS( Windows ) }" />
-					<variable name="polish.useMenuFullScreen" value="true" unless="polish.android"/>
-					<variable name="polish.TextField.useDirectInput" value="true" unless="polish.hasPointerEvents or ${ isOS(Windows) }"/>
-					<variable name="polish.TextField.supportSymbolsEntry" value="false" />	
+					<variable name="javac.target" value="1.3" unless="polish.android" />
+					<variable name="polish.FullScreen" value="false" if="${ isOS( Windows ) } or polish.android" />
+					<variable name="polish.FullScreen" value="menu" unless="${ isOS( Windows ) } or polish.android" /><!-- "-->
+					<variable name="polish.TextField.useVirtualKeyboard" value="true" if="polish.android"/>
+					<variable name="polish.TextField.supportSymbolsEntry" value="false" />
 					<variable name="polish.TextField.Symbols" value="&quot;@#()&lt;&gt;&amp;;,.:!/\~$%^*" />
-					<variable name="polish.TextField.allowNativeModeSwitch" value="true" />
-					<variable name="polish.Item.ShowCommandsOnHold" value="true" />
+					<variable name="polish.TextField.allowNativeModeSwitch" value="true" if="polish.hasPointerEvents or ${ isOS(Windows) } or polish.android"/>
+					<variable name="polish.TextField.useDirectInput" value="true" unless="polish.hasPointerEvents or ${ isOS(Windows) } or polish.android"/>
+					<variable name="polish.DateField.allowNativeModeSwitch" value="true" if="polish.hasPointerEvents or ${ isOS(Windows) } or polish.android"/>
+					<variable name="polish.DateField.useDirectInput" value="true" unless="polish.hasPointerEvents or ${ isOS(Windows) } or polish.android"/>
+					<!--variable name="polish.Item.ShowCommandsOnHold" value="true" /-->
 					<!--variable name="polish.ScreenInfo.enable" value="true"/-->
 					<variable name="polish.MenuBar.useExtendedMenuBar" value="true"/>
 					<variable name="polish.ChoiceGroup.suppressMarkCommands" value="true"/>
@@ -132,32 +120,42 @@
 					<root dir="${resource.dir}"/>
 					<root dir="${resource.dir}/lang"/>
 					<root dir="${resource.dir}/img" />
-					<localization unless="debug or app.quick">
+					<localization if="debug or info or single">
+						<locale name="${debugLang}" encoding="UTF-8"/>
+					</localization>
+					<localization unless="debug or info or single">
 						<!--locale name="da" encoding="UTF-8"/-->
 						<locale name="en" encoding="UTF-8"/>
-						<!--locale name="de" encoding="UTF-8"/-->
-						<!--locale name="es" encoding="UTF-8"/-->
+						<locale name="de" encoding="UTF-8"/>
+						<locale name="es" encoding="UTF-8"/>
 						<!--locale name="pl" encoding="UTF-8"/-->
-						<!--locale name="fr" encoding="UTF-8"/-->
-						<!--locale name="ch_SC" encoding="UTF-8"/-->
-						<!--locale name="ch_TC" encoding="UTF-8"/-->
+						<locale name="fr" encoding="UTF-8"/>
+						<locale name="ch_SC" encoding="UTF-8"/>
+						<locale name="ch_TC" encoding="UTF-8"/>
 						<!--locale name="christmas" encoding="UTF-8"/-->
-						<!--locale name="zombinion" encoding="UTF-8"/-->
-					</localization>
-					<localization if="debug or app.quick">
-						<locale name="${debugLang}" encoding="UTF-8"/>
+						<locale name="zombinion" encoding="UTF-8"/>
 					</localization>
 				</resources>
 
 				<!-- obfuscator settings: do not obfuscate when the test-property is true-->
-				<obfuscator name="ProGuard" unless="test or polish.blackberry or quick or debug">
+				<obfuscator name="ProGuard" unless="debug or info or polish.blackberry">
 					<parameter name="optimize" value="true" />
 					<parameter name="optimizationpasses" value="3"/>
 					<parameter name="dontskipnonpubliclibraryclasses" value=""/>
 					<parameter name="dontusemixedcaseclassnames" value=""/>
 				</obfuscator>
 				<!-- info memory -->
-				<debug if="info" showLogOnError="true" verbose="true" level="info">
+				<debug if="debug and not final"
+					showLogOnError="true"
+					 verbose="true"
+					level="debug">
+				</debug>
+				<debug if="info and not final"
+					showLogOnError="true"
+					 verbose="true"
+					level="info">
+				</debug>
+				<debug if="final" showLogOnError="true" level="error">
 				</debug>
 				<!-- user defined JAD attributes can also be used: -->
 				<jad>
@@ -165,23 +163,12 @@
 				</jad>
 			</build>
 
-			<!-- execution of emulator(s) -->
-			<emulator 
-				wait="true" 
-				securityDomain="trusted" 
-				enableProfiler="false" 
-				enableMemoryMonitor="false" 
-				enableNetworkMonitor="false" 
-				if="debug">
-			</emulator>
-
-			<emulator 
-				wait="true" 
-				trace="none" 
-				securityDomain="trusted" 
-				enableProfiler="false" 
-				enableMemoryMonitor="false" 
-				enableNetworkMonitor="false" if="test and not debug">
+			<emulator if="debug or info and not polish.android"
+				wait="true"
+				securityDomain="trusted"
+				enableProfiler="false"
+				enableMemoryMonitor="false"
+				enableNetworkMonitor="false">
 			</emulator>
 		</j2mepolish>
 	</target>
@@ -189,7 +176,6 @@
 	<target name="clean" description="allows a clean build. You should call [ant clean] whenever you made changes to devices.xml, vendors.xml or groups.xml">
 		<delete dir="build" />
 		<delete dir="dist" />
-		<delete dir="MobDominion" />
 		<delete dir="tmp**"/>
 	</target>
 	
@@ -214,29 +200,18 @@
 		</exec>
 	</target>
 	
-	<target name="compileAll" description="Builds All" depends="clean, enableAll, j2mepolish, enableAndroid, j2mepolish" />
-	<target name="compileGeneric" description="Builds Generic Device" depends="clean, enableGeneric, j2mepolish" />
-	<target name="compileNokia" description="Builds Nokia" depends="clean, enableNokia, j2mepolish" />
-	<target name="compileAndroid" description="Builds Android" depends="clean, enableAndroid, j2mepolish" />
-	<target name="compileiPhone" description="Builds iPhone" depends="clean, enableiPhone, j2mepolish" />
-	<target name="compileTouch" description="Builds Touch" depends="clean, enableTouch, j2mepolish" />
-	<target name="compileWindows" description="Builds Windows" depends="clean, enableWindows, j2mepolish" />
-	<target name="compile6303" description="Builds Nokia 6303" depends="clean, enable6303, j2mepolish" />
+	<target name="compile All" description="Builds All" depends="enableFinal, enableAll, j2mepolish, enableAndroid, j2mepolish" />
+	<target name="compile Generic" description="Builds Generic Device" depends="enableFinal, enableGeneric, j2mepolish" />
+	<target name="compile Nokia" description="Builds Nokia" depends="enableFinal, enableNokia, j2mepolish" />
+	<target name="compile Android" description="Builds Android" depends="enableFinal, enableAndroid, j2mepolish" />
+	<target name="compile iPhone" description="Builds iPhone" depends="enableFinal, enableiPhone, j2mepolish" />
+	<target name="compile Touch" description="Builds Touch" depends="enableFinal, enableTouch, j2mepolish" />
+	<target name="compile Windows" description="Builds Windows" depends="enableFinal, enableWindows, j2mepolish" />
+	<target name="compile 6303" description="Builds Nokia 6303" depends="enableFinal, enable6303, j2mepolish" />
 	
-	<target name="quickbuild" description="Quick builds for one" depends="enableQuick, j2mepolish, emuGeneric" />
-	
-	<target name="deviceDebug" description="debugs the project" depends="enableDebug, enableInfo, j2mepolish" />
-
-	<target name="debug" description="debugs the project" depends="enableDebug, test, enableInfo, j2mepolish" />
-
-	<target name="infoAndMemory" description="debugs the project" depends="clean, enableInfo, enableMemory, j2mepolish" />
-	
-	<target name="Memory" description="debugs the project" depends="clean, enableMemory, j2mepolish" />
-
-	<!-- Call this target first to skip the obfuscation step, call the emulator and start the debugger, e.g. ant enableDebug j2mepolish-->
-	<target name="enableQuick">
-		<property name="app.quick" value="true" />
-	</target>
+	<target name="debug Android" description="Builds Android" depends="enableInfo, enableAndroid, j2mepolish" />
+	<target name="debug Nokia" description="debugs the Nokia" depends="enableInfo, enableNokia, j2mepolish" />
+	<target name="debug Touch" description="debugs the Touch" depends="enableInfo, enableTouch, j2mepolish" />
 	
 	<target name="enableAll" depends="donotsign">
 		<property name="devices" value="Generic/AnyPhone,Generic/AnyTouch_320x480,Nokia/Series40E3,Sony-Ericsson/JavaPlatform7"/>
@@ -248,6 +223,7 @@
 	
 	<target name="enableNokia" depends="donotsign">
 		<property name="devices" value="Nokia/Series40E3"/>
+		<property name="device" value="Nokia/Series40E3"/>
 	</target>
 	
 	<target name="enable6303" depends="donotsign">
@@ -260,18 +236,21 @@
 	
 	<target name="enableAndroid" depends="dosign">
 		<property name="devices" value="Generic/Android"/>
+		<property name="device" value="Generic/Android"/>
 	</target>
+	
 	<target name="enableTouch" depends="donotsign">
 		<property name="devices" value="Generic/AnyTouch_240x248,Generic/AnyTouch_320x480,Generic/AnyTouch_480x800"/>
+		<property name="device" value="Generic/AnyTouch_320x480"/>
 	</target>
 	<target name="enableWindows" depends="donotsign">
 		<property name="devices" value="Dom/WindowsMobile5.0,Dom/WindowsMobile6.0,Dom/WindowsMobile6.5"/>
 	</target>
 	<target name="donotsign">
-		<property name="donotsign" value="true"/>
+		<property name="dosign" value="false"/>
 	</target>
 	<target name="dosign">
-		<property name="donotsign" value="false"/>
+		<property name="dosign" value="true"/>
 	</target>
 		
 	<!-- Call this target first to skip the obfuscation step, call the emulator and start the debugger, e.g. ant enableDebug j2mepolish-->
@@ -284,8 +263,7 @@
 		<property name="info" value="true" />
 	</target>
 	
-	<!-- Call this target first to skip the obfuscation step, call the emulator and start the debugger, e.g. ant enableDebug j2mepolish-->
-	<target name="enableMemory"> 
-		<property name="memory" value="true" />
+	<target name="enableFinal" depends="clean"> 
+		<property name="final" value="true" />
 	</target>
 </project>

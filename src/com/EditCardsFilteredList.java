@@ -25,8 +25,6 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 		super(title, listType);
 		for ( int i = 0 ; i < Dominion.I().getExpansions() ; i++ ){
 			for ( int cardNumber = 0 ; cardNumber < Dominion.I().getExpansion(i).size() ; cardNumber++ ) {
-				//#debug info
-				System.out.println("exp: " + Dominion.I().getExpansion(i).getExpansion(cardNumber));
 				//#style label
 				append(Dominion.I().getExpansion(i).getName(cardNumber), Dominion.I().getCardTypeImage(i, cardNumber));
 				setSelectedIndex(size() - 1, Dominion.I().getExpansion(i).isAvailable(cardNumber));
@@ -114,10 +112,6 @@ public class EditCardsFilteredList extends FilteredList implements CommandListen
 			}
 		} else {
 			for ( int i = 0 ; i < size() ; i++ ) {
-				/*///#debug info
-				System.out.println("redoing: " + Dominion.I().getExpansion(
-						Dominion.I().getLinearExpansionIndex(i)).isAvailable(
-						Dominion.I().getLinearCardIndex(i)));*/
 				changeCard(i, Dominion.I().getExpansion(
 						Dominion.I().getLinearExpansionIndex(i)).isAvailable(
 						Dominion.I().getLinearCardIndex(i))

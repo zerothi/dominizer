@@ -47,14 +47,14 @@ public class ShowCardsForm extends Form implements CommandListener {
 	private ShowCardsForm(String title) {
 		//#style behindTitle
 		super(title);
-		//#debug
+		//#debug info
 		System.out.println("showing cards initialize");
 		//#style defaultTable
 		table = new TableItem();
-		addCommand(randomizeCmd);
+		setCommandRandomize(true);
 		addCommand(showInfoCmd);
 		addCommand(anotherSetCmd);
-		addCommand(sortCmd);		
+		addCommand(sortCmd);
 		UiAccess.addSubCommand( sortExpNameCmd, sortCmd, this );
 		UiAccess.addSubCommand( sortExpCostCmd, sortCmd, this );
 		UiAccess.addSubCommand( sortNameCmd, sortCmd, this );
@@ -85,7 +85,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 
 	public void viewCards(Cards cards) {
 		table.releaseResources();
-		//#debug
+		//#debug info
 		System.out.println("adding card information");
 		if ( cards == null ) {
 			for (int cardNumber = 0 ; cardNumber < table.getNumberOfRows() - 1 ; cardNumber++ ) {
@@ -99,7 +99,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 			return;
 		}
 		table.setDimension(3, cards.size() + 1);
-		//#debug
+		//#debug info
 		System.out.println("adding header");
 		//#style tableHeading
 		table.set(0, 0, Locale.get("table.heading.Name"));
@@ -142,13 +142,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 		if ( cmd.equals(backCmd) ) {
 			Dominion.RANDOMIZE_COMPLETELY_NEW = true;
 			Dominion.I().resetHoldCards();
-			try {
-				removeCommand(randomizeSetCmd);
-			} catch (Exception e) {}
-			try {
-				removeCommand(randomizeCmd);				
-			} catch (Exception e) {}
-			addCommand(randomizeCmd);
+			setCommandRandomize(true);
 			GameApp.instance().changeToScreen(null);
 		} else if ( cmd.equals(randomizeCmd) ) {
 			Dominion.I().resetIsPlaying(true);
@@ -162,13 +156,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 			Dominion.RANDOMIZE_COMPLETELY_NEW = false;
 			Dominion.I().resetHoldCards();
 			reRandomize();
-			try {
-				removeCommand(randomizeSetCmd);
-			} catch (Exception e) {}
-			try {
-				removeCommand(randomizeCmd);				
-			} catch (Exception e) {}
-			addCommand(randomizeSetCmd);
+			setCommandRandomize(false);
 		} else if ( cmd.equals(showInfoCmd) )
 			GameApp.instance().showInfo(Dominion.I().getSelectedInfo(), Alert.FOREVER);
 		else if ( cmd.equals(saveCmd) ) {
@@ -182,14 +170,11 @@ public class ShowCardsForm extends Form implements CommandListener {
 				try {
 					SettingsRecordStorage.instance().writeData();
 				} catch (RecordStoreFullException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					// TODO Utilize GameApp.showAlert
 				} catch (RecordStoreNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					// TODO Utilize GameApp.showAlert
 				} catch (RecordStoreException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					// TODO Utilize GameApp.showAlert
 				}
 			}
 			GameApp.instance().changeToScreen(this);
@@ -261,6 +246,30 @@ public class ShowCardsForm extends Form implements CommandListener {
 			table.set(0, card, cardName);
 			//#debug info
 			System.out.println("deholding card: " + cardName);
+		}
+	}
+	
+	private void setCommandRandomize(boolean rand) {
+		try {
+			removeCommand(randomizeCmd);
+		} catch (Exception e) {}
+		try {
+			table.removeCommand(randomizeCmd);
+		} catch (Exception e) {}
+		try {
+			removeCommand(randomizeSetCmd);
+		} catch (Exception e) {}
+		try {
+			table.removeCommand(randomizeSetCmd);
+		} catch (Exception e) {}
+		if ( rand ) {
+			addCommand(randomizeCmd);
+			table.addCommand(randomizeCmd);
+			table.setDefaultCommand(randomizeCmd);
+		} else {
+			addCommand(randomizeSetCmd);
+			table.addCommand(randomizeSetCmd);
+			table.setDefaultCommand(randomizeSetCmd);
 		}
 	}
 }	

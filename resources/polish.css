@@ -61,9 +61,14 @@ backgrounds {
 		border-color: fontColor;
 		border-width: 2;
 	}
-	
+	selectedPlainBg {
+		type: round-rect;
+		arc: 8;
+		color: eevenBrightColor;
+		border-color: eevenBrightColor;
+		border-width: 2;
+	}
 }
-
 
 /**
   * The title style is a predefined style which is used
@@ -73,7 +78,7 @@ title {
 	max-width: 0%;
 	padding: 2;
 	font-face: proportional;
-	font-size: normal;
+	font-size: medium;
 	font-style: bold;
 	font-color: titleFontColor;
 	border: none;
@@ -212,16 +217,12 @@ listItem {
 	layout: center | vertical-center | newline-after;
 	min-height: 30%;
 	font-size: small;
+	font-color: fontColor;
 }
 @media touchscreen {
 	.mainCommand {
 		font-size: medium;
 	}
-}
-.mainCommand:hover {
-	font-style: bold;
-	font-color: fontColor;
-	text-effect: shadow;
 }
 
 .mainItem {
@@ -354,14 +355,12 @@ menu {
 	margin-left: 2;
 	margin-bottom: 4;
 	padding: 2;
-	background {
-		type: round-rect;
-		color: brightBgColor;
-		border-width: 2;
-		border-color: translucentBgColor;
+	background: selectedBg;
+	font {
+		color: translucentFontColor;
+		style: bold;
+		size: small;
 	}
-	font-color: translucentFontColor;
-	font-style: bold;
 	view-type: none;
 }
 @media touchscreen {
@@ -389,20 +388,26 @@ menuItem {
 	}
 	layout: left;
 }
+
+menuItem:hover {
+	background: selectedPlainBg;
+	font-color: translucentFontColor;
+	layout: left | horizontal-expand;
+}
 @media touchscreen {
 	menuItem {
 		padding-top: 4px;
 		padding-bottom: 4px;
 		font-size: medium;
 	}
-}
-/**
-  * A focused menuItem
-  */
-menuItem:hover {
-	background-color: eevenBrightColor;
-	font-color: translucentFontColor;
-	layout: left | horizontal-expand;
+	menuItem:hover {
+		padding-top: 4px;
+		padding-bottom: 4px;
+		font-size: medium;
+		background: selectedPlainBg;
+		font-color: translucentFontColor;
+		layout: left | horizontal-expand;
+	}
 }
 
 .filterCards {
@@ -555,7 +560,6 @@ menuItem:hover {
  * Tabbed pane 
  *
  **************/
-
 .tabbedPane {
 	title-menu: true;
 }
@@ -731,3 +735,4 @@ menuItem:hover {
 .labelGauge extends label {
 	font-size: medium;
 }
+.keyMode {}

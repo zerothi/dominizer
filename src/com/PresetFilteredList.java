@@ -101,14 +101,11 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 			try {
 				SettingsRecordStorage.instance().writeData();
 			} catch (RecordStoreFullException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				// TODO Add GameApp.showAlert!
 			} catch (RecordStoreNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				// TODO Add GameApp.showAlert!
 			} catch (RecordStoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				// TODO Add GameApp.showAlert!
 			}
 			SettingsRecordStorage.instance().closeRecord();
 			focus(getCurrentIndex() - 1);

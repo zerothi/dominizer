@@ -7,6 +7,13 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
+import javax.microedition.pim.Event;
+import javax.microedition.pim.EventList;
+import javax.microedition.pim.PIM;
+import javax.microedition.pim.PIMException;
+import javax.microedition.pim.PIMItem;
+
+import com.dominizer.GameApp;
 
 import de.enough.polish.calendar.CalendarItem;
 import de.enough.polish.util.Locale;
@@ -16,11 +23,12 @@ import de.enough.polish.util.Locale;
  *
  */
 public class GameCalendarForm extends Form implements CommandListener {
-
+	
+	private static GameCalendarForm gcF = null;
 	private CalendarItem calendar = null;
 	private Command addGameCmd = new Command(Locale.get("cmd.Calendar.AddGame"), Command.BACK, 0);
 	
-	public GameCalendarForm(String title) {
+	private GameCalendarForm(String title) {
 		//#style mainScreen
 		super(title);
 		//#style calendar
@@ -30,12 +38,43 @@ public class GameCalendarForm extends Form implements CommandListener {
 		setCommandListener(this);
 	}
 	
+	public static GameCalendarForm I() {
+		if ( gcF == null ) {
+			gcF = new GameCalendarForm(Locale.get("screen.Calendar.title"));
+		}
+		return gcF;
+	}
+	
 	/**
      * Adds event to list of events. 
      * Gets data for event from addEventForm controls.
      */
-    private void addGame() {
+    public void addGame() {
     	/*
+    	EventList eventList = null;
+    	 try {
+    	    eventList = (EventList) PIM.getInstance().openPIMList(PIM.EVENT_LIST, PIM.READ_WRITE);
+    	 } catch (PIMException e) {
+    	    return;
+    	 }
+    	 Event singleEvent = eventList.createEvent();
+    	 if (eventList.isSupportedField(Event.SUMMARY))
+    	      singleEvent.addString(Event.SUMMARY, PIMItem.ATTR_NONE, "Java Training");
+    	 if (eventList.isSupportedField(Event.START))
+    	      singleEvent.addDate(Event.START, PIMItem.ATTR_NONE, aDate.getTime());
+    	 if (eventList.isSupportedField(Event.END))
+    	      singleEvent.addDate(Event.END, PIMItem.ATTR_NONE, aDate.getTime());
+
+    	try {
+    	      singleEvent.commit();
+    	 } catch (PIMException e) {
+    	      // An error occured
+    	 }
+    	 try {
+    	      eventList.close();
+    	 } catch (PIMException e) {
+
+    	 }
         try {
             // Get list of events.
             EventList eventList = (EventList)PIM.getInstance().openPIMList(
@@ -94,7 +133,7 @@ public class GameCalendarForm extends Form implements CommandListener {
             // TODO: Handle all other errors.
         	GameApp.instance().showAlert("Exception" + exc.getMessage());
         }
-        */   
+        */
     }
 	/* (non-Javadoc)
 	 * @see javax.microedition.lcdui.CommandListener#commandAction(javax.microedition.lcdui.Command, javax.microedition.lcdui.Displayable)

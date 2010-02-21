@@ -4,8 +4,8 @@
 #
 ################
 
-tab.Preset.title=Voreinstellungen
-tab.EditCards.title=Karten ein- / ausschließen
+tab.Preset.title=Fixe 10er-Sätze
+tab.EditCards.title=Karten Einstellungen
 tab.Settings.title=Einstellungen
 tab.Calendar.title=Kalender
 table.heading.Name=Name
@@ -55,7 +55,7 @@ cmd.BlackMarket.CancelBuy=Kaufvorgang abbrechen
 cmd.BlackMarket.Show=Zeige Schwarzmarkt-Stapel
 cmd.Back=Zurück
 cmd.ShowLog=Zeige Log
-cmd.Quit=Beenden
+cmd.Quit=Dominizer Beenden
 cmd.switch=Wechseln
 gauge.loading=Ladevorgang
 gauge.loading.cards=Lade Karten

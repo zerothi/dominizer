@@ -31,6 +31,7 @@ screen.BlackMarket.Ticker=< {0}Bought / Left: {1} / {2} >
 screen.Input.title=Input
 screen.Input.defaultmessage=
 screen.Input.inputname=Input:
+screen.Calendar.title=Calendar
 cmd.Randomize.Show=Randomize
 cmd.Randomize.Set=Rand. Set
 cmd.ShowChosenCardInfo=Show info
