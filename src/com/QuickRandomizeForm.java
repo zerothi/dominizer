@@ -21,9 +21,9 @@ import de.enough.polish.util.Locale;
  */
 public class QuickRandomizeForm extends List implements CommandListener {
 
-	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.OK, 0);
-	private Command gaugeCmd = new Command( Locale.get("cmd.SetCards.Gauge"), Command.SCREEN, 1);
-	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
+	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
+	private Command gaugeCmd = new Command( Locale.get("cmd.SetCards.Gauge"), Command.ITEM, 15);
+	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.ITEM, 16);
 	public boolean[] flags = new boolean[6];
 	private int tmp = 0;
 	
@@ -92,7 +92,7 @@ public class QuickRandomizeForm extends List implements CommandListener {
 	}
 
 	private void setCardsFromExpansion(int numberCards) {
-		//#debug info
+		//#debug dominizer
 		System.out.println("trying to set cards from expansion");
 		setCardsFromExpansion(UiAccess.getFocusedIndex(this), numberCards);
 		

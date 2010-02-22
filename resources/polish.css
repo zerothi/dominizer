@@ -63,10 +63,10 @@ backgrounds {
 	}
 	selectedPlainBg {
 		type: round-rect;
-		arc: 8;
+		arc: 5;
 		color: eevenBrightColor;
 		border-color: eevenBrightColor;
-		border-width: 2;
+		border-width: 0;
 	}
 }
 
@@ -76,7 +76,7 @@ backgrounds {
   */
 title {
 	max-width: 0%;
-	padding: 2;
+	padding: 3;
 	font-face: proportional;
 	font-size: medium;
 	font-style: bold;
@@ -142,7 +142,7 @@ label {
   * focused item.
   */
 focused {
-	padding: 5;
+	padding: 2;
 	background: selectedBg;
 	font {
 		style: bold;
@@ -170,11 +170,13 @@ focused {
 		bottom-color: splitBot;
 	}
 }
+.mainScreen:landscape {}
 
 .behindScreen extends mainScreen {
 	title-menu: false;
 	title-style: behindTitle;
 }
+.behindScreen:landscape {}
 
 .mainPopupScreen {
 	repaint-previous-screen: true;
@@ -187,8 +189,13 @@ focused {
 		top-color: splitTop;
 		bottom-color: splitBot;
 	}
-	layout: bottom | vertical-shrink;
+	//#if polish.android
+		layout: top | vertical-shrink;
+	//#else
+		layout: bottom | vertical-shrink;
+	//#endif
 }
+.mainPopupScreen:landscape {}
 
 listItem {
 	font {
@@ -273,6 +280,7 @@ alertcontent {
 	title-style: messageAlertTitle;
 	menubar-style: messageAlertMenuBar;
 }
+.messageAlert:landscape {}
 
 info {
 	margin: 1;
@@ -352,8 +360,8 @@ middlecommand extends leftcommand {
   * style is used for the menu. 
   */
 menu {
+	margin: 5;
 	margin-left: 2;
-	margin-bottom: 4;
 	padding: 2;
 	background: selectedBg;
 	font {
@@ -429,6 +437,7 @@ menuItem:hover {
 	}
 	choice-color: translucentBgColor;
 }
+.messageAlert:landscape {}
 
 .filterCards:hover {
 	background-color: translucentBgColor;
@@ -437,8 +446,7 @@ menuItem:hover {
 }
 
 .filterTextFieldStyle {
-	margin-left: 2;
-	margin-right: 2;
+	margin: 5;
 	font-color: translucentBrightFontColor;
 	background {
 		color: bgColor;
@@ -495,7 +503,7 @@ menuItem:hover {
 	padding: 0px;
 	font-color: translucentFontColor;
 	font-style: bold;
-	font-size: medium;
+	font-size: small;
 }
 @media touchscreen {
 	.tableHeading {	
@@ -543,7 +551,8 @@ menuItem:hover {
 	.tableHeading {
 		padding-top: 4px;
 		padding-bottom: 4px;
-		font-size: large;
+		font-style: bold;
+		font-size: medium;
 	}
 	.tableCell {
 		padding-top: 4px;

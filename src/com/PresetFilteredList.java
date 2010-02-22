@@ -13,26 +13,28 @@ import javax.microedition.rms.RecordStoreNotFoundException;
 
 import com.dominizer.GameApp;
 
-import de.enough.polish.ui.FilteredList;
+import de.enough.polish.ui.List;
 import de.enough.polish.util.Locale;
 
-public class PresetFilteredList extends FilteredList implements CommandListener {
+public class PresetFilteredList extends List implements CommandListener {
 	
 	private Command selectCmd = new Command( Locale.get("polish.command.select"), Command.SCREEN, 6);
-	private Command infoCmd = new Command( Locale.get("cmd.Preset.ShowInfo"), Command.SCREEN, 1);
+	private Command infoCmd = new Command( Locale.get("cmd.Preset.ShowInfo"), Command.SCREEN, 2);
 	private Command deleteCmd = new Command( Locale.get("cmd.Preset.DeletePreset"), Command.SCREEN, 4);
-	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.OK, 0);
+	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
 	private int[] tmp = new int[] { 0, 0};
 	
 	public PresetFilteredList(String title, int listType) {
 		//#style mainScreen
 		super(title, listType);
-		addCommand(selectCmd);
+		//#if !polish.android
+			addCommand(selectCmd);
+			//#= setSelectCommand(selectCmd);
+		//#endif
 		addCommand(infoCmd);
 		addCommand(quickRandomizeCardsCmd);
 		addCommand(quitCmd);
-		//#= setSelectCommand(selectCmd);
 		setCommandListener(this);
 		for ( tmp[0] = 0 ; tmp[0] < Dominion.I().presetSize() ; tmp[0]++ )
 			addPresets(Dominion.I().getPreset(tmp[0]));
@@ -83,14 +85,14 @@ public class PresetFilteredList extends FilteredList implements CommandListener 
 		if ( cmd.equals(quickRandomizeCardsCmd) ) {
 			focus((new Random(System.currentTimeMillis())).nextInt(size()));
 		} else if ( cmd.equals(infoCmd) ) {
-			if ( getFilterText().length() != 0 ) {
+			/*if ( getFilterText().length() != 0 ) {
 				GameApp.instance().showAlert(Locale.get("alert.Filter.Availability"));
 				return;
-			}
+			}*/
 			tmp = Dominion.I().getPresetLocation(getString(getCurrentIndex()));
-			if ( tmp[0] == -1 ) return;
-			GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(tmp[0], tmp[1]), Alert.FOREVER);
-		} else if ( cmd.equals(selectCmd) ) {
+			if ( tmp[0] > -1 ) 
+				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(tmp[0], tmp[1]), Alert.FOREVER);
+		} else if ( cmd.getLabel().equals(Locale.get("polish.command.select")) ) {
 			if ( Dominion.I().selectPreset(getString(getCurrentIndex())) )
 				GameApp.instance().showCurrentSelectedCards();
 		} else if ( cmd.equals(quitCmd) ) {

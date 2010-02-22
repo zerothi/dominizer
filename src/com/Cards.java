@@ -31,15 +31,23 @@ public class Cards {
 			isGamingRelated = new boolean[size][3];
 			cost = new int[size];
 			isSpecific = new boolean[size][6];
-			for ( int i = 0 ; i < size ; i++ ) {
-				isGamingRelated[i][1] = true;
-				isGamingRelated[i][2] = true;
-			}
 			if ( isSet == IS_SET )
 				expansion = new int[1];
 			else
 				expansion = new int[size];
+			expansion[0] = -1;
 			percentage = new int[size];
+			for ( int i = 0 ; i < size ; i++ ) {
+				name[i] = null;
+				cost[i] = 0;
+				isGamingRelated[i][0] = false;
+				isGamingRelated[i][1] = true;
+				isGamingRelated[i][2] = true;
+				if ( isSet == IS_NOT_SET )
+					expansion[i] = -1;
+				percentage[i] = 0;
+			}
+			
 		}
 	}
 
@@ -296,9 +304,8 @@ public class Cards {
 	public int fromExpansion(int exp) {
 		int tmp = 0;
 		for ( int i = 0 ; i < size() ; i++ ) {
-			if ( getExpansion(i) > -1 )
-				if ( getExpansion(i) == exp )
-					tmp++;
+			if ( getExpansion(i) > -1 && getExpansion(i) == exp )
+				tmp++;
 		}
 		return tmp;
 	}
@@ -306,12 +313,12 @@ public class Cards {
 	public void setCard(int index, Object[] cardInfo) {
 		for ( int i = 0 ; i < 12 ; i++ ) {
 			if ( cardInfo[i] == null ) {
-				//#debug info 
+				//#debug dominizer 
 				System.out.println("cardinfo " + i + " is null ");
 			}
 		}
 		if ( cardInfo[0] == null ) {
-			//#debug info 
+			//#debug dominizer 
 			System.out.println("cardinfo 0 is null ");
 		}
 		setName(index, cardInfo[0].toString());

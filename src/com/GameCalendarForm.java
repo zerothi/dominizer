@@ -7,15 +7,16 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
-import javax.microedition.pim.Event;
+/*import javax.microedition.pim.Event;
 import javax.microedition.pim.EventList;
 import javax.microedition.pim.PIM;
 import javax.microedition.pim.PIMException;
 import javax.microedition.pim.PIMItem;
-
+*/
 import com.dominizer.GameApp;
 
 import de.enough.polish.calendar.CalendarItem;
+import de.enough.polish.ui.MenuBar;
 import de.enough.polish.util.Locale;
 
 /**

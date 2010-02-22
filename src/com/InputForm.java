@@ -22,7 +22,7 @@ public class InputForm extends Form {
 		//#style mainPopupScreen
 		super(title);
 		addCommand(new Command(Locale.get("polish.command.ok"), Command.OK, 1));
-		addCommand(new Command(Locale.get("polish.command.cancel"), Command.SCREEN, 10));
+		addCommand(new Command(Locale.get("polish.command.cancel"), Command.BACK, 10));
 		//#style inputTextField
 		tF = new TextField(Locale.get("screen.Input.inputname"), "", 15, TextField.ANY);
 		append(tF);

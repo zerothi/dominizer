@@ -65,7 +65,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		app = this;
 		//SettingsRecordStorage.instance().deleteRecordStore(Locale.get("rms.file.preset"));
 		//SettingsRecordStorage.instance().deleteRecordStore(Locale.get("rms.file.settings"));
-		//#debug info
+		//#debug dominizer
 		System.out.println("initialisation done.");
 	}
 	
@@ -152,7 +152,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 			currentTab = Integer.parseInt(SettingsRecordStorage.instance().readKey(Locale.get("rms.lasttab")));
 		if ( currentTab != SHOWCARDS & currentTab > -1 )
 			tabbedPane.setFocus(currentTab);
-		//#debug info
+		//#debug dominizer
 		System.out.println("setting display");
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.finished"));
 		display.setCurrent(tabbedPane);
@@ -247,19 +247,19 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		case TAB_QUICK:
 			qrF.getSelectedFlags(qrF.flags);
 			Dominion.I().setExpansionPlayingState(qrF.flags);
-			//#debug info
+			//#debug dominizer
 			System.out.println("updating flags");
 			break;
 		case TAB_EDIT:
 			ecFL.updateCards(true);
-			//#debug info
+			//#debug dominizer
 			System.out.println("updating cards internal");
 			break;
 		}
 		switch ( to ) {
 		case TAB_EDIT:
-			ecFL.updateCards(true);
-			//#debug info
+			ecFL.updateCards(false);
+			//#debug dominizer
 			System.out.println("updating cards external");
 			break;
 		}

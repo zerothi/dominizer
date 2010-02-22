@@ -22,8 +22,8 @@ public class BlackMarketForm extends List implements CommandListener {
 	private Vector blackMarketDeck = null;
 	private Vector drawnDeck = null;
 	private Command cancelBuyCmd = new Command( Locale.get("cmd.BlackMarket.CancelBuy"), Command.SCREEN, 1);
-	private Command drawCardsCmd = new Command( Locale.get("cmd.BlackMarket.Draw"), Command.OK, 0);
-	private Command selectCardCmd = new Command( Locale.get("polish.command.select"), Command.SCREEN, 2);
+	private Command drawCardsCmd = new Command( Locale.get("cmd.BlackMarket.Draw"), Command.BACK, 0);
+	private Command selectCardCmd = new Command( Locale.get("polish.command.select"), Command.BACK, 1);
 	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 3);
 	private String randomizeCardHolder = null;
 	private Ticker ticker = null;
@@ -49,7 +49,7 @@ public class BlackMarketForm extends List implements CommandListener {
 	
 	public void drawCards() {
 		deleteAll();
-		//#debug info
+		//#debug dominizer
 		System.out.println("new drawing");
 		//#style label
 		append(Locale.get("screen.BlackMarket.ChooseNone"), null);
@@ -60,20 +60,20 @@ public class BlackMarketForm extends List implements CommandListener {
 	}
 		
 	private void addNextCard(int number) {
-		//#debug info
+		//#debug dominizer
 		System.out.println("add next card. remaining: " + number);
 		if ( blackMarketDeck.size() == 0 )
 			deleteAll();
 		else if ( blackMarketDeck.size() < number )
 			return;
 		else if ( currentlyReachedCard < blackMarketDeck.size() ) {
-			//#debug info
+			//#debug dominizer
 			System.out.println("just added. remaining: " + number);
 			//#style label
 			append(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard)).toString(), null);
 			currentlyReachedCard++;
 		} else if ( blackMarketDeck.size() <= currentlyReachedCard ) {
-			//#debug info
+			//#debug dominizer
 			System.out.println("size to large. remaining: " + number);
 			currentlyReachedCard = 0;
 			if ( number != 0 )
@@ -187,19 +187,19 @@ public class BlackMarketForm extends List implements CommandListener {
 	
 	private void updateCommands() {
 		if ( 0 < size() ) {
-			//#debug info
+			//#debug dominizer
 			System.out.println("adding commands for selecting");
 			removeCommand(drawCardsCmd);
 			removeCommand(cancelBuyCmd);
 			addCommand(selectCardCmd);
 			setSelectCommand(selectCardCmd);
 		} else {
-			//#debug info
+			//#debug dominizer
 			System.out.println("adding commands for drawing");
 			removeCommand(drawCardsCmd);
 			removeCommand(selectCardCmd);
 			if ( 0 < blackMarketDeck.size() ) {
-				//#debug info
+				//#debug dominizer
 				System.out.println("adding commands for drawing2");
 				addCommand(drawCardsCmd);
 				setSelectCommand(drawCardsCmd);

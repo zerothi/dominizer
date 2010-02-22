@@ -45,7 +45,7 @@ public class SettingsRecordStorage {
 			// TODO Use GameApp.showAlert in this section!
 		} finally {
 			try {
-				//#debug info
+				//#debug dominizer
 				System.out.println("opening record store");
 				store = RecordStore.openRecordStore(recordStore, true);
 				currentStore = recordStore;
@@ -54,15 +54,15 @@ public class SettingsRecordStorage {
 				return true;
 			} catch (RecordStoreFullException e) {
 				store = null;
-				//#debug info
+				//#debug dominizer
 				System.out.println("error read");
 			} catch (RecordStoreNotFoundException e) {
 				store = null;
-				//#debug info
+				//#debug dominizer
 				System.out.println("error read");
 			} catch (RecordStoreException e) {
 				store = null;
-				//#debug info
+				//#debug dominizer
 				System.out.println("error read");
 			}
 		}
@@ -87,7 +87,7 @@ public class SettingsRecordStorage {
 		if ( store == null )
 			return data;
 		try {
-			//#debug info
+			//#debug dominizer
 			System.out.println("found " + store.getNumRecords() + " records");
 			if ( store.getNumRecords() == 0 ) {
 				throw new RecordStoreException("there is no records to be found");
@@ -97,13 +97,13 @@ public class SettingsRecordStorage {
 			while ( re.hasNextElement() ) {
 				tmpByte = re.nextRecord();
 				if ( tmpByte != null ) {
-					//#debug info
+					//#debug dominizer
 					System.out.println("found record: " + new String(tmpByte));
 					data.addElement(new String(tmpByte));
 				}
 			}
 		} catch (RecordStoreException rms) {
-			//#debug info
+			//#debug dominizer
 			System.out.println("store exception happened");
 			data = null;
 		}
@@ -116,14 +116,14 @@ public class SettingsRecordStorage {
 		for ( int i = 0 ; i < data.size() ; i++ ) {
 			if ( key != null ) {
 				if ( data.elementAt(i).toString().startsWith(key) ) {
-					//#debug info
+					//#debug dominizer
 					System.out.println("overwriting data. key= " + key + " record= " + record);
 					data.setElementAt(key + BIG_SPLITTER + record, i);
 					return;
 				}
 			} else {
 				if ( data.elementAt(i).toString().startsWith(record) ) {
-					//#debug info
+					//#debug dominizer
 					System.out.println("overwriting data. record= " + record);
 					data.setElementAt(record, i);
 					return;
@@ -131,11 +131,11 @@ public class SettingsRecordStorage {
 			}
 		}
 		if ( key != null ) {
-			//#debug info
+			//#debug dominizer
 			System.out.println("adding data. key= " + key + " record= " + record);
 			data.addElement(key + BIG_SPLITTER + record);
 		} else {
-			//#debug info
+			//#debug dominizer
 			System.out.println("adding data. record= " + record);
 			data.addElement(record);
 		}
@@ -150,7 +150,7 @@ public class SettingsRecordStorage {
 				for ( int i = 0 ; i < data.size() ; i++ ) {
 					store.addRecord(data.elementAt(i).toString().getBytes(), 0, data.elementAt(i).toString().getBytes().length);
 				}
-			//#debug info
+			//#debug dominizer
 			System.out.println("Succes");
 		} catch (Exception e) {
 			succes = false;
@@ -177,7 +177,7 @@ public class SettingsRecordStorage {
 		for ( int i = 0 ; i < data.size() ; i++ ) {
 			if ( data.elementAt(i).toString().startsWith(key) ) {
 				data.removeElementAt(i);
-				//#debug info
+				//#debug dominizer
 				System.out.println("deleted the key=" + key);
 				return true;
 			}
@@ -189,13 +189,13 @@ public class SettingsRecordStorage {
 		try {
 			RecordStore.deleteRecordStore(recordStore);
 		} catch (RecordStoreFullException e) {
-			//#debug info
+			//#debug dominizer
 			System.out.println("deletion failed");
 		} catch (RecordStoreNotFoundException e) {
-			//#debug info
+			//#debug dominizer
 			System.out.println("deletion failed");
 		} catch (RecordStoreException e) {
-			//#debug info
+			//#debug dominizer
 			System.out.println("deletion failed");
 		}
 	}

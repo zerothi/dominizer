@@ -19,6 +19,7 @@ import javax.microedition.rms.RecordStoreNotFoundException;
 import com.dominizer.GameApp;
 
 import de.enough.polish.ui.Alert;
+import de.enough.polish.ui.Item;
 import de.enough.polish.ui.TableItem;
 import de.enough.polish.ui.UiAccess;
 import de.enough.polish.util.Locale;
@@ -27,8 +28,8 @@ public class ShowCardsForm extends Form implements CommandListener {
 
 	private static ShowCardsForm scF = null;
 	private TableItem table = null;
-	private Command randomizeCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.OK, 0);
-	private Command randomizeSetCmd = new Command( Locale.get("cmd.Randomize.Set"), Command.OK, 0);
+	private Command randomizeCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
+	private Command randomizeSetCmd = new Command( Locale.get("cmd.Randomize.Set"), Command.BACK, 0);
 	private Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.SCREEN, 1);
 	
 	private Command sortCmd = new Command( Locale.get("cmd.Sort.Main"), Command.SCREEN, 5);
@@ -47,10 +48,45 @@ public class ShowCardsForm extends Form implements CommandListener {
 	private ShowCardsForm(String title) {
 		//#style behindTitle
 		super(title);
-		//#debug info
+		//#debug dominizer
 		System.out.println("showing cards initialize");
 		//#style defaultTable
-		table = new TableItem();
+		table = new TableItem()
+		//#if polish.android
+			{
+				@SuppressWarnings("unused")
+                protected boolean handleGestureSwipeLeft(int x, int y) {
+					//#debug dominizer
+					System.out.println("swipe left gesture recorded");
+					reRandomize();
+					return true;
+				}
+				@SuppressWarnings("unused")
+				protected boolean handleGestureSwipeRight(int x, int y) {
+					//#debug dominizer
+					System.out.println("swipe right gesture recorded");
+					reRandomize();
+					return true;
+				}
+				@SuppressWarnings("unused")
+				protected boolean handleGestureHold(int x, int y) {
+					//#debug dominizer
+					System.out.println("hold gesture recorded");
+					if ( table.isInItemArea(x - table.relativeX, y - table.relativeY) ) {
+						Item item = table.getItemAt(x - table.relativeX, y - table.relativeY);
+						if ( item != null ) {
+							int pos = table.getPosition(item);
+							//#debug dominizer
+							System.out.println("table position: " + pos);
+							//for ( int i = 1 ; i < 11 ; i++ ) {
+							//	if ( ((StringItem) table.get(0, i)).getText().equals( item.getText()) )
+						}
+					}
+					return true;
+				}
+			}
+		//#endif
+		;
 		setCommandRandomize(true);
 		addCommand(showInfoCmd);
 		addCommand(anotherSetCmd);
@@ -85,7 +121,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 
 	public void viewCards(Cards cards) {
 		table.releaseResources();
-		//#debug info
+		//#debug dominizer
 		System.out.println("adding card information");
 		if ( cards == null ) {
 			for (int cardNumber = 0 ; cardNumber < table.getNumberOfRows() - 1 ; cardNumber++ ) {
@@ -99,7 +135,7 @@ public class ShowCardsForm extends Form implements CommandListener {
 			return;
 		}
 		table.setDimension(3, cards.size() + 1);
-		//#debug info
+		//#debug dominizer
 		System.out.println("adding header");
 		//#style tableHeading
 		table.set(0, 0, Locale.get("table.heading.Name"));
@@ -239,12 +275,12 @@ public class ShowCardsForm extends Form implements CommandListener {
 		if ( Dominion.I().holdCard(cardName) ) {
 			//#style tableCellHold
 			table.set(0, card, cardName);
-			//#debug info
+			//#debug dominizer
 			System.out.println("holding card: " + cardName);
 		} else {
 			//#style tableCell
 			table.set(0, card, cardName);
-			//#debug info
+			//#debug dominizer
 			System.out.println("deholding card: " + cardName);
 		}
 	}
@@ -272,4 +308,6 @@ public class ShowCardsForm extends Form implements CommandListener {
 			table.setDefaultCommand(randomizeSetCmd);*/
 		}
 	}
+	
+	
 }	

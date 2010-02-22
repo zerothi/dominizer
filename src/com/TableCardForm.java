@@ -35,7 +35,7 @@ public class TableCardForm extends Form implements CommandListener {
 	
 	public void viewCards(Vector cards) {
 		table.setDimension(9, cards.size() + 1);
-		//#debug info
+		//#debug dominizer
 		System.out.println("adding header");
 		//#style tableHeading
 		table.set(0, 0, Locale.get("table.heading.Name"));
@@ -55,7 +55,7 @@ public class TableCardForm extends Form implements CommandListener {
 		table.set(7, 0, Locale.get("table.heading.AttackCard"));
 		//#style tableHeading
 		table.set(8, 0, Locale.get("table.heading.DurationCard"));
-		//#debug info
+		//#debug dominizer
 		System.out.println("adding card information");
 		for (int cardNumber = 0 ; cardNumber < cards.size() ; cardNumber++ ) {/*
 			//#style tableCell
