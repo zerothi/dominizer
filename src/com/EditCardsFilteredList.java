@@ -55,6 +55,19 @@ public class EditCardsFilteredList extends List implements CommandListener {
 			}
 			focus(tmp);
 			break;
+		case Canvas.KEY_NUM0:
+		case Canvas.KEY_NUM1:
+		case Canvas.KEY_NUM2:
+		case Canvas.KEY_NUM3:
+		case Canvas.KEY_NUM4:
+		case Canvas.KEY_NUM5:
+		case Canvas.KEY_NUM6:
+		case Canvas.KEY_NUM7:
+		case Canvas.KEY_NUM8:
+		case Canvas.KEY_NUM9:
+			setPercentage(getCurrentIndex(), Dominion.I().getLinearExpansionIndex(getCurrentIndex()),
+					Dominion.I().getLinearCardIndex(getCurrentIndex()), keyCode - Canvas.KEY_NUM0);
+			break;
 		default:
 			//#= super.keyPressed(keyCode);
 		}

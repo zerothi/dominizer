@@ -30,19 +30,19 @@ public class ShowCardsForm extends Form implements CommandListener {
 	private TableItem table = null;
 	private Command randomizeCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 	private Command randomizeSetCmd = new Command( Locale.get("cmd.Randomize.Set"), Command.BACK, 0);
-	private Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.SCREEN, 1);
+	private Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.SCREEN, 2);
 	
 	private Command sortCmd = new Command( Locale.get("cmd.Sort.Main"), Command.SCREEN, 5);
-	private Command showInfoCmd = new Command( Locale.get("cmd.ShowChosenCardInfo"), Command.ITEM, 2);
-	private Command sortExpNameCmd = new Command( Locale.get("cmd.Sort.ExpName"), Command.ITEM, 2);
-	private Command sortExpCostCmd = new Command( Locale.get("cmd.Sort.ExpCost"), Command.ITEM, 3);
-	private Command sortNameCmd = new Command( Locale.get("cmd.Sort.Name"), Command.ITEM, 4);
-	private Command sortCostNameCmd = new Command( Locale.get("cmd.Sort.CostName"), Command.ITEM, 5);
-	private Command sortCostExpCmd = new Command( Locale.get("cmd.Sort.CostExp"), Command.ITEM, 6);
-	private Command anotherSetCmd = new Command( Locale.get("cmd.AnotherSet"), Command.ITEM, 6);
-	private Command saveCmd = new Command( Locale.get("cmd.SaveAsPreset"), Command.ITEM, 7);
+	private Command showInfoCmd = new Command( Locale.get("cmd.ShowChosenCardInfo"), Command.ITEM, 1);
+	private Command sortExpNameCmd = new Command( Locale.get("cmd.Sort.ExpName"), Command.ITEM, 4);
+	private Command sortExpCostCmd = new Command( Locale.get("cmd.Sort.ExpCost"), Command.ITEM, 5);
+	private Command sortNameCmd = new Command( Locale.get("cmd.Sort.Name"), Command.ITEM, 6);
+	private Command sortCostNameCmd = new Command( Locale.get("cmd.Sort.CostName"), Command.ITEM, 7);
+	private Command sortCostExpCmd = new Command( Locale.get("cmd.Sort.CostExp"), Command.ITEM, 8);
+	private Command anotherSetCmd = new Command( Locale.get("cmd.AnotherSet"), Command.ITEM, 10);
+	private Command saveCmd = new Command( Locale.get("cmd.SaveAsPreset"), Command.ITEM, 11);
 	
-	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 10);
+	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 12);
 	//private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
 	
 	private ShowCardsForm(String title) {
@@ -54,22 +54,35 @@ public class ShowCardsForm extends Form implements CommandListener {
 		table = new TableItem()
 		//#if polish.android
 			{
+				@Override
+				public boolean handlePointerPressed(int relX, int relY) {
+					//#debug dominizer 
+					System.out.println("table pressed(" + relX + ", " + relY + ")");
+					int row = getRowIndex( relY );
+					if (row != -1) {
+						//#debug dominizer 
+						System.out.println("table row touched " + (row - 1));
+						holdCard(row - 1);
+						return true;
+					}
+					return super.handlePointerPressed(relX, relY);
+				}
 				@SuppressWarnings("unused")
-                protected boolean handleGestureSwipeLeft(int x, int y) {
+                public boolean handleGestureSwipeLeft(int x, int y) {
 					//#debug dominizer
 					System.out.println("swipe left gesture recorded");
 					reRandomize();
 					return true;
 				}
 				@SuppressWarnings("unused")
-				protected boolean handleGestureSwipeRight(int x, int y) {
+				public boolean handleGestureSwipeRight(int x, int y) {
 					//#debug dominizer
 					System.out.println("swipe right gesture recorded");
 					reRandomize();
 					return true;
 				}
 				@SuppressWarnings("unused")
-				protected boolean handleGestureHold(int x, int y) {
+				public boolean handleGestureHold(int x, int y) {
 					//#debug dominizer
 					System.out.println("hold gesture recorded");
 					if ( table.isInItemArea(x - table.relativeX, y - table.relativeY) ) {
@@ -90,12 +103,20 @@ public class ShowCardsForm extends Form implements CommandListener {
 		setCommandRandomize(true);
 		addCommand(showInfoCmd);
 		addCommand(anotherSetCmd);
-		addCommand(sortCmd);
-		UiAccess.addSubCommand( sortExpNameCmd, sortCmd, this );
-		UiAccess.addSubCommand( sortExpCostCmd, sortCmd, this );
-		UiAccess.addSubCommand( sortNameCmd, sortCmd, this );
-		UiAccess.addSubCommand( sortCostExpCmd, sortCmd, this );
-		UiAccess.addSubCommand( sortCostNameCmd, sortCmd, this );
+		//#if !polish.android
+			addCommand(sortCmd);
+			UiAccess.addSubCommand( sortExpNameCmd, sortCmd, this );
+			UiAccess.addSubCommand( sortExpCostCmd, sortCmd, this );
+			UiAccess.addSubCommand( sortNameCmd, sortCmd, this );
+			UiAccess.addSubCommand( sortCostExpCmd, sortCmd, this );
+			UiAccess.addSubCommand( sortCostNameCmd, sortCmd, this );
+		//#else
+			addCommand(sortExpNameCmd);
+			addCommand(sortExpCostCmd);
+			addCommand(sortNameCmd);
+			addCommand(sortCostExpCmd);
+			addCommand(sortCostNameCmd);
+		//#endif
 		addCommand(saveCmd);
 		addCommand(backCmd);
 		table.setSelectionMode(TableItem.SELECTION_MODE_NONE);//SELECTION_MODE_CELL);
@@ -268,9 +289,11 @@ public class ShowCardsForm extends Form implements CommandListener {
 	}
 	
 	public void holdCard(int card) {
-		String cardName;
 		if ( card == 0 )
 			card = 10;
+		if ( card < 1 | card > 10)
+			return;
+		String cardName;
 		cardName = ((StringItem) table.get(0, card)).getText();
 		if ( Dominion.I().holdCard(cardName) ) {
 			//#style tableCellHold
@@ -308,6 +331,24 @@ public class ShowCardsForm extends Form implements CommandListener {
 			table.setDefaultCommand(randomizeSetCmd);*/
 		}
 	}
-	
-	
+	//#ifdef polish.hasPointerEvents
+		public boolean handlePointerPressed(int relX, int relY) {
+			//#debug dominizer 
+			System.out.println("form pressed(" + relX + ", " + relY + ")");
+			relY -= table.relativeY;
+			relY -= table.getContentY();
+			//#debug dominizer 
+			System.out.println("table pressed(" + relX + ", " + relY + ")");
+			int h = 0;
+			int rh = table.getItemAreaHeight() / table.getNumberOfRows();
+			for (int row = 0; row < table.getNumberOfRows() ; row++ ) {
+				if (relY >= h && relY <= h + rh) {
+					holdCard(row);
+					return true;
+				}
+				h += rh;
+			}
+			//#= return super.handlePointerPressed(relX, relY);
+		}
+	//#endif
 }	

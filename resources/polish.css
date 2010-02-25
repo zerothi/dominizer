@@ -89,6 +89,7 @@ title {
 .behindTitle extends title {
 	min-width: 0%;
 	max-width: 100%;
+	layout: center;
 }
 
 
@@ -472,24 +473,17 @@ menuItem:hover {
 }
 
 .defaultTable {
-	padding: 0;
-	padding-horizontal: 6;
+	padding: 3;
+	padding-left: 5;
+	padding-right: 5;
+	columns: 3;
 	font-color: translucentFontColor;
 	font-size: small;
-	table-selected-row-background: selectedBg;
-	table-line-color: eevenBrightColor;
-	expand-items: true;
-	background {
-		type: round-rect;
-		color: brightBgColor;
-		anchor: center;
-	}
-	border {
-		type: round-rect;
-		width: 2;
-		color: translucentBgColor;
-	}
-	layout: horizontal-expand | horizontal-center | vshrink;
+	table-line-color: white;
+	table-line-stroke: solid;
+	table-selected-background: selectedBg;
+	background: selectedBg;
+	layout: center;
 }
 .defaultTable:hover {}
 @media touchscreen {
