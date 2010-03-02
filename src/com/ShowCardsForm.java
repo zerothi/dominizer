@@ -119,7 +119,8 @@ public class ShowCardsForm extends Form implements CommandListener {
 		//#endif
 		addCommand(saveCmd);
 		addCommand(backCmd);
-		table.setSelectionMode(TableItem.SELECTION_MODE_NONE);//SELECTION_MODE_CELL);
+		table.setSelectionMode(TableItem.SELECTION_MODE_ROW);//SELECTION_MODE_CELL);
+		table.setLineStyle( TableItem.LINE_STYLE_SOLID, 0x111111 ); 
 		append(table);
 		setCommandListener(this);
 	}
@@ -144,13 +145,13 @@ public class ShowCardsForm extends Form implements CommandListener {
 		table.releaseResources();
 		//#debug dominizer
 		System.out.println("adding card information");
-		if ( cards == null ) {
+		if ( cards == null & table.getNumberOfRows() > 0 ) {
 			for (int cardNumber = 0 ; cardNumber < table.getNumberOfRows() - 1 ; cardNumber++ ) {
-				//#style tableCell
+				// #style tableCell
 				table.set(0, cardNumber + 1, "");
-				//#style tableCell
+				// #style tableCell
 				table.set(1, cardNumber + 1, "");
-				//#style tableCell
+				// #style tableCell
 				table.set(2, cardNumber + 1, "");
 			}
 			return;
@@ -158,11 +159,11 @@ public class ShowCardsForm extends Form implements CommandListener {
 		table.setDimension(3, cards.size() + 1);
 		//#debug dominizer
 		System.out.println("adding header");
-		//#style tableHeading
+		// #style tableHeading
 		table.set(0, 0, Locale.get("table.heading.Name"));
-		//#style tableHeading
+		// #style tableHeading
 		table.set(1, 0, Locale.get("table.heading.Expansion"));
-		//#style tableHeading
+		// #style tableHeading
 		table.set(2, 0, Locale.get("table.heading.Cost"));
 		if ( Dominion.I().hasBlackMarketPlaying() )
 			addCommand(blackMarketCmd);
@@ -170,14 +171,14 @@ public class ShowCardsForm extends Form implements CommandListener {
 			removeCommand(blackMarketCmd);
 		for (int cardNumber = 0 ; cardNumber < cards.size() ; cardNumber++ ) {
 			if ( Dominion.I().isHold(cards.getName(cardNumber)) ) {
-				//#style tableCellHold
+				// #style tableCellHold
 				table.set(0, cardNumber + 1, cards.getName(cardNumber));
 			} else {
-				//#style tableCell
+				// #style tableCell
 				table.set(0, cardNumber + 1, cards.getName(cardNumber));
 			}
 			try {
-				//#style tableCell
+				// #style tableCell
 				table.set(1, cardNumber + 1, new ImageItem(null, 
 						Image.createImage("/" +	Dominion.getExpansionImageName(cards.getExpansion(cardNumber)) 
 								+ cards.getCardType(cardNumber) + ".png"), ImageItem.PLAIN, null));
@@ -185,11 +186,11 @@ public class ShowCardsForm extends Form implements CommandListener {
 				table.set(1, cardNumber + 1, Dominion.getExpansionName(cards.getExpansion(cardNumber)));
 			}
 			try {
-				//#style tableCellCentered
+				// #style tableCellCentered
 				table.set(2, cardNumber + 1, new ImageItem(null, 
 						Image.createImage("/trea" + new Integer(cards.getCost(cardNumber)).toString() + ".png"), ImageItem.PLAIN, null));
 			} catch (IOException e) {
-				//#style tableCellCentered
+				// #style tableCellCentered
 				table.set(2, cardNumber + 1, new Integer(cards.getCost(cardNumber)));
 			}
 		}
@@ -348,7 +349,11 @@ public class ShowCardsForm extends Form implements CommandListener {
 				}
 				h += rh;
 			}
-			//#= return super.handlePointerPressed(relX, relY);
+			//#ifdef polish.hasPointerEvents
+				//#= return super.handlePointerPressed(relX, relY);
+			//#else
+				return true;
+			//#endif
 		}
 	//#endif
 }	

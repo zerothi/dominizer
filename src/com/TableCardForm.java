@@ -24,7 +24,7 @@ public class TableCardForm extends Form implements CommandListener {
 	public TableCardForm(String title) {
 		//#style mainScreen
 		super(title);
-		//#style defaultTable
+		// #style defaultTable
 		table = new TableItem();
 		addCommand(backCmd);
 		addCommand(quitCmd);
@@ -37,23 +37,23 @@ public class TableCardForm extends Form implements CommandListener {
 		table.setDimension(9, cards.size() + 1);
 		//#debug dominizer
 		System.out.println("adding header");
-		//#style tableHeading
+		// #style tableHeading
 		table.set(0, 0, Locale.get("table.heading.Name"));
-		//#style tableHeading
+		// #style tableHeading
 		table.set(1, 0, Locale.get("table.heading.Expansion"));
-		//#style tableHeading
+		// #style tableHeading
 		table.set(2, 0, Locale.get("table.heading.Cost"));
-		//#style tableHeading
+		// #style tableHeading
 		table.set(3, 0, Locale.get("table.heading.ActionCard"));
-		//#style tableHeading
+		// #style tableHeading
 		table.set(4, 0, Locale.get("table.heading.ReactionCard"));
-		//#style tableHeading
+		// #style tableHeading
 		table.set(5, 0, Locale.get("table.heading.TreasuryCard"));
-		//#style tableHeading
+		// #style tableHeading
 		table.set(6, 0, Locale.get("table.heading.ReactionCard"));
-		//#style tableHeading
+		// #style tableHeading
 		table.set(7, 0, Locale.get("table.heading.AttackCard"));
-		//#style tableHeading
+		// #style tableHeading
 		table.set(8, 0, Locale.get("table.heading.DurationCard"));
 		//#debug dominizer
 		System.out.println("adding card information");

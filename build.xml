@@ -202,6 +202,7 @@
 	<target name="compileTouch" description="Builds Touch" depends="enableFinal, enableTouch, j2mepolish" />
 	<target name="compileWindows" description="Builds Windows" depends="enableFinal, enableWindows, j2mepolish" />
 	<target name="compile6303" description="Builds Nokia 6303" depends="enableFinal, enable6303, j2mepolish" />
+	<target name="compileNokia60" description="Builds Nokia 60 Series" depends="enableFinal, enableNokia60, j2mepolish" />
 	
 	<target name="debugAndroid" description="debug Android" depends="enableDebugDominizer, enableAndroid, j2mepolish" />
 	<target name="debugNokia" description="debug Nokia" depends="enableDebugDominizer, enableNokia, j2mepolish" />
@@ -223,6 +224,10 @@
 	
 	<target name="enable6303" depends="donotsign">
 		<property name="devices" value="Nokia/6303_classic"/>
+	</target>
+	
+	<target name="enableNokia60" depends="donotsign">
+		<property name="devices" value="Nokia/Series60,Nokia/Series60E2"/>
 	</target>
 	
 	<target name="enableiPhone" depends="dosign">
