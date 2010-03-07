@@ -6,26 +6,27 @@ import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Image;
 
 import com.dominizer.GameApp;
 
 import de.enough.polish.ui.List;
 import de.enough.polish.util.Locale;
 
-public class EditCardsFilteredList extends List implements CommandListener {
+public class EditCardsList extends List implements CommandListener {
 	
 	private Command randomizeCmd = new Command(Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 	private Command perGaugeCmd = new Command( Locale.get("cmd.Percentage.Gauge"), Command.SCREEN, 7);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 11);
 	private int[] tmp = new int[] { 0, 0};
 	
-	public EditCardsFilteredList(String title, int listType) {
+	public EditCardsList(String title, int listType) {
 		//#style mainScreen
 		super(title, listType);
 		for ( int i = 0 ; i < Dominion.I().getExpansions() ; i++ ){
 			for ( int cardNumber = 0 ; cardNumber < Dominion.I().getExpansion(i).size() ; cardNumber++ ) {
 				//#style label
-				append(Dominion.I().getExpansion(i).getName(cardNumber), Dominion.I().getCardTypeImage(i, cardNumber));
+				append(Dominion.I().getExpansion(i).getName(cardNumber), Dominion.I().getExpansion(i).getCardTypeImage(cardNumber));
 				setSelectedIndex(size() - 1, Dominion.I().getExpansion(i).isAvailable(cardNumber));
 				setPercentage(size() - 1, i, cardNumber, Dominion.I().getExpansion(i).getPercentage(cardNumber));
 			}
@@ -117,13 +118,19 @@ public class EditCardsFilteredList extends List implements CommandListener {
 		setSelectedIndex(index, Dominion.I().getExpansion(exp).isAvailable(card));
 		if ( index > 0 )
 			focus(index - 1);
-		else if ( size() > index + 1)
+		if ( size() > index + 1)
 			focus(index + 1);
 		focus(index);
 	}
 	
 	public void updateCards(boolean localUpdate) {
 		updateCards(localUpdate, -1);
+	}
+	
+	public void appendCard(String cardName, Image expImage, Image costImage) {
+		CardItem ci = new CardItem(cardName);
+		ci.setLeftImage(expImage);
+		ci.setRightImage(expImage);
 	}
 	
 	public void updateCards(boolean localUpdate, int specific) {

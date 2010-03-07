@@ -1,7 +1,5 @@
 package com;
 
-import java.util.Random;
-
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
@@ -83,7 +81,8 @@ public class PresetFilteredList extends List implements CommandListener {
 
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(quickRandomizeCardsCmd) ) {
-			focus((new Random(System.currentTimeMillis())).nextInt(size()));
+			Rand.resetSeed();
+			focus(Rand.randomInt(size()));
 		} else if ( cmd.equals(infoCmd) ) {
 			/*if ( getFilterText().length() != 0 ) {
 				GameApp.instance().showAlert(Locale.get("alert.Filter.Availability"));

@@ -18,7 +18,11 @@ public class SettingsRecordStorage {
 	public static final char OPTION_SPLITTER = '=';
 
 	private static String currentStore = null;
-	private static Vector data = null;
+	private static Vector
+	//#if polish.android
+		<String>
+	//#endif
+		data = null;
 	private static RecordStore store = null;
 	private static byte[] tmpByte = null;
 
@@ -78,11 +82,19 @@ public class SettingsRecordStorage {
 		return null;
 	}
 
-	public Vector data() {
-		return data;
+	public Vector
+	//#if polish.android
+		<String>
+	//#endif
+		data() {
+			return data;
 	}
 	
-	private Vector readData() throws RecordStoreFullException, RecordStoreException {
+	private Vector
+	//#if polish.android
+		<String>
+	//#endif
+			readData() throws RecordStoreFullException, RecordStoreException {
 		data = null;
 		if ( store == null )
 			return data;
@@ -93,7 +105,11 @@ public class SettingsRecordStorage {
 				throw new RecordStoreException("there is no records to be found");
 			}
 			RecordEnumeration re = store.enumerateRecords(null, null, false);
-			data = new Vector(store.getNumRecords());
+			data = new Vector
+			//#if polish.android
+				<String>
+			//#endif
+				(store.getNumRecords());
 			while ( re.hasNextElement() ) {
 				tmpByte = re.nextRecord();
 				if ( tmpByte != null ) {
@@ -111,8 +127,13 @@ public class SettingsRecordStorage {
 	}
 	
 	public void addData(String key, String record) {
-		if ( data == null )
-			data = new Vector(1);
+		if ( data == null ) {
+			data = new Vector
+			//#if polish.android
+				<String>
+			//#endif
+				(1);
+		}
 		for ( int i = 0 ; i < data.size() ; i++ ) {
 			if ( key != null ) {
 				if ( data.elementAt(i).toString().startsWith(key) ) {

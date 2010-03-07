@@ -1,5 +1,7 @@
 package com;
 
+import java.io.IOException;
+
 import javax.microedition.lcdui.Image;
 
 
@@ -393,9 +395,24 @@ public class Cards {
 		return name.length;
 	}
 	
+	public Image getCostImage(int card) {
+		try {
+			return Image.createImage("/trea" + getCost(card) + ".png");
+		} catch (IOException exp) {
+			return null;
+		}
+	}
+	
+	public Image getCardTypeImage(int card) {
+		try {
+			return Image.createImage("/" + Dominion.getExpansionImageName(getExpansion(card)) + 
+					getCardType(card) + ".png");
+		} catch (IOException expc) {
+			return Dominion.getExpansionImage(getExpansion(card));
+		}
+	}
+	
 	public static Image convert2ImageType(Image img, int cardType) {
-		int[] pixels = new int[img.getWidth() * img.getHeight()];
-		img.getRGB(pixels,0,img.getWidth(),0,0,img.getWidth(),img.getHeight());
 		int[] greenAddition = new int[2];
 		int[] blueAddition = new int[2];
 		int[] redAddition = new int[2];

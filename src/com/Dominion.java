@@ -2,7 +2,6 @@ package com;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Random;
 
 import javax.microedition.lcdui.Image;
 
@@ -10,7 +9,7 @@ import de.enough.polish.util.Locale;
 
 public class Dominion {
 	private static Dominion dom = null;
-	public static final int TOTAL_CARDS = 79;
+	public static final int TOTAL_CARDS = 25 + 25 + 26 + 3;
 	public static final int BASE = 0; // has 25 cards
 	public static final int INTRIGUE = 1; // has 25 cards
 	public static final int SEASIDE = 2; // has 26 cards
@@ -19,7 +18,6 @@ public class Dominion {
 	public static final int PROMO = 5; // has 3 cards
 	public static final int USER = 10;
 	public static boolean RANDOMIZE_COMPLETELY_NEW = true;
-	private Random selector = null;
 	
 	private Cards[] expansions = null;
 	private Cards selectedCards = null;
@@ -39,7 +37,6 @@ public class Dominion {
 	}
 	
 	private Dominion() {
-		selector = new Random(2005023);
 		expansions = new Cards[6];
 		for ( loop = 0 ; loop < holdCards.length ; loop++ ) {
 			holdCards[loop][0] = -1;
@@ -194,14 +191,14 @@ public class Dominion {
 					total++;
 		Cards blackMarket = new Cards(total, Cards.IS_NOT_SET);
 		total = 0;
-		selector.setSeed(System.currentTimeMillis());
-		int randomize = selector.nextInt(blackMarket.size());
+		Rand.resetSeed();
+		int randomize = Rand.randomInt(blackMarket.size());
 		for ( loop = 0; loop < expansions.length; loop++)
 			for ( j = 0; j < expansions[loop].size(); j++)
 				if (expansions[loop].isBlackMarketAvailable(j) &&
 						!expansions[loop].isPlaying(j)) {
 					while (blackMarket.getName(randomize) != null)
-						randomize = selector.nextInt(blackMarket.size());
+						randomize = Rand.randomInt(blackMarket.size());
 					blackMarket.setCard(randomize, expansions[loop].getCard(j));
 				}
 		return blackMarket;
@@ -452,7 +449,7 @@ public class Dominion {
 	
 	public int ensurePercentageCards(int exp) {
 		int selected = 0;
-		selector.setSeed(System.currentTimeMillis());
+		Rand.resetSeed();
 		for ( int i = 0 ; i < expansions[exp].size() ; i++ ) { 
 			switch ( expansions[exp].getPercentage(i) ) {
 			case 10:
@@ -461,7 +458,7 @@ public class Dominion {
 			case 0:
 				break;
 			default:
-				if ( selector.nextInt(10) < expansions[exp].getPercentage(i) )
+				if ( Rand.randomInt(10) < expansions[exp].getPercentage(i) )
 					if ( selectCard(exp, i, -1) )
 						selected++;
 			}
@@ -477,7 +474,7 @@ public class Dominion {
 		int i = 0;
 		selectedCards = new Cards(numberOfRandomCards, Cards.IS_NOT_SET);
 		int selectedElement = 0;
-		selector.setSeed(System.currentTimeMillis());
+		Rand.resetSeed();
 		int selected = 0;
 		int tmpSum = 0;
 		//#debug dominizer
@@ -488,7 +485,6 @@ public class Dominion {
 		System.out.println("using percentage cards");
 		for ( i = 0 ; i < expansions.length ; i++ )
 			selected += ensurePercentageCards(i);
-		selector.setSeed(System.currentTimeMillis());
 		//#debug dominizer
 		System.out.println("using minimum expansion cards, already selected: " + selected);
 		for ( i = 0 ; i < expansions.length ; i++ ) {
@@ -500,7 +496,7 @@ public class Dominion {
 				while ( selectedCards.fromExpansion(i) < numberOfCardsFromExp[i] && selected < numberOfRandomCards ) {
 					//#debug dominizer
 					System.out.println("selecting for expansion12: " +i+ " already chosen: "+ selectedCards.fromExpansion(i));
-					selectedElement = selector.nextInt(expansions[i].size());
+					selectedElement = Rand.randomInt(expansions[i].size());
 					if ( selectCard(i, selectedElement, selected) ) {
 						selected++;
 						//#debug dominizer
@@ -509,10 +505,11 @@ public class Dominion {
 				}
 			}
 		}
+		Rand.resetSeed();
 		//#debug dominizer
 		System.out.println("using randomizing cards");
 		while ( selected < numberOfRandomCards ) {
-			selectedElement = selector.nextInt(TOTAL_CARDS);
+			selectedElement = Rand.randomInt(TOTAL_CARDS);
 			tmpSum = getLinearExpansionIndex(selectedElement);
 			selectedElement = getLinearCardIndex(selectedElement);
 			if ( selectCard(tmpSum, selectedElement, selected) ) {
@@ -798,19 +795,6 @@ public class Dominion {
 		return card;
 	}
 	
-	public Image getCardTypeImage(int exp, int card) {
-		try {
-			return Image.createImage("/" + Dominion.getExpansionImageName(exp) + 
-					Dominion.I().getExpansion(exp).getCardType(card) + ".png");
-		} catch (IOException expc) {
-			try {
-				return Image.createImage("/" + Dominion.getExpansionImageName(exp) + ".png");
-			} catch (IOException e) {
-				return null;
-			}
-		}
-	}
-	
 	public static String getExpansionImageName(int expansion) {
 		switch (expansion) {
 		case Dominion.BASE:
@@ -856,4 +840,6 @@ public class Dominion {
 			return null;
 		}
 	}
+	
+	
 }

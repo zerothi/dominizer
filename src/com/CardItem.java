@@ -14,7 +14,8 @@ import javax.microedition.lcdui.Image;
  *
  */
 public class CardItem extends CustomItem {
-
+	private Image lI = null;
+	private Image rI = null;
 	/**
 	 * @param label
 	 */
@@ -70,7 +71,13 @@ public class CardItem extends CustomItem {
 	}
 	
 	public void setLeftImage(Image img) {
-		
+		lI = img;
+		repaint();
+	}
+	
+	public void setRightImage(Image img) {
+		rI = img;
+		repaint();
 	}
 
 }

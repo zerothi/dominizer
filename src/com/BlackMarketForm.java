@@ -1,6 +1,5 @@
 package com;
 
-import java.util.Random;
 import java.util.Vector;
 
 import javax.microedition.lcdui.Command;
@@ -19,8 +18,16 @@ import de.enough.polish.util.Locale;
  */
 public class BlackMarketForm extends List implements CommandListener {
 
-	private Vector blackMarketDeck = null;
-	private Vector drawnDeck = null;
+	private Vector
+	//#if polish.android
+		<String>
+	//#endif
+		blackMarketDeck = null;
+	private Vector
+	//#if polish.android
+		<String>
+	//#endif	
+		drawnDeck = null;
 	private Command cancelBuyCmd = new Command( Locale.get("cmd.BlackMarket.CancelBuy"), Command.SCREEN, 1);
 	private Command drawCardsCmd = new Command( Locale.get("cmd.BlackMarket.Draw"), Command.BACK, 0);
 	private Command selectCardCmd = new Command( Locale.get("polish.command.select"), Command.BACK, 1);
@@ -117,7 +124,8 @@ public class BlackMarketForm extends List implements CommandListener {
 	private void randomizeDrawn() {
 		if ( blackMarketDeck.size() == 0 )
 			return;
-		switch ( new Random(System.currentTimeMillis()).nextInt(6) ) {
+		Rand.resetSeed();
+		switch ( Rand.randomInt(6) ) {
 		case 0:
 			// This means no switching when shuffling
 			break;
@@ -173,8 +181,16 @@ public class BlackMarketForm extends List implements CommandListener {
 	
 	public void setBlackMarketDeck(Cards blackMarketDeck) {
 		deleteAll();
-		drawnDeck = new Vector(blackMarketDeck.size());
-		this.blackMarketDeck = new Vector(blackMarketDeck.size());
+		drawnDeck = new Vector
+		//#if polish.android
+			<String>
+		//#endif
+			(blackMarketDeck.size());
+		this.blackMarketDeck = new Vector
+		//#if polish.android
+			<String>
+		//#endif
+			(blackMarketDeck.size());
 		for ( int i = 0 ; i < blackMarketDeck.size() ; i++ )
 			this.blackMarketDeck.addElement(blackMarketDeck.getName(i));
 		currentlyReachedCard = 0;

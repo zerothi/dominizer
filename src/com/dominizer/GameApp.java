@@ -16,11 +16,12 @@ import com.BlackMarketForm;
 import com.Cards;
 import com.Dominion;
 import com.DominionException;
-import com.EditCardsFilteredList;
+import com.EditCardsList;
 import com.GaugeForm;
 import com.InputForm;
 import com.PresetFilteredList;
 import com.QuickRandomizeForm;
+import com.Rand;
 import com.SettingsRecordStorage;
 import com.ShowCardsForm;
 
@@ -56,7 +57,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	private int currentTab = 0;
 	
 	public QuickRandomizeForm qrF = null;
-	public EditCardsFilteredList ecFL = null;
+	public EditCardsList ecFL = null;
 	public PresetFilteredList pFL = null;
 	public BlackMarketForm bmF = null;
 
@@ -135,7 +136,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		//#style tabIcon
 		tabbedPane.addTab(qrF, null, Locale.get("app.name"));
 		//Locale.get("tab.EditCards.title")
-		ecFL = new EditCardsFilteredList(null, FilteredList.MULTIPLE);
+		ecFL = new EditCardsList(null, FilteredList.MULTIPLE);
 		//#style tabIcon
 		tabbedPane.addTab(ecFL, null, Locale.get("tab.EditCards.title"));
 		//Locale.get("tab.Preset.title")

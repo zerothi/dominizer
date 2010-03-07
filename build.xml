@@ -121,13 +121,13 @@
 						<!--locale name="da" encoding="UTF-8"/-->
 						<locale name="en" encoding="UTF-8"/>
 						<locale name="de" encoding="UTF-8"/>
-						<locale name="es" encoding="UTF-8"/>
+						<!--locale name="es" encoding="UTF-8"/-->
 						<!--locale name="pl" encoding="UTF-8"/-->
-						<locale name="fr" encoding="UTF-8"/>
+						<!--locale name="fr" encoding="UTF-8"/>
 						<locale name="ch_SC" encoding="UTF-8"/>
 						<locale name="ch_TC" encoding="UTF-8"/>
+						<locale name="zombinion" encoding="UTF-8"/-->
 						<!--locale name="christmas" encoding="UTF-8"/-->
-						<locale name="zombinion" encoding="UTF-8"/>
 					</localization>
 				</resources>
 				
@@ -219,7 +219,7 @@
 	
 	<target name="enableNokia" depends="donotsign">
 		<property name="devices" value="Nokia/Series40E3,Nokia/Series60E2FP2,Nokia/Series60E3"/>
-		<property name="device" value="Nokia/Series40E3"/>
+		<property name="device" value="Nokia/Series60"/>
 	</target>
 	
 	<target name="enable6303" depends="donotsign">
@@ -227,7 +227,7 @@
 	</target>
 	
 	<target name="enableNokia60" depends="donotsign">
-		<property name="devices" value="Nokia/Series60,Nokia/Series60E2"/>
+		<property name="devices" value="Nokia/Series60,Nokia/Series60E5"/>
 	</target>
 	
 	<target name="enableiPhone" depends="dosign">
