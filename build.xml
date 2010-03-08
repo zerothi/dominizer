@@ -227,7 +227,7 @@
 	</target>
 	
 	<target name="enableNokia60" depends="donotsign">
-		<property name="devices" value="Nokia/Series60,Nokia/Series60E5"/>
+		<property name="devices" value="Nokia/6120,Nokia/6120_classic"/>
 	</target>
 	
 	<target name="enableiPhone" depends="dosign">
