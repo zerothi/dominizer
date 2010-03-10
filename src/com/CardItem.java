@@ -3,9 +3,10 @@
  */
 package com;
 
-import javax.microedition.lcdui.CustomItem;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
+
+import de.enough.polish.ui.ChoiceItem;
 //#if polish.usePolishGui
 //#= import de.enough.polish.ui.Style;
 //#endif
@@ -13,71 +14,41 @@ import javax.microedition.lcdui.Image;
  * @author nick
  *
  */
-public class CardItem extends CustomItem {
+public class CardItem extends ChoiceItem {
 	private Image lI = null;
 	private Image rI = null;
 	/**
 	 * @param label
 	 */
-	public CardItem(String label) {
-		super(label);
-		// TODO Auto-generated constructor stub
+	public CardItem(String label, int listType) {
+		super(label, null, listType);
 	}
 	
 	//#if polish.usePolishGui
-	//#= public CardItem( String label, Style style ) {
-	//#=	super( label, style );
+	//#= public CardItem( String label, int listType, Style style ) {
+	//#=	super( label, null, listType, style );
 	//#= }
 	//#endif
 
 	/* (non-Javadoc)
-	 * @see javax.microedition.lcdui.CustomItem#getMinContentHeight()
-	 */
-	protected int getMinContentHeight() {
-		// TODO Auto-generated method stub
-		return 30;
-	}
-
-	/* (non-Javadoc)
-	 * @see javax.microedition.lcdui.CustomItem#getMinContentWidth()
-	 */
-	protected int getMinContentWidth() {
-		// TODO Auto-generated method stub
-		return 30;
-	}
-
-	/* (non-Javadoc)
-	 * @see javax.microedition.lcdui.CustomItem#getPrefContentHeight(int)
-	 */
-	protected int getPrefContentHeight(int arg0) {
-		// TODO Auto-generated method stub
-		return 30;
-	}
-
-	/* (non-Javadoc)
-	 * @see javax.microedition.lcdui.CustomItem#getPrefContentWidth(int)
-	 */
-	protected int getPrefContentWidth(int arg0) {
-		// TODO Auto-generated method stub
-		return 30;
-	}
-
-	/* (non-Javadoc)
 	 * @see javax.microedition.lcdui.CustomItem#paint(javax.microedition.lcdui.Graphics, int, int)
 	 */
-	protected void paint(Graphics arg0, int arg1, int arg2) {
-		// TODO Auto-generated method stub
-
+	public void paintContent(int x, int y, int xBorder, int yBorder, Graphics g) {
+		super.paintContent(x, y, xBorder, yBorder, g);
+		if ( this.lI != null ) {
+			g.drawImage( this.lI, x + this.lI.getWidth() + this.lI.getWidth() / 3, y, Graphics.TOP | Graphics.LEFT );
+		}
+		if ( this.rI != null ) {
+			g.drawImage( this.rI, x + super.availContentWidth - this.rI.getWidth() / 3, y, Graphics.TOP | Graphics.RIGHT);
+		}
 	}
 	
 	public void setLeftImage(Image img) {
-		lI = img;
-		repaint();
+		this.lI = img;
 	}
 	
 	public void setRightImage(Image img) {
-		rI = img;
-		repaint();
+		this.rI = img;
 	}
 
 }

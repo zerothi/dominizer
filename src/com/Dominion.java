@@ -18,10 +18,11 @@ public class Dominion {
 	public static final int PROMO = 5; // has 3 cards
 	public static final int USER = 10;
 	public static boolean RANDOMIZE_COMPLETELY_NEW = true;
+	public static int CURRENT_LOCATION = 0;
 	
 	private Cards[] expansions = null;
 	private Cards selectedCards = null;
-	private int[][] holdCards = new int[10][2];
+	private int[][][] holdCards = new int[7][10][2];
 	private CardPresets[] presets = null;
 	private int numberOfRandomCards = 10;
 	private boolean[] playingExpansions = new boolean[] { true, true, true, true, true, true };
@@ -38,9 +39,11 @@ public class Dominion {
 	
 	private Dominion() {
 		expansions = new Cards[6];
-		for ( loop = 0 ; loop < holdCards.length ; loop++ ) {
-			holdCards[loop][0] = -1;
-			holdCards[loop][1] = -1;
+		for ( int i = 0 ; i < holdCards.length ; i++ ) {
+			for ( loop = 0 ; loop < holdCards[i].length ; loop++ ) {
+				holdCards[i][loop][0] = -1;
+				holdCards[i][loop][1] = -1;
+			}
 		}
 		/* Promo cards doesn't have preset! The
 		 * last is used when reading user presets!
@@ -124,13 +127,13 @@ public class Dominion {
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("alchemy"));
 		//#debug dominizer
 		System.out.println("reading alchemy");
-		readResource(ALCHEMY, "alchemy", 0); // real 13
+		readResource(ALCHEMY, "alchemy", 0); // TODO real 13
 		//#debug dominizer
 		System.out.println("size alchemy: " + expansions[ALCHEMY].size());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("prosperity"));
 		//#debug dominizer
 		System.out.println("reading prosperity");
-		readResource(PROSPERITY, "prosperity", 0); // real supposedly 25
+		readResource(PROSPERITY, "prosperity", 0); // TODO real supposedly 25
 		//#debug dominizer
 		System.out.println("size prosperity: " + expansions[PROSPERITY].size());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("promo"));
@@ -148,12 +151,12 @@ public class Dominion {
 	private void checkAvailability() throws DominionException {
 		int tmp = 0, sum = 0;
 		for ( loop = 0; loop < expansions.length; loop++) {
-			sum += tmp;
 			tmp = 0;
 			for (int j = 0; j < expansions[loop].size(); j++) {
 				if (expansions[loop].isAvailable(j) & !expansions[loop].isPlaying(j))
 					tmp++;
 			}
+			sum += tmp;
 			if (tmp < numberOfCardsFromExp[loop] & playingExpansions[loop]) {
 				String t = getExpansionName(loop);
 				throw new DominionException(Locale.get("alert.Randomization.Availability", t));
@@ -384,34 +387,43 @@ public class Dominion {
 	
 	public boolean isHold(String cardName) {
 		int[] tmp = getCardLocation(cardName);
-		for ( int i = 0 ; i < holdCards.length ; i++ )
-			if ( holdCards[i][0] == tmp[0] && holdCards[i][1] == tmp[1] )
+		for ( int j = 0 ; j < holdCards.length ; j++ )
+			for ( int i = 0 ; i < holdCards[j].length ; i++ )
+				if ( holdCards[j][i][0] == tmp[0] && holdCards[j][i][1] == tmp[1] )
+					return true;
+		return false;
+	}
+	
+	public boolean isHold(String cardName, int location) {
+		int[] tmp = getCardLocation(cardName);
+		for ( int i = 0 ; i < holdCards[location].length ; i++ )
+			if ( holdCards[location][i][0] == tmp[0] && holdCards[location][i][1] == tmp[1] )
 				return true;
 		return false;
 	}
 	
-	public boolean holdCard(int exp, int card) {
+	public boolean holdCard(int location, int exp, int card) {
 		int i = 0;
-		for ( i = 0 ; i < holdCards.length ; i++ ) {
-			if ( holdCards[i][0] == exp & holdCards[i][1] == card ) {
-				holdCards[i][0] = -1;
-				holdCards[i][1] = -1;
+		for ( i = 0 ; i < holdCards[location].length ; i++ ) {
+			if ( holdCards[location][i][0] == exp & holdCards[location][i][1] == card ) {
+				holdCards[location][i][0] = -1;
+				holdCards[location][i][1] = -1;
 				return false;
 			}
 		}
-		for ( i = 0 ; i < holdCards.length ; i++ ) {
-			if ( holdCards[i][0] == -1 ) {
-				holdCards[i][0] = exp;
-				holdCards[i][1] = card;
+		for ( i = 0 ; i < holdCards[location].length ; i++ ) {
+			if ( holdCards[location][i][0] == -1 ) {
+				holdCards[location][i][0] = exp;
+				holdCards[location][i][1] = card;
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	public boolean holdCard(String cardName) {
+	public boolean holdCard(int location, String cardName) {
 		int[] tmp = getCardLocation(cardName);
-		return holdCard(tmp[0], tmp[1]);
+		return holdCard(location, tmp[0], tmp[1]);
 	}
 
 	private boolean isTrue(String test) {
@@ -480,7 +492,7 @@ public class Dominion {
 		//#debug dominizer
 		System.out.println("using hold cards");
 		for ( i = 0 ; i < expansions.length ; i++ )
-			selected += useHoldCards(i);
+			selected += useHoldCards(CURRENT_LOCATION, i);
 		//#debug dominizer
 		System.out.println("using percentage cards");
 		for ( i = 0 ; i < expansions.length ; i++ )
@@ -688,10 +700,11 @@ public class Dominion {
 	}
 	
 	public void resetHoldCards() {
-		for ( int i = 0 ; i < holdCards.length ; i++ ) {
-			holdCards[i][0] = -1;
-			holdCards[i][1] = -1;
-		}
+		for ( int j = 0 ; j < holdCards.length ; j++ )
+			for ( int i = 0 ; i < holdCards[j].length ; i++ ) {
+				holdCards[j][i][0] = -1;
+				holdCards[j][i][1] = -1;
+			}
 	}
 
 	public void resetIsPlaying(boolean resetAll) {
@@ -776,15 +789,15 @@ public class Dominion {
 		return cards;
 	}
 	
-	public int useHoldCards(int expansion) {
+	public int useHoldCards(int location, int expansion) {
 		if ( selectedCards == null )
 			return 0;
 		int card = 0;
 		for ( int i = 0 ; i < holdCards.length ; i++ ) {
-			if ( holdCards[i][0] == expansion ) {
+			if ( holdCards[location][i][0] == expansion ) {
 				for ( int j = 0 ; j < selectedCards.size() ; j++ )
 					if ( selectedCards.getName(j) == null ) {
-						selectCard(holdCards[i][0], holdCards[i][1], j);
+						selectCard(holdCards[location][i][0], holdCards[location][i][1], j);
 						j = selectedCards.size();
 					}
 				card++;

@@ -25,8 +25,11 @@ public class EditCardsList extends List implements CommandListener {
 		super(title, listType);
 		for ( int i = 0 ; i < Dominion.I().getExpansions() ; i++ ){
 			for ( int cardNumber = 0 ; cardNumber < Dominion.I().getExpansion(i).size() ; cardNumber++ ) {
-				//#style label
-				append(Dominion.I().getExpansion(i).getName(cardNumber), Dominion.I().getExpansion(i).getCardTypeImage(cardNumber));
+				appendCard(Dominion.I().getExpansion(i).getName(cardNumber),
+						Dominion.I().getExpansion(i).getCardTypeImage(cardNumber),
+						Dominion.I().getExpansion(i).getCostImage(cardNumber));
+				/*//#style label
+				append(Dominion.I().getExpansion(i).getName(cardNumber), Dominion.I().getExpansion(i).getCardTypeImage(cardNumber));*/
 				setSelectedIndex(size() - 1, Dominion.I().getExpansion(i).isAvailable(cardNumber));
 				setPercentage(size() - 1, i, cardNumber, Dominion.I().getExpansion(i).getPercentage(cardNumber));
 			}
@@ -104,17 +107,20 @@ public class EditCardsList extends List implements CommandListener {
 	}
 	
 	public void setPercentage(int index, int exp, int card, int deciPercentage) {
-		try {
-			if ( deciPercentage > 0 ) {
-				//#style label
-				set(index, Dominion.I().getExpansion(exp).getName(card) + " " + deciPercentage * 10 + "%", getImage(index));
-				Dominion.I().getExpansion(exp).setPercentage(card, deciPercentage);
-			} else {
-				//#style label
-				set(index, Dominion.I().getExpansion(exp).getName(card), getImage(index));
-				Dominion.I().getExpansion(exp).setPercentage(card, 0);
-			}
-		} catch (Exception e) {}
+		CardItem ci = null;
+		if ( deciPercentage > 0 ) {
+			//#style label
+			ci = new CardItem(Dominion.I().getExpansion(exp).getName(card) + " " + deciPercentage * 10 + "%", List.MULTIPLE);
+			set(index, Dominion.I().getExpansion(exp).getName(card) + " " + deciPercentage * 10 + "%", getImage(index));
+			Dominion.I().getExpansion(exp).setPercentage(card, deciPercentage);
+		} else {
+			//#style label
+			ci = new CardItem(Dominion.I().getExpansion(exp).getName(card), List.MULTIPLE);
+			Dominion.I().getExpansion(exp).setPercentage(card, 0);
+		}
+		ci.setLeftImage(Dominion.I().getExpansion(exp).getCardTypeImage(card));
+		ci.setRightImage(Dominion.I().getExpansion(exp).getCostImage(card));
+		set(index, ci);
 		setSelectedIndex(index, Dominion.I().getExpansion(exp).isAvailable(card));
 		if ( index > 0 )
 			focus(index - 1);
@@ -127,10 +133,12 @@ public class EditCardsList extends List implements CommandListener {
 		updateCards(localUpdate, -1);
 	}
 	
-	public void appendCard(String cardName, Image expImage, Image costImage) {
-		CardItem ci = new CardItem(cardName);
+	private void appendCard(String cardName, Image expImage, Image costImage) {
+		//#style label
+		CardItem ci = new CardItem(cardName, List.MULTIPLE);
 		ci.setLeftImage(expImage);
-		ci.setRightImage(expImage);
+		ci.setRightImage(costImage);
+		append(ci);
 	}
 	
 	public void updateCards(boolean localUpdate, int specific) {

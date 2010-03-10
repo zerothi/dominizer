@@ -24,6 +24,7 @@ import com.QuickRandomizeForm;
 import com.Rand;
 import com.SettingsRecordStorage;
 import com.ShowCardsForm;
+import com.TestList;
 
 import de.enough.polish.ui.FilteredList;
 import de.enough.polish.ui.List;
@@ -77,15 +78,14 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	}
 
 	public void showRandomizedCards() {
-		if ( !Dominion.I().getExpansionPlayingStates()[0] && Dominion.I().getExpansionPlayingStates()[1] && !Dominion.I().getExpansionPlayingStates()[2] && !Dominion.I().getExpansionPlayingStates()[3] )
-			showAlert(Locale.get("alert.QuickSelectExpansions.OnlyPromoSelected"));
-		else if ( !Dominion.I().getExpansionPlayingStates()[0] && !Dominion.I().getExpansionPlayingStates()[1] && !Dominion.I().getExpansionPlayingStates()[2] && !Dominion.I().getExpansionPlayingStates()[3] )
-			showAlert(Locale.get("alert.QuickSelectExpansions.NoneSelected"));
-		else {
-			currentTab = getCurrentTab();
-			Dominion.I().resetIsPlaying(true);
-			ShowCardsForm.instance().reRandomize();
+		currentTab = getCurrentTab();
+		Dominion.I().resetIsPlaying(true);
+		try {
+			Dominion.I().randomizeCards();
+			ShowCardsForm.instance().viewCards(Dominion.I().getCurrentlySelected());
 			changeToScreen(ShowCardsForm.instance());
+		} catch (DominionException e) {
+			GameApp.instance().showAlert(e.toString());
 		}
 	}
 
@@ -157,6 +157,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		System.out.println("setting display");
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.finished"));
 		display.setCurrent(tabbedPane);
+		//display.setCurrent(new TestList("hej", List.MULTIPLE));
 		GaugeForm.instance(false);
 	}
 	

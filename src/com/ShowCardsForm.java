@@ -2,14 +2,11 @@ package com;
 
 
 
-import java.io.IOException;
-
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
-import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.ImageItem;
 import javax.microedition.lcdui.StringItem;
 import javax.microedition.rms.RecordStoreException;
@@ -119,9 +116,10 @@ public class ShowCardsForm extends Form implements CommandListener {
 		//#endif
 		addCommand(saveCmd);
 		addCommand(backCmd);
-		table.setSelectionMode(TableItem.SELECTION_MODE_ROW);//SELECTION_MODE_CELL);
-		table.setLineStyle( TableItem.LINE_STYLE_SOLID, 0x111111 ); 
+		table.setSelectionMode(TableItem.SELECTION_MODE_NONE);//SELECTION_MODE_CELL);
+		table.setLineStyle( TableItem.LINE_STYLE_SOLID, 0x111111 );
 		append(table);
+		
 		setCommandListener(this);
 	}
 	
@@ -147,11 +145,11 @@ public class ShowCardsForm extends Form implements CommandListener {
 		System.out.println("adding card information");
 		if ( cards == null & table.getNumberOfRows() > 0 ) {
 			for (int cardNumber = 0 ; cardNumber < table.getNumberOfRows() - 1 ; cardNumber++ ) {
-				// #style tableCell
+				//#style tableCell
 				table.set(0, cardNumber + 1, "");
-				// #style tableCell
+				//#style tableCell
 				table.set(1, cardNumber + 1, "");
-				// #style tableCell
+				//#style tableCell
 				table.set(2, cardNumber + 1, "");
 			}
 			return;
@@ -159,11 +157,11 @@ public class ShowCardsForm extends Form implements CommandListener {
 		table.setDimension(3, cards.size() + 1);
 		//#debug dominizer
 		System.out.println("adding header");
-		// #style tableHeading
+		//#style tableHeading
 		table.set(0, 0, Locale.get("table.heading.Name"));
-		// #style tableHeading
+		//#style tableHeading
 		table.set(1, 0, Locale.get("table.heading.Expansion"));
-		// #style tableHeading
+		//#style tableHeading
 		table.set(2, 0, Locale.get("table.heading.Cost"));
 		if ( Dominion.I().hasBlackMarketPlaying() )
 			addCommand(blackMarketCmd);
@@ -171,15 +169,15 @@ public class ShowCardsForm extends Form implements CommandListener {
 			removeCommand(blackMarketCmd);
 		for (int cardNumber = 0 ; cardNumber < cards.size() ; cardNumber++ ) {
 			if ( Dominion.I().isHold(cards.getName(cardNumber)) ) {
-				// #style tableCellHold
+				//#style tableCellHold
 				table.set(0, cardNumber + 1, cards.getName(cardNumber));
 			} else {
-				// #style tableCell
+				//#style tableCell
 				table.set(0, cardNumber + 1, cards.getName(cardNumber));
 			}
-			// #style tableCell
+			//#style tableCell
 			table.set(1, cardNumber + 1, new ImageItem(null, cards.getCardTypeImage(cardNumber), ImageItem.PLAIN, null));
-			// #style tableCellCentered
+			//#style tableCellCentered
 			table.set(2, cardNumber + 1, new ImageItem(null, cards.getCostImage(cardNumber), ImageItem.PLAIN, null));
 		}
 	}
@@ -282,9 +280,12 @@ public class ShowCardsForm extends Form implements CommandListener {
 			card = 10;
 		if ( card < 1 | card > 10)
 			return;
-		String cardName;
-		cardName = ((StringItem) table.get(0, card)).getText();
-		if ( Dominion.I().holdCard(cardName) ) {
+		String cardName = null;
+		if ( table.get(0, card) instanceof String )
+			cardName = (String) table.get(0, card);
+		else
+			cardName = ((StringItem) table.get(0, card)).getText();
+		if ( Dominion.I().holdCard(0, cardName) ) {
 			//#style tableCellHold
 			table.set(0, card, cardName);
 			//#debug dominizer
