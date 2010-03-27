@@ -112,7 +112,7 @@
 					<variable name="polish.debug.error" value="false" if="final"/>
 				</variables>
 				<resources dir="${resource.dir}" defaultexcludes="yes" excludes="readme.txt">
-					<root dir="${resource.dir}"/>
+					<!--root dir="${resource.dir}"/-->
 					<root dir="${resource.dir}/lang"/>
 					<root dir="${resource.dir}/img" />
 					<localization if="debug or debugDominizer or single">
