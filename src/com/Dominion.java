@@ -597,70 +597,38 @@ public class Dominion {
 	}
 	
 	private boolean parseType(String type, int whichInfo) {
-		switch ( whichInfo ) {
-		case Cards.TYPE_ACTION:
-			if ( -1 < type.indexOf("c") )
-				return true;
-			break;
-		case Cards.TYPE_VICTORY:
-			if ( -1 < type.indexOf("v") )
-				return true;
-			break;
-		case Cards.TYPE_TREASURY:
-			if ( -1 < type.indexOf("t") )
-				return true;
-			break;
-		case Cards.TYPE_ATTACK:
-			if ( -1 < type.indexOf("a") )
-				return true;
-			break;
-		case Cards.TYPE_REACTION:
-			if ( -1 < type.indexOf("r") )
-				return true;
-			break;
-		case Cards.TYPE_DURATION:
-			if ( -1 < type.indexOf("d") )
-				return true;
-			break;
-		case Cards.TYPE_POTION:
-			if ( -1 < type.indexOf("p") )
-				return true;
-			break;
-		}
+		if ( whichInfo ==  Cards.TYPE_ACTION && -1 < type.indexOf("c") )
+			return true;
+		else if ( whichInfo == Cards.TYPE_VICTORY && -1 < type.indexOf("v") )
+			return true;
+		else if ( whichInfo == Cards.TYPE_TREASURY && -1 < type.indexOf("t") )
+			return true;
+		else if ( whichInfo == Cards.TYPE_ATTACK && -1 < type.indexOf("a") )
+			return true;
+		else if ( whichInfo == Cards.TYPE_REACTION && -1 < type.indexOf("r") )
+			return true;
+		else if ( whichInfo == Cards.TYPE_DURATION && -1 < type.indexOf("d") )
+			return true;
+		else if ( whichInfo == Cards.TYPE_POTION && -1 < type.indexOf("p") )
+			return true;
 		return false;
 	}
 	
 	private int parseInformation(String information, int whichInfo) {
-		switch ( whichInfo ) {
-		case Cards.ADDS_CARDS:
-			if ( -1 < information.indexOf("d") )
-				return parseInt(information.substring(information.indexOf("d")));
-			break;
-		case Cards.ADDS_ACTIONS:
-			if ( -1 < information.indexOf("a") )
-				return parseInt(information.substring(information.indexOf("a")));
-			break;
-		case Cards.ADDS_COINS:
-			if ( -1 < information.indexOf("c") )
-				return parseInt(information.substring(information.indexOf("c")));
-			break;
-		case Cards.ADDS_BUYS:
-			if ( -1 < information.indexOf("b") )
-				return parseInt(information.substring(information.indexOf("b")));
-			break;
-		case Cards.ADDS_TRASH:
-			if ( -1 < information.indexOf("t") )
-				return parseInt(information.substring(information.indexOf("t")));
-			break;
-		case Cards.ADDS_CURSE:
-			if ( -1 < information.indexOf("u") )
-				return parseInt(information.substring(information.indexOf("u")));
-			break;
-		case Cards.ADDS_POTIONS:
-			if ( -1 < information.indexOf("p") )
-				return parseInt(information.substring(information.indexOf("p")));
-			break;
-		}
+		if ( whichInfo == Cards.ADDS_CARDS && -1 < information.indexOf("d") )
+			return parseInt(information.substring(information.indexOf("d")));
+		else if ( whichInfo == Cards.ADDS_ACTIONS && -1 < information.indexOf("a") )
+			return parseInt(information.substring(information.indexOf("a")));
+		else if ( whichInfo == Cards.ADDS_COINS && -1 < information.indexOf("c") )
+			return parseInt(information.substring(information.indexOf("c")));
+		else if ( whichInfo == Cards.ADDS_BUYS && -1 < information.indexOf("b") )
+			return parseInt(information.substring(information.indexOf("b")));
+		else if ( whichInfo == Cards.ADDS_TRASH && -1 < information.indexOf("t") )
+			return parseInt(information.substring(information.indexOf("t")));
+		else if ( whichInfo == Cards.ADDS_CURSE && -1 < information.indexOf("u") )
+			return parseInt(information.substring(information.indexOf("u")));
+		else if ( whichInfo == Cards.ADDS_POTIONS && -1 < information.indexOf("p") )
+			return parseInt(information.substring(information.indexOf("p")));
 		return 0;
 	}
 	

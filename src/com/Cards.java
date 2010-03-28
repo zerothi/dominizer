@@ -348,7 +348,6 @@ public class Cards {
 	
 	public Image getCardTypeImage(int card) {
 		try {
-			// TODO check image names!
 			return Image.createImage("/" + Dominion.getExpansionImageName(getExpansion(card)) + 
 					getCardType(card) + ".png");
 		} catch (IOException expc) {
