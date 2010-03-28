@@ -341,17 +341,17 @@ public class Dominion {
 		StringBuffer sb = new StringBuffer(50);
 		int action = 0, attack = 0, reaction = 0, treasury = 0, victory = 0, duration = 0;
 		for ( loop = 0; loop < selectedCards.size(); loop++) {
-			if (selectedCards.isAction(loop))
+			if (selectedCards.isType(loop, Cards.TYPE_ACTION))
 				action++;
-			if (selectedCards.isAttack(loop))
+			if (selectedCards.isType(loop, Cards.TYPE_ATTACK))
 				attack++;
-			if (selectedCards.isReaction(loop))
+			if (selectedCards.isType(loop, Cards.TYPE_REACTION))
 				reaction++;
-			if (selectedCards.isTreasure(loop))
+			if (selectedCards.isType(loop, Cards.TYPE_TREASURY))
 				treasury++;
-			if (selectedCards.isVictory(loop))
+			if (selectedCards.isType(loop, Cards.TYPE_VICTORY))
 				victory++;
-			if (selectedCards.isDuration(loop))
+			if (selectedCards.isType(loop, Cards.TYPE_DURATION))
 				duration++;
 		}
 		sb.append("Action    : ");
@@ -425,11 +425,7 @@ public class Dominion {
 		int[] tmp = getCardLocation(cardName);
 		return holdCard(location, tmp[0], tmp[1]);
 	}
-
-	private boolean isTrue(String test) {
-		return test.equals("0") ? false : true;
-	}
-
+	
 	public int presetSize() {
 		return presets.length;
 	}
@@ -535,6 +531,7 @@ public class Dominion {
 	private void readResource(int exp, String fileName, int totalCards) {
 		expansions[exp] = new Cards(totalCards, Cards.IS_SET);
 		StringBuffer sb = new StringBuffer();
+		String tmp = "      ";
 		InputStreamReader isr = null;
 		int start = 0;
 		int cardRead = 0;
@@ -548,52 +545,42 @@ public class Dominion {
 					//System.out.println("processing " + sb.toString());
 					expansions[exp].setName(cardRead, sb.toString().substring(
 							start, sb.toString().indexOf(":", start)).trim());
-					start = sb.toString().indexOf(":", start) + 1;
-					expansions[exp].setExpansion(exp); // have removed the need for the expansion names! Consider removing them!
+					expansions[exp].setExpansion(exp); // TODO have removed the need for the expansion names! Consider removing them!
 					start = sb.toString().indexOf(":", start) + 1;
 					expansions[exp].setCost(cardRead, 
 							Integer.parseInt(sb.toString().substring(
 									start, sb.toString().indexOf(":", start))));
 					start = sb.toString().indexOf(":", start) + 1;
-					expansions[exp].setAction(cardRead,
-							isTrue(sb.toString().substring(
-									start, sb.toString().indexOf(":", start))));
+					tmp = sb.toString().substring(start, sb.toString().indexOf(":", start));
+					expansions[exp].setType(cardRead, Cards.TYPE_ACTION, parseType(tmp, Cards.TYPE_ACTION));
+					expansions[exp].setType(cardRead, Cards.TYPE_VICTORY, parseType(tmp, Cards.TYPE_VICTORY));
+					expansions[exp].setType(cardRead, Cards.TYPE_ATTACK, parseType(tmp, Cards.TYPE_ATTACK));
+					expansions[exp].setType(cardRead, Cards.TYPE_REACTION, parseType(tmp, Cards.TYPE_REACTION));
+					expansions[exp].setType(cardRead, Cards.TYPE_DURATION, parseType(tmp, Cards.TYPE_DURATION));
 					start = sb.toString().indexOf(":", start) + 1;
-					expansions[exp].setVictory(cardRead,
-							isTrue(sb.toString().substring(
-									start, sb.toString().indexOf(":", start))));
-					start = sb.toString().indexOf(":", start) + 1;
-					expansions[exp].setTreasure(cardRead,
-							isTrue(sb.toString().substring(
-									start, sb.toString().indexOf(":", start))));
-					start = sb.toString().indexOf(":", start) + 1;
-					expansions[exp].setAttack(cardRead,
-							isTrue(sb.toString().substring(
-									start, sb.toString().indexOf(":", start))));
-					start = sb.toString().indexOf(":", start) + 1;
-					expansions[exp].setReaction(cardRead,
-							isTrue(sb.toString().substring(
-									start, sb.toString().indexOf(":", start))));
-					start = sb.toString().indexOf(":", start) + 1;
-					expansions[exp].setDuration(cardRead,
-							isTrue(sb.toString().substring(
-									start, sb.toString().indexOf(";", start))));
+					tmp = sb.toString().substring(start, sb.toString().indexOf(";", start));
+					expansions[exp].setAddInfo(cardRead, Cards.ADDS_CARDS, parseInformation(tmp , Cards.ADDS_CARDS));
+					expansions[exp].setAddInfo(cardRead, Cards.ADDS_ACTIONS, parseInformation(tmp , Cards.ADDS_ACTIONS));
+					expansions[exp].setAddInfo(cardRead, Cards.ADDS_BUYS, parseInformation(tmp , Cards.ADDS_BUYS));
+					expansions[exp].setAddInfo(cardRead, Cards.ADDS_COINS, parseInformation(tmp , Cards.ADDS_COINS));
+					expansions[exp].setAddInfo(cardRead, Cards.ADDS_CURSE, parseInformation(tmp , Cards.ADDS_CURSE));
+					expansions[exp].setAddInfo(cardRead, Cards.ADDS_POTIONS, parseInformation(tmp , Cards.ADDS_POTIONS));
 					sb.delete(0, sb.toString().length());
 					start = 0;
 					//#debug dominizer
 					System.out.println("expansions[" + exp + "].name("
 							+ cardRead + "): "
 							+ expansions[exp].getName(cardRead) + ". Action? "
-							+ expansions[exp].isAction(cardRead) + ". Attack? "
-							+ expansions[exp].isAttack(cardRead)
+							+ expansions[exp].isType(cardRead, Cards.TYPE_ACTION) + ". Attack? "
+							+ expansions[exp].isType(cardRead, Cards.TYPE_ATTACK)
 							+ ". Reaction? "
-							+ expansions[exp].isReaction(cardRead)
+							+ expansions[exp].isType(cardRead, Cards.TYPE_REACTION)
 							+ ". Victory? "
-							+ expansions[exp].isVictory(cardRead)
+							+ expansions[exp].isType(cardRead, Cards.TYPE_VICTORY)
 							+ ". Treasury? "
-							+ expansions[exp].isTreasure(cardRead)
+							+ expansions[exp].isType(cardRead, Cards.TYPE_TREASURY)
 							+ ". Duration? "
-							+ expansions[exp].isDuration(cardRead));
+							+ expansions[exp].isType(cardRead, Cards.TYPE_DURATION));
 					cardRead++;
 				} else if ((char) ch == '\n') {
 					sb.delete(0, sb.toString().length() - 1);
@@ -605,6 +592,64 @@ public class Dominion {
 			//#debug dominizer
 			System.out.println("exception on reading");
 		}
+	}
+	
+	private boolean parseType(String type, int whichInfo) {
+		switch ( whichInfo ) {
+		case Cards.TYPE_ACTION:
+			if ( -1 < type.indexOf("c") )
+				return true;
+		case Cards.TYPE_ATTACK:
+			if ( -1 < type.indexOf("a") )
+				return true;
+		case Cards.TYPE_REACTION:
+			if ( -1 < type.indexOf("r") )
+				return true;
+		case Cards.TYPE_TREASURY:
+			if ( -1 < type.indexOf("t") )
+				return true;
+		case Cards.TYPE_VICTORY:
+			if ( -1 < type.indexOf("v") )
+				return true;
+		}
+		return false;
+	}
+	
+	private int parseInformation(String information, int whichInfo) {
+		switch ( whichInfo ) {
+		case Cards.ADDS_CARDS:
+			if ( -1 < information.indexOf("c") )
+				return parseInt(information.substring(information.indexOf("c")));
+			break;
+		case Cards.ADDS_ACTIONS:
+			if ( -1 < information.indexOf("a") )
+				return parseInt(information.substring(information.indexOf("a")));
+			break;
+		case Cards.ADDS_COINS:
+			if ( -1 < information.indexOf("t") )
+				return parseInt(information.substring(information.indexOf("t")));
+			break;
+		case Cards.ADDS_BUYS:
+			if ( -1 < information.indexOf("b") )
+				return parseInt(information.substring(information.indexOf("b")));
+			break;
+		case Cards.ADDS_CURSE:
+			if ( -1 < information.indexOf("u") )
+				return parseInt(information.substring(information.indexOf("u")));
+			break;
+		}
+		return 0;
+	}
+	
+	private int parseInt(String info) {
+		if ( info.length() > 1 ) {
+			try {
+				return Integer.parseInt(info.substring(1,2));
+			} catch (Exception e) {
+				return 1;
+			}
+		}
+		return 1;
 	}
 
 	private void readSettings() {

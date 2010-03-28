@@ -23,8 +23,18 @@ public class Cards {
 	 * #3 = Attack
 	 * #4 = Reaction
 	 * #5 = Duration
+	 * #6 = Potion
 	 */
 	private boolean[][] isSpecific = null;
+	/*
+	 * #0 = Adds # Cards
+	 * #1 = Adds # Actions
+	 * #2 = Adds # Buys
+	 * #3 = Adds # Coins
+	 * #4 = Adds # Curse
+	 * #5 = Adds # Potions
+	 */
+	private int[][] addsInfo = null;
 	private int[] percentage = null;
 
 	public Cards(int size, int isSet) {
@@ -33,6 +43,7 @@ public class Cards {
 			isGamingRelated = new boolean[size][3];
 			cost = new int[size];
 			isSpecific = new boolean[size][6];
+			addsInfo = new int[size][6];
 			if ( isSet == IS_SET )
 				expansion = new int[1];
 			else
@@ -45,6 +56,8 @@ public class Cards {
 				isGamingRelated[i][0] = false;
 				isGamingRelated[i][1] = true;
 				isGamingRelated[i][2] = true;
+				for ( int k = 0 ; k < addsInfo[i].length ; k++ )
+					addsInfo[i][k] = 0;
 				if ( isSet == IS_NOT_SET )
 					expansion[i] = -1;
 				percentage[i] = 0;
@@ -177,113 +190,42 @@ public class Cards {
 		this.cost[index] = cost;
 	}
 
+	public void setType(int index, int whichType, boolean state) {
+		isSpecific[index][whichType] = state;
+	}
+		
 	
-	/**
-	 * @return the isAction
-	 */
-	public boolean isAction(int index) {
-		return isSpecific[index][0];
+	public boolean isType(int index, int whichType) {
+		return isSpecific[index][whichType];
 	}
-
-	/**
-	 * @param isAction
-	 *            the isAction to set
-	 */
-	public void setAction(int index, boolean isAction) {
-		isSpecific[index][0] = isAction;
-	}
-	/**
-	 * @return the isVictory
-	 */
-	public boolean isVictory(int index) {
-		return isSpecific[index][1];
-	}
-
-	/**
-	 * @param isVictory
-	 *            the isVictory to set
-	 */
-	public void setVictory(int index, boolean isVictory) {
-		isSpecific[index][1] = isVictory;
-	}
-
-	/**
-	 * @return the isCoin
-	 */
-	public boolean isTreasure(int index) {
-		return isSpecific[index][2];
-	}
-
-	/**
-	 * @param isCoin
-	 *            the isCoin to set
-	 */
-	public void setTreasure(int index, boolean isCoin) {
-		isSpecific[index][2] = isCoin;
-	}
-
-	/**
-	 * @param isAttack
-	 *            the isAttack to set
-	 */
-	public void setAttack(int index, boolean isAttack) {
-		isSpecific[index][3] = isAttack;
-	}
-
-	/**
-	 * @return the isAttack
-	 */
-	public boolean isAttack(int index) {
-		return isSpecific[index][3];
-	}
-
-	/**
-	 * @return the isReaction
-	 */
-	public boolean isReaction(int index) {
-		return isSpecific[index][4];
-	}
-
-	/**
-	 * @param isReaction
-	 *            the isReaction to set
-	 */
-	public void setReaction(int index, boolean isReaction) {
-		isSpecific[index][4] = isReaction;
-	}
-	/**
-	 * @return the isDuration
-	 */
-	public boolean isDuration(int index) {
-		return isSpecific[index][5];
-	}
-
-	/**
-	 * @param isDuration
-	 *            the isDuration to set
-	 */
-	public void setDuration(int index, boolean isDuration) {
-		isSpecific[index][5] = isDuration;
-	}
-	
+		
 	public int getCardType(int index) {
-		if ( isAction(index) && !isAttack(index) && !isReaction(index) && !isVictory(index) && !isTreasure(index) && !isDuration(index) )
+		if ( isType(index, TYPE_ACTION) ) {
+			if ( isType(index, TYPE_ATTACK) )
+				return TYPE_ACTION_ATTACK;
+			if ( isType(index, TYPE_REACTION) )
+				return TYPE_ACTION_REACTION;
+			if ( isType(index, TYPE_DURATION) )
+				return TYPE_ACTION_DURATION;
+			if ( isType(index, TYPE_TREASURY) )
+				return TYPE_ACTION_TREASURY;
+			if ( isType(index, TYPE_VICTORY) )
+				return TYPE_ACTION_VICTORY;
 			return TYPE_ACTION;
-		else if ( isAction(index) && isAttack(index) && !isReaction(index) && !isVictory(index) && !isTreasure(index) && !isDuration(index) )
-			return TYPE_ACTION_ATTACK;
-		else if ( isAction(index) && !isAttack(index) && isReaction(index) && !isVictory(index) && !isTreasure(index) && !isDuration(index) )
-			return TYPE_ACTION_REACTION;
-		else if ( !isAction(index) && !isAttack(index) && !isReaction(index) && isVictory(index) && !isTreasure(index) && !isDuration(index) )
+		} else if ( isType(index, TYPE_VICTORY) ) {
+			if ( isType(index, TYPE_TREASURY) )
+				return TYPE_VICTORY_TREASURY;
 			return TYPE_VICTORY;
-		else if ( isAction(index) && !isAttack(index) && !isReaction(index) && !isVictory(index) && isTreasure(index) && !isDuration(index) )
-			return TYPE_ACTION_TREASURY;
-		else if ( isAction(index) && !isAttack(index) && !isReaction(index) && isVictory(index) && !isTreasure(index) && !isDuration(index) )
-			return TYPE_ACTION_VICTORY;
-		else if ( !isAction(index) && !isAttack(index) && !isReaction(index) && isVictory(index) && isTreasure(index) && !isDuration(index) )
-			return TYPE_TREASURY_VICTORY;
-		else if ( isAction(index) && !isAttack(index) && !isReaction(index) && !isVictory(index) && !isTreasure(index) && isDuration(index) )
-			return TYPE_ACTION_DURATION;
+		}		
 		return TYPE_ACTION;
+	}
+	
+	public void setAddInfo(int index, int whichAddInfo, int info) {
+		addsInfo[index][whichAddInfo] = info;
+	}
+	
+	public int getAddInfo(int index, int whichAddInfo) {
+		return addsInfo[index][whichAddInfo];
 	}
 	
 	public Object[] getCard(int index) {
@@ -291,12 +233,12 @@ public class Cards {
 		tmp[0] = getName(index);
 		tmp[1] = new Integer(getExpansion(index));
 		tmp[2] = new Integer(getCost(index));
-		tmp[3] = new Boolean(isAction(index));
-		tmp[4] = new Boolean(isVictory(index));
-		tmp[5] = new Boolean(isTreasure(index));
-		tmp[6] = new Boolean(isAttack(index));
-		tmp[7] = new Boolean(isReaction(index));
-		tmp[8] = new Boolean(isDuration(index));
+		tmp[3] = new Boolean(isType(index, TYPE_ACTION));
+		tmp[4] = new Boolean(isType(index, TYPE_VICTORY));
+		tmp[5] = new Boolean(isType(index, TYPE_TREASURY));
+		tmp[6] = new Boolean(isType(index, TYPE_ATTACK));
+		tmp[7] = new Boolean(isType(index, TYPE_REACTION));
+		tmp[8] = new Boolean(isType(index, TYPE_DURATION));
 		tmp[9] = new Boolean(isPlaying(index));
 		tmp[10] = new Boolean(isAvailable(index));
 		tmp[11] = new Boolean(isBlackMarketAvailable(index));
@@ -326,12 +268,12 @@ public class Cards {
 		setName(index, cardInfo[0].toString());
 		setExpansion(index, ((Integer)cardInfo[1]).intValue());
 		setCost(index, ((Integer)cardInfo[2]).intValue());	
-		setAction(index, ((Boolean)cardInfo[3]).booleanValue());
-		setVictory(index, ((Boolean)cardInfo[4]).booleanValue());
-		setTreasure(index, ((Boolean)cardInfo[5]).booleanValue());
-		setAttack(index, ((Boolean)cardInfo[6]).booleanValue());
-		setReaction(index, ((Boolean)cardInfo[7]).booleanValue());
-		setDuration(index, ((Boolean)cardInfo[8]).booleanValue());
+		setType(index, TYPE_ACTION, ((Boolean)cardInfo[3]).booleanValue());
+		setType(index, TYPE_VICTORY, ((Boolean)cardInfo[4]).booleanValue());
+		setType(index, TYPE_TREASURY, ((Boolean)cardInfo[5]).booleanValue());
+		setType(index, TYPE_ATTACK, ((Boolean)cardInfo[6]).booleanValue());
+		setType(index, TYPE_REACTION, ((Boolean)cardInfo[7]).booleanValue());
+		setType(index, TYPE_DURATION, ((Boolean)cardInfo[8]).booleanValue());
 		setPlaying(index, ((Boolean)cardInfo[9]).booleanValue());
 		setAvailable(index, ((Boolean)cardInfo[10]).booleanValue());
 		setBlackMarketAvailable(index, ((Boolean)cardInfo[11]).booleanValue());
@@ -405,6 +347,7 @@ public class Cards {
 	
 	public Image getCardTypeImage(int card) {
 		try {
+			// TODO check image names!
 			return Image.createImage("/" + Dominion.getExpansionImageName(getExpansion(card)) + 
 					getCardType(card) + ".png");
 		} catch (IOException expc) {
@@ -445,7 +388,7 @@ public class Cards {
 			blueAddition[1] = 1;
 			redAddition[1] = 3;
 			break;
-		case TYPE_TREASURY_VICTORY:
+		case TYPE_VICTORY_TREASURY:
 			greenAddition[0] = 2;
 			blueAddition[0] = 1;
 			redAddition[0] = 3;
@@ -470,8 +413,6 @@ public class Cards {
 		return null;
 	}
 	
-	
-	
 	public static final int COMPARE_EXPANSION_NAME = 0;
 	public static final int COMPARE_EXPANSION_COST = 1;
 	public static final int COMPARE_NAME = 2;
@@ -482,17 +423,28 @@ public class Cards {
 	public static final int COMPARE_EXPANSION = 11;
 	
 	public static int COMPARE_PREFERRED = COMPARE_EXPANSION_NAME;
-	
+
 	public static final int IS_SET = 1;
 	public static final int IS_NOT_SET = 0;
 	public static final int TYPE_ACTION = 0;
-	public static final int TYPE_ACTION_ATTACK = 1;
-	public static final int TYPE_ACTION_REACTION = 2;
-	public static final int TYPE_VICTORY = 3;
-	public static final int TYPE_ACTION_TREASURY = 4;
-	public static final int TYPE_ACTION_VICTORY = 5;
-	public static final int TYPE_TREASURY_VICTORY = 6;
-	public static final int TYPE_ACTION_DURATION = 7;
-	public static final int TYPE_POTION = 8;
-
+	public static final int TYPE_VICTORY = 1;
+	public static final int TYPE_TREASURY = 2;
+	public static final int TYPE_ATTACK = 3;
+	public static final int TYPE_REACTION = 4;
+	public static final int TYPE_DURATION = 5;
+	public static final int TYPE_POTION = 6;
+	
+	public static final int TYPE_ACTION_VICTORY = 10;
+	public static final int TYPE_ACTION_TREASURY = 11;
+	public static final int TYPE_ACTION_REACTION = 12;
+	public static final int TYPE_ACTION_ATTACK = 13;
+	public static final int TYPE_ACTION_DURATION = 14;
+	public static final int TYPE_VICTORY_TREASURY = 15;
+	
+	public static final int ADDS_CARDS = 0;
+	public static final int ADDS_ACTIONS = 1;
+	public static final int ADDS_BUYS = 2;
+	public static final int ADDS_COINS = 3;
+	public static final int ADDS_CURSE = 4;
+	public static final int ADDS_POTIONS = 5;
 }

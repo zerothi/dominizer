@@ -20,7 +20,7 @@ public class SettingsRecordStorage {
 	private static String currentStore = null;
 	private static Vector
 	//#if polish.android
-		<String>
+		//#= <String>
 	//#endif
 		data = null;
 	private static RecordStore store = null;
@@ -84,7 +84,7 @@ public class SettingsRecordStorage {
 
 	public Vector
 	//#if polish.android
-		<String>
+		//#= <String>
 	//#endif
 		data() {
 			return data;
@@ -92,7 +92,7 @@ public class SettingsRecordStorage {
 	
 	private Vector
 	//#if polish.android
-		<String>
+		//#= <String>
 	//#endif
 			readData() throws RecordStoreFullException, RecordStoreException {
 		data = null;
@@ -107,7 +107,7 @@ public class SettingsRecordStorage {
 			RecordEnumeration re = store.enumerateRecords(null, null, false);
 			data = new Vector
 			//#if polish.android
-				<String>
+				//#= <String>
 			//#endif
 				(store.getNumRecords());
 			while ( re.hasNextElement() ) {
@@ -130,7 +130,7 @@ public class SettingsRecordStorage {
 		if ( data == null ) {
 			data = new Vector
 			//#if polish.android
-				<String>
+				//#= <String>
 			//#endif
 				(1);
 		}
