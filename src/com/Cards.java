@@ -31,8 +31,9 @@ public class Cards {
 	 * #1 = Adds # Actions
 	 * #2 = Adds # Buys
 	 * #3 = Adds # Coins
-	 * #4 = Adds # Curse
-	 * #5 = Adds # Potions
+	 * #4 = Adds # Trash
+	 * #5 = Adds # Curse
+	 * #6 = Adds # Potions
 	 */
 	private int[][] addsInfo = null;
 	private int[] percentage = null;
@@ -43,7 +44,7 @@ public class Cards {
 			isGamingRelated = new boolean[size][3];
 			cost = new int[size];
 			isSpecific = new boolean[size][6];
-			addsInfo = new int[size][6];
+			addsInfo = new int[size][7];
 			if ( isSet == IS_SET )
 				expansion = new int[1];
 			else
@@ -445,6 +446,7 @@ public class Cards {
 	public static final int ADDS_ACTIONS = 1;
 	public static final int ADDS_BUYS = 2;
 	public static final int ADDS_COINS = 3;
-	public static final int ADDS_CURSE = 4;
-	public static final int ADDS_POTIONS = 5;
+	public static final int ADDS_TRASH = 4;
+	public static final int ADDS_CURSE = 5;
+	public static final int ADDS_POTIONS = 6;
 }

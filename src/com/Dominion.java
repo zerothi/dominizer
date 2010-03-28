@@ -111,7 +111,7 @@ public class Dominion {
 		System.out.println("reading base");
 		readResource(BASE, "base", 25);
 		//#debug dominizer
-		System.out.println("size base: " + expansions[BASE].size());
+		System.out.println("size ba " + expansions[BASE].size());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("intrigue"));
 		//#debug dominizer
 		System.out.println("reading intrigue");
@@ -555,6 +555,7 @@ public class Dominion {
 					expansions[exp].setType(cardRead, Cards.TYPE_ACTION, parseType(tmp, Cards.TYPE_ACTION));
 					expansions[exp].setType(cardRead, Cards.TYPE_VICTORY, parseType(tmp, Cards.TYPE_VICTORY));
 					expansions[exp].setType(cardRead, Cards.TYPE_ATTACK, parseType(tmp, Cards.TYPE_ATTACK));
+					expansions[exp].setType(cardRead, Cards.TYPE_TREASURY, parseType(tmp, Cards.TYPE_TREASURY));
 					expansions[exp].setType(cardRead, Cards.TYPE_REACTION, parseType(tmp, Cards.TYPE_REACTION));
 					expansions[exp].setType(cardRead, Cards.TYPE_DURATION, parseType(tmp, Cards.TYPE_DURATION));
 					start = sb.toString().indexOf(":", start) + 1;
@@ -563,6 +564,7 @@ public class Dominion {
 					expansions[exp].setAddInfo(cardRead, Cards.ADDS_ACTIONS, parseInformation(tmp , Cards.ADDS_ACTIONS));
 					expansions[exp].setAddInfo(cardRead, Cards.ADDS_BUYS, parseInformation(tmp , Cards.ADDS_BUYS));
 					expansions[exp].setAddInfo(cardRead, Cards.ADDS_COINS, parseInformation(tmp , Cards.ADDS_COINS));
+					expansions[exp].setAddInfo(cardRead, Cards.ADDS_TRASH, parseInformation(tmp , Cards.ADDS_TRASH));
 					expansions[exp].setAddInfo(cardRead, Cards.ADDS_CURSE, parseInformation(tmp , Cards.ADDS_CURSE));
 					expansions[exp].setAddInfo(cardRead, Cards.ADDS_POTIONS, parseInformation(tmp , Cards.ADDS_POTIONS));
 					sb.delete(0, sb.toString().length());
@@ -599,18 +601,31 @@ public class Dominion {
 		case Cards.TYPE_ACTION:
 			if ( -1 < type.indexOf("c") )
 				return true;
-		case Cards.TYPE_ATTACK:
-			if ( -1 < type.indexOf("a") )
-				return true;
-		case Cards.TYPE_REACTION:
-			if ( -1 < type.indexOf("r") )
-				return true;
-		case Cards.TYPE_TREASURY:
-			if ( -1 < type.indexOf("t") )
-				return true;
+			break;
 		case Cards.TYPE_VICTORY:
 			if ( -1 < type.indexOf("v") )
 				return true;
+			break;
+		case Cards.TYPE_TREASURY:
+			if ( -1 < type.indexOf("t") )
+				return true;
+			break;
+		case Cards.TYPE_ATTACK:
+			if ( -1 < type.indexOf("a") )
+				return true;
+			break;
+		case Cards.TYPE_REACTION:
+			if ( -1 < type.indexOf("r") )
+				return true;
+			break;
+		case Cards.TYPE_DURATION:
+			if ( -1 < type.indexOf("d") )
+				return true;
+			break;
+		case Cards.TYPE_POTION:
+			if ( -1 < type.indexOf("p") )
+				return true;
+			break;
 		}
 		return false;
 	}
@@ -618,24 +633,32 @@ public class Dominion {
 	private int parseInformation(String information, int whichInfo) {
 		switch ( whichInfo ) {
 		case Cards.ADDS_CARDS:
-			if ( -1 < information.indexOf("c") )
-				return parseInt(information.substring(information.indexOf("c")));
+			if ( -1 < information.indexOf("d") )
+				return parseInt(information.substring(information.indexOf("d")));
 			break;
 		case Cards.ADDS_ACTIONS:
 			if ( -1 < information.indexOf("a") )
 				return parseInt(information.substring(information.indexOf("a")));
 			break;
 		case Cards.ADDS_COINS:
-			if ( -1 < information.indexOf("t") )
-				return parseInt(information.substring(information.indexOf("t")));
+			if ( -1 < information.indexOf("c") )
+				return parseInt(information.substring(information.indexOf("c")));
 			break;
 		case Cards.ADDS_BUYS:
 			if ( -1 < information.indexOf("b") )
 				return parseInt(information.substring(information.indexOf("b")));
 			break;
+		case Cards.ADDS_TRASH:
+			if ( -1 < information.indexOf("t") )
+				return parseInt(information.substring(information.indexOf("t")));
+			break;
 		case Cards.ADDS_CURSE:
 			if ( -1 < information.indexOf("u") )
 				return parseInt(information.substring(information.indexOf("u")));
+			break;
+		case Cards.ADDS_POTIONS:
+			if ( -1 < information.indexOf("p") )
+				return parseInt(information.substring(information.indexOf("p")));
 			break;
 		}
 		return 0;

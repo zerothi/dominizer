@@ -1,3 +1,3 @@
-Schwarzmarkt:pr:3:1:0:0:0:0:0;
-Gesandter:pr:5:1:0:0:0:0:0;
-Geldversteck:pr:5:0:0:1:0:0:0;
+Schwarzmarkt:3:c:;
+Gesandter:5:c:;
+Geldversteck:5:t:;
