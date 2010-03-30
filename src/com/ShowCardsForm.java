@@ -6,9 +6,6 @@ import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Form;
-import javax.microedition.lcdui.ImageItem;
-import javax.microedition.lcdui.StringItem;
 import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreFullException;
 import javax.microedition.rms.RecordStoreNotFoundException;
@@ -16,111 +13,33 @@ import javax.microedition.rms.RecordStoreNotFoundException;
 import com.dominizer.GameApp;
 
 import de.enough.polish.ui.Alert;
-import de.enough.polish.ui.Item;
-import de.enough.polish.ui.TableItem;
+import de.enough.polish.ui.List;
+import de.enough.polish.ui.Screen;
+import de.enough.polish.ui.TabListener;
+import de.enough.polish.ui.TabbedFormListener;
+import de.enough.polish.ui.TabbedPane;
 import de.enough.polish.ui.UiAccess;
 import de.enough.polish.util.Locale;
 
-public class ShowCardsForm extends Form implements CommandListener {
+public class ShowCardsForm extends TabbedPane implements TabListener, TabbedFormListener {
 
 	private static ShowCardsForm scF = null;
-	private TableItem table = null;
-	private Command randomizeCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
-	private Command randomizeSetCmd = new Command( Locale.get("cmd.Randomize.Set"), Command.BACK, 0);
-	private Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.SCREEN, 2);
 	
-	private Command sortCmd = new Command( Locale.get("cmd.Sort.Main"), Command.SCREEN, 5);
-	private Command showInfoCmd = new Command( Locale.get("cmd.ShowChosenCardInfo"), Command.ITEM, 1);
-	private Command sortExpNameCmd = new Command( Locale.get("cmd.Sort.ExpName"), Command.ITEM, 4);
-	private Command sortExpCostCmd = new Command( Locale.get("cmd.Sort.ExpCost"), Command.ITEM, 5);
-	private Command sortNameCmd = new Command( Locale.get("cmd.Sort.Name"), Command.ITEM, 6);
-	private Command sortCostNameCmd = new Command( Locale.get("cmd.Sort.CostName"), Command.ITEM, 7);
-	private Command sortCostExpCmd = new Command( Locale.get("cmd.Sort.CostExp"), Command.ITEM, 8);
-	private Command anotherSetCmd = new Command( Locale.get("cmd.AnotherSet"), Command.ITEM, 10);
-	private Command saveCmd = new Command( Locale.get("cmd.SaveAsPreset"), Command.ITEM, 11);
-	
-	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 12);
-	//private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
+	private CardsList[] cardSet = null;
+	private int currentSet = 0;
 	
 	private ShowCardsForm(String title) {
-		//#style behindTitle
+		//#style tabbedPane
 		super(title);
 		//#debug dominizer
 		System.out.println("showing cards initialize");
-		//#style defaultTable
-		table = new TableItem()
-		//#if polish.android
-			{
-				@Override
-				public boolean handlePointerPressed(int relX, int relY) {
-					//#debug dominizer 
-					System.out.println("table pressed(" + relX + ", " + relY + ")");
-					int row = getRowIndex( relY );
-					if (row != -1) {
-						//#debug dominizer 
-						System.out.println("table row touched " + (row - 1));
-						holdCard(row - 1);
-						return true;
-					}
-					return super.handlePointerPressed(relX, relY);
-				}
-				@SuppressWarnings("unused")
-                public boolean handleGestureSwipeLeft(int x, int y) {
-					//#debug dominizer
-					System.out.println("swipe left gesture recorded");
-					reRandomize();
-					return true;
-				}
-				@SuppressWarnings("unused")
-				public boolean handleGestureSwipeRight(int x, int y) {
-					//#debug dominizer
-					System.out.println("swipe right gesture recorded");
-					reRandomize();
-					return true;
-				}
-				@SuppressWarnings("unused")
-				public boolean handleGestureHold(int x, int y) {
-					//#debug dominizer
-					System.out.println("hold gesture recorded");
-					if ( table.isInItemArea(x - table.relativeX, y - table.relativeY) ) {
-						Item item = table.getItemAt(x - table.relativeX, y - table.relativeY);
-						if ( item != null ) {
-							int pos = table.getPosition(item);
-							//#debug dominizer
-							System.out.println("table position: " + pos);
-							//for ( int i = 1 ; i < 11 ; i++ ) {
-							//	if ( ((StringItem) table.get(0, i)).getText().equals( item.getText()) )
-						}
-					}
-					return true;
-				}
-			}
-		//#endif
-		;
-		setCommandRandomize(true);
-		addCommand(showInfoCmd);
-		addCommand(anotherSetCmd);
-		//#if !polish.android
-			addCommand(sortCmd);
-			UiAccess.addSubCommand( sortExpNameCmd, sortCmd, this );
-			UiAccess.addSubCommand( sortExpCostCmd, sortCmd, this );
-			UiAccess.addSubCommand( sortNameCmd, sortCmd, this );
-			UiAccess.addSubCommand( sortCostExpCmd, sortCmd, this );
-			UiAccess.addSubCommand( sortCostNameCmd, sortCmd, this );
-		//#else
-			addCommand(sortExpNameCmd);
-			addCommand(sortExpCostCmd);
-			addCommand(sortNameCmd);
-			addCommand(sortCostExpCmd);
-			addCommand(sortCostNameCmd);
-		//#endif
-		addCommand(saveCmd);
-		addCommand(backCmd);
-		table.setSelectionMode(TableItem.SELECTION_MODE_NONE);//SELECTION_MODE_CELL);
-		table.setLineStyle( TableItem.LINE_STYLE_SOLID, 0x111111 );
-		append(table);
 		
-		setCommandListener(this);
+		addTabListener(this);
+		setTabbedFormListener(this);
+		cardSet = new CardsList[Dominion.TOTAL_CARDS / 10];
+		
+		for ( int i = 0 ; i < cardSet.length ; i++ )
+			cardSet[i] = new CardsList(null, List.MULTIPLE, i+1);
 	}
 	
 	public static ShowCardsForm instance() {
@@ -129,220 +48,46 @@ public class ShowCardsForm extends Form implements CommandListener {
 		}
 		return scF;
 	}
-
-	public void reRandomize() {
-		try {
-			Dominion.I().randomizeCards();
-			viewCards(Dominion.I().getCurrentlySelected());
-		} catch (DominionException e) {
-			GameApp.instance().showAlert(e.toString());
-		}
-	}
-
-	public void viewCards(Cards cards) {
-		table.releaseResources();
-		//#debug dominizer
-		System.out.println("adding card information");
-		if ( cards == null & table.getNumberOfRows() > 0 ) {
-			for (int cardNumber = 0 ; cardNumber < table.getNumberOfRows() - 1 ; cardNumber++ ) {
-				//#style tableCell
-				table.set(0, cardNumber + 1, "");
-				//#style tableCell
-				table.set(1, cardNumber + 1, "");
-				//#style tableCell
-				table.set(2, cardNumber + 1, "");
-			}
-			return;
-		}
-		table.setDimension(3, cards.size() + 1);
-		//#debug dominizer
-		System.out.println("adding header");
-		//#style tableHeading
-		table.set(0, 0, Locale.get("table.heading.Name"));
-		//#style tableHeading
-		table.set(1, 0, Locale.get("table.heading.Expansion"));
-		//#style tableHeading
-		table.set(2, 0, Locale.get("table.heading.Cost"));
-		if ( Dominion.I().hasBlackMarketPlaying() )
-			addCommand(blackMarketCmd);
-		else
-			removeCommand(blackMarketCmd);
-		for (int cardNumber = 0 ; cardNumber < cards.size() ; cardNumber++ ) {
-			if ( Dominion.I().isHold(cards.getName(cardNumber)) ) {
-				//#style tableCellHold
-				table.set(0, cardNumber + 1, cards.getName(cardNumber));
-			} else {
-				//#style tableCell
-				table.set(0, cardNumber + 1, cards.getName(cardNumber));
-			}
-			//#style tableCell
-			table.set(1, cardNumber + 1, new ImageItem(null, cards.getCardTypeImage(cardNumber), ImageItem.PLAIN, null));
-			//#style tableCellCentered
-			table.set(2, cardNumber + 1, new ImageItem(null, cards.getCostImage(cardNumber), ImageItem.PLAIN, null));
-		}
-	}
-
-	public void commandAction(Command cmd, Displayable disp) {
-		if ( cmd.equals(backCmd) ) {
-			Dominion.RANDOMIZE_COMPLETELY_NEW = true;
-			Dominion.I().resetHoldCards();
-			setCommandRandomize(true);
-			GameApp.instance().changeToScreen(null);
-		} else if ( cmd.equals(randomizeCmd) ) {
-			Dominion.I().resetIsPlaying(true);
-			reRandomize();
-		} else if ( cmd.equals(randomizeSetCmd) ) {
-			Dominion.I().resetIsPlaying(false);
-			reRandomize();
-		} else if ( cmd.equals(blackMarketCmd) )
-			GameApp.instance().showBlackMarketDeck(GameApp.SHOWCARDS);
-		else if ( cmd.equals(anotherSetCmd) ) {
-			Dominion.RANDOMIZE_COMPLETELY_NEW = false;
-			Dominion.I().resetHoldCards();
-			reRandomize();
-			setCommandRandomize(false);
-		} else if ( cmd.equals(showInfoCmd) )
-			GameApp.instance().showInfo(Dominion.I().getSelectedInfo(), Alert.FOREVER);
-		else if ( cmd.equals(saveCmd) ) {
-			GameApp.instance().showInputDialog(Locale.get("screen.RandomizedCards.InputMessage"), this);
-		} else if ( cmd.getLabel().equals(Locale.get("polish.command.ok"))) {
-			if ( InputForm.instance().getInput().indexOf(SettingsRecordStorage.BIG_SPLITTER) > 0 )
-				GameApp.instance().showAlert(Locale.get("alert.Randomization.Save.IllegalChar"));
-			else if ( !InputForm.instance().getInput().equals("") ) {
-				SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.preset"));
-				SettingsRecordStorage.instance().addData(InputForm.instance().getInput(), Dominion.I().getCurrentAsPresetSave());
-				try {
-					SettingsRecordStorage.instance().writeData();
-				} catch (RecordStoreFullException e) {
-					// TODO Utilize GameApp.showAlert
-				} catch (RecordStoreNotFoundException e) {
-					// TODO Utilize GameApp.showAlert
-				} catch (RecordStoreException e) {
-					// TODO Utilize GameApp.showAlert
-				}
-			}
-			GameApp.instance().changeToScreen(this);
-		} else if ( cmd.getLabel().equals(Locale.get("polish.command.clear"))) {
-			InputForm.instance().clearInput();
-		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel"))) {
-			GameApp.instance().changeToScreen(this);
-		} else if ( cmd.equals(sortExpNameCmd) ) {
-			try {
-				viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_EXPANSION_NAME));
-				Cards.COMPARE_PREFERRED = Cards.COMPARE_EXPANSION_NAME;
-			} catch (DominionException e) {
-				// this will never happen as you cannot come to the showscreen without randomizing
-			}
-		} else if ( cmd.equals(sortExpCostCmd) ) {
-			try {
-				viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_EXPANSION_COST));
-				Cards.COMPARE_PREFERRED = Cards.COMPARE_EXPANSION_COST;
-			} catch (DominionException e) {}
-		} else if ( cmd.equals(sortNameCmd) ) {
-			try {
-				viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_NAME));
-				Cards.COMPARE_PREFERRED = Cards.COMPARE_NAME;
-			} catch (DominionException e) {}
-		} else if ( cmd.equals(sortCostNameCmd) ) {
-			try {
-				viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_COST_NAME));
-				Cards.COMPARE_PREFERRED = Cards.COMPARE_COST_NAME;
-			} catch (DominionException e) {}
-		} else if ( cmd.equals(sortCostExpCmd) ) {
-			try {
-				viewCards(Dominion.I().getCurrentlySelected(Cards.COMPARE_COST_EXPANSION));
-				Cards.COMPARE_PREFERRED = Cards.COMPARE_COST_EXPANSION;
-			} catch (DominionException e) {}
-		}
+	
+	public int getCurrentSet() {
+		return currentSet;
 	}
 	
-	public void keyPressed(int keyCode) {
-		switch (keyCode) {
-		case Canvas.KEY_NUM0:
-		case Canvas.KEY_NUM1:
-		case Canvas.KEY_NUM2:
-		case Canvas.KEY_NUM3:
-		case Canvas.KEY_NUM4:
-		case Canvas.KEY_NUM5:
-		case Canvas.KEY_NUM6:
-		case Canvas.KEY_NUM7:
-		case Canvas.KEY_NUM8:
-		case Canvas.KEY_NUM9:
-			holdCard(keyCode - Canvas.KEY_NUM0);
-			break;
-		default:
-			//#= super.keyPressed(keyCode);
+	public void randomizeNewSet() throws DominionException {
+		if ( currentSet < cardSet.length ) {
+			currentSet++;
+			String tmp = "" + currentSet;
+			cardSet[currentSet-1].reRandomize();
+			//#style tabIconSet
+			addTab(cardSet[currentSet-1], null, Locale.get("screen.RandomizedCards.title2", tmp));
+			setFocus(currentSet - 1);
 		}
+		
 	}
-	
-	public void holdCard(int card) {
-		if ( card == 0 )
-			card = 10;
-		if ( card < 1 | card > 10)
-			return;
-		String cardName = null;
-		if ( table.get(0, card) instanceof String )
-			cardName = (String) table.get(0, card);
-		else
-			cardName = ((StringItem) table.get(0, card)).getText();
-		if ( Dominion.I().holdCard(0, cardName) ) {
-			//#style tableCellHold
-			table.set(0, card, cardName);
-			//#debug dominizer
-			System.out.println("holding card: " + cardName);
-		} else {
-			//#style tableCell
-			table.set(0, card, cardName);
-			//#debug dominizer
-			System.out.println("deholding card: " + cardName);
-		}
-	}
-	
-	private void setCommandRandomize(boolean rand) {
-		try {
-			removeCommand(randomizeCmd);
-		} catch (Exception e) {}/*
-		try {
-			table.removeCommand(randomizeCmd);
-		} catch (Exception e) {}*/
-		try {
-			removeCommand(randomizeSetCmd);
-		} catch (Exception e) {}/*
-		try {
-			table.removeCommand(randomizeSetCmd);
-		} catch (Exception e) {}*/
-		if ( rand ) {
-			addCommand(randomizeCmd);
-			/*table.addCommand(randomizeCmd);
-			table.setDefaultCommand(randomizeCmd);*/
-		} else {
-			addCommand(randomizeSetCmd);
-			/*table.addCommand(randomizeSetCmd);
-			table.setDefaultCommand(randomizeSetCmd);*/
-		}
-	}
-	//#ifdef polish.hasPointerEvents
-		public boolean handlePointerPressed(int relX, int relY) {
-			//#debug dominizer 
-			System.out.println("form pressed(" + relX + ", " + relY + ")");
-			relY -= table.relativeY;
-			relY -= table.getContentY();
-			//#debug dominizer 
-			System.out.println("table pressed(" + relX + ", " + relY + ")");
-			int h = 0;
-			int rh = table.getItemAreaHeight() / table.getNumberOfRows();
-			for (int row = 0; row < table.getNumberOfRows() ; row++ ) {
-				if (relY >= h && relY <= h + rh) {
-					holdCard(row);
-					return true;
-				}
-				h += rh;
-			}
-			//#ifdef polish.hasPointerEvents
-				//#= return super.handlePointerPressed(relX, relY);
-			//#else
-				return true;
-			//#endif
-		}
-	//#endif
+
+
+	/* (non-Javadoc)
+     * @see de.enough.polish.ui.TabListener#tabChangeEvent(de.enough.polish.ui.Screen)
+     */
+    public void tabChangeEvent(Screen tab) {}
+
+	/* (non-Javadoc)
+     * @see de.enough.polish.ui.TabbedFormListener#notifyTabChangeCompleted(int, int)
+     */
+    public void notifyTabChangeCompleted(int oldTabIndex, int newTabIndex) {
+    	if ( -1 < oldTabIndex & oldTabIndex < cardSet.length) {
+    		cardSet[oldTabIndex].updateCards(true);
+    	}
+    	if ( -1 < newTabIndex & newTabIndex < cardSet.length) {
+    		cardSet[newTabIndex].updateCards(true);
+    	}
+    }
+
+	/* (non-Javadoc)
+     * @see de.enough.polish.ui.TabbedFormListener#notifyTabChangeRequested(int, int)
+     */
+    public boolean notifyTabChangeRequested(int oldTabIndex, int newTabIndex) {
+	    // TODO Auto-generated method stub
+	    return true;
+    }
 }	

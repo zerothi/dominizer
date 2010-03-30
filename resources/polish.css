@@ -51,6 +51,9 @@ backgrounds {
 	plainBg {
 		color: brightBgColor;
 	}
+	selectedPlainBg {
+		color: eevenBrightColor;
+	}
 	selectedBg {
 		type: round-rect;
 		arc: 8;
@@ -58,7 +61,7 @@ backgrounds {
 		border-color: fontColor;
 		border-width: 2;
 	}
-	selectedPlainBg {
+	selectedSmallArcBg {
 		type: round-rect;
 		arc: 5;
 		color: eevenBrightColor;
@@ -119,6 +122,9 @@ label {
 		end: 100%;
 	}	
 }
+.labelCard extends label {
+	layout: expand | left;
+}
 
 .hiddenLabel extends label {
 	padding: 5;
@@ -169,6 +175,10 @@ focused {
 	}
 }
 .mainScreen:landscape {}
+
+.mainScreenSet extends mainScreen {
+	layout: horizontal-expand | horizontal-center | top;
+}
 
 .behindScreen extends mainScreen {
 	title-menu: false;
@@ -397,7 +407,7 @@ menuItem {
 }
 
 menuItem:hover {
-	background: selectedPlainBg;
+	background: selectedSmallArcBg;
 	font-color: translucentFontColor;
 	layout: left | horizontal-expand;
 }
@@ -411,7 +421,7 @@ menuItem:hover {
 		padding-top: 4px;
 		padding-bottom: 4px;
 		font-size: medium;
-		background: selectedPlainBg;
+		background: selectedSmallArcBg;
 		font-color: translucentFontColor;
 		layout: left | horizontal-expand;
 	}
@@ -477,13 +487,11 @@ menuItem:hover {
 	columns: 3;
 	font-color: translucentFontColor;
 	font-size: small;
+	table-selected-row-background: selectedPlainBg;
 	table-line-color: white;
 	table-line-stroke: solid;
 	background: selectedBg;
 	layout: center;
-}
-
-.defaultTable:hover {
 }
 
 @media touchscreen {
@@ -500,10 +508,17 @@ menuItem:hover {
 	font-size: small;
 }
 
+.tableHeading:hover {}
+
 .tableCell extends tableHeading {
 	margin: 0;
 	padding: 0;
 	font-style: plain;
+	font-size: small;
+}
+
+.tableCell:hover {
+	background: selectedPlainBg;
 	font-size: small;
 }
 
@@ -551,7 +566,6 @@ menuItem:hover {
  *
  **************/
 .tabbedPane {
-	title-menu: true;
 }
 
 .tabbedPaneIcons {
@@ -604,6 +618,10 @@ menuItem:hover {
 		font-size: medium;
 	}
 }	
+
+.tabIconSet extends tabIcon {
+	max-width: 20%;
+}
 
 /* Calendar */
 .calendar {

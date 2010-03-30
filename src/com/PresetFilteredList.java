@@ -92,8 +92,8 @@ public class PresetFilteredList extends List implements CommandListener {
 			if ( tmp[0] > -1 ) 
 				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(tmp[0], tmp[1]), Alert.FOREVER);
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.select")) ) {
-			if ( Dominion.I().selectPreset(getString(getCurrentIndex())) )
-				GameApp.instance().showCurrentSelectedCards();
+			if ( Dominion.I().selectPreset(getString(getCurrentIndex())) ) {}
+				// TODO add implementation of preset selection
 		} else if ( cmd.equals(quitCmd) ) {
 			GameApp.instance().quit();
 		} else if ( cmd.equals(deleteCmd) ) {

@@ -35,12 +35,15 @@ public class TestList extends List implements CommandListener {
 		CardItem cI = new CardItem("Hej", listType);
 		cI.setLeftImage(Dominion.getExpansionImage(0));
 		cI.setRightImage(Dominion.getExpansionImage(1));
+		cI.setBothSides(false);
 		append(cI);
 		//#style label
 		CardItem cI1 = new CardItem("Hej2", listType);
 		cI1.setLeftImage(Dominion.getExpansionImage(2));
 		cI1.setRightImage(Dominion.getExpansionImage(3));
+		cI1.setBothSides(false);
 		append(cI1);
+		
 	}
 
 

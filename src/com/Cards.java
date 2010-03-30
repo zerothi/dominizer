@@ -9,10 +9,11 @@ public class Cards {
 
 	private String[] name = null;
 	private int[] expansion = null;
+	
+	private int[] playing = null;
 	/*
-	 * #0 = Is Playing
-	 * #1 = Is Selected for availability
-	 * #2 = Is Black Market available
+	 * #0 = Is Selected for availability
+	 * #1 = Is Black Market available
 	 */
 	private boolean[][] isGamingRelated = null; 
 	private int[] cost = null;
@@ -37,11 +38,13 @@ public class Cards {
 	 */
 	private int[][] addsInfo = null;
 	private int[] percentage = null;
+	private static int i, j, k;
 
 	public Cards(int size, int isSet) {
 		if ( size > 0 ) {
 			name = new String[size];
-			isGamingRelated = new boolean[size][3];
+			playing = new int[size];
+			isGamingRelated = new boolean[size][2];
 			cost = new int[size];
 			isSpecific = new boolean[size][6];
 			addsInfo = new int[size][7];
@@ -51,13 +54,13 @@ public class Cards {
 				expansion = new int[size];
 			expansion[0] = -1;
 			percentage = new int[size];
-			for ( int i = 0 ; i < size ; i++ ) {
+			for ( i = 0 ; i < size ; i++ ) {
 				name[i] = null;
 				cost[i] = 0;
-				isGamingRelated[i][0] = false;
+				playing[i] = 0;
+				isGamingRelated[i][0] = true;
 				isGamingRelated[i][1] = true;
-				isGamingRelated[i][2] = true;
-				for ( int k = 0 ; k < addsInfo[i].length ; k++ )
+				for ( k = 0 ; k < addsInfo[i].length ; k++ )
 					addsInfo[i][k] = 0;
 				if ( isSet == IS_NOT_SET )
 					expansion[i] = -1;
@@ -134,23 +137,71 @@ public class Cards {
 	 * @return the isPlaying
 	 */
 	public boolean isPlaying(int index) {
-		return isGamingRelated[index][0];
+		return playing[index] > 0;
+	}
+	
+	/**
+	 * @return the isPlaying
+	 */
+	public boolean isPlayingSet(int index, int playingSet) {
+		if ( playing[index] > 100 )
+			return playing[index] - 100 == playingSet;
+		return playing[index] == playingSet;
 	}
 
 	/**
 	 * @param isPlaying
 	 *            the isPlaying to set
 	 */
-	public void setPlaying(int index, boolean isPlaying) {
-		isGamingRelated[index][0] = isPlaying;
+	public void setPlaying(int index, int playing) {
+		this.playing[index] = playing;
 	}
-
+	
+	/**
+	 * @return the isPlaying
+	 */
+	public int getPlaying(int index) {
+		if ( playing[index] > 100 )
+			return playing[index] - 100;
+		return playing[index];
+	}
+	
+	public boolean isHold(int index, int playingSet) {
+		return playing[index] == playingSet + 100;
+	}
+	
+	public boolean isHold(int index) {
+		return playing[index] > 100;
+	}
+	
+	/**
+	 * @param name
+	 * @param hold 
+	 */
+	public void setHoldCard(String name, boolean hold) {
+		for ( i = 0 ; i < playing.length ; i++ )
+			if ( this.name[i].equals(name) ) {
+				setHoldCard(i, hold);
+				return;
+			}
+	}
+	
+	public void setHoldCard(int index, boolean hold) {
+		if ( hold ) {
+			if ( 0 < playing[index] & playing[index] < 100 )
+				playing[index] = playing[index] + 100;
+		} else {
+			if ( playing[index] > 100 )
+				playing[index] = playing[index] - 100;
+		}
+	}
+	
 
 	/**
 	 * @return the selected
 	 */
 	public boolean isAvailable(int index) {
-		return isGamingRelated[index][1];
+		return isGamingRelated[index][0];
 	}
 
 	/**
@@ -158,14 +209,14 @@ public class Cards {
 	 *            the selected to set
 	 */
 	public void setAvailable(int index, boolean available) {
-		isGamingRelated[index][1] = available;
+		isGamingRelated[index][0] = available;
 	}
 
 	/**
 	 * @return the bmSelected
 	 */
 	public boolean isBlackMarketAvailable(int index) {
-		return isGamingRelated[index][2];
+		return isGamingRelated[index][1];
 	}
 
 	/**
@@ -173,7 +224,7 @@ public class Cards {
 	 *            the bmSelected to set
 	 */
 	public void setBlackMarketAvailable(int index, boolean bmAvailable) {
-		isGamingRelated[index][2] = bmAvailable;
+		isGamingRelated[index][1] = bmAvailable;
 	}
 
 	/**
@@ -230,25 +281,32 @@ public class Cards {
 	}
 	
 	public Object[] getCard(int index) {
-		Object[] tmp = new Object[12];
+		Object[] tmp = new Object[19];
 		tmp[0] = getName(index);
 		tmp[1] = new Integer(getExpansion(index));
 		tmp[2] = new Integer(getCost(index));
 		tmp[3] = new Boolean(isType(index, TYPE_ACTION));
 		tmp[4] = new Boolean(isType(index, TYPE_VICTORY));
-		tmp[5] = new Boolean(isType(index, TYPE_TREASURY));
-		tmp[6] = new Boolean(isType(index, TYPE_ATTACK));
+		tmp[5] = new Boolean(isType(index, TYPE_ATTACK));
+		tmp[6] = new Boolean(isType(index, TYPE_TREASURY));
 		tmp[7] = new Boolean(isType(index, TYPE_REACTION));
 		tmp[8] = new Boolean(isType(index, TYPE_DURATION));
-		tmp[9] = new Boolean(isPlaying(index));
+		tmp[9] = new Integer(getPlaying(index));
 		tmp[10] = new Boolean(isAvailable(index));
 		tmp[11] = new Boolean(isBlackMarketAvailable(index));
+		tmp[12] = new Integer(getAddInfo(index, ADDS_CARDS));
+		tmp[13] = new Integer(getAddInfo(index, ADDS_ACTIONS));
+		tmp[14] = new Integer(getAddInfo(index, ADDS_BUYS));
+		tmp[15] = new Integer(getAddInfo(index, ADDS_COINS));
+		tmp[16] = new Integer(getAddInfo(index, ADDS_TRASH));
+		tmp[17] = new Integer(getAddInfo(index, ADDS_CURSE));
+		tmp[18] = new Integer(getAddInfo(index, ADDS_POTIONS));
 		return tmp;
 	}
 	
 	public int fromExpansion(int exp) {
 		int tmp = 0;
-		for ( int i = 0 ; i < size() ; i++ ) {
+		for ( i = 0 ; i < size() ; i++ ) {
 			if ( getExpansion(i) > -1 && getExpansion(i) == exp )
 				tmp++;
 		}
@@ -256,7 +314,7 @@ public class Cards {
 	}
 	
 	public void setCard(int index, Object[] cardInfo) {
-		for ( int i = 0 ; i < 12 ; i++ ) {
+		for ( i = 0 ; i < 12 ; i++ ) {
 			if ( cardInfo[i] == null ) {
 				//#debug dominizer 
 				System.out.println("cardinfo " + i + " is null ");
@@ -271,13 +329,20 @@ public class Cards {
 		setCost(index, ((Integer)cardInfo[2]).intValue());	
 		setType(index, TYPE_ACTION, ((Boolean)cardInfo[3]).booleanValue());
 		setType(index, TYPE_VICTORY, ((Boolean)cardInfo[4]).booleanValue());
-		setType(index, TYPE_TREASURY, ((Boolean)cardInfo[5]).booleanValue());
-		setType(index, TYPE_ATTACK, ((Boolean)cardInfo[6]).booleanValue());
+		setType(index, TYPE_ATTACK, ((Boolean)cardInfo[5]).booleanValue());
+		setType(index, TYPE_TREASURY, ((Boolean)cardInfo[6]).booleanValue());
 		setType(index, TYPE_REACTION, ((Boolean)cardInfo[7]).booleanValue());
 		setType(index, TYPE_DURATION, ((Boolean)cardInfo[8]).booleanValue());
-		setPlaying(index, ((Boolean)cardInfo[9]).booleanValue());
+		setPlaying(index, ((Integer)cardInfo[9]).intValue());
 		setAvailable(index, ((Boolean)cardInfo[10]).booleanValue());
 		setBlackMarketAvailable(index, ((Boolean)cardInfo[11]).booleanValue());
+		setAddInfo(index, ADDS_CARDS, ((Integer)cardInfo[12]).intValue());
+		setAddInfo(index, ADDS_ACTIONS, ((Integer)cardInfo[13]).intValue());
+		setAddInfo(index, ADDS_BUYS, ((Integer)cardInfo[14]).intValue());
+		setAddInfo(index, ADDS_COINS, ((Integer)cardInfo[15]).intValue());
+		setAddInfo(index, ADDS_TRASH, ((Integer)cardInfo[16]).intValue());
+		setAddInfo(index, ADDS_CURSE, ((Integer)cardInfo[17]).intValue());
+		setAddInfo(index, ADDS_POTIONS, ((Integer)cardInfo[18]).intValue());
 	}
 	
 	public static int compare(Object[] first, Object[] compareTo, int method) {
@@ -321,7 +386,7 @@ public class Cards {
 	}
 	
 	public boolean contains(String cardName) {
-		for ( int i = 0 ; i < size() ; i++ )
+		for ( i = 0 ; i < size() ; i++ )
 			if ( getName(i) != null )
 				if ( getName(i).equals(cardName) )
 					return true;

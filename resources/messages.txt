@@ -19,6 +19,7 @@ table.heading.AttackCard=A
 table.heading.DurationCard=D
 table.heading.PotionCard=P
 screen.RandomizedCards.title=Randomized Cards
+screen.RandomizedCards.title2=Set {0}
 screen.RandomizedCards.InputMessage=Saved preset name:
 screen.BlackMarket.title=Black Market
 screen.BlackMarket.DrawTextInfo=Draw cards. 

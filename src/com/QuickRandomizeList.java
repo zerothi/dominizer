@@ -19,7 +19,7 @@ import de.enough.polish.util.Locale;
  * @author nick
  *
  */
-public class QuickRandomizeForm extends List implements CommandListener {
+public class QuickRandomizeList extends List implements CommandListener {
 
 	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 	private Command gaugeCmd = new Command( Locale.get("cmd.SetCards.Gauge"), Command.ITEM, 15);
@@ -27,7 +27,7 @@ public class QuickRandomizeForm extends List implements CommandListener {
 	public boolean[] flags = new boolean[6];
 	private int tmp = 0;
 	
-	public QuickRandomizeForm(String title, int listType) {
+	public QuickRandomizeList(String title, int listType) {
 		//#style mainScreen
 		super(title, listType);
 		for ( tmp = 0 ; tmp < Dominion.I().getExpansions() ; tmp++ ) {

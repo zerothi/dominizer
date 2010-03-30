@@ -14,13 +14,14 @@ import javax.microedition.rms.RecordStoreNotFoundException;
 
 import com.BlackMarketForm;
 import com.Cards;
+import com.CardsList;
 import com.Dominion;
 import com.DominionException;
 import com.EditCardsList;
 import com.GaugeForm;
 import com.InputForm;
 import com.PresetFilteredList;
-import com.QuickRandomizeForm;
+import com.QuickRandomizeList;
 import com.Rand;
 import com.SettingsRecordStorage;
 import com.ShowCardsForm;
@@ -57,7 +58,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	private TabbedPane tabbedPane = null;
 	private int currentTab = 0;
 	
-	public QuickRandomizeForm qrF = null;
+	public QuickRandomizeList qrF = null;
 	public EditCardsList ecFL = null;
 	public PresetFilteredList pFL = null;
 	public BlackMarketForm bmF = null;
@@ -79,23 +80,16 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 
 	public void showRandomizedCards() {
 		currentTab = getCurrentTab();
-		Dominion.I().resetIsPlaying(true);
-		try {
-			Dominion.I().randomizeCards();
-			ShowCardsForm.instance().viewCards(Dominion.I().getCurrentlySelected());
+		if ( ShowCardsForm.instance().getCurrentSet() == 0 ) {
+			Dominion.I().resetIsPlaying(0);
+			try {
+				ShowCardsForm.instance().randomizeNewSet();
+				changeToScreen(ShowCardsForm.instance());
+			} catch (DominionException e) {
+				GameApp.instance().showAlert(e.toString());
+			}
+		} else 
 			changeToScreen(ShowCardsForm.instance());
-		} catch (DominionException e) {
-			GameApp.instance().showAlert(e.toString());
-		}
-	}
-
-	public void showCurrentSelectedCards() {
-		try {
-			ShowCardsForm.instance().viewCards(Dominion.I().getCurrentlySelected());
-			changeToScreen(ShowCardsForm.instance());
-		} catch (DominionException exp) {
-			showAlert(exp.toString());
-		}
 	}
 
 	public void showBlackMarketDeck(int previousScreen) {
@@ -122,7 +116,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 
 	protected void startApp() throws MIDletStateChangeException {
 		display = Display.getDisplay(this);
-		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading"));
+		GaugeForm.instance(true).setGaugeLabel(Locale.get("gauge.loading"));
 		display.setCurrent(GaugeForm.instance());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.cards"));
 		Dominion.I().getExpansions();
@@ -132,7 +126,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		tabbedPane.addTabListener(this);
 		tabbedPane.setTabbedFormListener(this);
 		//Locale.get("tab.Quick.title")
-		qrF = new QuickRandomizeForm(null, List.MULTIPLE);
+		qrF = new QuickRandomizeList(null, List.MULTIPLE);
 		//#style tabIcon
 		tabbedPane.addTab(qrF, null, Locale.get("app.name"));
 		//Locale.get("tab.EditCards.title")
@@ -157,7 +151,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		System.out.println("setting display");
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.finished"));
 		display.setCurrent(tabbedPane);
-		//display.setCurrent(new TestList("hej", List.MULTIPLE));
+		//display.setCurrent(new CardsList("hej", List.MULTIPLE));
 		GaugeForm.instance(false);
 	}
 	

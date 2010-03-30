@@ -110,6 +110,7 @@
 					<variable name="polish.MenuBar.OptionsPosition" value="left"/>
 					<variable name="polish.MenuBar.OkPosition" value="right"/>
 					<variable name="polish.debug.error" value="false" if="final"/>
+					<!--variable name="polish.useDynamicStyles" value="true"/-->
 				</variables>
 				<resources dir="${resource.dir}" defaultexcludes="yes" excludes="readme.txt">
 					<!--root dir="${resource.dir}"/-->
