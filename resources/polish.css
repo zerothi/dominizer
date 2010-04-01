@@ -10,7 +10,7 @@ colors {
 	darkTranslucentBgColor: 	argb(100, 145,175,247);
 	/* Font Colors*/
 	titleFontColor: 			rgb(175,210,247);
-	fontColor: 					rgb( 66, 85,148);
+	fontColor: 					rgb( 76, 95,160);
 	hiddenFontColor: 			rgb(166,185,248);
 	brightFontColor: 			white; 
 	translucentFontColor:  		argb(130, 165,190,247);
@@ -38,15 +38,6 @@ backgrounds {
 	}
 	alertOverlay {
 		color: #9fff;
-	}
-	percentageText {
-		type: text;
-		text: 0%;
-		text-style: textPercentage;
-		anchor: right;
-		color: transparent;
-		x-offset: -1;
-		y-offset: 0;
 	}
 	plainBg {
 		color: brightBgColor;
@@ -113,30 +104,19 @@ label {
 	}
 }
 
-.labelHold extends label {
-	background {
-		type: horizontal-gradient;
-		left-color: eevenBrightColor;
-		right-color: brightBgColor;
-		start: 0%;
-		end: 100%;
-	}	
-}
 .labelCard extends label {
 	layout: expand | left;
 }
 
-.hiddenLabel extends label {
-	padding: 5;
-	background {
-		color: hiddenBrightBgColor;
-	}
+.labelCard:hover {
+	padding: 2;
+	background: selectedBg;
 	font {
 		style: bold;
-		color: hiddenFontColor;
+		color: translucentBrightFontColor;
 		size: small;
 	}
-	layout: expand | center;
+	layout: expand | left;
 }
 
 /**
@@ -427,57 +407,11 @@ menuItem:hover {
 	}
 }
 
-.filterCards {
-	title-menu: true;
-	padding: 3;
-	padding-left: 5;
-	padding-vertical: 1;
-	include-label: true;
-	layout: left | expand;
-	font-color: translucentFontColor;
-	repaint-previous-screen: false;
-	/** style of the filter-textfield of a FilteredList/FilteredChoiceGroup */
-	filter-style: filterTextFieldStyle;
-	/** style of the popup screen for a FileredChoiceGroup */
-	popup-style: filterPopupStyle;
-	background {
-		type: round-rect;
-		color: darkTranslucentBgColor;
-	}
-	choice-color: translucentBgColor;
-}
-.messageAlert:landscape {}
-
-.filterCards:hover {
-	background-color: translucentBgColor;
-	font-color: translucentBrightFontColor;
-	layout: left | expand;	
-}
-
-.filterTextFieldStyle {
-	margin: 5;
-	font-color: translucentBrightFontColor;
-	background {
-		color: bgColor;
-		border-color: black;
-	}
-	layout: expand | left;
-}
-
 .inputTextField {
 	padding: 5;
 	font-color: translucentBrightFontColor;
 	background-color: bgColor;
 	layout: horizontal-shrink | center;
-}
-
-.filterPopupStyle {
-	repaint-previous-screen: false;
-	margin: 10;
-	margin-bottom: 0;
-	padding: 5;
-	font-color: translucentBrightFontColor;
-	background-color: bgColor;
 }
 
 .defaultTable {
@@ -522,16 +456,6 @@ menuItem:hover {
 	font-size: small;
 }
 
-.tableCellHold extends tableCell {
-	background {
-		type: horizontal-gradient;
-		left-color: hiddenBrightBgColor;
-		right-color: evenBrightColor;
-		start: 0%;
-		end: 100%;
-	}
-}
-
 .tableCellCentered extends tableCell {
 	layout: vertical-shrink | center;
 	background {
@@ -553,11 +477,6 @@ menuItem:hover {
 		padding-bottom: 4px;
 		font-size: medium;
 	}
-	.tableCellHold {
-		padding-top: 4px;
-		padding-bottom: 4px;
-		font-size: medium;
-	}
 }
 
 /**************
@@ -566,10 +485,12 @@ menuItem:hover {
  *
  **************/
 .tabbedPane {
+	
 }
 
 .tabbedPaneIcons {
 	view-type: horizontal;
+	view-type-sequential-traversal: true;
 	background {
 		type: vertical-gradient;
 		top-color: bgColor;

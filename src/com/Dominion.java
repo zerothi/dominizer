@@ -390,8 +390,9 @@ public class Dominion {
 		System.out.println("try: " + exp + " - " + card);
 		if ( expansions[exp].isAvailable(card) 
 				& !selectedCards.contains(expansions[exp].getName(card))
-				& !expansions[exp].isPlaying(card) ) {
-			expansions[exp].setPlaying(card, playingSet);
+				& ( !expansions[exp].isPlaying(card) | expansions[exp].isHold(card, playingSet) ) ) {
+			if ( !expansions[exp].isHold(card, playingSet) )
+				expansions[exp].setPlaying(card, playingSet);
 			if ( placement == -1 ) {
 				for ( int i = 0 ; i < selectedCards.size() ; i++ )
 					if ( selectedCards.getName(i) == null ) {

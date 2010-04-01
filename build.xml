@@ -153,9 +153,9 @@
 				</debug>
 				<debug if="final" showLogOnError="true" level="error">
 				</debug>
-				<jad>
+				<!--jad>
 					<attribute name="Nokia-MIDlet-Category" value="Game" if="polish.group.Series40" />
-				</jad>
+				</jad-->
 				<finalizer name="antcall" target="androidZipAlign" if="polish.android"/>
 			</build>
 

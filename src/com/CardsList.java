@@ -80,25 +80,30 @@ public class CardsList extends List implements CommandListener {
 		this.release();
 		for ( int i = 0 ; i < cards.size() ; i++ ) {
 			//#style labelCard
-			CardItem cI = new CardItem(cards.getName(i), listType);
+			CardItem cI = new CardItem(" " + cards.getName(i), listType);
 			cI.setLeftImage(cards.getCardTypeImage(i));
 			cI.setRightImage(cards.getCostImage(i));
 			cI.setBothSides(false);
 			append(cI);
 			//#debug dominizer
-			System.out.println("appending to list with card "+cards.getName(i) + " index "+i);
-			setSelectedIndex(i, cards.isHold(i));
+			System.out.println("appending to list with card "+cards.getName(i) + " index "+i + " is hold: " +cards.isHold(i));
 		}
+		updateCards(false);
 	}
 	
 	public void updateCards(boolean formCorrect) {
 		int[] cP = new int[2];
 		for ( i = 0 ; i < this.size() ; i++ ){
-			cP = Dominion.I().getCardLocation(getString(i));
-			if ( formCorrect )
-				Dominion.I().getExpansion(cP[0]).setHoldCard(cP[1], isSelected(i));
-			else
-				setSelectedIndex(i, Dominion.I().getExpansion(cP[0]).isHold(cP[1], cardSet));
+			cP = Dominion.I().getCardLocation(getString(i).trim());
+			if ( cP[0] > -1 ) {
+				if ( formCorrect )
+					Dominion.I().getExpansion(cP[0]).setHoldCard(cP[1], isSelected(i));
+				else
+					setSelectedIndex(i, Dominion.I().getExpansion(cP[0]).isHold(cP[1], cardSet));
+			} else {
+				//#debug dominizer
+				System.out.println("couldn't find the card: " + getString(i));
+			}
 		}
 	}
 	

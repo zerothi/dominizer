@@ -55,14 +55,15 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 	
 	public void randomizeNewSet() throws DominionException {
 		if ( currentSet < cardSet.length ) {
+			cardSet[currentSet].reRandomize();
 			currentSet++;
 			String tmp = "" + currentSet;
-			cardSet[currentSet-1].reRandomize();
 			//#style tabIconSet
 			addTab(cardSet[currentSet-1], null, Locale.get("screen.RandomizedCards.title2", tmp));
 			setFocus(currentSet - 1);
+		} else {
+			Dominion.I().randomizeCards(0, 0); // this should throw an Exception!
 		}
-		
 	}
 
 

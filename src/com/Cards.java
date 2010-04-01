@@ -314,7 +314,9 @@ public class Cards {
 	}
 	
 	public void setCard(int index, Object[] cardInfo) {
-		for ( i = 0 ; i < 12 ; i++ ) {
+		if ( cardInfo.length == 0 ) 
+			return;
+		for ( i = 0 ; i < cardInfo.length ; i++ ) {
 			if ( cardInfo[i] == null ) {
 				//#debug dominizer 
 				System.out.println("cardinfo " + i + " is null ");
