@@ -541,7 +541,7 @@ menuItem:hover {
 }	
 
 .tabIconSet extends tabIcon {
-	max-width: 20%;
+	max-width: 12%;
 }
 
 /* Calendar */

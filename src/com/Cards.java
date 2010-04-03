@@ -38,7 +38,7 @@ public class Cards {
 	 */
 	private int[][] addsInfo = null;
 	private int[] percentage = null;
-	private static int i, j, k;
+	private static int i, k;
 
 	public Cards(int size, int isSet) {
 		if ( size > 0 ) {
@@ -136,8 +136,8 @@ public class Cards {
 	/**
 	 * @return the isPlaying
 	 */
-	public boolean isPlaying(int index) {
-		return playing[index] > 0;
+	public int isPlaying(int index) {
+		return playing[index];
 	}
 	
 	/**
@@ -420,64 +420,6 @@ public class Cards {
 		} catch (IOException expc) {
 			return Dominion.getExpansionImage(getExpansion(card));
 		}
-	}
-	
-	public static Image convert2ImageType(Image img, int cardType) {
-		int[] greenAddition = new int[2];
-		int[] blueAddition = new int[2];
-		int[] redAddition = new int[2];
-		greenAddition[0] = -2;
-		blueAddition[0] = -2;
-		redAddition[0] = -2;
-		switch ( cardType ) {
-		case TYPE_ACTION:
-			greenAddition[1] = -2;
-			blueAddition[1] = -2;
-			redAddition[1] = -2;
-			break;
-		case TYPE_ACTION_ATTACK:
-			greenAddition[1] = 0;
-			blueAddition[1] = 0;
-			redAddition[1] = 2;
-			break;
-		case TYPE_ACTION_REACTION:
-			greenAddition[1] = 0;
-			blueAddition[1] = 2;
-			redAddition[1] = 0;
-			break;
-		case TYPE_ACTION_VICTORY:
-			greenAddition[1] = 2;
-			blueAddition[1] = 0;
-			redAddition[1] = 0;
-			break;
-		case TYPE_ACTION_TREASURY:
-			greenAddition[1] = 2;
-			blueAddition[1] = 1;
-			redAddition[1] = 3;
-			break;
-		case TYPE_VICTORY_TREASURY:
-			greenAddition[0] = 2;
-			blueAddition[0] = 1;
-			redAddition[0] = 3;
-			greenAddition[1] = 2;
-			blueAddition[1] = 0;
-			redAddition[1] = 3;
-			break;
-		case TYPE_ACTION_DURATION:
-			greenAddition[1] = 2;
-			blueAddition[1] = 0;
-			redAddition[1] = 2;
-			break;
-		case TYPE_VICTORY:
-			greenAddition[0] = 2;
-			blueAddition[0] = 0;
-			redAddition[0] = 0;
-			greenAddition[1] = 2;
-			blueAddition[1] = 0;
-			redAddition[1] = 0;
-			break;
-		}
-		return null;
 	}
 	
 	public static final int COMPARE_EXPANSION_NAME = 0;

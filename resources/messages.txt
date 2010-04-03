@@ -19,7 +19,7 @@ table.heading.AttackCard=A
 table.heading.DurationCard=D
 table.heading.PotionCard=P
 screen.RandomizedCards.title=Randomized Cards
-screen.RandomizedCards.title2=Set {0}
+screen.RandomizedCards.title2=#{0}
 screen.RandomizedCards.InputMessage=Saved preset name:
 screen.BlackMarket.title=Black Market
 screen.BlackMarket.DrawTextInfo=Draw cards. 
@@ -34,9 +34,11 @@ screen.Input.defaultmessage=
 screen.Input.inputname=Input:
 screen.Calendar.title=Calendar
 cmd.Randomize.Show=Randomize
+cmd.Randomize.SetPrevent=Rand. Prevent
 cmd.Randomize.Set=Rand. Set
 cmd.ShowChosenCardInfo=Show info
 cmd.AnotherSet=Another Set
+cmd.Set.Delete=Delete Set
 cmd.SaveAsPreset=Save
 cmd.HoldCard=Hold
 cmd.Options.Main=Options
@@ -115,6 +117,8 @@ preset.seaside.ReachForTomorrow=Reach For Tomorrow
 preset.seaside.Repetition=Repetition
 preset.seaside.GiveAndTake=Give and Take
 
+preset.alchemy.
+
 ################
 #
 # Application Name
@@ -166,6 +170,7 @@ rms.available=available
 rms.percentage=percentage
 rms.lasttab=lasttab
 rms.preferredsort=sort
+rms.randomized.saves=randsave
 rms.preset=preset
 rms.notselected=no
 rms.base=ba

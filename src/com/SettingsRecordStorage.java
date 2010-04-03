@@ -127,6 +127,8 @@ public class SettingsRecordStorage {
 	}
 	
 	public void addData(String key, String record) {
+		if ( record == null )
+			return;
 		if ( data == null ) {
 			data = new Vector
 			//#if polish.android

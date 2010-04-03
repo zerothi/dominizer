@@ -30,21 +30,27 @@ public class CardsList extends List implements CommandListener {
 	
 	private static int i = 0;
 	
-	//private static Command randomizeCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 	private static Command randomizeSetCmd = new Command( Locale.get("cmd.Randomize.Set"), Command.BACK, 0);
-	private static Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.SCREEN, 2);
+	
+	private static Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.SCREEN, 1);
+	
+	private static Command anotherSetCmd = new Command( Locale.get("cmd.AnotherSet"), Command.ITEM, 2);
+	private static Command randSetPreventCmd = new Command( Locale.get("cmd.Randomize.SetPrevent"), Command.ITEM, 4);
 	
 	private static Command sortCmd = new Command( Locale.get("cmd.Sort.Main"), Command.SCREEN, 5);
-	private static Command showInfoCmd = new Command( Locale.get("cmd.ShowChosenCardInfo"), Command.ITEM, 1);
 	private static Command sortExpNameCmd = new Command( Locale.get("cmd.Sort.ExpName"), Command.ITEM, 4);
 	private static Command sortExpCostCmd = new Command( Locale.get("cmd.Sort.ExpCost"), Command.ITEM, 5);
 	private static Command sortNameCmd = new Command( Locale.get("cmd.Sort.Name"), Command.ITEM, 6);
 	private static Command sortCostNameCmd = new Command( Locale.get("cmd.Sort.CostName"), Command.ITEM, 7);
 	private static Command sortCostExpCmd = new Command( Locale.get("cmd.Sort.CostExp"), Command.ITEM, 8);
-	private static Command anotherSetCmd = new Command( Locale.get("cmd.AnotherSet"), Command.ITEM, 10);
-	private static Command saveCmd = new Command( Locale.get("cmd.SaveAsPreset"), Command.ITEM, 11);
 	
-	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 12);
+	
+	private static Command optionsCmd = new Command( Locale.get("cmd.Options.Main"), Command.ITEM, 10);
+	private static Command showInfoCmd = new Command( Locale.get("cmd.ShowChosenCardInfo"), Command.ITEM, 12);
+	private static Command deleteSetCmd = new Command( Locale.get("cmd.Set.Delete"), Command.ITEM, 13);
+	private static Command saveCmd = new Command( Locale.get("cmd.SaveAsPreset"), Command.ITEM, 14);
+	
+	private static Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 50);
 	//private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
 	
 	public CardsList(String title, int listType, int cardSet) {
@@ -54,8 +60,9 @@ public class CardsList extends List implements CommandListener {
 		this.cardSet = cardSet;
 		//setCommandRandomize(true);
 		addCommand(randomizeSetCmd);
-		addCommand(showInfoCmd);
+		//addCommand(blackMarketCmd);
 		addCommand(anotherSetCmd);
+		addCommand(randSetPreventCmd);
 		//#if !polish.android
 			addCommand(sortCmd);
 			UiAccess.addSubCommand(sortExpNameCmd, sortCmd, this);
@@ -63,14 +70,20 @@ public class CardsList extends List implements CommandListener {
 			UiAccess.addSubCommand(sortNameCmd, sortCmd, this);
 			UiAccess.addSubCommand(sortCostExpCmd, sortCmd, this);
 			UiAccess.addSubCommand(sortCostNameCmd, sortCmd, this);
+			addCommand(optionsCmd);
+			UiAccess.addSubCommand(showInfoCmd, optionsCmd, this);
+			UiAccess.addSubCommand(deleteSetCmd, optionsCmd, this);
+			UiAccess.addSubCommand(saveCmd, optionsCmd, this);
 		//#else
 			addCommand(sortExpNameCmd);
 			addCommand(sortExpCostCmd);
 			addCommand(sortNameCmd);
 			addCommand(sortCostExpCmd);
 			addCommand(sortCostNameCmd);
+			addCommand(showInfoCmd);
+			addCommand(deleteSetCmd);
+			addCommand(saveCmd);
 		//#endif
-		addCommand(saveCmd);
 		addCommand(backCmd);
 		
 		setCommandListener(this);
@@ -78,6 +91,8 @@ public class CardsList extends List implements CommandListener {
 
 	public void setCards(Cards cards) {
 		this.release();
+		if ( cards == null )
+			return;
 		for ( int i = 0 ; i < cards.size() ; i++ ) {
 			//#style labelCard
 			CardItem cI = new CardItem(" " + cards.getName(i), listType);
@@ -116,21 +131,32 @@ public class CardsList extends List implements CommandListener {
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(backCmd) ) {
 			GameApp.instance().changeToScreen(null);
-		} else if ( cmd.equals(randomizeSetCmd) ) {
+		} else if ( cmd.equals(blackMarketCmd) )
+			GameApp.instance().showBlackMarketDeck(GameApp.SHOWCARDS);
+		else if ( cmd.equals(randomizeSetCmd) ) {
 			updateCards(true);
 			try {
 				reRandomize();
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}
-		} else if ( cmd.equals(blackMarketCmd) )
-			GameApp.instance().showBlackMarketDeck(GameApp.SHOWCARDS);
-		else if ( cmd.equals(anotherSetCmd) ) {
+		} else if ( cmd.equals(anotherSetCmd) ) {
 			try {
 				ShowCardsForm.instance().randomizeNewSet();
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}
+		} else if ( cmd.equals(randSetPreventCmd) ) {
+			try {
+				Dominion.I().randomizeCardsPrevent(cardSet);
+				setCards(Dominion.I().getCurrentlySelected(cardSet));
+			} catch (DominionException e) {
+				GameApp.instance().showAlert(e.toString());
+			}
+		} else if ( cmd.equals(deleteSetCmd) ) {
+			Dominion.I().removePlayingSet(cardSet);
+			setCards(null);
+			ShowCardsForm.instance().updateTabs();
 		} else if ( cmd.equals(showInfoCmd) )
 			GameApp.instance().showInfo(Dominion.I().getSelectedInfo(cardSet), Alert.FOREVER);
 		else if ( cmd.equals(saveCmd) ) {
@@ -140,7 +166,7 @@ public class CardsList extends List implements CommandListener {
 				GameApp.instance().showAlert(Locale.get("alert.Randomization.Save.IllegalChar"));
 			else if ( !InputForm.instance().getInput().equals("") ) {
 				SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.preset"));
-				SettingsRecordStorage.instance().addData(InputForm.instance().getInput(), Dominion.I().getCurrentAsPresetSave(cardSet));
+				SettingsRecordStorage.instance().addData(InputForm.instance().getInput(), Dominion.I().getCurrentAsSave(cardSet));
 				try {
 					SettingsRecordStorage.instance().writeData();
 				} catch (RecordStoreFullException e) {
@@ -198,8 +224,13 @@ public class CardsList extends List implements CommandListener {
 		case Canvas.KEY_NUM7:
 		case Canvas.KEY_NUM8:
 		case Canvas.KEY_NUM9:
-			if ( keyCode - Canvas.KEY_NUM0 < this.size() )
-				setSelectedIndex(keyCode - Canvas.KEY_NUM0, !isSelected(keyCode - Canvas.KEY_NUM0));
+			if ( keyCode - Canvas.KEY_NUM0 < this.size() ) {
+				if ( keyCode - Canvas.KEY_NUM0 == 0 )
+					setSelectedIndex(this.size() - 1, !isSelected(this.size() - 1));
+				else
+					setSelectedIndex(keyCode - Canvas.KEY_NUM0 - 1, !isSelected(keyCode - Canvas.KEY_NUM0 - 1));
+			}
+			repaint();
 			break;
 		default:
 			//#= super.keyPressed(keyCode);

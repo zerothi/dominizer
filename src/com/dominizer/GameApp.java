@@ -215,6 +215,15 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 				SettingsRecordStorage.instance().addData(Locale.get("rms.percentage"), Dominion.I().getPercentagesAsSave());
 				SettingsRecordStorage.instance().addData(Locale.get("rms.lasttab"), "" + currentTab);
 				SettingsRecordStorage.instance().addData(Locale.get("rms.preferredsort"), "" + Cards.COMPARE_PREFERRED);
+				SettingsRecordStorage.instance().addData(Locale.get("rms.randomized.saves"), "" + Dominion.SETS_SAVE);
+				int sets = 0;
+				int i = 0;
+				do {
+					if ( Dominion.I().getCurrentAsSave(++i) != null )
+						SettingsRecordStorage.instance().addData("" + ++sets, Dominion.I().getCurrentAsSave(i));
+					else 
+						SettingsRecordStorage.instance().deleteData("" + i);
+				} while ( i < 10 & sets < Dominion.SETS_SAVE );
 				SettingsRecordStorage.instance().writeData();
 				SettingsRecordStorage.instance().closeRecord();
 			}

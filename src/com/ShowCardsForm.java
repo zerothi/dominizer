@@ -38,8 +38,20 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 		setTabbedFormListener(this);
 		cardSet = new CardsList[Dominion.TOTAL_CARDS / 10];
 		
-		for ( int i = 0 ; i < cardSet.length ; i++ )
+		for ( int i = 0 ; i < cardSet.length ; i++ ) {
 			cardSet[i] = new CardsList(null, List.MULTIPLE, i+1);
+			if ( Dominion.I().isSetPlaying(i + 1) ) {
+				try {
+					cardSet[i].setCards(Dominion.I().getCurrentlySelected(i + 1));
+					currentSet = i + 1;
+					String tmp = "" + currentSet;
+					//#style tabIconSet
+					addTab(cardSet[i], null, Locale.get("screen.RandomizedCards.title2", tmp));
+				} catch ( DominionException e) {
+					// Do nothing as there has been an error in reading. Highly unlikely
+				}
+			}
+		}
 	}
 	
 	public static ShowCardsForm instance() {
@@ -90,5 +102,30 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
     public boolean notifyTabChangeRequested(int oldTabIndex, int newTabIndex) {
 	    // TODO Auto-generated method stub
 	    return true;
+    }
+    
+    public void updateTabs() {
+    	int i = 0;
+    	for ( i = this.size() - 1 ; i > -1 ; i-- )
+    		removeTab(i);
+    	for ( i = 1 ; i <= cardSet.length ; i++ ) {
+    		if ( Dominion.I().isSetPlaying(i) ) {
+    			try {
+	    			cardSet[i - 1].setCards(Dominion.I().getCurrentlySelected(i));
+	    			String tmp = "" + i;
+	    			//#style tabIconSet
+	    			addTab(cardSet[i - 1], null, Locale.get("screen.RandomizedCards.title2", tmp));
+	    			currentSet = i;
+    			} catch ( DominionException e ) {
+    				// TODO what to do here? Will it ever happen?
+    			}
+    		}
+    	}
+    	if ( this.size() == 0 )
+    		GameApp.instance().returnToPreviousScreen();
+    	else {
+    		setFocus(0);
+    		repaint();
+    	}
     }
 }	
