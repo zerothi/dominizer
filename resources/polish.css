@@ -416,16 +416,19 @@ menuItem:hover {
 
 .defaultTable {
 	margin: 0;
+	min-width: 100%;
+	max-width: 100%;
 	padding: 0;
 	padding-horizontal: 10;
 	columns: 3;
+	columns-width: equal;
 	font-color: translucentFontColor;
 	font-size: small;
 	table-selected-row-background: selectedPlainBg;
-	table-line-color: white;
+	table-line-color: translucentFontColor;
 	table-line-stroke: solid;
 	background: selectedBg;
-	layout: center;
+	layout: center | expand;
 }
 
 @media touchscreen {
@@ -449,6 +452,7 @@ menuItem:hover {
 	padding: 0;
 	font-style: plain;
 	font-size: small;
+	layout: center;
 }
 
 .tableCell:hover {
@@ -463,6 +467,20 @@ menuItem:hover {
 		outer-color: #a98934;
 		inner-color: #e9d363;
 	}
+}
+
+messageheadline {
+	min-width: 33%;
+	font-color: translucentFontColor;
+	font-style: bold;
+	font-size: normal;
+	layout: center;
+}
+
+messagetext {
+	font-color: translucentFontColor;
+	font-size: small;
+	layout: center;
 }
 
 @media touchscreen {

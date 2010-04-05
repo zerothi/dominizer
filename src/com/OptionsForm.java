@@ -27,7 +27,7 @@ public class OptionsForm extends List implements CommandListener{
 		super(title, listType);
 		//#style label
 		append("Calender", null);
-		addCommand(selectCmd);
+		setSelectCommand(selectCmd);
 	}
 
 	public void commandAction(Command cmd, Displayable disp) {

@@ -20,6 +20,7 @@ import com.DominionException;
 import com.EditCardsList;
 import com.GaugeForm;
 import com.InputForm;
+import com.OptionTableForm;
 import com.PresetFilteredList;
 import com.QuickRandomizeList;
 import com.Rand;
@@ -150,8 +151,11 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		//#debug dominizer
 		System.out.println("setting display");
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.finished"));
-		display.setCurrent(tabbedPane);
+		//display.setCurrent(tabbedPane);
 		//display.setCurrent(new CardsList("hej", List.MULTIPLE));
+		OptionTableForm op = new OptionTableForm(null);
+		op.changeToTable(OptionTableForm.TABLE_IFS);
+		display.setCurrent(op);
 		GaugeForm.instance(false);
 	}
 	

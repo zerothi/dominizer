@@ -32,6 +32,10 @@ screen.BlackMarket.Ticker=< {0}Bought / Left: {1} / {2} >
 screen.Input.title=Input
 screen.Input.defaultmessage=
 screen.Input.inputname=Input:
+screen.Options.title=Options
+screen.Options.SetsSaveNum=# of Saved Sets
+screen.Options.FavoriteSort=Favorite Sort
+screen.Options.RandomizationCriteria=Randomization Criteria
 screen.Calendar.title=Calendar
 cmd.Randomize.Show=Randomize
 cmd.Randomize.SetPrevent=Rand. Prevent
@@ -117,7 +121,7 @@ preset.seaside.ReachForTomorrow=Reach For Tomorrow
 preset.seaside.Repetition=Repetition
 preset.seaside.GiveAndTake=Give and Take
 
-preset.alchemy.
+preset.alchemy.=
 
 ################
 #
