@@ -441,7 +441,17 @@ public class Dominion {
 	}
 	
 	private int parseInt(String info) {
-		if ( info.length() > 1 ) {
+		if ( info.length() > 2 ) {
+			try {
+				return Integer.parseInt(info.substring(1,3));
+			} catch (Exception e) {
+				try {
+					return Integer.parseInt(info.substring(1,2));
+				} catch (Exception ee) {
+					return 1;
+				}
+			}
+		} else if ( info.length() > 1 ) {
 			try {
 				return Integer.parseInt(info.substring(1,2));
 			} catch (Exception e) {
@@ -450,21 +460,94 @@ public class Dominion {
 		}
 		return 1;
 	}
+	
+	private boolean parseOption(String option) {
+		boolean fulfilled = true;
+		for ( int i = 0 ; i < option.length() ; i++ ) {
+			if ( option.substring(i, i + 1).equals("(") ) {
+				fulfilled = parseOption(option.substring(i+1, option.indexOf(")", i)));
+				i = option.indexOf(")", i);
+			} else if ( option.substring(i, i + 1).equals(")") ) {
+				// do nothing. Has been parsed
+			} else if ( option.substring(i, i + 1).equals("&") ) {
+				fulfilled = fulfilled & parseOption(option.substring(i+1));
+				i = option.length();
+			} else if ( option.substring(i, i + 1).equals("|") ) {
+				fulfilled = fulfilled | parseOption(option.substring(i+1));
+				i = option.length();
+			} else {
+				if ( parseType(option.substring(i,i+1),Cards.TYPE_ACTION) ) {
+					fulfilled = parseCardsOption(true, option.substring(i), Cards.TYPE_ACTION);
+				} else if ( parseType(option.substring(i,i+1),Cards.TYPE_VICTORY) ) {
+					fulfilled = parseCardsOption(true, option.substring(i), Cards.TYPE_VICTORY);
+				} else if ( parseType(option.substring(i,i+1),Cards.TYPE_TREASURY) ) {
+					fulfilled = parseCardsOption(true, option.substring(i), Cards.TYPE_TREASURY);
+				} else if ( parseType(option.substring(i,i+1),Cards.TYPE_ATTACK) ) {
+					fulfilled = parseCardsOption(true, option.substring(i), Cards.TYPE_ATTACK);
+				} else if ( parseType(option.substring(i,i+1),Cards.TYPE_REACTION) ) {
+					fulfilled = parseCardsOption(true, option.substring(i), Cards.TYPE_REACTION);
+				} else if ( parseType(option.substring(i,i+1),Cards.TYPE_DURATION) ) {
+					fulfilled = parseCardsOption(true, option.substring(i), Cards.TYPE_DURATION);
+				} else if ( parseType(option.substring(i,i+1),Cards.TYPE_POTION) ) {
+					fulfilled = parseCardsOption(true, option.substring(i), Cards.TYPE_POTION);
+				} else if ( parseInformation(option.substring(i,i+1),Cards.ADDS_CARDS) == 1 ) {
+					fulfilled = parseCardsOption(false, option.substring(i), Cards.ADDS_CARDS);
+				} else if ( parseInformation(option.substring(i,i+1),Cards.ADDS_ACTIONS) == 1 ) {
+					fulfilled = parseCardsOption(false, option.substring(i), Cards.ADDS_ACTIONS);
+				} else if ( parseInformation(option.substring(i,i+1),Cards.ADDS_BUYS) == 1 ) {
+					fulfilled = parseCardsOption(false, option.substring(i), Cards.ADDS_BUYS);
+				} else if ( parseInformation(option.substring(i,i+1),Cards.ADDS_COINS) == 1 ) {
+					fulfilled = parseCardsOption(false, option.substring(i), Cards.ADDS_COINS);
+				} else if ( parseInformation(option.substring(i,i+1),Cards.ADDS_TRASH) == 1 ) {
+					fulfilled = parseCardsOption(false, option.substring(i), Cards.ADDS_TRASH);
+				} else if ( parseInformation(option.substring(i,i+1),Cards.ADDS_CURSE) == 1 ) {
+					fulfilled = parseCardsOption(false, option.substring(i), Cards.ADDS_CURSE);
+				} else if ( parseInformation(option.substring(i,i+1),Cards.ADDS_POTIONS) == 1 ) {
+					fulfilled = parseCardsOption(false, option.substring(i), Cards.ADDS_POTIONS);
+				}
+				i += 2;
+			}
+		}
+		return fulfilled;
+	}
+	
+	/*
+	 * Remember that this also has meaning for ADDS!
+	 */
+	private boolean parseCardsOption(boolean isType, String option, int typeInfo) {
+		if ( option.substring(1,2).equals("=") ) {
+			if ( isType )
+				return selectedCards.getTypes(typeInfo) == parseInt(option.substring(2,4));
+			else
+				return selectedCards.getAdds(typeInfo) == parseInt(option.substring(2,4));
+		} else if ( option.substring(1,2).equals(">") ) {
+			if ( isType )
+				return selectedCards.getTypes(typeInfo) > parseInt(option.substring(2,4));
+			else
+				return selectedCards.getAdds(typeInfo) > parseInt(option.substring(2,4));
+		} else if ( option.substring(1,2).equals("<") ) {
+			if ( isType )
+				return selectedCards.getTypes(typeInfo) < parseInt(option.substring(2,4));
+			else
+				return selectedCards.getAdds(typeInfo) < parseInt(option.substring(2,4));
+		}
+		return false;
+	}
 
 	private boolean parseType(String type, int whichInfo) {
-		if ( whichInfo ==  Cards.TYPE_ACTION && -1 < type.indexOf("c") )
+		if ( whichInfo ==  Cards.TYPE_ACTION && -1 < type.indexOf("C") )
 			return true;
-		else if ( whichInfo == Cards.TYPE_VICTORY && -1 < type.indexOf("v") )
+		else if ( whichInfo == Cards.TYPE_VICTORY && -1 < type.indexOf("V") )
 			return true;
-		else if ( whichInfo == Cards.TYPE_TREASURY && -1 < type.indexOf("t") )
+		else if ( whichInfo == Cards.TYPE_TREASURY && -1 < type.indexOf("T") )
 			return true;
-		else if ( whichInfo == Cards.TYPE_ATTACK && -1 < type.indexOf("a") )
+		else if ( whichInfo == Cards.TYPE_ATTACK && -1 < type.indexOf("A") )
 			return true;
-		else if ( whichInfo == Cards.TYPE_REACTION && -1 < type.indexOf("r") )
+		else if ( whichInfo == Cards.TYPE_REACTION && -1 < type.indexOf("R") )
 			return true;
-		else if ( whichInfo == Cards.TYPE_DURATION && -1 < type.indexOf("d") )
+		else if ( whichInfo == Cards.TYPE_DURATION && -1 < type.indexOf("D") )
 			return true;
-		else if ( whichInfo == Cards.TYPE_POTION && -1 < type.indexOf("p") )
+		else if ( whichInfo == Cards.TYPE_POTION && -1 < type.indexOf("P") )
 			return true;
 		return false;
 	}

@@ -422,6 +422,21 @@ public class Cards {
 		}
 	}
 	
+	public int getTypes(int type) {
+		int sum = 0;
+		for ( int i = 0 ; i < size() ; i++ )
+			if ( isType(i, type) )
+				sum++;
+		return sum;
+	}
+	
+	public int getAdds(int addInfo) {
+		int sum = 0;
+		for ( int i = 0 ; i < size() ; i++ )
+			sum += getAddInfo(i, addInfo);
+		return sum;
+	}
+	
 	public static final int COMPARE_EXPANSION_NAME = 0;
 	public static final int COMPARE_EXPANSION_COST = 1;
 	public static final int COMPARE_NAME = 2;

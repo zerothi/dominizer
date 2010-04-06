@@ -416,18 +416,18 @@ menuItem:hover {
 
 .defaultTable {
 	margin: 0;
-	min-width: 100%;
-	max-width: 100%;
+	min-width: 98%;
+	max-width: 98%;
 	padding: 0;
-	padding-horizontal: 10;
 	columns: 3;
 	columns-width: equal;
 	font-color: translucentFontColor;
 	font-size: small;
-	table-selected-row-background: selectedPlainBg;
+	table-selected-background: selectedPlainBg;
 	table-line-color: translucentFontColor;
 	table-line-stroke: solid;
 	background: selectedBg;
+	view-type-sequential-traversal: true;
 	layout: center | expand;
 }
 
@@ -470,7 +470,7 @@ menuItem:hover {
 }
 
 messageheadline {
-	min-width: 33%;
+	min-width: 31%;
 	font-color: translucentFontColor;
 	font-style: bold;
 	font-size: normal;

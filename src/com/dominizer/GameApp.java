@@ -200,16 +200,9 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		alert.addCommand(new Command(Locale.get("polish.command.ok"), Command.OK, 1));
 		alert.addCommand(new Command(Locale.get("polish.command.cancel"), Command.CANCEL, 1));
 		alert.setCommandListener(cmdListener);
-		display.setCurrent(alert);
+		changeToScreen(alert);
 	}
 	
-	/**
-	 * @param string
-	 */
-	public void showInputDialog(String message, CommandListener cmdListener) {
-		changeToScreen(InputForm.instance().instance(message, cmdListener));
-	}
-
 	public void quit() {
 		try {
 			if ( SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.settings")) ) {

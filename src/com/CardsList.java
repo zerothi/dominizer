@@ -160,7 +160,7 @@ public class CardsList extends List implements CommandListener {
 		} else if ( cmd.equals(showInfoCmd) )
 			GameApp.instance().showInfo(Dominion.I().getSelectedInfo(cardSet), Alert.FOREVER);
 		else if ( cmd.equals(saveCmd) ) {
-			GameApp.instance().showInputDialog(Locale.get("screen.RandomizedCards.InputMessage"), this);
+			GameApp.instance().changeToScreen(InputForm.instance().instance(Locale.get("screen.RandomizedCards.InputMessage"), this));
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.ok"))) {
 			if ( InputForm.instance().getInput().indexOf(SettingsRecordStorage.BIG_SPLITTER) > 0 )
 				GameApp.instance().showAlert(Locale.get("alert.Randomization.Save.IllegalChar"));
