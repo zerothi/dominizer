@@ -55,7 +55,8 @@ public class OptionTableForm extends Form implements CommandListener, ItemComman
     	//#style mainScreen
 	    super(title);
 	    //#style defaultTable
-	    tableItem = new TableItem(3,3);
+	    tableItem = new TableItem();
+	    tableItem.setDimension(3, 3);
 	    tableItem.setSelectionMode(TableItem.SELECTION_MODE_CELL | TableItem.SELECTION_MODE_COLUMN | TableItem.SELECTION_MODE_ROW);
 	    tableItem.setDefaultCommand(selectCmd);
 	    tableItem.setItemCommandListener(this);
@@ -237,10 +238,6 @@ public class OptionTableForm extends Form implements CommandListener, ItemComman
     		option = option.substring(0, option.length() - 2);
     		changeToTable(TABLE_IFS);
     		GameApp.instance().changeToScreen(this);
-    	} else if ( cmd.equals(selectCmd) ) {
-    		//#debug dominizer
-    		System.out.println("hej: " + tableItem.focusedIndex + " og " + tableItem.getFocusedIndex());
-    		keyPressed(tableItem.focusedIndex + Canvas.KEY_NUM0);
     	}
     }
     
@@ -255,8 +252,6 @@ public class OptionTableForm extends Form implements CommandListener, ItemComman
      * @see de.enough.polish.ui.ItemCommandListener#commandAction(de.enough.polish.ui.Command, de.enough.polish.ui.Item)
      */
     public void commandAction(de.enough.polish.ui.Command cmd, Item arg1) {
-    	//#debug dominizer
-		System.out.println("hej1: " + tableItem.focusedIndex + " og " + tableItem.getFocusedIndex());
-		keyPressed(tableItem.focusedIndex + Canvas.KEY_NUM0);
+		keyPressed(tableItem.getSelectedColumn() + 1 + tableItem.getSelectedRow() * 3 + Canvas.KEY_NUM0);
     }
 }
