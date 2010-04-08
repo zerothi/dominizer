@@ -12,6 +12,8 @@ import javax.microedition.lcdui.StringItem;
 
 import com.dominizer.GameApp;
 
+import de.enough.polish.ui.Item;
+import de.enough.polish.ui.ItemCommandListener;
 import de.enough.polish.ui.MessageItem;
 import de.enough.polish.ui.TableItem;
 import de.enough.polish.util.Locale;
@@ -20,7 +22,9 @@ import de.enough.polish.util.Locale;
  * @author nick
  *
  */
-public class OptionTableForm extends Form implements CommandListener {
+public class OptionTableForm extends Form implements CommandListener, ItemCommandListener {
+	
+	private Command selectCmd = new Command( Locale.get("polish.command.select"), Command.BACK, 0);
 
 	public static final int PARENT_START = 0;
 	public static final int PARENT_END = 2;
@@ -53,6 +57,8 @@ public class OptionTableForm extends Form implements CommandListener {
 	    //#style defaultTable
 	    tableItem = new TableItem(3,3);
 	    tableItem.setSelectionMode(TableItem.SELECTION_MODE_CELL | TableItem.SELECTION_MODE_COLUMN | TableItem.SELECTION_MODE_ROW);
+	    tableItem.setDefaultCommand(selectCmd);
+	    tableItem.setItemCommandListener(this);
 	    append(tableItem);
 	    option = "";
 	    //#style label
@@ -231,8 +237,26 @@ public class OptionTableForm extends Form implements CommandListener {
     		option = option.substring(0, option.length() - 2);
     		changeToTable(TABLE_IFS);
     		GameApp.instance().changeToScreen(this);
+    	} else if ( cmd.equals(selectCmd) ) {
+    		//#debug dominizer
+    		System.out.println("hej: " + tableItem.focusedIndex + " og " + tableItem.getFocusedIndex());
+    		keyPressed(tableItem.focusedIndex + Canvas.KEY_NUM0);
     	}
-	    // TODO Auto-generated method stub
-	    
+    }
+    
+    public String getOption() {
+    	if ( option.equals("") )
+    		return null;
+    	return option;
+    	
+    }
+
+	/* (non-Javadoc)
+     * @see de.enough.polish.ui.ItemCommandListener#commandAction(de.enough.polish.ui.Command, de.enough.polish.ui.Item)
+     */
+    public void commandAction(de.enough.polish.ui.Command cmd, Item arg1) {
+    	//#debug dominizer
+		System.out.println("hej1: " + tableItem.focusedIndex + " og " + tableItem.getFocusedIndex());
+		keyPressed(tableItem.focusedIndex + Canvas.KEY_NUM0);
     }
 }
