@@ -22,7 +22,11 @@ import de.enough.polish.util.Locale;
  * @author nick
  *
  */
-public class OptionTableForm extends Form implements CommandListener, ItemCommandListener {
+public class ConditionTableForm extends Form implements CommandListener, ItemCommandListener {
+	
+	private Command doneCmd = new Command( Locale.get("cmd.Conditions.Save"), Command.SCREEN, 0);
+	private Command deleteCmd = new Command( Locale.get("polish.command.delete"), Command.SCREEN, 25);
+	private Command backCmd = new Command( Locale.get("polish.command.back"), Command.SCREEN, 50);
 	
 	private Command selectCmd = new Command( Locale.get("polish.command.select"), Command.BACK, 0);
 
@@ -46,14 +50,17 @@ public class OptionTableForm extends Form implements CommandListener, ItemComman
 	
 	private TableItem tableItem = null;
 	
-	private StringItem sI = null;
+	private StringItem sITitle, sI = null;
 	
 	/**
      * @param title
      */
-    public OptionTableForm(String title) {
+    public ConditionTableForm() {
     	//#style mainScreen
-	    super(title);
+	    super(null);
+	    //#style label
+	    sITitle = new StringItem(null, "");
+	    append(sITitle);
 	    //#style defaultTable
 	    tableItem = new TableItem();
 	    tableItem.setDimension(3, 3);
@@ -65,6 +72,13 @@ public class OptionTableForm extends Form implements CommandListener, ItemComman
 	    //#style label
 	    sI = new StringItem(null, option);
 	    append(sI);
+	    addCommand(doneCmd);
+	    addCommand(backCmd);
+	    setCommandListener(this);
+    }
+      
+    public void setConditionTitle(String title) {
+    	sITitle.setLabel(title);
     }
     
     public void changeToTable(int tableType) {
@@ -130,6 +144,7 @@ public class OptionTableForm extends Form implements CommandListener, ItemComman
 			//#style tableCell
 			tableItem.set(GREATER, new MessageItem("" + (GREATER+1), "Greater >"));
 		}
+		tableItem.setSelectedCell(1, 1);
 		//tableItem.focusChild(4);
     }
 
@@ -181,6 +196,7 @@ public class OptionTableForm extends Form implements CommandListener, ItemComman
 					option += "D";break;
 				case Cards.TYPE_POTION:
 					option += "P";break;
+				default: return;
 				}
 				changeToTable(TABLE_NUMBER);break;
 			} else if ( currentTableType == TABLE_ADDS ) {
@@ -199,6 +215,7 @@ public class OptionTableForm extends Form implements CommandListener, ItemComman
 					option += "u";break;
 				case Cards.ADDS_POTIONS:
 					option += "p";break;
+				default: return;
 				}
 				changeToTable(TABLE_NUMBER);break;
 			} else if ( currentTableType == TABLE_NUMBER ) {
@@ -211,6 +228,7 @@ public class OptionTableForm extends Form implements CommandListener, ItemComman
 					option += "=";break;
 				case GREATER:
 					option += ">";break;
+				default: return;
 				}
 				GameApp.instance().changeToScreen(GaugeForm.instance());
 			}
@@ -235,9 +253,19 @@ public class OptionTableForm extends Form implements CommandListener, ItemComman
     		changeToTable(TABLE_IFS);
     		GameApp.instance().changeToScreen(this);
     	} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel")) ) {
-    		option = option.substring(0, option.length() - 2);
+    		if ( option.length() > 2 )
+    			option = option.substring(0, option.length() - 2);
+    		else
+    			option = "";
     		changeToTable(TABLE_IFS);
     		GameApp.instance().changeToScreen(this);
+    	} else if ( cmd.equals(doneCmd) ) {
+    		GameApp.instance().cF.saveCondition();
+    		GameApp.instance().changeToScreen(null);
+    	} else if ( cmd.equals(backCmd) ) {
+    		GameApp.instance().changeToScreen(null);
+    	} else if ( cmd.equals(deleteCmd) ) {
+    		keyPressed(Canvas.KEY_NUM0);
     	}
     }
     

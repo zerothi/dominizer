@@ -24,14 +24,14 @@ public class EditCardsList extends List implements CommandListener {
 		//#style mainScreen
 		super(title, listType);
 		for ( int i = 0 ; i < Dominion.I().getExpansions() ; i++ ){
-			for ( int cardNumber = 0 ; cardNumber < Dominion.I().getExpansion(i).size() ; cardNumber++ ) {
-				appendCard(Dominion.I().getExpansion(i).getName(cardNumber),
-						Dominion.I().getExpansion(i).getCardTypeImage(cardNumber),
-						Dominion.I().getExpansion(i).getCostImage(cardNumber));
+			for ( int cardNumber = 0 ; cardNumber < Dominion.I().expansions[i].size() ; cardNumber++ ) {
+				appendCard(Dominion.I().expansions[i].getName(cardNumber),
+						Dominion.I().expansions[i].getCardTypeImage(cardNumber),
+						Dominion.I().expansions[i].getCostImage(cardNumber));
 				/*//#style label
 				append(Dominion.I().getExpansion(i).getName(cardNumber), Dominion.I().getExpansion(i).getCardTypeImage(cardNumber));*/
-				setSelectedIndex(size() - 1, Dominion.I().getExpansion(i).isAvailable(cardNumber));
-				setPercentage(size() - 1, i, cardNumber, Dominion.I().getExpansion(i).getPercentage(cardNumber));
+				setSelectedIndex(size() - 1, Dominion.I().expansions[i].isAvailable(cardNumber));
+				setPercentage(size() - 1, i, cardNumber, Dominion.I().expansions[i].getPercentage(cardNumber));
 			}
 		}
 		focus(0);
@@ -53,9 +53,9 @@ public class EditCardsList extends List implements CommandListener {
 			int tmp = 0;
 			switch ( Dominion.I().getLinearExpansionIndex(getCurrentIndex()) ) {
 			case 3:	tmp = 0; break;
-			case 2:	tmp += Dominion.I().getExpansion(2).size();
-			case 1:	tmp += Dominion.I().getExpansion(1).size();
-			case 0:	tmp += Dominion.I().getExpansion(0).size();
+			case 2:	tmp += Dominion.I().expansions[2].size();
+			case 1:	tmp += Dominion.I().expansions[1].size();
+			case 0:	tmp += Dominion.I().expansions[0].size();
 			}
 			focus(tmp);
 			break;
@@ -90,9 +90,9 @@ public class EditCardsList extends List implements CommandListener {
 			tmp[0] = Dominion.I().getLinearExpansionIndex(getCurrentIndex());
 			tmp[1] = Dominion.I().getLinearCardIndex(getCurrentIndex());
 			if ( tmp[0] == -1 ) return;
-			String tmpS = Dominion.I().getExpansion(tmp[0]).getName(tmp[1]);
+			String tmpS = Dominion.I().expansions[tmp[0]].getName(tmp[1]);
 			GaugeForm.instance().setGauge(Locale.get("gauge.card.percentage", tmpS), true, 10, 0);
-			GaugeForm.instance().setGaugeValue(Dominion.I().getExpansion(tmp[0]).getPercentage(tmp[1]));
+			GaugeForm.instance().setGaugeValue(Dominion.I().expansions[tmp[0]].getPercentage(tmp[1]));
 			GaugeForm.instance().setCommandListener(this);
 			GameApp.instance().changeToScreen(GaugeForm.instance());
 			tmpS = null;
@@ -110,18 +110,18 @@ public class EditCardsList extends List implements CommandListener {
 		CardItem ci = null;
 		if ( deciPercentage > 0 ) {
 			//#style label
-			ci = new CardItem(Dominion.I().getExpansion(exp).getName(card) + " " + deciPercentage * 10 + "%", List.MULTIPLE);
-			set(index, Dominion.I().getExpansion(exp).getName(card) + " " + deciPercentage * 10 + "%", getImage(index));
-			Dominion.I().getExpansion(exp).setPercentage(card, deciPercentage);
+			ci = new CardItem(Dominion.I().expansions[exp].getName(card) + " " + deciPercentage * 10 + "%", List.MULTIPLE);
+			set(index, Dominion.I().expansions[exp].getName(card) + " " + deciPercentage * 10 + "%", getImage(index));
+			Dominion.I().expansions[exp].setPercentage(card, deciPercentage);
 		} else {
 			//#style label
-			ci = new CardItem(Dominion.I().getExpansion(exp).getName(card), List.MULTIPLE);
-			Dominion.I().getExpansion(exp).setPercentage(card, 0);
+			ci = new CardItem(Dominion.I().expansions[exp].getName(card), List.MULTIPLE);
+			Dominion.I().expansions[exp].setPercentage(card, 0);
 		}
-		ci.setLeftImage(Dominion.I().getExpansion(exp).getCardTypeImage(card));
-		ci.setRightImage(Dominion.I().getExpansion(exp).getCostImage(card));
+		ci.setLeftImage(Dominion.I().expansions[exp].getCardTypeImage(card));
+		ci.setRightImage(Dominion.I().expansions[exp].getCostImage(card));
 		set(index, ci);
-		setSelectedIndex(index, Dominion.I().getExpansion(exp).isAvailable(card));
+		setSelectedIndex(index, Dominion.I().expansions[exp].isAvailable(card));
 		if ( index > 0 )
 			focus(index - 1);
 		if ( size() > index + 1)
@@ -154,17 +154,15 @@ public class EditCardsList extends List implements CommandListener {
 			if ( specific == -1 ) {
 				for ( int i = 0 ; i < size() ; i++ ) {
 					//#debug dominizer
-					System.out.println("changing: " + i + " to state: " + Dominion.I().getExpansion(
-							Dominion.I().getLinearExpansionIndex(i)).isAvailable(
+					System.out.println("changing: " + i + " to state: " + Dominion.I().expansions[
+							Dominion.I().getLinearExpansionIndex(i)].isAvailable(
 							Dominion.I().getLinearCardIndex(i)));
-					changeCard(i, Dominion.I().getExpansion(
-							Dominion.I().getLinearExpansionIndex(i)).isAvailable(
-							Dominion.I().getLinearCardIndex(i)));
+					changeCard(i, Dominion.I().expansions[Dominion.I().getLinearExpansionIndex(i)]
+					                                      .isAvailable(Dominion.I().getLinearCardIndex(i)));
 				}
 			} else {
-				changeCard(specific, Dominion.I().getExpansion(
-						Dominion.I().getLinearExpansionIndex(specific)).isAvailable(
-						Dominion.I().getLinearCardIndex(specific)));
+				changeCard(specific, Dominion.I().expansions[Dominion.I().getLinearExpansionIndex(specific)]
+				                                             .isAvailable(Dominion.I().getLinearCardIndex(specific)));
 			}
 		}
 	}
@@ -173,9 +171,9 @@ public class EditCardsList extends List implements CommandListener {
 		if ( index < 0 ) 
 			return;
 		setSelectedIndex(index, isAvailable);
-		Dominion.I().getExpansion(Dominion.I().getLinearExpansionIndex(index)).setAvailable(
+		Dominion.I().expansions[Dominion.I().getLinearExpansionIndex(index)].setAvailable(
 				Dominion.I().getLinearCardIndex(index), isAvailable);
-		Dominion.I().getExpansion(Dominion.I().getLinearExpansionIndex(index)).setBlackMarketAvailable(
+		Dominion.I().expansions[Dominion.I().getLinearExpansionIndex(index)].setBlackMarketAvailable(
 				Dominion.I().getLinearCardIndex(index), isAvailable);
 	}
 }

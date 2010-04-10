@@ -31,14 +31,14 @@ public class QuickRandomizeList extends List implements CommandListener {
 		//#style mainScreen
 		super(title, listType);
 		for ( tmp = 0 ; tmp < Dominion.I().getExpansions() ; tmp++ ) {
-			if ( Dominion.I().getNumberOfExpansionCards()[tmp] > 0 ) {
+			if ( Dominion.I().numberOfCardsFromExp[tmp] > 0 ) {
 				//#style label
-				append(Dominion.getExpansionName(tmp) + " " + Dominion.I().getNumberOfExpansionCards()[tmp], Dominion.getExpansionImage(tmp));
+				append(Dominion.getExpansionName(tmp) + " " + Dominion.I().numberOfCardsFromExp[tmp], Dominion.getExpansionImage(tmp));
 			} else {
 				//#style label
 				append(Dominion.getExpansionName(tmp), Dominion.getExpansionImage(tmp));
 			}
-			setSelectedIndex(tmp, Dominion.I().getExpansionPlayingStates()[tmp]);
+			setSelectedIndex(tmp, Dominion.I().playingExpansions[tmp]);
 		}
 		addCommand(quickRandomizeCardsCmd);
 		addCommand(gaugeCmd);
@@ -59,7 +59,7 @@ public class QuickRandomizeList extends List implements CommandListener {
 				GaugeForm.instance().setGauge(Locale.get("gauge.expansion.setCards", tmpS), true, 3, 0);
 			else
 				GaugeForm.instance().setGauge(Locale.get("gauge.expansion.setCards", tmpS), true, 10, 0);
-			GaugeForm.instance().setGaugeValue(Dominion.I().getNumberOfExpansionCards()[tmp]);
+			GaugeForm.instance().setGaugeValue(Dominion.I().numberOfCardsFromExp[tmp]);
 			GaugeForm.instance().setCommandListener(this);
 			GameApp.instance().changeToScreen(GaugeForm.instance());
 			tmpS = null;
@@ -100,7 +100,7 @@ public class QuickRandomizeList extends List implements CommandListener {
 
 	private void setCardsFromExpansion(int exp, int numberOfCards) {
 		if ( -1 < exp & exp < Dominion.I().getExpansions() ) {
-			if ( Dominion.I().getExpansion(exp).size() < numberOfCards )
+			if ( Dominion.I().expansions[exp].size() < numberOfCards )
 				GameApp.instance().showAlert(Locale.get("alert.CardsFromExpansion.Promo"));
 			else {
 				if ( numberOfCards > 0 ) {
@@ -111,8 +111,8 @@ public class QuickRandomizeList extends List implements CommandListener {
 					//#style label
 					set(exp, Dominion.getExpansionName(exp), getImage(exp));
 				}
-				setSelectedIndex(exp, Dominion.I().getExpansionPlayingStates()[exp]);
-				Dominion.I().setCardsUsedForExpansion(exp, numberOfCards);
+				setSelectedIndex(exp, Dominion.I().playingExpansions[exp]);
+				Dominion.I().numberOfCardsFromExp[exp] = numberOfCards;
 			}
 			if ( exp == 0 )
 				UiAccess.setFocusedIndex(this, 1);

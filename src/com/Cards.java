@@ -402,6 +402,9 @@ public class Cards {
 	public int size() {
 		if ( name == null )
 			return 0;
+		for ( int i = 0 ; i < name.length ; i++ )
+			if ( name[i] == null )
+				return i + 1;
 		return name.length;
 	}
 	
@@ -450,6 +453,8 @@ public class Cards {
 
 	public static final int IS_SET = 1;
 	public static final int IS_NOT_SET = 0;
+	
+	// TODO : When changing the below to non-consecutive numbers please update method "parseCondition" in Dominion
 	public static final int TYPE_ACTION = 0;
 	public static final int TYPE_VICTORY = 1;
 	public static final int TYPE_TREASURY = 2;
@@ -465,6 +470,7 @@ public class Cards {
 	public static final int TYPE_ACTION_DURATION = 14;
 	public static final int TYPE_VICTORY_TREASURY = 15;
 	
+	// TODO : When changing the below to non-consecutive numbers please update method "parseCondition" in Dominion
 	public static final int ADDS_CARDS = 0;
 	public static final int ADDS_ACTIONS = 1;
 	public static final int ADDS_BUYS = 2;

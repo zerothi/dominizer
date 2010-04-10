@@ -14,7 +14,7 @@ import com.dominizer.GameApp;
 import de.enough.polish.ui.List;
 import de.enough.polish.util.Locale;
 
-public class PresetFilteredList extends List implements CommandListener {
+public class PresetList extends List implements CommandListener {
 	
 	private Command selectCmd = new Command( Locale.get("polish.command.select"), Command.SCREEN, 6);
 	private Command infoCmd = new Command( Locale.get("cmd.Preset.ShowInfo"), Command.SCREEN, 2);
@@ -23,7 +23,7 @@ public class PresetFilteredList extends List implements CommandListener {
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
 	private int[] tmp = new int[] { 0, 0};
 	
-	public PresetFilteredList(String title, int listType) {
+	public PresetList(String title, int listType) {
 		//#style mainScreen
 		super(title, listType);
 		//#if !polish.android

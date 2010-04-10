@@ -503,7 +503,7 @@ messagetext {
  *
  **************/
 .tabbedPane {
-	
+	title-menu: true;
 }
 
 .tabbedPaneIcons {

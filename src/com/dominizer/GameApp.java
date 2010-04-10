@@ -15,13 +15,14 @@ import javax.microedition.rms.RecordStoreNotFoundException;
 import com.BlackMarketForm;
 import com.Cards;
 import com.CardsList;
+import com.ConditionForm;
 import com.Dominion;
 import com.DominionException;
 import com.EditCardsList;
 import com.GaugeForm;
 import com.InputForm;
-import com.OptionTableForm;
-import com.PresetFilteredList;
+import com.ConditionTableForm;
+import com.PresetList;
 import com.QuickRandomizeList;
 import com.Rand;
 import com.SettingsRecordStorage;
@@ -51,6 +52,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	public static final int TAB_QUICK = 0;
 	public static final int TAB_EDIT = 1;
 	public static final int TAB_PRESET = 2;
+	public static final int TAB_CONDITION = 3;
 	public static final int SHOWCARDS= 20;
 	
 	private static GameApp app = null;
@@ -61,8 +63,10 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	
 	public QuickRandomizeList qrF = null;
 	public EditCardsList ecFL = null;
-	public PresetFilteredList pFL = null;
+	public PresetList pFL = null;
+	public ConditionForm cF = null;
 	public BlackMarketForm bmF = null;
+	
 
 	public GameApp() {
 		super();
@@ -126,20 +130,19 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		tabbedPane = new TabbedPane(null);
 		tabbedPane.addTabListener(this);
 		tabbedPane.setTabbedFormListener(this);
-		//Locale.get("tab.Quick.title")
 		qrF = new QuickRandomizeList(null, List.MULTIPLE);
 		//#style tabIcon
 		tabbedPane.addTab(qrF, null, Locale.get("app.name"));
-		//Locale.get("tab.EditCards.title")
-		ecFL = new EditCardsList(null, FilteredList.MULTIPLE);
+		ecFL = new EditCardsList(null, List.MULTIPLE);
 		//#style tabIcon
 		tabbedPane.addTab(ecFL, null, Locale.get("tab.EditCards.title"));
-		//Locale.get("tab.Preset.title")
-		pFL = new PresetFilteredList(null, FilteredList.IMPLICIT);
+		pFL = new PresetList(null, List.IMPLICIT);
 		//#style tabIcon
 		tabbedPane.addTab(pFL, null, Locale.get("tab.Preset.title"));
-		//Locale.get("tab.Calendar.title")
-		///#style tabIcon
+		cF = new ConditionForm(null, List.MULTIPLE);
+		//#style tabIcon
+		tabbedPane.addTab(cF, null, Locale.get("tab.Condition.title"));
+		// # style tabIcon
 		//tabbedPane.addTab(new GameCalendarForm(null), null, Locale.get("screen.Calendar.title"));
 		bmF = new BlackMarketForm(Locale.get("screen.BlackMarket.title"), List.IMPLICIT);
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.gui.settings"));
@@ -151,11 +154,9 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		//#debug dominizer
 		System.out.println("setting display");
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.finished"));
-		//display.setCurrent(tabbedPane);
+		display.setCurrent(tabbedPane);
 		//display.setCurrent(new CardsList("hej", List.MULTIPLE));
-		OptionTableForm op = new OptionTableForm(null);
-		op.changeToTable(OptionTableForm.TABLE_IFS);
-		display.setCurrent(op);
+		//display.setCurrent(ConditionTableForm.instance());
 		GaugeForm.instance(false);
 	}
 	
@@ -204,6 +205,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	}
 	
 	public void quit() {
+		int i;
 		try {
 			if ( SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.settings")) ) {
 				SettingsRecordStorage.instance().addData(Locale.get("rms.expansions"), Dominion.I().getExpansionPlayingStatesAsSave());
@@ -214,13 +216,27 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 				SettingsRecordStorage.instance().addData(Locale.get("rms.preferredsort"), "" + Cards.COMPARE_PREFERRED);
 				SettingsRecordStorage.instance().addData(Locale.get("rms.randomized.saves"), "" + Dominion.SETS_SAVE);
 				int sets = 0;
-				int i = 0;
+				i = 0;
 				do {
 					if ( Dominion.I().getCurrentAsSave(++i) != null )
 						SettingsRecordStorage.instance().addData("" + ++sets, Dominion.I().getCurrentAsSave(i));
 					else 
 						SettingsRecordStorage.instance().deleteData("" + i);
 				} while ( i < 10 & sets < Dominion.SETS_SAVE );
+				SettingsRecordStorage.instance().writeData();
+				SettingsRecordStorage.instance().closeRecord();
+			}
+		} catch (RecordStoreFullException e) {
+		} catch (RecordStoreNotFoundException e) {
+		} catch (RecordStoreException e) {
+		}
+		try {
+			SettingsRecordStorage.instance().deleteRecordStore(Locale.get("rms.file.condition")); 
+			if ( SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.condition")) ) {
+				for ( i = 0 ; i < Dominion.I().condition.size() ; i++ ) {
+					SettingsRecordStorage.instance().addData("" + i + "name", Dominion.I().condition.getNameAsSave(i));
+					SettingsRecordStorage.instance().addData("" + i, Dominion.I().condition.getCondition(i));
+				}
 				SettingsRecordStorage.instance().writeData();
 				SettingsRecordStorage.instance().closeRecord();
 			}
@@ -257,12 +273,22 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 			//#debug dominizer
 			System.out.println("updating cards internal");
 			break;
+		case TAB_CONDITION:
+			cF.updateCards(true, -1);
+			//#debug dominizer
+			System.out.println("updating conditions internal");
+			break;
 		}
 		switch ( to ) {
 		case TAB_EDIT:
 			ecFL.updateCards(false);
 			//#debug dominizer
 			System.out.println("updating cards external");
+			break;
+		case TAB_CONDITION:
+			cF.updateCards(false, -1);
+			//#debug dominizer
+			System.out.println("updating conditions external");
 			break;
 		}
 		return true;

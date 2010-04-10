@@ -20,14 +20,15 @@ public class Dominion {
 	public static boolean RANDOMIZE_COMPLETELY_NEW = true;
 	public static int SETS_SAVE = 5;
 	
-	private Cards[] expansions = null;
+	public Cards[] expansions = null;
 	private Cards selectedCards = null;
-	private CardPresets[] presets = null;
+	public Condition condition = null;
+	public CardPresets[] presets = null;
 	private int numberOfRandomCards = 10;
 	
-	private boolean[] playingExpansions = new boolean[] { true, true, true, true, true, true };
+	public boolean[] playingExpansions = new boolean[] { true, true, true, true, true, true };
 	
-	private int[] numberOfCardsFromExp = new int[] { 0, 0, 0, 0, 0, 0 };
+	public int[] numberOfCardsFromExp = new int[] { 0, 0, 0, 0, 0, 0 };
 
 	private StringBuffer sb;
 	
@@ -273,7 +274,7 @@ public class Dominion {
 			throw new DominionException("No currently selected cards.");
 		return sortCards(selectedCards, sortMethod);
 	}
-
+/*
 	public Cards getExpansion(int expansion) {
 		return expansions[expansion];
 	}
@@ -281,7 +282,7 @@ public class Dominion {
 	public boolean[] getExpansionPlayingStates() {
 		return playingExpansions;
 	}
-
+*/
 	public String getExpansionPlayingStatesAsSave() {
 		sb = new StringBuffer(playingExpansions.length);
 		for ( loop = 0 ; loop < numberOfCardsFromExp.length ; loop++ )
@@ -316,18 +317,18 @@ public class Dominion {
 		}
 		return -1;
 	}
-
+/*
 	public int[] getNumberOfExpansionCards() {
 		return numberOfCardsFromExp;
 	}
-
+*/
 	/**
 	 * @return the numberOfRandomCards
-	 */
+	 *
 	public int getNumberOfRandomCards() {
 		return numberOfRandomCards;
 	}
-
+*/
 	public String getPercentagesAsSave() {
 		StringBuffer sb = new StringBuffer(TOTAL_CARDS);
 		for ( loop = 0; loop < expansions.length; loop++)
@@ -461,49 +462,29 @@ public class Dominion {
 		return 1;
 	}
 	
-	private boolean parseOption(String option) {
+	private boolean parseCondition(String option) {
 		boolean fulfilled = true;
 		for ( int i = 0 ; i < option.length() ; i++ ) {
 			if ( option.substring(i, i + 1).equals("(") ) {
-				fulfilled = parseOption(option.substring(i+1, option.indexOf(")", i)));
+				fulfilled = parseCondition(option.substring(i+1, option.indexOf(")", i)));
 				i = option.indexOf(")", i);
 			} else if ( option.substring(i, i + 1).equals(")") ) {
-				// do nothing. Has been parsed
+				// do nothing. Has been parsed. Shouldn't happen either
 			} else if ( option.substring(i, i + 1).equals("&") ) {
-				fulfilled = fulfilled & parseOption(option.substring(i+1));
+				fulfilled = fulfilled & parseCondition(option.substring(i+1));
 				i = option.length();
 			} else if ( option.substring(i, i + 1).equals("|") ) {
-				fulfilled = fulfilled | parseOption(option.substring(i+1));
+				fulfilled = fulfilled | parseCondition(option.substring(i+1));
 				i = option.length();
 			} else {
-				if ( parseType(option.substring(i,i+1),Cards.TYPE_ACTION) ) {
-					fulfilled = parseCardsOption(true, option.substring(i), Cards.TYPE_ACTION);
-				} else if ( parseType(option.substring(i,i+1),Cards.TYPE_VICTORY) ) {
-					fulfilled = parseCardsOption(true, option.substring(i), Cards.TYPE_VICTORY);
-				} else if ( parseType(option.substring(i,i+1),Cards.TYPE_TREASURY) ) {
-					fulfilled = parseCardsOption(true, option.substring(i), Cards.TYPE_TREASURY);
-				} else if ( parseType(option.substring(i,i+1),Cards.TYPE_ATTACK) ) {
-					fulfilled = parseCardsOption(true, option.substring(i), Cards.TYPE_ATTACK);
-				} else if ( parseType(option.substring(i,i+1),Cards.TYPE_REACTION) ) {
-					fulfilled = parseCardsOption(true, option.substring(i), Cards.TYPE_REACTION);
-				} else if ( parseType(option.substring(i,i+1),Cards.TYPE_DURATION) ) {
-					fulfilled = parseCardsOption(true, option.substring(i), Cards.TYPE_DURATION);
-				} else if ( parseType(option.substring(i,i+1),Cards.TYPE_POTION) ) {
-					fulfilled = parseCardsOption(true, option.substring(i), Cards.TYPE_POTION);
-				} else if ( parseInformation(option.substring(i,i+1),Cards.ADDS_CARDS) == 1 ) {
-					fulfilled = parseCardsOption(false, option.substring(i), Cards.ADDS_CARDS);
-				} else if ( parseInformation(option.substring(i,i+1),Cards.ADDS_ACTIONS) == 1 ) {
-					fulfilled = parseCardsOption(false, option.substring(i), Cards.ADDS_ACTIONS);
-				} else if ( parseInformation(option.substring(i,i+1),Cards.ADDS_BUYS) == 1 ) {
-					fulfilled = parseCardsOption(false, option.substring(i), Cards.ADDS_BUYS);
-				} else if ( parseInformation(option.substring(i,i+1),Cards.ADDS_COINS) == 1 ) {
-					fulfilled = parseCardsOption(false, option.substring(i), Cards.ADDS_COINS);
-				} else if ( parseInformation(option.substring(i,i+1),Cards.ADDS_TRASH) == 1 ) {
-					fulfilled = parseCardsOption(false, option.substring(i), Cards.ADDS_TRASH);
-				} else if ( parseInformation(option.substring(i,i+1),Cards.ADDS_CURSE) == 1 ) {
-					fulfilled = parseCardsOption(false, option.substring(i), Cards.ADDS_CURSE);
-				} else if ( parseInformation(option.substring(i,i+1),Cards.ADDS_POTIONS) == 1 ) {
-					fulfilled = parseCardsOption(false, option.substring(i), Cards.ADDS_POTIONS);
+				for ( int j = 0 ; j < 7 ; j++ ) {
+					if ( parseType(option.substring(i,i+1), j) ) {
+						fulfilled = parseCardsOption(true, option.substring(i), j);
+						j = 7;
+					} else if ( parseType(option.substring(i,i+1), j) ) {
+						fulfilled = parseCardsOption(false, option.substring(i), j);
+						j = 7;
+					}
 				}
 				i += 2;
 			}
@@ -744,7 +725,7 @@ public class Dominion {
 		System.out.println("usedcards: " + tmp);
 		if (tmp != null) {
 			for ( loop = 0 ; loop < tmp.length() ; loop++ ) 
-				setCardsUsedForExpansion(loop, Integer.parseInt(tmp.substring(loop, loop + 1)));
+				numberOfCardsFromExp[loop] = Integer.parseInt(tmp.substring(loop, loop + 1));
 		}
 		//#debug dominizer
 		System.out.println("finished reading number of cards succesfully\nstart reading available cards");
@@ -819,6 +800,32 @@ public class Dominion {
 		}
 		//#debug dominizer
 		System.out.println("finished reading preferred sort succesfully");
+		
+		//#debug dominizer
+		System.out.println("start reading conditions");
+		if ( SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.condition")) ) {
+			loop = 0;
+			while ( SettingsRecordStorage.instance().readKey("" + loop + "name") != null ) {
+				loop++;
+			}
+			//#debug dominizer
+			System.out.println("readed conditions: "+loop);
+			condition = new Condition(loop);
+			loop = 0;
+			while ( SettingsRecordStorage.instance().readKey("" + loop + "name") != null ) {
+				condition.setName(loop, SettingsRecordStorage.instance().readKey("" + loop + "name").substring(2));
+				if ( SettingsRecordStorage.instance().readKey("" + loop + "name").substring(0,1) == "1" )
+					condition.setAvailable(loop, true);
+				if ( SettingsRecordStorage.instance().readKey("" + loop + "name").substring(1,2) == "*" )
+					condition.setPercentage(loop, 10);
+				else
+					condition.setPercentage(loop, Integer.parseInt(SettingsRecordStorage.instance().readKey("" + loop + "name").substring(1,2)));
+				condition.setCondition(loop, SettingsRecordStorage.instance().readKey("" + loop));				
+				loop++;
+			}
+		}
+		//#debug dominizer
+		System.out.println("finished reading conditions succesfully");
 	}
 
 	public void removePlayingSet(int playingSet) {
@@ -892,11 +899,11 @@ public class Dominion {
 					return selectPreset(i, j);
 		return false;
 	}
-
+/*
 	public void setCardsUsedForExpansion(int expansion, int numberOfCards) {
 		numberOfCardsFromExp[expansion] = numberOfCards;
 	}
-
+*/
 	public void setExpansionPlayingState(boolean[] isAvailable) {
 		for ( loop = 0; loop < playingExpansions.length; loop++)
 			setExpansionPlayingState(loop, isAvailable[loop]);
@@ -912,14 +919,6 @@ public class Dominion {
 				expansions[exp].setBlackMarketAvailable(i, isAvailable);
 			}
 		}
-	}
-	
-	/**
-	 * @param numberOfRandomCards
-	 *            the number of cards that should be randomized to set
-	 */
-	public void setNumberOfRandomCards(int numberOfRandomCards) {
-		this.numberOfRandomCards = numberOfRandomCards;
 	}
 	
 	public Cards sortCards(Cards cards, int sortMethod) {
