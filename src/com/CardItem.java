@@ -8,7 +8,7 @@ import javax.microedition.lcdui.Image;
 
 import de.enough.polish.ui.ChoiceItem;
 //#if polish.usePolishGui
-	import de.enough.polish.ui.Style;
+	//#= import de.enough.polish.ui.Style;
 //#endif
 /**
  * @author nick
