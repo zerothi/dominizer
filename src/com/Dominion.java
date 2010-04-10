@@ -805,21 +805,20 @@ public class Dominion {
 		System.out.println("start reading conditions");
 		if ( SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.condition")) ) {
 			loop = 0;
-			while ( SettingsRecordStorage.instance().readKey("" + loop + "name") != null ) {
+			while ( SettingsRecordStorage.instance().readKey("name" + loop) != null ) {
 				loop++;
 			}
 			//#debug dominizer
 			System.out.println("readed conditions: "+loop);
 			condition = new Condition(loop);
 			loop = 0;
-			while ( SettingsRecordStorage.instance().readKey("" + loop + "name") != null ) {
-				condition.setName(loop, SettingsRecordStorage.instance().readKey("" + loop + "name").substring(2));
-				if ( SettingsRecordStorage.instance().readKey("" + loop + "name").substring(0,1) == "1" )
-					condition.setAvailable(loop, true);
-				if ( SettingsRecordStorage.instance().readKey("" + loop + "name").substring(1,2) == "*" )
+			while ( SettingsRecordStorage.instance().readKey("name" + loop) != null ) {
+				condition.setName(loop, SettingsRecordStorage.instance().readKey("name" + loop).substring(2));
+				condition.setAvailable(loop, SettingsRecordStorage.instance().readKey("name" + loop).substring(0,1).equals("1"));
+				if ( SettingsRecordStorage.instance().readKey("name" + loop).substring(1,2).equals("*") )
 					condition.setPercentage(loop, 10);
 				else
-					condition.setPercentage(loop, Integer.parseInt(SettingsRecordStorage.instance().readKey("" + loop + "name").substring(1,2)));
+					condition.setPercentage(loop, Integer.parseInt(SettingsRecordStorage.instance().readKey("name" + loop).substring(1,2)));
 				condition.setCondition(loop, SettingsRecordStorage.instance().readKey("" + loop));				
 				loop++;
 			}

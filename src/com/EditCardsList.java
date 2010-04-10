@@ -111,7 +111,7 @@ public class EditCardsList extends List implements CommandListener {
 		if ( deciPercentage > 0 ) {
 			//#style label
 			ci = new CardItem(Dominion.I().expansions[exp].getName(card) + " " + deciPercentage * 10 + "%", List.MULTIPLE);
-			set(index, Dominion.I().expansions[exp].getName(card) + " " + deciPercentage * 10 + "%", getImage(index));
+			//set(index, Dominion.I().expansions[exp].getName(card) + " " + deciPercentage * 10 + "%", getImage(index));
 			Dominion.I().expansions[exp].setPercentage(card, deciPercentage);
 		} else {
 			//#style label

@@ -3,6 +3,7 @@
  */
 package com;
 
+import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
@@ -51,26 +52,32 @@ public class ConditionForm extends List implements CommandListener {
 	
 	public void populateConditions() {
 		deleteAll();
+		CardItem ci;
 		for ( int i = 0 ; i < Dominion.I().condition.size() ; i++ ) {
 			//#debug dominizer
 			System.out.println("adding condition: " + i);
 			if ( Dominion.I().condition.getName(i) != null ) {
 				//#style label
-				append(Dominion.I().condition.getName(i), null);
+				ci = new CardItem(Dominion.I().condition.getName(i), List.MULTIPLE);
+				append(ci);
 				setPercentage(i, Dominion.I().condition.getPercentage(i));
 			}
 		}
-		updateCards(true, -1);
+		updateCards(false, -1);
 	}
 	
 	public void setPercentage(int index, int deciPercentage) {
+		CardItem ci;
 		if ( deciPercentage > 0 ) {
-			set(index, Dominion.I().condition.getName(index)+" "+(deciPercentage*10)+"%", null);
+			//#style label
+			ci = new CardItem(Dominion.I().condition.getName(index)+" "+(deciPercentage*10)+"%", List.MULTIPLE);
 			Dominion.I().condition.setPercentage(index, deciPercentage);
 		} else {
-			set(index, Dominion.I().condition.getName(index), null);
+			//#style label
+			ci = new CardItem(Dominion.I().condition.getName(index), List.MULTIPLE);
 			Dominion.I().condition.setPercentage(index, 0);
 		}
+		set(index, ci);
 		if ( index > 0 )
 			focus(index - 1);
 		if ( size() > index + 1)
@@ -121,6 +128,25 @@ public class ConditionForm extends List implements CommandListener {
 			}
 		}
 	}
+	
+	public void keyPressed(int keyCode) {
+		switch (keyCode) {
+		case Canvas.KEY_NUM0:
+		case Canvas.KEY_NUM1:
+		case Canvas.KEY_NUM2:
+		case Canvas.KEY_NUM3:
+		case Canvas.KEY_NUM4:
+		case Canvas.KEY_NUM5:
+		case Canvas.KEY_NUM6:
+		case Canvas.KEY_NUM7:
+		case Canvas.KEY_NUM8:
+		case Canvas.KEY_NUM9:
+			setPercentage(getCurrentIndex(), keyCode - Canvas.KEY_NUM0);
+			break;
+		default:
+			//#= super.keyPressed(keyCode);
+		}
+	}
 
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(selectCmd) ) {
@@ -142,6 +168,7 @@ public class ConditionForm extends List implements CommandListener {
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.ok"))) {
 			if ( isOnGauge ) {
 				setPercentage(getCurrentIndex(), GaugeForm.instance().getGaugeValue());
+				GameApp.instance().changeToScreen(null);
 			} else {
 				if ( InputForm.instance().getInput().indexOf(SettingsRecordStorage.BIG_SPLITTER) > 0 )
 					GameApp.instance().showAlert(Locale.get("alert.Randomization.Save.IllegalChar"));

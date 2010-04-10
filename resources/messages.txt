@@ -165,6 +165,15 @@ polish.command.submit=Submit
 # used by the RssBrowser for returning to the previous page:
 polish.command.back=Back
 
+
+#################
+#
+# Card information
+#
+#################
+base.Adventurer.name=hej
+
+
 #################
 #
 # No need for translations

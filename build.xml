@@ -68,6 +68,7 @@
 			<deviceRequirements unless="debug or debugDominizer">
 				<requirement name="Identifier" value="${devices}" />
 			</deviceRequirements>
+			
 			<!-- build settings -->
 			<build symbols="Dominizer"
 				usePolishGui="true" 
@@ -86,6 +87,7 @@
 					password="${password}"
 					if="polish.android or dosign"
 				/>
+				
 				<variables includeAntProperties="true">
 					<variable name="javac.source" value="1.5" if="polish.android"/>
 					<variable name="javac.target" value="1.5" if="polish.android"/>

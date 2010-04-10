@@ -38,8 +38,13 @@ public class Condition {
 	}
 	
 	public boolean isAvailable(int index) {
-		if ( percentage.length <= index )
+		if ( percentage.length <= index ) {
+			//#debug dominizer
+			System.out.println("isAvailable: no check returning false");
 			return false;
+		}
+		//#debug dominizer
+		System.out.println("isAvailable: returning "+ (percentage[index] >= 100));
 		return percentage[index] >= 100;
 	}
 	
@@ -47,24 +52,29 @@ public class Condition {
 		if ( this.percentage.length <= index )
 			return;
 		if ( available ) {
-			if ( this.percentage[index] < 100 )
+			if ( this.percentage[index] < 100 ) {
+				//#debug dominizer
+				System.out.println("setAvailable: set to true");
 				this.percentage[index] += 100;
+			}
 		} else {
 			if ( this.percentage[index] >= 100 )
 				this.percentage[index] -= 100;
 		}
 	}
 	
-	public void setPercentage(int index, int percentage) {
+	public void setPercentage(int index, int deciPercentage) {
 		if ( this.percentage.length <= index )
 			return;
 		if ( this.percentage[index] >= 100 )
-			this.percentage[index] = 100 + percentage;
+			this.percentage[index] = 100 + deciPercentage;
 		else
-			this.percentage[index] = percentage;
+			this.percentage[index] = deciPercentage;
 	}
 	
 	public void setName(int index, String name) {
+		if ( this.name == null )
+			return;
 		if ( this.name.length <= index )
 			return;
 		this.name[index] = name;
@@ -77,6 +87,8 @@ public class Condition {
 	}
 	
 	public String getNameAsSave(int index) {
+		if ( name == null )
+			return null;
 		if ( name.length <= index )
 			return null;
 		StringBuffer sb = new StringBuffer(2 + name[index].length());
@@ -93,6 +105,7 @@ public class Condition {
 			else
 				sb.append("" + percentage[index]);
 		}
+		sb.append(name[index]);
 		return sb.toString();
 	}
 	
@@ -128,6 +141,7 @@ public class Condition {
 		tmpI[this.name.length] = 100;
 		this.name = tmp;
 		this.percentage = tmpI;
+		tmp = new String[this.condition.length + 1];
 		for ( i = 0 ; i < this.condition.length ; i++ )
 			tmp[i] = this.condition[i];
 		tmp[this.condition.length] = condition;
@@ -159,6 +173,7 @@ public class Condition {
 		}
 		name = tmp;
 		percentage = tmpI;
+		tmp = new String[condition.length - 1];
 		for ( i = 0 ; i < condition.length ; i++ ) {
 			if ( i < index )
 				tmp[i] = condition[i];
