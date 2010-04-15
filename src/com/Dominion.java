@@ -850,6 +850,10 @@ public class Dominion {
 				else if ( expansions[i].isPlayingSet(j, playingSet) & !expansions[i].isHold(j, playingSet))
 					expansions[i].setPlaying(j, 0);
 	}
+	
+	public boolean selectType(int type) {
+		
+	}
 
 	public boolean selectCard(int playingSet, int exp, int card, int placement) {
 		//#debug dominizer

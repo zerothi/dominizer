@@ -137,7 +137,7 @@
 				
 				<obfuscator name="ProGuard" unless="debug or debugDominizer or polish.blackberry">
 					<parameter name="optimize" value="true" />
-					<parameter name="optimizationpasses" value="1"/>
+					<parameter name="optimizationpasses" value="3"/>
 					<parameter name="dontskipnonpubliclibraryclasses" value=""/>
 					<parameter name="dontusemixedcaseclassnames" value=""/>
 				</obfuscator>
