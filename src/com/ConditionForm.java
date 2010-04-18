@@ -39,7 +39,7 @@ public class ConditionForm extends List implements CommandListener {
 		populateConditions();
 		//#= setSelectCommand(selectCmd);
 		addCommand(newCmd);
-		addCommand(perGaugeCmd);
+		//addCommand(perGaugeCmd);
 		addCommand(deleteCmd);
 		addCommand(quitCmd);
 		setCommandListener(this);
@@ -150,7 +150,14 @@ public class ConditionForm extends List implements CommandListener {
 
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(selectCmd) ) {
-			// TODO randomize using condition
+			try {
+				if ( Dominion.I().selectCondition(getCurrentIndex()) ) {
+					ShowCardsForm.instance().addNewCards(Dominion.I().getCurrentlySelected(Dominion.CURRENT_SET+1));
+					GameApp.instance().changeToScreen(ShowCardsForm.instance());
+				}
+			} catch (DominionException e) {
+				GameApp.instance().showAlert(e.toString());
+			}
 		} else if ( cmd.equals(newCmd) ) {
 			isOnGauge = false;
 			InputForm.instance().clearInput();

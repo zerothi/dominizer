@@ -255,14 +255,14 @@ public class Cards {
 		if ( isType(index, TYPE_ACTION) ) {
 			if ( isType(index, TYPE_ATTACK) )
 				return TYPE_ACTION_ATTACK;
-			if ( isType(index, TYPE_REACTION) )
-				return TYPE_ACTION_REACTION;
 			if ( isType(index, TYPE_DURATION) )
 				return TYPE_ACTION_DURATION;
 			if ( isType(index, TYPE_TREASURY) )
 				return TYPE_ACTION_TREASURY;
 			if ( isType(index, TYPE_VICTORY) )
 				return TYPE_ACTION_VICTORY;
+			if ( isType(index, TYPE_REACTION) )
+				return TYPE_ACTION_REACTION;
 			return TYPE_ACTION;
 		} else if ( isType(index, TYPE_VICTORY) ) {
 			if ( isType(index, TYPE_TREASURY) )

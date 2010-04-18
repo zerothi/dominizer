@@ -93,9 +93,9 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 		System.out.println("adding table type information");
 		if ( currentTableType == TABLE_IFS ) {
 			//#style tableCell
-			tableItem.set(PARENT_START, new MessageItem("" + (PARENT_START+1), "Paren Start"));
+			tableItem.set(PARENT_START, new MessageItem("" + (PARENT_START+1), "("));
 			//#style tableCell
-			tableItem.set(PARENT_END, new MessageItem("" + (PARENT_END+1), "Paren End"));
+			tableItem.set(PARENT_END, new MessageItem("" + (PARENT_END+1), ")"));
 			//#style tableCell
 			tableItem.set(OR, new MessageItem("" + (OR+1), "Or"));
 			//#style tableCell
@@ -144,6 +144,7 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 			//#style tableCell
 			tableItem.set(GREATER, new MessageItem("" + (GREATER+1), "Greater >"));
 		}
+		tableItem.setSelectedCell(0, 0);
 		tableItem.setSelectedCell(1, 1);
 		//tableItem.focusChild(4);
     }

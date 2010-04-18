@@ -23,6 +23,8 @@ import de.enough.polish.util.Locale;
  *
  */
 public class CardsList extends List implements CommandListener {
+	
+	public static boolean BLACK_MARKET_CMD = false;
 
 	private int listType = List.MULTIPLE;
 	
@@ -106,6 +108,32 @@ public class CardsList extends List implements CommandListener {
 		updateCards(false);
 	}
 	
+	public void setBlackMarket(boolean isPlaying) {
+		if ( isPlaying ) {
+			if ( !BLACK_MARKET_CMD ) {
+			//#if !polish.android
+				UiAccess.addSubCommand(blackMarketCmd, optionsCmd, this);
+			//#else
+				addCommand(blackMarketCmd);
+			//#endif
+				BLACK_MARKET_CMD = isPlaying;
+			}
+		} else {
+			if ( BLACK_MARKET_CMD ) {
+			//#if !polish.android
+				try {
+					UiAccess.removeSubCommand(blackMarketCmd, optionsCmd, this);
+				} catch ( Exception e) {
+					// Do nothing
+				}
+			//#else
+				removeCommand(blackMarketCmd);
+			//#endif
+				BLACK_MARKET_CMD = isPlaying;
+			}
+		}
+	}
+	
 	public void updateCards(boolean formCorrect) {
 		int[] cP = new int[2];
 		for ( i = 0 ; i < this.size() ; i++ ){
@@ -123,9 +151,9 @@ public class CardsList extends List implements CommandListener {
 	}
 	
 	public void reRandomize() throws DominionException {
-			Dominion.I().resetIsPlaying(cardSet);
-			Dominion.I().randomizeCards(cardSet);
-			setCards(Dominion.I().getCurrentlySelected(cardSet));
+		Dominion.I().resetIsPlaying(cardSet);
+		Dominion.I().randomizeCards(cardSet);
+		setCards(Dominion.I().getCurrentlySelected(cardSet));
 	}
 
 	public void commandAction(Command cmd, Displayable disp) {

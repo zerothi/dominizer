@@ -19,6 +19,7 @@ public class Dominion {
 	public static final int USER = 10;
 	public static boolean RANDOMIZE_COMPLETELY_NEW = true;
 	public static int SETS_SAVE = 5;
+	public static int CURRENT_SET = 0;
 	
 	public Cards[] expansions = null;
 	private Cards selectedCards = null;
@@ -410,7 +411,7 @@ public class Dominion {
 		return sb.toString();
 	}
 	
-	public boolean hasBlackMarketPlaying() {
+	public boolean isBlackMarketPlaying() {
 		return expansions[PROMO].isPlaying(0) > 0;
 	}
 	
@@ -498,19 +499,19 @@ public class Dominion {
 	private boolean parseCardsOption(boolean isType, String option, int typeInfo) {
 		if ( option.substring(1,2).equals("=") ) {
 			if ( isType )
-				return selectedCards.getTypes(typeInfo) == parseInt(option.substring(2,4));
+				return selectedCards.getTypes(typeInfo) == parseInt(option.substring(1));
 			else
-				return selectedCards.getAdds(typeInfo) == parseInt(option.substring(2,4));
+				return selectedCards.getAdds(typeInfo) == parseInt(option.substring(1));
 		} else if ( option.substring(1,2).equals(">") ) {
 			if ( isType )
-				return selectedCards.getTypes(typeInfo) > parseInt(option.substring(2,4));
+				return selectedCards.getTypes(typeInfo) > parseInt(option.substring(1));
 			else
-				return selectedCards.getAdds(typeInfo) > parseInt(option.substring(2,4));
+				return selectedCards.getAdds(typeInfo) > parseInt(option.substring(1));
 		} else if ( option.substring(1,2).equals("<") ) {
 			if ( isType )
-				return selectedCards.getTypes(typeInfo) < parseInt(option.substring(2,4));
+				return selectedCards.getTypes(typeInfo) < parseInt(option.substring(1));
 			else
-				return selectedCards.getAdds(typeInfo) < parseInt(option.substring(2,4));
+				return selectedCards.getAdds(typeInfo) < parseInt(option.substring(1));
 		}
 		return false;
 	}
@@ -840,6 +841,7 @@ public class Dominion {
 				}
 			}
 		}
+		CURRENT_SET--;
 	}
 
 	public void resetIsPlaying(int playingSet) {
@@ -851,8 +853,21 @@ public class Dominion {
 					expansions[i].setPlaying(j, 0);
 	}
 	
-	public boolean selectType(int type) {
-		
+	public boolean selectCondition(int condition) throws DominionException {
+		for ( int i = 0 ; i < Condition.MAX_RUNS ; i++ ) {
+			//#debug dominizer
+			System.out.println("condition tried for the "+i+" time.");
+			randomizeCards(CURRENT_SET + 1);
+			if ( parseCondition(this.condition.getCondition(condition)) ) {
+				//#debug dominizer
+				System.out.println("condition succeded");
+				return true;
+			}
+			resetIsPlaying(CURRENT_SET + 1);
+		}
+		//#debug dominizer
+		System.out.println("condition failed");
+		return false;
 	}
 
 	public boolean selectCard(int playingSet, int exp, int card, int placement) {
@@ -902,11 +917,7 @@ public class Dominion {
 					return selectPreset(i, j);
 		return false;
 	}
-/*
-	public void setCardsUsedForExpansion(int expansion, int numberOfCards) {
-		numberOfCardsFromExp[expansion] = numberOfCards;
-	}
-*/
+
 	public void setExpansionPlayingState(boolean[] isAvailable) {
 		for ( loop = 0; loop < playingExpansions.length; loop++)
 			setExpansionPlayingState(loop, isAvailable[loop]);

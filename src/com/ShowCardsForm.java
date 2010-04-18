@@ -26,7 +26,6 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 	private static ShowCardsForm scF = null;
 	
 	private CardsList[] cardSet = null;
-	private int currentSet = 0;
 	
 	private ShowCardsForm(String title) {
 		//#style tabbedPane
@@ -43,8 +42,8 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 			if ( Dominion.I().isSetPlaying(i + 1) ) {
 				try {
 					cardSet[i].setCards(Dominion.I().getCurrentlySelected(i + 1));
-					currentSet = i + 1;
-					String tmp = "" + currentSet;
+					Dominion.CURRENT_SET = i + 1;
+					String tmp = "" + Dominion.CURRENT_SET;
 					//#style tabIconSet
 					addTab(cardSet[i], null, Locale.get("screen.RandomizedCards.title2", tmp));
 				} catch ( DominionException e) {
@@ -61,20 +60,31 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 		return scF;
 	}
 	
-	public int getCurrentSet() {
-		return currentSet;
-	}
-	
 	public void randomizeNewSet() throws DominionException {
-		if ( currentSet < cardSet.length ) {
-			cardSet[currentSet].reRandomize();
-			currentSet++;
-			String tmp = "" + currentSet;
+		if ( Dominion.CURRENT_SET < cardSet.length ) {
+			cardSet[Dominion.CURRENT_SET].reRandomize();
+			Dominion.CURRENT_SET++;
+			String tmp = "" + Dominion.CURRENT_SET;
 			//#style tabIconSet
-			addTab(cardSet[currentSet-1], null, Locale.get("screen.RandomizedCards.title2", tmp));
-			setFocus(currentSet - 1);
+			addTab(cardSet[Dominion.CURRENT_SET-1], null, Locale.get("screen.RandomizedCards.title2", tmp));
+			cardSet[Dominion.CURRENT_SET - 1].setBlackMarket(Dominion.I().isBlackMarketPlaying());
+			setFocus(Dominion.CURRENT_SET - 1);
 		} else {
 			Dominion.I().randomizeCards(0, 0); // this should throw an Exception!
+		}
+	}
+	
+	public void addNewCards(Cards cards) {
+		if ( cards == null )
+			return;
+		if ( Dominion.CURRENT_SET + 1 < cardSet.length ) {
+			cardSet[Dominion.CURRENT_SET].setCards(cards);
+			Dominion.CURRENT_SET++;
+			String tmp = "" + Dominion.CURRENT_SET;
+			//#style tabIconSet
+			addTab(cardSet[Dominion.CURRENT_SET-1], null, Locale.get("screen.RandomizedCards.title2", tmp));
+			cardSet[Dominion.CURRENT_SET - 1].setBlackMarket(Dominion.I().isBlackMarketPlaying());
+			setFocus(Dominion.CURRENT_SET - 1);
 		}
 	}
 
@@ -115,7 +125,8 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 	    			String tmp = "" + i;
 	    			//#style tabIconSet
 	    			addTab(cardSet[i - 1], null, Locale.get("screen.RandomizedCards.title2", tmp));
-	    			currentSet = i;
+	    			cardSet[i - 1].setBlackMarket(Dominion.I().isBlackMarketPlaying());
+	    			Dominion.CURRENT_SET = i;
     			} catch ( DominionException e ) {
     				// TODO what to do here? Will it ever happen?
     			}

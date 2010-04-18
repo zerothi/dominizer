@@ -85,7 +85,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 
 	public void showRandomizedCards() {
 		currentTab = getCurrentTab();
-		if ( ShowCardsForm.instance().getCurrentSet() == 0 ) {
+		if ( Dominion.CURRENT_SET == 0 ) {
 			Dominion.I().resetIsPlaying(0);
 			try {
 				ShowCardsForm.instance().randomizeNewSet();
@@ -219,10 +219,13 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 				i = 0;
 				do {
 					if ( Dominion.I().getCurrentAsSave(++i) != null )
-						SettingsRecordStorage.instance().addData("" + ++sets, Dominion.I().getCurrentAsSave(i));
-					else 
-						SettingsRecordStorage.instance().deleteData("" + i);
-				} while ( i < 10 & sets < Dominion.SETS_SAVE );
+						sets++;
+					SettingsRecordStorage.instance().deleteData("" + i);
+				} while ( i < 10 );
+				do {
+					SettingsRecordStorage.instance().addData("" + sets, Dominion.I().getCurrentAsSave(sets));
+					sets--;
+				} while ( sets > 0 );
 				SettingsRecordStorage.instance().writeData();
 				SettingsRecordStorage.instance().closeRecord();
 			}
@@ -236,7 +239,6 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 				for ( i = 0 ; i < Dominion.I().condition.size() ; i++ ) {
 					SettingsRecordStorage.instance().addData("" + i, Dominion.I().condition.getCondition(i));
 					SettingsRecordStorage.instance().addData("name" + i, Dominion.I().condition.getNameAsSave(i));
-					
 				}
 				SettingsRecordStorage.instance().writeData();
 				SettingsRecordStorage.instance().closeRecord();

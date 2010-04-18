@@ -2,6 +2,7 @@ package com;
 
 public class Condition {
 	
+	public static final int MAX_RUNS = 250;
 	private String[] name = null;
 	private String[] condition = null;
 	private int[] percentage;

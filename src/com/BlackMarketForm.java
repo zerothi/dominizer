@@ -5,11 +5,11 @@ import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.List;
 import javax.microedition.lcdui.Ticker;
 
 import com.dominizer.GameApp;
 
+import de.enough.polish.ui.List;
 import de.enough.polish.util.Locale;
 
 /**
@@ -58,8 +58,10 @@ public class BlackMarketForm extends List implements CommandListener {
 		deleteAll();
 		//#debug dominizer
 		System.out.println("new drawing");
-		//#style label
-		append(Locale.get("screen.BlackMarket.ChooseNone"), null);
+		//#style labelCard
+		CardItem cI = new CardItem(Locale.get("screen.BlackMarket.ChooseNone"), List.EXCLUSIVE);
+		cI.setBothSides(true);
+		append(cI);
 		addNextCard(1);
 		addNextCard(2);
 		addNextCard(3);
@@ -76,9 +78,15 @@ public class BlackMarketForm extends List implements CommandListener {
 		else if ( currentlyReachedCard < blackMarketDeck.size() ) {
 			//#debug dominizer
 			System.out.println("just added. remaining: " + number);
-			//#style label
-			append(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard)).toString(), null);
-			currentlyReachedCard++;
+			int[] tmp = Dominion.I().getCardLocation(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard)).toString());
+			if ( tmp[0] > -1 ) { 
+				//#style labelCard
+				CardItem cI = new CardItem(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard)).toString(), List.EXCLUSIVE);
+				cI.setBothSides(true);
+				cI.setLeftImage(Dominion.I().expansions[tmp[0]].getCardTypeImage(tmp[1]));
+				cI.setRightImage(Dominion.I().expansions[tmp[0]].getCostImage(tmp[1]));
+				currentlyReachedCard++;
+			}
 		} else if ( blackMarketDeck.size() <= currentlyReachedCard ) {
 			//#debug dominizer
 			System.out.println("size to large. remaining: " + number);
