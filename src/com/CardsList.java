@@ -24,7 +24,7 @@ import de.enough.polish.util.Locale;
  */
 public class CardsList extends List implements CommandListener {
 	
-	public static boolean BLACK_MARKET_CMD = false;
+	private boolean hasBlackMarketCmd = false;
 
 	private int listType = List.MULTIPLE;
 	
@@ -106,20 +106,21 @@ public class CardsList extends List implements CommandListener {
 			System.out.println("appending to list with card "+cards.getName(i) + " index "+i + " is hold: " +cards.isHold(i));
 		}
 		updateCards(false);
+		setBlackMarket(Dominion.I().isBlackMarketPlaying());
 	}
 	
 	public void setBlackMarket(boolean isPlaying) {
 		if ( isPlaying ) {
-			if ( !BLACK_MARKET_CMD ) {
+			if ( !hasBlackMarketCmd ) {
 			//#if !polish.android
 				UiAccess.addSubCommand(blackMarketCmd, optionsCmd, this);
 			//#else
 				addCommand(blackMarketCmd);
 			//#endif
-				BLACK_MARKET_CMD = isPlaying;
+				hasBlackMarketCmd = isPlaying;
 			}
 		} else {
-			if ( BLACK_MARKET_CMD ) {
+			if ( hasBlackMarketCmd ) {
 			//#if !polish.android
 				try {
 					UiAccess.removeSubCommand(blackMarketCmd, optionsCmd, this);
@@ -129,7 +130,7 @@ public class CardsList extends List implements CommandListener {
 			//#else
 				removeCommand(blackMarketCmd);
 			//#endif
-				BLACK_MARKET_CMD = isPlaying;
+				hasBlackMarketCmd = isPlaying;
 			}
 		}
 	}

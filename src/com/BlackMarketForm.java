@@ -40,9 +40,9 @@ public class BlackMarketForm extends List implements CommandListener {
 	/**
 	 * @param title
 	 */
-	public BlackMarketForm(String title, int listMethod) {
+	public BlackMarketForm(String title) {
 		//#style behindScreen
-		super(title, listMethod);
+		super(title, List.IMPLICIT);
 		addCommand(backCmd);
 		setCommandListener(this);
 		tickerArgs = new String[3];
@@ -58,8 +58,8 @@ public class BlackMarketForm extends List implements CommandListener {
 		deleteAll();
 		//#debug dominizer
 		System.out.println("new drawing");
-		//#style labelCard
-		CardItem cI = new CardItem(Locale.get("screen.BlackMarket.ChooseNone"), List.EXCLUSIVE);
+		//#style label
+		CardItem cI = new CardItem(Locale.get("screen.BlackMarket.ChooseNone"), List.IMPLICIT);
 		cI.setBothSides(true);
 		append(cI);
 		addNextCard(1);
@@ -77,14 +77,15 @@ public class BlackMarketForm extends List implements CommandListener {
 			return;
 		else if ( currentlyReachedCard < blackMarketDeck.size() ) {
 			//#debug dominizer
-			System.out.println("just added. remaining: " + number);
+			System.out.println("just added. remaining: " + number + " name "+blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard)).toString());
 			int[] tmp = Dominion.I().getCardLocation(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard)).toString());
 			if ( tmp[0] > -1 ) { 
-				//#style labelCard
-				CardItem cI = new CardItem(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard)).toString(), List.EXCLUSIVE);
+				//#style label
+				CardItem cI = new CardItem(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard)).toString(), List.IMPLICIT);
 				cI.setBothSides(true);
 				cI.setLeftImage(Dominion.I().expansions[tmp[0]].getCardTypeImage(tmp[1]));
 				cI.setRightImage(Dominion.I().expansions[tmp[0]].getCostImage(tmp[1]));
+				append(cI);
 				currentlyReachedCard++;
 			}
 		} else if ( blackMarketDeck.size() <= currentlyReachedCard ) {

@@ -144,7 +144,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		tabbedPane.addTab(cF, null, Locale.get("tab.Condition.title"));
 		// # style tabIcon
 		//tabbedPane.addTab(new GameCalendarForm(null), null, Locale.get("screen.Calendar.title"));
-		bmF = new BlackMarketForm(Locale.get("screen.BlackMarket.title"), List.IMPLICIT);
+		bmF = new BlackMarketForm(Locale.get("screen.BlackMarket.title"));
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.gui.settings"));
 		SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.settings"));
 		if ( SettingsRecordStorage.instance().readKey(Locale.get("rms.lasttab")) != null )

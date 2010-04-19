@@ -197,15 +197,14 @@ public class Dominion {
 						expansions[loop].isPlaying(j) == 0 )
 					total++;
 		Cards blackMarket = new Cards(total, Cards.IS_NOT_SET);
-		total = 0;
 		Rand.resetSeed();
-		int randomize = Rand.randomInt(blackMarket.size());
+		int randomize = Rand.randomInt(total);
 		for ( loop = 0; loop < expansions.length; loop++)
 			for ( j = 0; j < expansions[loop].size(); j++)
 				if (expansions[loop].isBlackMarketAvailable(j) &&
 						expansions[loop].isPlaying(j) == 0 ) {
 					while (blackMarket.getName(randomize) != null)
-						randomize = Rand.randomInt(blackMarket.size());
+						randomize = Rand.randomInt(total);
 					blackMarket.setCard(randomize, expansions[loop].getCard(j));
 				}
 		return blackMarket;
@@ -233,8 +232,9 @@ public class Dominion {
 	}
 
 	public int[] getCardLocation(String cardName) {
+		int j;
 		for ( int i = 0 ; i < expansions.length ; i++ )
-			for ( int j = 0 ; j < expansions[i].size() ; j++ )
+			for ( j = 0 ; j < expansions[i].size() ; j++ )
 				if ( expansions[i].getName(j).equals(cardName) )
 					return new int[] { i, j};
 		return new int[] { -1, -1};

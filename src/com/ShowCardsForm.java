@@ -85,6 +85,8 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 			addTab(cardSet[Dominion.CURRENT_SET-1], null, Locale.get("screen.RandomizedCards.title2", tmp));
 			cardSet[Dominion.CURRENT_SET - 1].setBlackMarket(Dominion.I().isBlackMarketPlaying());
 			setFocus(Dominion.CURRENT_SET - 1);
+			for ( int i = 0 ; i < cardSet.length ; i++ )
+				cardSet[i].setBlackMarket(Dominion.I().isBlackMarketPlaying());
 		}
 	}
 

@@ -18,11 +18,13 @@ public class CardItem extends ChoiceItem {
 	private Image lI = null;
 	private Image rI = null;
 	private boolean isBothSides = true;
+	private int choiceType = 0;
 	/**
 	 * @param label
 	 */
 	public CardItem(String label, int listType) {
 		super(label, null, listType);
+		choiceType = listType;
 	}
 	
 	//#if polish.usePolishGui
