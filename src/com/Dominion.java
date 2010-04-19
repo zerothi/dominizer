@@ -13,7 +13,7 @@ public class Dominion {
 	public static final int BASE = 0; // has 25 cards
 	public static final int INTRIGUE = 1; // has 25 cards
 	public static final int SEASIDE = 2; // has 26 cards
-	public static final int ALCHEMY = 3;
+	public static final int ALCHEMY = 3; // has 12 cards (the 13th card Potion is not counted)
 	public static final int PROSPERITY = 4;
 	public static final int PROMO = 5; // has 3 cards
 	public static final int USER = 10;
@@ -36,7 +36,7 @@ public class Dominion {
 	private int loop = 0;
 
 	private Dominion() {
-		expansions = new Cards[6]; 
+		expansions = new Cards[6];
 		presets = new CardPresets[4]; 
 		presets[BASE] = new CardPresets(5);
 		presets[BASE].setExpansion(BASE);
@@ -116,7 +116,7 @@ public class Dominion {
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("alchemy"));
 		//#debug dominizer
 		System.out.println("reading alchemy");
-		readResource(ALCHEMY, "alchemy", 0); // TODO real 13
+		readResource(ALCHEMY, "alchemy", 12); // The 13th card is a Potion which is always available
 		//#debug dominizer
 		System.out.println("size alchemy: " + expansions[ALCHEMY].size());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("prosperity"));
@@ -318,18 +318,7 @@ public class Dominion {
 		}
 		return -1;
 	}
-/*
-	public int[] getNumberOfExpansionCards() {
-		return numberOfCardsFromExp;
-	}
-*/
-	/**
-	 * @return the numberOfRandomCards
-	 *
-	public int getNumberOfRandomCards() {
-		return numberOfRandomCards;
-	}
-*/
+
 	public String getPercentagesAsSave() {
 		StringBuffer sb = new StringBuffer(TOTAL_CARDS);
 		for ( loop = 0; loop < expansions.length; loop++)
@@ -439,6 +428,8 @@ public class Dominion {
 			return parseInt(information.substring(information.indexOf("u")));
 		else if ( whichInfo == Cards.ADDS_POTIONS && -1 < information.indexOf("p") )
 			return parseInt(information.substring(information.indexOf("p")));
+		else if ( whichInfo == Cards.COST_POTIONS && -1 < information.indexOf("P") )
+			return parseInt(information.substring(information.indexOf("P")));
 		return 0;
 	}
 	
@@ -529,8 +520,6 @@ public class Dominion {
 			return true;
 		else if ( whichInfo == Cards.TYPE_DURATION && -1 < type.indexOf("D") )
 			return true;
-		else if ( whichInfo == Cards.TYPE_POTION && -1 < type.indexOf("P") )
-			return true;
 		return false;
 	}
 
@@ -612,15 +601,16 @@ public class Dominion {
 			while ((ch = isr.read()) > -1) {
 				sb.append((char) ch);
 				if ((char) ch == ';') {
-					// #debug info
+					// # debug dominizer
 					//System.out.println("processing " + sb.toString());
 					expansions[exp].setName(cardRead, sb.toString().substring(
 							start, sb.toString().indexOf(":", start)).trim());
 					expansions[exp].setExpansion(exp);
 					start = sb.toString().indexOf(":", start) + 1;
+					tmp = sb.toString().substring(start-1, sb.toString().indexOf(":", start));
 					expansions[exp].setCost(cardRead, 
-							Integer.parseInt(sb.toString().substring(
-									start, sb.toString().indexOf(":", start))));
+							parseInt(tmp) == 1 ? 0 : parseInt(tmp),
+							parseInformation(tmp, Cards.COST_POTIONS));
 					start = sb.toString().indexOf(":", start) + 1;
 					tmp = sb.toString().substring(start, sb.toString().indexOf(":", start));
 					expansions[exp].setType(cardRead, Cards.TYPE_ACTION, parseType(tmp, Cards.TYPE_ACTION));
@@ -663,7 +653,7 @@ public class Dominion {
 				isr.close();
 		} catch (Exception ex) {
 			//#debug dominizer
-			System.out.println("exception on reading");
+			System.out.println("exception on reading" + ex.toString());
 		}
 	}
 

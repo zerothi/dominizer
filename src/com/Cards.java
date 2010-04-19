@@ -24,7 +24,6 @@ public class Cards {
 	 * #3 = Attack
 	 * #4 = Reaction
 	 * #5 = Duration
-	 * #6 = Potion
 	 */
 	private boolean[][] isSpecific = null;
 	/*
@@ -157,6 +156,10 @@ public class Cards {
 		this.playing[index] = playing;
 	}
 	
+	public int getPotionCost(int index) {
+		return (cost[index] - cost[index] % 100) / 100;
+	}
+	
 	/**
 	 * @return the isPlaying
 	 */
@@ -231,15 +234,15 @@ public class Cards {
 	 * @return the cost
 	 */
 	public int getCost(int index) {
-		return cost[index];
+		return cost[index] % 100;
 	}
 
 	/**
 	 * @param cost
 	 *            the cost to set
 	 */
-	public void setCost(int index, int cost) {
-		this.cost[index] = cost;
+	public void setCost(int index, int cost, int potions) {
+		this.cost[index] = cost + 100 * potions;
 	}
 
 	public void setType(int index, int whichType, boolean state) {
@@ -328,7 +331,7 @@ public class Cards {
 		}
 		setName(index, cardInfo[0].toString());
 		setExpansion(index, ((Integer)cardInfo[1]).intValue());
-		setCost(index, ((Integer)cardInfo[2]).intValue());	
+		this.cost[index] = ((Integer)cardInfo[2]).intValue(); // simply to bypass the potion cost.	
 		setType(index, TYPE_ACTION, ((Boolean)cardInfo[3]).booleanValue());
 		setType(index, TYPE_VICTORY, ((Boolean)cardInfo[4]).booleanValue());
 		setType(index, TYPE_ATTACK, ((Boolean)cardInfo[5]).booleanValue());
@@ -461,7 +464,6 @@ public class Cards {
 	public static final int TYPE_ATTACK = 3;
 	public static final int TYPE_REACTION = 4;
 	public static final int TYPE_DURATION = 5;
-	public static final int TYPE_POTION = 6;
 	
 	public static final int TYPE_ACTION_VICTORY = 10;
 	public static final int TYPE_ACTION_TREASURY = 11;
@@ -478,4 +480,6 @@ public class Cards {
 	public static final int ADDS_TRASH = 4;
 	public static final int ADDS_CURSE = 5;
 	public static final int ADDS_POTIONS = 6;
+	
+	public static final int COST_POTIONS = 100;
 }

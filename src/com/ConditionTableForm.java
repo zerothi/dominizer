@@ -119,8 +119,8 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 			tableItem.set(Cards.TYPE_REACTION, new MessageItem("" + (Cards.TYPE_REACTION+1), "Reaction"));
 			//#style tableCell
 			tableItem.set(Cards.TYPE_DURATION, new MessageItem("" + (Cards.TYPE_DURATION+1), "Duration"));
-			//#style tableCell
-			tableItem.set(Cards.TYPE_POTION, new MessageItem("" + (Cards.TYPE_POTION+1), "Potion"));
+			// # style tableCell
+			//tableItem.set(Cards.TYPE_POTION, new MessageItem("" + (Cards.TYPE_POTION+1), "Potion"));
 		} else if ( currentTableType == TABLE_ADDS ) {
 			//#style tableCell
 			tableItem.set(Cards.ADDS_CARDS, new MessageItem("" + (Cards.ADDS_CARDS+1), "Cards"));
@@ -195,8 +195,8 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 					option += "R";break;
 				case Cards.TYPE_DURATION:
 					option += "D";break;
-				case Cards.TYPE_POTION:
-					option += "P";break;
+				//case Cards.TYPE_POTION:
+				//	option += "P";break;
 				default: return;
 				}
 				changeToTable(TABLE_NUMBER);break;
