@@ -413,6 +413,16 @@ public class Cards {
 	
 	public Image getCostImage(int card) {
 		try {
+			/*
+			 Image source = Image.createImage("/trea" + getCost(card) + ".png");
+		    Image copy = Image.createImage(source.getWidth(), source.getHeight());
+		    Graphics g = copy.getGraphics();
+		    g.drawImage(source, 0, 0, Graphics.TOP | Graphics.LEFT);
+			if ( copy.isMutable() ) {
+				//#debug dominizer
+				System.out.println("image is mutable");
+				g.drawString(""+getCost(card), source.getWidth() / 2, source.getHeight() / 2, Graphics.HCENTER | Graphics.VCENTER);
+			}*/
 			return Image.createImage("/trea" + getCost(card) + ".png");
 		} catch (IOException exp) {
 			return null;

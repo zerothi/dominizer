@@ -7,6 +7,7 @@ import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
 import de.enough.polish.ui.ChoiceItem;
+import de.enough.polish.ui.List;
 //#if polish.usePolishGui
 	//#= import de.enough.polish.ui.Style;
 //#endif
@@ -39,13 +40,17 @@ public class CardItem extends ChoiceItem {
 	public void paintContent(int x, int y, int xBorder, int yBorder, Graphics g) {
 		super.paintContent(x, y, xBorder, yBorder, g);
 		if ( this.lI != null ) {
-			if ( isBothSides )
-				g.drawImage(this.lI, x + this.lI.getWidth() + this.lI.getWidth() / 3, y, Graphics.TOP | Graphics.LEFT );
-			else
+			if ( isBothSides ) {
+				if ( choiceType == List.IMPLICIT )
+					g.drawImage(this.lI, x + this.lI.getWidth() / 3, y, Graphics.TOP | Graphics.LEFT );
+				else
+					g.drawImage(this.lI, x + this.lI.getWidth() + this.lI.getWidth() / 3, y, Graphics.TOP | Graphics.LEFT );
+			} else {
 				if ( this.rI != null )
 					g.drawImage(this.lI, x + super.availContentWidth - this.rI.getWidth() - this.rI.getWidth() / 3 - this.lI.getWidth() / 3, y, Graphics.TOP | Graphics.RIGHT );
 				else
 					g.drawImage(this.lI, x + super.availContentWidth - this.lI.getWidth() / 3, y, Graphics.TOP | Graphics.RIGHT );
+			}
 		}
 		if ( this.rI != null ) {
 			g.drawImage( this.rI, x + super.availContentWidth - this.rI.getWidth() / 3, y, Graphics.TOP | Graphics.RIGHT);
