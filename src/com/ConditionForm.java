@@ -158,7 +158,7 @@ public class ConditionForm extends List implements CommandListener {
 		if ( cmd.equals(selectCmd) ) {
 			try {
 				if ( Dominion.I().selectCondition(getCurrentIndex()) ) {
-					ShowCardsForm.instance().addNewCards(Dominion.I().getCurrentlySelected(Dominion.CURRENT_SET+1));
+					ShowCardsForm.instance().addNewCards(Dominion.I().getCurrentlySelected(Dominion.CURRENT_SET));
 					GameApp.instance().changeToScreen(ShowCardsForm.instance());
 				}
 			} catch (DominionException e) {

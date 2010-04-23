@@ -871,6 +871,7 @@ public class Dominion {
 			if ( parseCondition(this.condition.getCondition(condition)) ) {
 				//#debug dominizer
 				System.out.println("condition succeded");
+				CURRENT_SET++;
 				return true;
 			}
 			resetIsPlaying(CURRENT_SET + 1);
