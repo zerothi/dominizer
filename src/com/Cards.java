@@ -46,7 +46,7 @@ public class Cards {
 			isGamingRelated = new boolean[size][2];
 			cost = new int[size];
 			isSpecific = new boolean[size][6];
-			addsInfo = new int[size][7];
+			addsInfo = new int[size][8];
 			if ( isSet == IS_SET )
 				expansion = new int[1];
 			else
@@ -284,10 +284,10 @@ public class Cards {
 	}
 	
 	public Object[] getCard(int index) {
-		Object[] tmp = new Object[19];
+		Object[] tmp = new Object[20];
 		tmp[0] = getName(index);
 		tmp[1] = new Integer(getExpansion(index));
-		tmp[2] = new Integer(getCost(index));
+		tmp[2] = new Integer(getCost(index)+getPotionCost(index)*100);
 		tmp[3] = new Boolean(isType(index, TYPE_ACTION));
 		tmp[4] = new Boolean(isType(index, TYPE_VICTORY));
 		tmp[5] = new Boolean(isType(index, TYPE_ATTACK));
@@ -304,6 +304,7 @@ public class Cards {
 		tmp[16] = new Integer(getAddInfo(index, ADDS_TRASH));
 		tmp[17] = new Integer(getAddInfo(index, ADDS_CURSE));
 		tmp[18] = new Integer(getAddInfo(index, ADDS_POTIONS));
+		tmp[19] = new Integer(getAddInfo(index, ADDS_VICTORY_POINTS));
 		return tmp;
 	}
 	
@@ -348,6 +349,7 @@ public class Cards {
 		setAddInfo(index, ADDS_TRASH, ((Integer)cardInfo[16]).intValue());
 		setAddInfo(index, ADDS_CURSE, ((Integer)cardInfo[17]).intValue());
 		setAddInfo(index, ADDS_POTIONS, ((Integer)cardInfo[18]).intValue());
+		setAddInfo(index, ADDS_VICTORY_POINTS, ((Integer)cardInfo[19]).intValue());
 	}
 	
 	public static int compare(Object[] first, Object[] compareTo, int method) {
@@ -423,7 +425,17 @@ public class Cards {
 				System.out.println("image is mutable");
 				g.drawString(""+getCost(card), source.getWidth() / 2, source.getHeight() / 2, Graphics.HCENTER | Graphics.VCENTER);
 			}*/
-			return Image.createImage("/trea" + getCost(card) + ".png");
+			if ( getPotionCost(card) > 0 ) {
+				if ( getCost(card) == 0 )
+					return Image.createImage("/treaP.png");
+				else
+					return Image.createImage("/trea" + getCost(card) + "P.png");
+			} else {
+				if ( getCost(card) == 0 )
+					return Image.createImage("/trea.png");
+				else
+					return Image.createImage("/trea" + getCost(card) + ".png");
+			}
 		} catch (IOException exp) {
 			return null;
 		}
@@ -489,7 +501,9 @@ public class Cards {
 	public static final int ADDS_COINS = 3;
 	public static final int ADDS_TRASH = 4;
 	public static final int ADDS_CURSE = 5;
-	public static final int ADDS_POTIONS = 6;
+	public static final int ADDS_VICTORY_POINTS = 6;
+	public static final int ADDS_POTIONS = 7;
+	
 	
 	public static final int COST_POTIONS = 100;
 }

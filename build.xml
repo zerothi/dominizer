@@ -223,7 +223,7 @@
 	
 	<target name="enableNokia" depends="donotsign">
 		<property name="devices" value="Nokia/Series40E3,Nokia/Series60E2FP2,Nokia/Series60E3"/>
-		<property name="device" value="Nokia/Series60"/>
+		<property name="device" value="Nokia/Series40E3"/>
 	</target>
 	
 	<target name="enable6303" depends="donotsign">

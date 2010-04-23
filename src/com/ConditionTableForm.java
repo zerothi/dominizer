@@ -12,6 +12,7 @@ import javax.microedition.lcdui.StringItem;
 
 import com.dominizer.GameApp;
 
+import de.enough.polish.ui.Alert;
 import de.enough.polish.ui.Item;
 import de.enough.polish.ui.ItemCommandListener;
 import de.enough.polish.ui.MessageItem;
@@ -24,7 +25,7 @@ import de.enough.polish.util.Locale;
  */
 public class ConditionTableForm extends Form implements CommandListener, ItemCommandListener {
 	
-	private Command doneCmd = new Command( Locale.get("cmd.Conditions.Save"), Command.SCREEN, 0);
+	private Command doneCmd = new Command( Locale.get("cmd.Condition.Save"), Command.SCREEN, 0);
 	private Command deleteCmd = new Command( Locale.get("polish.command.delete"), Command.SCREEN, 25);
 	private Command backCmd = new Command( Locale.get("polish.command.back"), Command.SCREEN, 50);
 	
@@ -42,7 +43,8 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 	public static final int TABLE_IFS = 0;
 	public static final int TABLE_TYPE = 6;
 	public static final int TABLE_ADDS = 7;
-	public static final int TABLE_NUMBER = 8;
+	public static final int TABLE_EXPANSIONS = 8;
+	public static final int TABLE_NUMBER = 10;
 	
 	private int currentTableType = 0;
 	
@@ -73,12 +75,14 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 	    sI = new StringItem(null, option);
 	    append(sI);
 	    addCommand(doneCmd);
+	    addCommand(deleteCmd);
 	    addCommand(backCmd);
 	    setCommandListener(this);
     }
       
     public void setConditionTitle(String title) {
     	sITitle.setLabel(title);
+    	GaugeForm.instance().setCommandListener(this);
     }
     
     public void changeToTable(int tableType) {
@@ -97,15 +101,15 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 			//#style tableCell
 			tableItem.set(PARENT_END, new MessageItem("" + (PARENT_END+1), ")"));
 			//#style tableCell
-			tableItem.set(OR, new MessageItem("" + (OR+1), "Or"));
+			tableItem.set(OR, new MessageItem("" + (OR+1), "|"));
 			//#style tableCell
-			tableItem.set(AND, new MessageItem("" + (AND+1), "And"));
+			tableItem.set(AND, new MessageItem("" + (AND+1), "&"));
 			//#style tableCell
-			tableItem.set(TABLE_TYPE, new MessageItem("" + (TABLE_TYPE+1), "Type"));
+			tableItem.set(TABLE_TYPE, new MessageItem("" + (TABLE_TYPE+1), Locale.get("card.type")));
 			//#style tableCell
-			tableItem.set(TABLE_ADDS, new MessageItem("" + (TABLE_ADDS+1), "Adds"));
+			tableItem.set(TABLE_ADDS, new MessageItem("" + (TABLE_ADDS+1), Locale.get("card.adds")));
 			//#style tableCell
-			tableItem.set(TABLE_NUMBER, new MessageItem("" + (TABLE_NUMBER+1), "Number"));
+			tableItem.set(TABLE_EXPANSIONS, new MessageItem("" + (TABLE_EXPANSIONS+1), "Expansions"));
 		} else if ( currentTableType == TABLE_TYPE ) {
 			//#style tableCell
 			tableItem.set(Cards.TYPE_ACTION, new MessageItem("" + (Cards.TYPE_ACTION+1), "Action"));
@@ -135,14 +139,31 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 			//#style tableCell
 			tableItem.set(Cards.ADDS_CURSE, new MessageItem("" + (Cards.ADDS_CURSE+1), "Curse"));
 			//#style tableCell
-			tableItem.set(Cards.ADDS_POTIONS, new MessageItem("" + (Cards.ADDS_POTIONS+1), "Potion"));
+			tableItem.set(Cards.ADDS_VICTORY_POINTS, new MessageItem("" + (Cards.ADDS_VICTORY_POINTS+1), "Potions"));
+			//#style tableCell
+			tableItem.set(Cards.ADDS_POTIONS, new MessageItem("" + (Cards.ADDS_POTIONS+1), "Potions"));
+		} else if ( currentTableType == TABLE_EXPANSIONS ) {
+			//#style tableCell
+			tableItem.set(Dominion.BASE, new MessageItem("" + (Dominion.BASE+1), Locale.get("base")));
+			//#style tableCell
+			tableItem.set(Dominion.INTRIGUE, new MessageItem("" + (Dominion.INTRIGUE+1), Locale.get("intrigue")));
+			//#style tableCell
+			tableItem.set(Dominion.SEASIDE, new MessageItem("" + (Dominion.SEASIDE+1), Locale.get("seaside")));
+			//#style tableCell
+			tableItem.set(Dominion.ALCHEMY, new MessageItem("" + (Dominion.ALCHEMY+1), Locale.get("alchemy")));
+			//#style tableCell
+			tableItem.set(Dominion.PROSPERITY, new MessageItem("" + (Dominion.PROSPERITY+1), Locale.get("prosperity")));
+			//#style tableCell
+			tableItem.set(Dominion.PROMO, new MessageItem("" + (Dominion.PROMO+1), Locale.get("promo")));
+			//#style tableCell
+			tableItem.set(Dominion.USER, new MessageItem("" + (Dominion.USER+1), Locale.get("user")));			
 		} else if ( currentTableType == TABLE_NUMBER ) {
 			//#style tableCell
-			tableItem.set(LESS, new MessageItem("" + (LESS+1), "Less <"));
+			tableItem.set(LESS, new MessageItem("" + (LESS+1), "<"));
 			//#style tableCell
-			tableItem.set(EQUAL, new MessageItem("" + (EQUAL+1), "Equal ="));
+			tableItem.set(EQUAL, new MessageItem("" + (EQUAL+1), "="));
 			//#style tableCell
-			tableItem.set(GREATER, new MessageItem("" + (GREATER+1), "Greater >"));
+			tableItem.set(GREATER, new MessageItem("" + (GREATER+1), ">"));
 		}
 		tableItem.setSelectedCell(0, 0);
 		tableItem.setSelectedCell(1, 1);
@@ -178,50 +199,76 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 					changeToTable(TABLE_TYPE);break;
 				case TABLE_ADDS:
 					changeToTable(TABLE_ADDS);break;
-				case TABLE_NUMBER:
-					changeToTable(TABLE_NUMBER);break;
+				case TABLE_EXPANSIONS:
+					changeToTable(TABLE_EXPANSIONS);break;
 				}
 			} else if ( currentTableType == TABLE_TYPE ) {
 				switch ( keyCode - Canvas.KEY_NUM1 ) {
 				case Cards.TYPE_ACTION:
+					GaugeForm.instance().setGauge(Locale.get("card.action"), true, 10, 1);
 					option += "C";break;
 				case Cards.TYPE_VICTORY:
+					GaugeForm.instance().setGauge(Locale.get("card.victory"), true, 10, 1);
 					option += "V";break;
 				case Cards.TYPE_TREASURY:
+					GaugeForm.instance().setGauge(Locale.get("card.treasury"), true, 10, 1);
 					option += "T";break;
 				case Cards.TYPE_ATTACK:
+					GaugeForm.instance().setGauge(Locale.get("card.attack"), true, 10, 1);
 					option += "A";break;
 				case Cards.TYPE_REACTION:
+					GaugeForm.instance().setGauge(Locale.get("card.reaction"), true, 10, 1);
 					option += "R";break;
 				case Cards.TYPE_DURATION:
+					GaugeForm.instance().setGauge(Locale.get("card.duration"), true, 10, 1);
 					option += "D";break;
-				//case Cards.TYPE_POTION:
-				//	option += "P";break;
 				default: return;
 				}
 				changeToTable(TABLE_NUMBER);break;
 			} else if ( currentTableType == TABLE_ADDS ) {
 				switch ( keyCode - Canvas.KEY_NUM1 ) {
 				case Cards.ADDS_CARDS:
+					GaugeForm.instance().setGauge(Locale.get("card.attack"), true, 10, 1);
 					option += "d";break;
 				case Cards.ADDS_ACTIONS:
+					GaugeForm.instance().setGauge(Locale.get("card.adds.actions"), true, 10, 1);
 					option += "a";break;
 				case Cards.ADDS_BUYS:
+					GaugeForm.instance().setGauge(Locale.get("card.adds.buys"), true, 10, 1);
 					option += "b";break;
 				case Cards.ADDS_COINS:
+					GaugeForm.instance().setGauge(Locale.get("card.adds.coins"), true, 10, 1);
 					option += "c";break;
 				case Cards.ADDS_TRASH:
+					GaugeForm.instance().setGauge(Locale.get("card.adds.trash"), true, 10, 1);
 					option += "t";break;
 				case Cards.ADDS_CURSE:
+					GaugeForm.instance().setGauge(Locale.get("card.adds.curses"), true, 10, 1);
 					option += "u";break;
 				case Cards.ADDS_POTIONS:
+					GaugeForm.instance().setGauge(Locale.get("card.adds.potions"), true, 10, 1);
 					option += "p";break;
+				case Cards.ADDS_VICTORY_POINTS:
+					GaugeForm.instance().setGauge(Locale.get("card.adds.victorypoints"), true, 10, 1);
+					option += "v";break;
+				default: return;
+				}
+				changeToTable(TABLE_NUMBER);break;
+			} else if ( currentTableType == TABLE_EXPANSIONS ) {
+				switch ( keyCode - Canvas.KEY_NUM0 ) {
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+				case 6:
+				case 7:
+					GaugeForm.instance().setGauge(Dominion.getExpansionName(keyCode - Canvas.KEY_NUM1), true, 10, 1);
+					option += "" + (keyCode - Canvas.KEY_NUM1);break;
 				default: return;
 				}
 				changeToTable(TABLE_NUMBER);break;
 			} else if ( currentTableType == TABLE_NUMBER ) {
-				GaugeForm.instance().setGauge("asd", true, 10, 1);
-				GaugeForm.instance().setCommandListener(this);
 				switch ( keyCode - Canvas.KEY_NUM1 ) {
 				case LESS:
 					option += "<";break;
@@ -236,7 +283,7 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 			break;
 		case Canvas.KEY_POUND:
 		case Canvas.KEY_STAR:
-			GameApp.instance().showAlert(option);
+			GameApp.instance().showInfo(Locale.get("screen.Condition.currentoption", option), Alert.FOREVER);
 		default:
 			//#= super.keyPressed(keyCode);
 		}

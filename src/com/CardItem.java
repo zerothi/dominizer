@@ -31,6 +31,7 @@ public class CardItem extends ChoiceItem {
 	//#if polish.usePolishGui
 	//#= public CardItem( String label, int listType, Style style ) {
 	//#=	super( label, null, listType, style );
+	//#=    choiceType = listType;
 	//#= }
 	//#endif
 
@@ -41,10 +42,11 @@ public class CardItem extends ChoiceItem {
 		super.paintContent(x, y, xBorder, yBorder, g);
 		if ( this.lI != null ) {
 			if ( isBothSides ) {
-				if ( choiceType == List.IMPLICIT )
+				if ( choiceType == List.IMPLICIT ) {
 					g.drawImage(this.lI, x + this.lI.getWidth() / 3, y, Graphics.TOP | Graphics.LEFT );
-				else
+				} else {
 					g.drawImage(this.lI, x + this.lI.getWidth() + this.lI.getWidth() / 3, y, Graphics.TOP | Graphics.LEFT );
+				}
 			} else {
 				if ( this.rI != null )
 					g.drawImage(this.lI, x + super.availContentWidth - this.rI.getWidth() - this.rI.getWidth() / 3 - this.lI.getWidth() / 3, y, Graphics.TOP | Graphics.RIGHT );

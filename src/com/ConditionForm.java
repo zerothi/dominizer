@@ -10,6 +10,7 @@ import javax.microedition.lcdui.Displayable;
 
 import com.dominizer.GameApp;
 
+import de.enough.polish.ui.Alert;
 import de.enough.polish.ui.List;
 import de.enough.polish.util.Locale;
 
@@ -22,6 +23,7 @@ public class ConditionForm extends List implements CommandListener {
 	private ConditionTableForm ptF = null;
 	private Command selectCmd = new Command( Locale.get("polish.command.select"), Command.BACK, 0);
 	private Command newCmd = new Command( Locale.get("screen.Condition.New"), Command.ITEM, 5);
+	private Command showCmd = new Command( Locale.get("cmd.Condition.Show"), Command.ITEM, 6);
 	private Command perGaugeCmd = new Command( Locale.get("cmd.Percentage.Gauge"), Command.ITEM, 7);
 	private Command deleteCmd = new Command( Locale.get("polish.command.delete"), Command.ITEM, 10);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.ITEM, 50);
@@ -39,6 +41,7 @@ public class ConditionForm extends List implements CommandListener {
 		populateConditions();
 		//#= setSelectCommand(selectCmd);
 		addCommand(newCmd);
+		addCommand(showCmd);
 		//addCommand(perGaugeCmd);
 		addCommand(deleteCmd);
 		addCommand(quitCmd);
@@ -78,10 +81,10 @@ public class ConditionForm extends List implements CommandListener {
 			Dominion.I().condition.setPercentage(index, 0);
 		}
 		set(index, ci);
-		if ( index > 0 )
-			focus(index - 1);
 		if ( size() > index + 1)
 			focus(index + 1);
+		if ( index > 0 )
+			focus(index - 1);
 		focus(index);
 	}
 	
@@ -141,8 +144,11 @@ public class ConditionForm extends List implements CommandListener {
 		case Canvas.KEY_NUM7:
 		case Canvas.KEY_NUM8:
 		case Canvas.KEY_NUM9:
-			setPercentage(getCurrentIndex(), keyCode - Canvas.KEY_NUM0);
+		
+			//setPercentage(getCurrentIndex(), keyCode - Canvas.KEY_NUM0);
 			break;
+		case Canvas.KEY_POUND:
+		case Canvas.KEY_STAR:
 		default:
 			//#= super.keyPressed(keyCode);
 		}
@@ -168,6 +174,9 @@ public class ConditionForm extends List implements CommandListener {
 			GaugeForm.instance().setCommandListener(this);
 			GaugeForm.instance().setGaugeValue(Dominion.I().condition.getPercentage(getCurrentIndex()));
 			GameApp.instance().changeToScreen(GaugeForm.instance());
+		} else if ( cmd.equals(showCmd) ) {
+			String tmp = Dominion.I().condition.getCondition(getCurrentIndex());
+			GameApp.instance().showInfo(Locale.get("screen.Condition.currentoption", tmp), Alert.FOREVER);
 		} else if ( cmd.equals(deleteCmd) ) {
 			removeCondition(getCurrentIndex());
 		} else if ( cmd.equals(quitCmd) ) {

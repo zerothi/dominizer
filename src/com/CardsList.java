@@ -123,7 +123,7 @@ public class CardsList extends List implements CommandListener {
 			if ( hasBlackMarketCmd ) {
 			//#if !polish.android
 				try {
-					UiAccess.removeSubCommand(blackMarketCmd, optionsCmd, this);
+					//#= UiAccess.removeSubCommand(blackMarketCmd, optionsCmd, this);
 				} catch ( Exception e) {
 					// Do nothing
 				}

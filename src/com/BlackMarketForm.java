@@ -217,7 +217,7 @@ public class BlackMarketForm extends List implements CommandListener {
 			removeCommand(drawCardsCmd);
 			removeCommand(cancelBuyCmd);
 			addCommand(selectCardCmd);
-			setSelectCommand(selectCardCmd);
+			//#= setSelectCommand(selectCardCmd);
 		} else {
 			//#debug dominizer
 			System.out.println("adding commands for drawing");
@@ -227,7 +227,7 @@ public class BlackMarketForm extends List implements CommandListener {
 				//#debug dominizer
 				System.out.println("adding commands for drawing2");
 				addCommand(drawCardsCmd);
-				setSelectCommand(drawCardsCmd);
+				//#= setSelectCommand(drawCardsCmd);
 			} else {
 				removeCommand(drawCardsCmd);
 			}

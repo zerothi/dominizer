@@ -9,34 +9,41 @@ import de.enough.polish.util.Locale;
 
 public class Dominion {
 	private static Dominion dom = null;
-	public static final int TOTAL_CARDS = 25 + 25 + 26 + 3;
+	public static int TOTAL_CARDS = 25 + 25 + 26 + 3 + 12;
 	public static final int BASE = 0; // has 25 cards
 	public static final int INTRIGUE = 1; // has 25 cards
 	public static final int SEASIDE = 2; // has 26 cards
 	public static final int ALCHEMY = 3; // has 12 cards (the 13th card Potion is not counted)
 	public static final int PROSPERITY = 4;
 	public static final int PROMO = 5; // has 3 cards
-	public static final int USER = 10;
+	public static final int USER = 6;
 	public static boolean RANDOMIZE_COMPLETELY_NEW = true;
 	public static int SETS_SAVE = 5;
 	public static int CURRENT_SET = 0;
 	
 	public Cards[] expansions = null;
 	private Cards selectedCards = null;
+	private int selected = 0;
 	public Condition condition = null;
 	public CardPresets[] presets = null;
 	private int numberOfRandomCards = 10;
 	
-	public boolean[] playingExpansions = new boolean[] { true, true, true, true, true, true };
+	public boolean[] playingExpansions = null;
 	
-	public int[] numberOfCardsFromExp = new int[] { 0, 0, 0, 0, 0, 0 };
+	public int[] numberOfCardsFromExp = null;
 
 	private StringBuffer sb;
 	
 	private int loop = 0;
 
 	private Dominion() {
-		expansions = new Cards[6];
+		playingExpansions = new boolean[USER+1];
+		numberOfCardsFromExp = new int[USER+1];
+		for ( loop = 0 ; loop < playingExpansions.length ; loop++ ) {
+			playingExpansions[loop] = true;
+			numberOfCardsFromExp[loop] = 0;			
+		}
+		expansions = new Cards[USER+1];
 		presets = new CardPresets[4]; 
 		presets[BASE] = new CardPresets(5);
 		presets[BASE].setExpansion(BASE);
@@ -131,6 +138,11 @@ public class Dominion {
 		readResource(PROMO, "promo", 3);
 		//#debug dominizer
 		System.out.println("size promo: " + expansions[PROMO].size());
+		//#debug dominizer
+		System.out.println("reading user");
+		readResource(USER, "user", -1);
+		//#debug dominizer
+		System.out.println("size user: " + expansions[USER].size());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.cards.settings"));
 		//#debug dominizer
 		System.out.println("reading settings cards");
@@ -138,7 +150,7 @@ public class Dominion {
 	}
 	
 	
-	private void checkAvailability() throws DominionException {
+	public void checkAvailability() throws DominionException {
 		int tmp = 0, sum = 0;
 		for ( loop = 0; loop < expansions.length; loop++) {
 			tmp = 0;
@@ -428,6 +440,8 @@ public class Dominion {
 			return parseInt(information.substring(information.indexOf("u")));
 		else if ( whichInfo == Cards.ADDS_POTIONS && -1 < information.indexOf("p") )
 			return parseInt(information.substring(information.indexOf("p")));
+		else if ( whichInfo == Cards.ADDS_VICTORY_POINTS && -1 < information.indexOf("v") )
+			return parseInt(information.substring(information.indexOf("v")));
 		else if ( whichInfo == Cards.COST_POTIONS && -1 < information.indexOf("P") )
 			return parseInt(information.substring(information.indexOf("P")));
 		return 0;
@@ -469,15 +483,28 @@ public class Dominion {
 				fulfilled = fulfilled | parseCondition(option.substring(i+1));
 				i = option.length();
 			} else {
-				for ( int j = 0 ; j < 7 ; j++ ) {
+				// checking if it is an type condition
+				for ( int j = 0 ; j < 7 ; j++ ) { // TODO update when cards are changed!
 					if ( parseType(option.substring(i,i+1), j) ) {
-						fulfilled = parseCardsOption(true, option.substring(i), j);
-						j = 7;
-					} else if ( parseType(option.substring(i,i+1), j) ) {
-						fulfilled = parseCardsOption(false, option.substring(i), j);
-						j = 7;
+						fulfilled = parseCardsOption(0, option.substring(i), j);
+						j = 8;
 					}
 				}
+				// checking if it is an adds condition
+				for ( int j = 0 ; j < 9 ; j++ ) { 
+					if ( parseInformation(option.substring(i,i+1), j) > 0 ) {
+						fulfilled = parseCardsOption(1, option.substring(i), j);
+						j = 9;
+					}
+				}
+				// checking if it is an expansion condition
+				try {
+					int tmp = parseInt(" "+option.substring(0,3));
+					//#debug dominizer
+					System.out.println("parsing expansion condition: " + ( tmp > 9 ? option.substring(1) : option ));
+					fulfilled = parseCardsOption(2, ( tmp > 9 ? option.substring(1) : option ), tmp);
+				} catch (Exception e) {}//do nothing as it is a check
+				// to not jump over things that are already processed!
 				i += 2;
 			}
 		}
@@ -487,28 +514,34 @@ public class Dominion {
 	/*
 	 * Remember that this also has meaning for ADDS!
 	 */
-	private boolean parseCardsOption(boolean isType, String option, int typeInfo) {
+	private boolean parseCardsOption(int typeOption, String option, int typeInfo) {
 		if ( option.substring(1,2).equals("=") ) {
-			if ( isType )
+			if ( typeOption == 0 )
 				return selectedCards.getTypes(typeInfo) == parseInt(option.substring(1));
-			else
+			else if ( typeOption == 1 )
 				return selectedCards.getAdds(typeInfo) == parseInt(option.substring(1));
+			else if ( typeOption == 2 )
+				return selectedCards.fromExpansion(typeInfo) == parseInt(option.substring(1));
 		} else if ( option.substring(1,2).equals(">") ) {
-			if ( isType )
+			if ( typeOption == 0 )
 				return selectedCards.getTypes(typeInfo) > parseInt(option.substring(1));
-			else
+			else if ( typeOption == 1 )
 				return selectedCards.getAdds(typeInfo) > parseInt(option.substring(1));
+			else if ( typeOption == 2 )
+				return selectedCards.fromExpansion(typeInfo) > parseInt(option.substring(1));
 		} else if ( option.substring(1,2).equals("<") ) {
-			if ( isType )
+			if ( typeOption == 0 )
 				return selectedCards.getTypes(typeInfo) < parseInt(option.substring(1));
-			else
+			else if ( typeOption == 1 )
 				return selectedCards.getAdds(typeInfo) < parseInt(option.substring(1));
+			else if ( typeOption == 2 )
+				return selectedCards.fromExpansion(typeInfo) < parseInt(option.substring(1));
 		}
 		return false;
 	}
 
 	private boolean parseType(String type, int whichInfo) {
-		if ( whichInfo ==  Cards.TYPE_ACTION && -1 < type.indexOf("C") )
+		if ( whichInfo == Cards.TYPE_ACTION && -1 < type.indexOf("C") )
 			return true;
 		else if ( whichInfo == Cards.TYPE_VICTORY && -1 < type.indexOf("V") )
 			return true;
@@ -527,43 +560,8 @@ public class Dominion {
 		return presets.length;
 	}
 	
-	public void randomizeCards(int playingSet) throws DominionException {
-		randomizeCards(playingSet, Cards.COMPARE_PREFERRED);
-	}
-	
-	public void randomizeCards(int playingSet, int sortMethod) throws DominionException {
-		checkAvailability();
-		Cards.COMPARE_PREFERRED = sortMethod;
-		int i = 0, selectedElement = 0, selected = 0, tmpSum = 0;
-		selectedCards = new Cards(numberOfRandomCards, Cards.IS_NOT_SET);
-		Rand.resetSeed(); 
-		//#debug dominizer
-		System.out.println("using hold cards");
-		selected += useHoldCards(playingSet);
-		//#debug dominizer
-		System.out.println("using percentage cards");
-		for ( i = 0 ; i < expansions.length ; i++ )
-			selected += ensurePercentageCards(playingSet, i);
-		//#debug dominizer
-		System.out.println("using minimum expansion cards, already selected: " + selected);
-		for ( i = 0 ; i < expansions.length ; i++ ) {
-			//#debug dominizer
-			System.out.println("trying expansion: " + i + " - State: " + playingExpansions[i] + " - Number: " + numberOfCardsFromExp[i]);
-			if ( playingExpansions[i] & 0 < numberOfCardsFromExp[i] & expansions[i].size() > 0 ) {
-				//#debug dominizer
-				System.out.println("selecting for expansion: " + i + " already chosen: "+ selectedCards.fromExpansion(i));
-				while ( selectedCards.fromExpansion(i) < numberOfCardsFromExp[i] && selected < numberOfRandomCards ) {
-					//#debug dominizer
-					System.out.println("selecting for expansion12: " +i+ " already chosen: "+ selectedCards.fromExpansion(i));
-					selectedElement = Rand.randomInt(expansions[i].size());
-					if ( selectCard(playingSet, i, selectedElement, selected) ) {
-						selected++;
-						//#debug dominizer
-						System.out.println("selected: " + i + " - " + selected);
-					}
-				}
-			}
-		}
+	public void randomizeCards(int playingSet) {
+		int selectedElement = 0, tmpSum = 0;
 		Rand.resetSeed();
 		//#debug dominizer
 		System.out.println("using randomizing cards");
@@ -580,7 +578,9 @@ public class Dominion {
 	}
 	
 	public void randomizeCardsPrevent(int playingSet) throws DominionException {
-		randomizeCards(90, Cards.COMPARE_PREFERRED);
+		resetSelectedCards();
+		checkAvailability();
+		randomizeCards(90);
 		removePlayingSet(playingSet);
 		for ( int i = 0 ; i < expansions.length ; i++ )
 			for ( loop = 0 ; loop < expansions[i].size() ; loop++ )
@@ -589,7 +589,12 @@ public class Dominion {
 	}
 
 	private void readResource(int exp, String fileName, int totalCards) {
-		expansions[exp] = new Cards(totalCards, Cards.IS_SET);
+		if ( exp == USER ) {
+			if ( totalCards > -1 )
+				expansions[exp] = new Cards(totalCards, Cards.IS_SET);
+		} else {
+			expansions[exp] = new Cards(totalCards, Cards.IS_SET);
+		}
 		StringBuffer sb = new StringBuffer();
 		String tmp = "      ";
 		InputStreamReader isr = null;
@@ -600,7 +605,17 @@ public class Dominion {
 			int ch;
 			while ((ch = isr.read()) > -1) {
 				sb.append((char) ch);
-				if ((char) ch == ';') {
+				if ( exp == USER && totalCards == -1 && (char) ch == ';' ) {
+					if (isr != null)
+						isr.close();
+					//#debug dominizer
+					System.out.println("processing " + sb.toString() + ":" + sb.toString().substring(0, sb.toString().length() - 1));
+					readResource(exp, fileName, Integer.parseInt(sb.toString().substring(0, sb.toString().length() - 1)));
+					return;
+				} else if ( exp == USER && cardRead == 0 && start == 0 && (char) ch == ';' ) {
+					start = 1; // this ensures that it is not encountered twice!
+					TOTAL_CARDS += totalCards;
+				} else if ((char) ch == ';' ) {
 					// # debug dominizer
 					//System.out.println("processing " + sb.toString());
 					expansions[exp].setName(cardRead, sb.toString().substring(
@@ -843,6 +858,11 @@ public class Dominion {
 					expansions[i].setPlaying(j, 0);
 	}
 	
+	public void resetSelectedCards() {
+		selectedCards = new Cards(numberOfRandomCards, Cards.IS_NOT_SET);
+		selected = 0;
+	}
+	
 	public boolean selectCondition(int condition) throws DominionException {
 		for ( int i = 0 ; i < Condition.MAX_RUNS ; i++ ) {
 			//#debug dominizer
@@ -939,23 +959,55 @@ public class Dominion {
 		return cards;
 	}
 	
-	public int useHoldCards(int playingSet) {
-		int card = 0;
+	public void useHoldCards(int playingSet) {
+		//#debug dominizer
+		System.out.println("using hold cards");
 		for ( int i = 0 ; i < expansions.length ; i++ ) {
 			for ( int j = 0 ; j < expansions[i].size() ; j++ ) {
 				if ( expansions[i].isHold(j, playingSet) ) {
 					selectCard(playingSet, i, j, -1);
-					card++;
+					selected++;
 				}
 			}
-			//#debug dominizer
-			System.out.println("used " + card + " from expansion " + i);
 		}
-		return card;
 	}
+	
+	public void useMinimumExpansionCards(int playingSet) {
+		//#debug dominizer
+		System.out.println("using minimum expansion cards, already selected: " + selected);
+		for ( int i = 0 ; i < expansions.length ; i++ ) {
+			//#debug dominizer
+			System.out.println("trying expansion: " + i + " - State: " + playingExpansions[i] + " - Number: " + numberOfCardsFromExp[i]);
+			if ( playingExpansions[i] & 0 < numberOfCardsFromExp[i] & expansions[i].size() > 0 ) {
+				//#debug dominizer
+				System.out.println("selecting for expansion: " + i + " already chosen: "+ selectedCards.fromExpansion(i));
+				while ( selectedCards.fromExpansion(i) < numberOfCardsFromExp[i] && selected < numberOfRandomCards ) {
+					//#debug dominizer
+					System.out.println("selecting for expansion1: " +i+ " already chosen: "+ selectedCards.fromExpansion(i));
+					loop = Rand.randomInt(expansions[i].size());
+					if ( selectCard(playingSet, i, loop, selected) ) {
+						selected++;
+						//#debug dominizer
+						System.out.println("selected: " + i + " - " + selected);
+					}
+				}
+			}
+		}
+	}
+	
+	public void usePercentageCards(int playingSet) {
+		//#debug dominizer
+		System.out.println("using percentage cards");
+		for ( int i = 0 ; i < expansions.length ; i++ )
+			selected += ensurePercentageCards(playingSet, i);
+	}
+	
+	
 	
 	public static Image getExpansionImage(int expansion) {
 		try {
+			if ( Dominion.getExpansionImageName(expansion) == null )
+				return null;
 			return Image.createImage("/" + Dominion.getExpansionImageName(expansion) + ".png");
 		} catch (IOException exp) {
 			return null;
@@ -964,18 +1016,20 @@ public class Dominion {
 	
 	public static String getExpansionImageName(int expansion) {
 		switch (expansion) {
-		case Dominion.BASE:
+		case BASE:
 			return "ba";
-		case Dominion.PROMO:
+		case PROMO:
 			return "pr";
-		case Dominion.INTRIGUE:
+		case INTRIGUE:
 			return "in";
-		case Dominion.SEASIDE:
+		case SEASIDE:
 			return "se";
-		case Dominion.ALCHEMY:
+		case ALCHEMY:
 			return "al";
-		case Dominion.PROSPERITY:
+		case PROSPERITY:
 			return "po";
+		case USER:
+			return "us";
 		default:
 			return null;
 		}
@@ -995,6 +1049,8 @@ public class Dominion {
 			return Locale.get("alchemy");
 		case PROSPERITY:
 			return Locale.get("prosperity");
+		case USER:
+			return Locale.get("user");
 		default:
 			return "";
 		}

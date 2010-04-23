@@ -51,12 +51,11 @@ public class EditCardsList extends List implements CommandListener {
 			break;
 		case Canvas.KEY_POUND:
 			int tmp = 0;
-			switch ( Dominion.I().getLinearExpansionIndex(getCurrentIndex()) ) {
-			case 3:	tmp = 0; break;
-			case 2:	tmp += Dominion.I().expansions[2].size();
-			case 1:	tmp += Dominion.I().expansions[1].size();
-			case 0:	tmp += Dominion.I().expansions[0].size();
+			for ( int i = 0 ; i <= Dominion.I().getLinearExpansionIndex(getCurrentIndex()) ; i++ ) {
+				tmp += Dominion.I().expansions[i].size();
 			}
+			if ( tmp == Dominion.TOTAL_CARDS )
+				tmp = 0;
 			focus(tmp);
 			break;
 		case Canvas.KEY_NUM0:

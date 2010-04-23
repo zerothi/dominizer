@@ -2,24 +2,14 @@ package com;
 
 
 
-import javax.microedition.lcdui.Canvas;
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Displayable;
-import javax.microedition.rms.RecordStoreException;
-import javax.microedition.rms.RecordStoreFullException;
-import javax.microedition.rms.RecordStoreNotFoundException;
-
 import com.dominizer.GameApp;
 
-import de.enough.polish.ui.Alert;
 import de.enough.polish.ui.List;
 import de.enough.polish.ui.Screen;
 import de.enough.polish.ui.TabListener;
 import de.enough.polish.ui.TabbedFormListener;
 import de.enough.polish.ui.TabbedPane;
-import de.enough.polish.ui.UiAccess;
-import de.enough.polish.util.Locale;
+//#= import de.enough.polish.util.Locale;
 
 public class ShowCardsForm extends TabbedPane implements TabListener, TabbedFormListener {
 
@@ -43,9 +33,9 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 				try {
 					cardSet[i].setCards(Dominion.I().getCurrentlySelected(i + 1));
 					Dominion.CURRENT_SET = i + 1;
-					String tmp = "" + Dominion.CURRENT_SET;
+					//#= String tmp = "" + Dominion.CURRENT_SET;
 					//#style tabIconSet
-					addTab(cardSet[i], null, Locale.get("screen.RandomizedCards.title2", tmp));
+					//#= addTab(cardSet[i], null, Locale.get("screen.RandomizedCards.title2", tmp));
 				} catch ( DominionException e) {
 					// Do nothing as there has been an error in reading. Highly unlikely
 				}
@@ -64,9 +54,9 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 		if ( Dominion.CURRENT_SET < cardSet.length ) {
 			cardSet[Dominion.CURRENT_SET].reRandomize();
 			Dominion.CURRENT_SET++;
-			String tmp = "" + Dominion.CURRENT_SET;
+			//#= String tmp = "" + Dominion.CURRENT_SET;
 			//#style tabIconSet
-			addTab(cardSet[Dominion.CURRENT_SET-1], null, Locale.get("screen.RandomizedCards.title2", tmp));
+			//#= addTab(cardSet[Dominion.CURRENT_SET-1], null, Locale.get("screen.RandomizedCards.title2", tmp));
 			cardSet[Dominion.CURRENT_SET - 1].setBlackMarket(Dominion.I().isBlackMarketPlaying());
 			setFocus(Dominion.CURRENT_SET - 1);
 		} else {
@@ -80,9 +70,9 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 		if ( Dominion.CURRENT_SET + 1 < cardSet.length ) {
 			cardSet[Dominion.CURRENT_SET].setCards(cards);
 			Dominion.CURRENT_SET++;
-			String tmp = "" + Dominion.CURRENT_SET;
+			//#= String tmp = "" + Dominion.CURRENT_SET;
 			//#style tabIconSet
-			addTab(cardSet[Dominion.CURRENT_SET-1], null, Locale.get("screen.RandomizedCards.title2", tmp));
+			//#= addTab(cardSet[Dominion.CURRENT_SET-1], null, Locale.get("screen.RandomizedCards.title2", tmp));
 			cardSet[Dominion.CURRENT_SET - 1].setBlackMarket(Dominion.I().isBlackMarketPlaying());
 			setFocus(Dominion.CURRENT_SET - 1);
 			for ( int i = 0 ; i < cardSet.length ; i++ )
@@ -124,9 +114,9 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
     		if ( Dominion.I().isSetPlaying(i) ) {
     			try {
 	    			cardSet[i - 1].setCards(Dominion.I().getCurrentlySelected(i));
-	    			String tmp = "" + i;
+	    			//#= String tmp = "" + i;
 	    			//#style tabIconSet
-	    			addTab(cardSet[i - 1], null, Locale.get("screen.RandomizedCards.title2", tmp));
+	    			//#= addTab(cardSet[i - 1], null, Locale.get("screen.RandomizedCards.title2", tmp));
 	    			cardSet[i - 1].setBlackMarket(Dominion.I().isBlackMarketPlaying());
 	    			Dominion.CURRENT_SET = i;
     			} catch ( DominionException e ) {

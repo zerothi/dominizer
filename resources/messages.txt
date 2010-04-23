@@ -40,6 +40,7 @@ screen.Options.RandomizationCriteria=Randomization Criteria
 screen.Condition.New=New Condition
 screen.Condition.Delete=New Condition
 screen.Condition.Percentage=Condition Percentage
+screen.Condition.currentoption=Current option:\n{0}
 screen.Calendar.title=Calendar
 cmd.Randomize.Show=Randomize
 cmd.Randomize.SetPrevent=Rand. Prevent
@@ -50,7 +51,8 @@ cmd.Set.Delete=Delete Set
 cmd.SaveAsPreset=Save
 cmd.HoldCard=Hold
 cmd.Options.Main=Options
-cmd.Conditions.Save=Save
+cmd.Condition.Save=Save
+cmd.Condition.Show=Show
 cmd.Sort.Main=Sort
 cmd.Sort.ExpName=Exp. - Name
 cmd.Sort.ExpCost=Exp. - Cost
@@ -95,6 +97,32 @@ alert.Randomization.TotalAvailability=You only have {0} available cards in total
 
 alert.Filter.Availability=Currently you cannot search and edit at the same time.\nSolution: Clear filter-text.
 
+
+
+################
+# 
+# Card information
+#
+################
+card.type=Type
+card.action=Action
+card.victory=Victory
+card.attack=Attack
+card.reaction=Reaction
+card.duration=Duration
+card.treasury=Treasury
+
+card.adds=Adds
+card.adds.actions=Actions
+card.adds.victorypoints=VPs
+card.adds.buys=Buys
+card.adds.draws=Draws
+card.adds.coins=Coins
+card.adds.trash=Trash
+card.adds.curses=Curses
+card.adds.potions=Potions
+
+
 ################
 #
 # Expansion Names
@@ -106,6 +134,7 @@ intrigue=Intrigue
 seaside=Seaside
 alchemy=Alchemy
 prosperity=Prosperity
+user=User Cards
 card.BlackMarket=Black Market
 
 preset.base.FirstGame=First Game

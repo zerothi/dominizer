@@ -24,7 +24,7 @@ public class QuickRandomizeList extends List implements CommandListener {
 	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 	private Command gaugeCmd = new Command( Locale.get("cmd.SetCards.Gauge"), Command.ITEM, 15);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.ITEM, 16);
-	public boolean[] flags = new boolean[6];
+	public boolean[] flags = new boolean[Dominion.USER+1];
 	private int tmp = 0;
 	
 	public QuickRandomizeList(String title, int listType) {
@@ -51,7 +51,17 @@ public class QuickRandomizeList extends List implements CommandListener {
 			getSelectedFlags(flags);
 			Dominion.I().setExpansionPlayingState(flags);
 			GameApp.instance().ecFL.updateCards(false);
+			Dominion.I().resetSelectedCards();
+			try {
+				Dominion.I().checkAvailability();
+			} catch (DominionException e) {
+				GameApp.instance().showAlert(e.toString());
+				return;
+			}
+			// TODO implement correct randomization processes!
+			Dominion.I().useMinimumExpansionCards(Dominion.CURRENT_SET);
 			GameApp.instance().showRandomizedCards();
+			//GameApp.instance().changeToScreen(ShowCardsForm.instance());
 		} else if ( cmd.equals(gaugeCmd) ) {
 			tmp = UiAccess.getFocusedIndex(this);
 			String tmpS = Dominion.getExpansionName(tmp);
