@@ -1009,7 +1009,7 @@ public class Dominion {
 		try {
 			if ( Dominion.getExpansionImageName(expansion) == null )
 				return null;
-			return Image.createImage("/" + Dominion.getExpansionImageName(expansion) + ".png");
+			return Image.createImage("/" + Dominion.getExpansionImageName(expansion) + "0.png");
 		} catch (IOException exp) {
 			return null;
 		}
@@ -1019,8 +1019,6 @@ public class Dominion {
 		switch (expansion) {
 		case BASE:
 			return "ba";
-		case PROMO:
-			return "pr";
 		case INTRIGUE:
 			return "in";
 		case SEASIDE:
@@ -1029,6 +1027,8 @@ public class Dominion {
 			return "al";
 		case PROSPERITY:
 			return "po";
+		case PROMO:
+			return "pr";
 		case USER:
 			return "us";
 		default:
