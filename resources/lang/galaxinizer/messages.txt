@@ -1,0 +1,25 @@
+################
+#
+# App Specific translations
+#
+################
+# Currently these are the same as in the english translation!
+
+
+################
+#
+# Expansion Names
+#
+################
+base=Base
+promo=Promo
+
+################
+#
+# Application Name
+#
+################
+app.name=Galaxinizer
+MIDlet-1=Galaxinizer,/main.png,com.dominizer.GameApp
+MIDlet-Name=Galaxinizer
+MIDlet-Delete-Confirm=Delete Galaxinizer? Nooo? :D
