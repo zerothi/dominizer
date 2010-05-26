@@ -8,6 +8,9 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Ticker;
 
 import com.dominizer.GameApp;
+import com.util.Cards;
+import com.util.Dominion;
+import com.util.Rand;
 
 import de.enough.polish.ui.List;
 import de.enough.polish.util.Locale;

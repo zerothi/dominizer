@@ -1,8 +1,9 @@
-package com;
+package com.util;
 
 import java.io.IOException;
 
 import javax.microedition.lcdui.Image;
+
 
 
 public class Cards {

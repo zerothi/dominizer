@@ -12,22 +12,23 @@ import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreFullException;
 import javax.microedition.rms.RecordStoreNotFoundException;
 
+import tests.TestList;
+
 import com.BlackMarketForm;
-import com.Cards;
 import com.CardsList;
 import com.ConditionForm;
-import com.Dominion;
-import com.DominionException;
 import com.EditCardsList;
 import com.GaugeForm;
 import com.InputForm;
 import com.ConditionTableForm;
 import com.PresetList;
 import com.QuickRandomizeList;
-import com.Rand;
-import com.SettingsRecordStorage;
 import com.ShowCardsForm;
-import com.TestList;
+import com.util.Cards;
+import com.util.Dominion;
+import com.util.DominionException;
+import com.util.Rand;
+import com.util.SettingsRecordStorage;
 
 import de.enough.polish.ui.FilteredList;
 import de.enough.polish.ui.List;

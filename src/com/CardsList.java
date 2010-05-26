@@ -12,6 +12,10 @@ import javax.microedition.rms.RecordStoreFullException;
 import javax.microedition.rms.RecordStoreNotFoundException;
 
 import com.dominizer.GameApp;
+import com.util.Cards;
+import com.util.Dominion;
+import com.util.DominionException;
+import com.util.SettingsRecordStorage;
 
 import de.enough.polish.ui.Alert;
 import de.enough.polish.ui.List;

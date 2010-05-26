@@ -7,6 +7,8 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.List;
 
 import com.dominizer.GameApp;
+import com.util.Dominion;
+import com.util.DominionException;
 
 import de.enough.polish.ui.UiAccess;
 import de.enough.polish.util.Locale;

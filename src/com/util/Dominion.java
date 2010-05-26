@@ -1,9 +1,11 @@
-package com;
+package com.util;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import javax.microedition.lcdui.Image;
+
+import com.GaugeForm;
 
 import de.enough.polish.util.Locale;
 

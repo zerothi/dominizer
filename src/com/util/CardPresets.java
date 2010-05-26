@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com;
+package com.util;
 
 
 /**

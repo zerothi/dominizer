@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com;
+package tests;
 
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;

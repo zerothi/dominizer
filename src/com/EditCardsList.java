@@ -9,6 +9,7 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Image;
 
 import com.dominizer.GameApp;
+import com.util.Dominion;
 
 import de.enough.polish.ui.List;
 import de.enough.polish.util.Locale;

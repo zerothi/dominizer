@@ -9,6 +9,9 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 
 import com.dominizer.GameApp;
+import com.util.Dominion;
+import com.util.DominionException;
+import com.util.SettingsRecordStorage;
 
 import de.enough.polish.ui.Alert;
 import de.enough.polish.ui.List;

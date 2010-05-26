@@ -1,14 +1,16 @@
 /**
  * 
  */
-package com;
+package tests;
 
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.List;
 
+import com.CardItem;
 import com.dominizer.GameApp;
+import com.util.Dominion;
 
 import de.enough.polish.ui.ChoiceItem;
 import de.enough.polish.util.Locale;

@@ -1,4 +1,4 @@
-package com;
+package com.util;
 
 
 public class DominionException extends Exception {

@@ -11,6 +11,8 @@ import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.StringItem;
 
 import com.dominizer.GameApp;
+import com.util.Cards;
+import com.util.Dominion;
 
 import de.enough.polish.ui.Alert;
 import de.enough.polish.ui.Item;

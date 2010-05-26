@@ -1,4 +1,5 @@
-package com;
+package com.util;
+
 
 public class Condition {
 	
