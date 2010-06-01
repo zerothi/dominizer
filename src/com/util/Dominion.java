@@ -1028,9 +1028,9 @@ public class Dominion {
 		case ALCHEMY:
 			return "al";
 		case PROSPERITY:
-			return "po";
-		case PROMO:
 			return "pr";
+		case PROMO:
+			return "p";
 		case USER:
 			return "us";
 		default:

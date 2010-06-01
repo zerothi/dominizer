@@ -444,8 +444,17 @@ public class Cards {
 	
 	public Image getCardTypeImage(int card) {
 		try {
-			return Image.createImage("/" + Dominion.getExpansionImageName(getExpansion(card)) + 
+			if ( getExpansion(card) == Dominion.PROMO ) {
+				if ( getName(card).equals(Dominion.expansions[Dominion.PROMO].getName(0)) )
+					return Image.createImage("/" + Dominion.getExpansionImageName(Dominion.PROMO) + "0.png");
+				else if ( getName(card).equals(Dominion.expansions[Dominion.PROMO].getName(1)) )
+					return Image.createImage("/" + Dominion.getExpansionImageName(Dominion.PROMO) + "1.png");
+				else if ( getName(card).equals(Dominion.expansions[Dominion.PROMO].getName(2)) )
+					return Image.createImage("/" + Dominion.getExpansionImageName(Dominion.PROMO) + "2.png");
+			} else {
+				return Image.createImage("/" + Dominion.getExpansionImageName(getExpansion(card)) + 
 					getCardType(card) + ".png");
+			}
 		} catch (IOException expc) {
 			return Dominion.getExpansionImage(getExpansion(card));
 		}
