@@ -254,25 +254,58 @@ public class Cards {
 	public boolean isType(int index, int whichType) {
 		return isSpecific[index][whichType];
 	}
+	
+	public boolean isOnlyType(int index, int whichType) {
+		boolean tmp = false;
+		for (int i = 0 ; i < isSpecific[index].length ; i++ )
+			tmp = (i == whichType ? tmp : tmp | isSpecific[index][i]);
+		return !(isSpecific[index][whichType] & tmp);
+	}
 		
 	public int getCardType(int index) {
 		if ( isType(index, TYPE_ACTION) ) {
+			if ( isType(index, TYPE_VICTORY) )
+				return TYPE_ACTION_VICTORY;
+			if ( isType(index, TYPE_TREASURY) )
+				return TYPE_ACTION_TREASURY;
 			if ( isType(index, TYPE_ATTACK) )
 				return TYPE_ACTION_ATTACK;
 			if ( isType(index, TYPE_DURATION) )
 				return TYPE_ACTION_DURATION;
-			if ( isType(index, TYPE_TREASURY) )
-				return TYPE_ACTION_TREASURY;
-			if ( isType(index, TYPE_VICTORY) )
-				return TYPE_ACTION_VICTORY;
-			if ( isType(index, TYPE_REACTION) )
+			if ( isType(index, TYPE_REACTION) ) // last because of Lighthouse
 				return TYPE_ACTION_REACTION;
-			return TYPE_ACTION;
-		} else if ( isType(index, TYPE_VICTORY) ) {
-			if ( isType(index, TYPE_TREASURY) )
-				return TYPE_TREASURY_VICTORY;
+			// Default is action anyway!
+		} else if ( isOnlyType(index, TYPE_VICTORY) ) {
 			return TYPE_VICTORY;
-		}		
+		} else if ( isType(index, TYPE_TREASURY) ) {
+			if ( isType(index, TYPE_VICTORY) )
+				return TYPE_TREASURY_VICTORY
+			return TYPE_TREASURY;
+		} else if ( isType(index, TYPE_ATTACK) ) {
+			if ( isType(index, TYPE_VICTORY) )
+				return TYPE_ATTACK_VICTORY;
+			if ( isType(index, TYPE_TREASURY) )
+				return TYPE_ATTACK_TREASURY;
+			if ( isType(index, TYPE_REACTION) )
+				return TYPE_ATTACK_REACTION;
+			if ( isType(index, TYPE_DURATION) )
+				return TYPE_ATTACK_DURATION;
+			// TODO : what if it is only a ATTACK
+		} else if ( isType(index, TYPE_REACTION) ) {
+			if ( isType(index, TYPE_VICTORY) )
+				return TYPE_REACTION_VICTORY;
+			if ( isType(index, TYPE_TREASURY) )
+				return TYPE_REACTION_TREASURY;
+			if ( isType(index, TYPE_DURATION) )
+				return TYPE_REACTION_DURATION;
+			// TODO : what if it is only a REACTION
+		} else if ( isType(index, TYPE_DURATION) ) {
+			if ( isType(index, TYPE_VICTORY) )
+				return TYPE_DURATION_VICTORY;
+			if ( isType(index, TYPE_TREASURY) )
+				return TYPE_DURATION_TREASURY;
+			// TODO : what if it is only a DURATION
+		}
 		return TYPE_ACTION;
 	}
 	
