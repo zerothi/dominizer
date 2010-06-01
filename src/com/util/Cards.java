@@ -270,7 +270,7 @@ public class Cards {
 			return TYPE_ACTION;
 		} else if ( isType(index, TYPE_VICTORY) ) {
 			if ( isType(index, TYPE_TREASURY) )
-				return TYPE_VICTORY_TREASURY;
+				return TYPE_TREASURY_VICTORY;
 			return TYPE_VICTORY;
 		}		
 		return TYPE_ACTION;
@@ -497,12 +497,29 @@ public class Cards {
 	public static final int TYPE_REACTION = 4;
 	public static final int TYPE_DURATION = 5;
 	
-	public static final int TYPE_ACTION_VICTORY = 10;
-	public static final int TYPE_ACTION_TREASURY = 11;
-	public static final int TYPE_ACTION_REACTION = 12;
-	public static final int TYPE_ACTION_ATTACK = 13;
-	public static final int TYPE_ACTION_DURATION = 14;
-	public static final int TYPE_VICTORY_TREASURY = 15;
+	public static final int TYPE_ACTION_VICTORY = 21;
+	public static final int TYPE_ACTION_TREASURY = 22;
+	public static final int TYPE_ACTION_ATTACK = 23;
+	public static final int TYPE_ACTION_REACTION = 24;
+	public static final int TYPE_ACTION_DURATION = 25;
+	
+	public static final int TYPE_TREASURY_VICTORY = 31;
+	
+	public static final int TYPE_ATTACK_VICTORY = 41;
+	public static final int TYPE_ATTACK_TREASURY = 42;
+	public static final int TYPE_ATTACK_REACTION = 44;
+	public static final int TYPE_ATTACK_DURATION = 45;
+	
+	public static final int TYPE_REACTION_VICTORY = 51;
+	public static final int TYPE_REACTION_TREASURY = 52;
+	public static final int TYPE_REACTION_DURATION = 55;
+	
+	public static final int TYPE_DURATION_VICTORY = 61;
+	public static final int TYPE_DURATION_TREASURY = 62;
+	
+	
+	
+	
 	
 	// TODO : When changing the below to non-consecutive numbers please update method "parseCondition" in Dominion
 	public static final int ADDS_CARDS = 0;
