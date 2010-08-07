@@ -279,7 +279,7 @@ public class Cards {
 			return TYPE_VICTORY;
 		} else if ( isType(index, TYPE_TREASURY) ) {
 			if ( isType(index, TYPE_VICTORY) )
-				return TYPE_TREASURY_VICTORY
+				return TYPE_TREASURY_VICTORY;
 			return TYPE_TREASURY;
 		} else if ( isType(index, TYPE_ATTACK) ) {
 			if ( isType(index, TYPE_VICTORY) )
@@ -484,6 +484,7 @@ public class Cards {
 					return Image.createImage("/" + Dominion.getExpansionImageName(Dominion.PROMO) + "1.png");
 				else if ( getName(card).equals(Dominion.expansions[Dominion.PROMO].getName(2)) )
 					return Image.createImage("/" + Dominion.getExpansionImageName(Dominion.PROMO) + "2.png");
+				return null;
 			} else {
 				return Image.createImage("/" + Dominion.getExpansionImageName(getExpansion(card)) + 
 					getCardType(card) + ".png");

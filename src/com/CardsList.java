@@ -145,9 +145,9 @@ public class CardsList extends List implements CommandListener {
 			cP = Dominion.I().getCardLocation(getString(i).trim());
 			if ( cP[0] > -1 ) {
 				if ( formCorrect )
-					Dominion.I().expansions[cP[0]].setHoldCard(cP[1], isSelected(i));
+					Dominion.expansions[cP[0]].setHoldCard(cP[1], isSelected(i));
 				else
-					setSelectedIndex(i, Dominion.I().expansions[cP[0]].isHold(cP[1], cardSet));
+					setSelectedIndex(i, Dominion.expansions[cP[0]].isHold(cP[1], cardSet));
 			} else {
 				//#debug dominizer
 				System.out.println("couldn't find the card: " + getString(i));

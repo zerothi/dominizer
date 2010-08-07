@@ -86,8 +86,8 @@ public class BlackMarketForm extends List implements CommandListener {
 				//#style label
 				CardItem cI = new CardItem(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard)).toString(), List.IMPLICIT);
 				cI.setBothSides(true);
-				cI.setLeftImage(Dominion.I().expansions[tmp[0]].getCardTypeImage(tmp[1]));
-				cI.setRightImage(Dominion.I().expansions[tmp[0]].getCostImage(tmp[1]));
+				cI.setLeftImage(Dominion.expansions[tmp[0]].getCardTypeImage(tmp[1]));
+				cI.setRightImage(Dominion.expansions[tmp[0]].getCostImage(tmp[1]));
 				append(cI);
 				currentlyReachedCard++;
 			}

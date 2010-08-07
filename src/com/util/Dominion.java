@@ -23,7 +23,7 @@ public class Dominion {
 	public static int SETS_SAVE = 5;
 	public static int CURRENT_SET = 0;
 	
-	public Cards[] expansions = null;
+	public static Cards[] expansions = null;
 	private Cards selectedCards = null;
 	private int selected = 0;
 	public Condition condition = null;
