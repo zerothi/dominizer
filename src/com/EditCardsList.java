@@ -153,10 +153,12 @@ public class EditCardsList extends List implements CommandListener {
 		} else {
 			if ( specific == -1 ) {
 				for ( int i = 0 ; i < size() ; i++ ) {
+					/*
 					//#debug dominizer
 					System.out.println("changing: " + i + " to state: " + Dominion.expansions[
 							Dominion.I().getLinearExpansionIndex(i)].isAvailable(
 							Dominion.I().getLinearCardIndex(i)));
+							*/
 					changeCard(i, Dominion.expansions[Dominion.I().getLinearExpansionIndex(i)]
 					                                      .isAvailable(Dominion.I().getLinearCardIndex(i)));
 				}

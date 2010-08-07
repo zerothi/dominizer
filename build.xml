@@ -148,10 +148,11 @@
 					level="debug">
 				</debug>
 				<debug if="debugDominizer and not final"
-					showLogOnError="true"
-					verbose="true"
+					showLogOnError="false"
+					verbose="false"
 					level="error"
 					levels="dominizer">
+					<filter package="com.nokia.*" level="fatal"/>
 				</debug>
 				<debug if="final" showLogOnError="true" level="error">
 				</debug>
@@ -262,7 +263,8 @@
 		<property name="debug" value="true" />
 	</target>
 	
-	<target name="enableDebugDominizer"> 
+	<target name="enableDebugDominizer">
+		<property name="debug" value="false" />
 		<property name="debugDominizer" value="true" />
 	</target>
 	

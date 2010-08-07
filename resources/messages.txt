@@ -1,3 +1,10 @@
+#######
+#
+# Version 0.18 transkations
+#
+#######
+screen.Condition.InputMessage=Condition name:
+
 ################
 #
 # App Specific translations
@@ -38,7 +45,7 @@ screen.Options.SetsSaveNum=# of Saved Sets
 screen.Options.FavoriteSort=Favorite Sort
 screen.Options.RandomizationCriteria=Randomization Criteria
 screen.Condition.New=New Condition
-screen.Condition.Delete=New Condition
+screen.Condition.Delete=Delete Condition
 screen.Condition.Percentage=Condition Percentage
 screen.Condition.currentoption=Current option:\n{0}
 screen.Calendar.title=Calendar

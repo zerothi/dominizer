@@ -3,10 +3,11 @@ package com.util;
 
 public class Condition {
 	
-	public static final int MAX_RUNS = 250;
+	public static final int MAX_RUNS = 400;
 	private String[] name = null;
 	private String[] condition = null;
 	private int[] percentage;
+	private int initial = 2;
 	
 	public Condition(int size) {
 		if ( size == 0 )
@@ -203,5 +204,13 @@ public class Condition {
 			}
 		}
 		return -1;
+	}
+
+	public void setInitial(int initial) {
+		this.initial = initial;
+	}
+
+	public int getInitial() {
+		return initial;
 	}
 }

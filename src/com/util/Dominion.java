@@ -11,14 +11,14 @@ import de.enough.polish.util.Locale;
 
 public class Dominion {
 	private static Dominion dom = null;
-	public static int TOTAL_CARDS = 25 + 25 + 26 + 3 + 12;
+	public static int TOTAL_CARDS = 25 + 25 + 26 + 12 + 3 + 25;
 	public static final int BASE = 0; // has 25 cards
 	public static final int INTRIGUE = 1; // has 25 cards
 	public static final int SEASIDE = 2; // has 26 cards
 	public static final int ALCHEMY = 3; // has 12 cards (the 13th card Potion is not counted)
-	public static final int PROSPERITY = 4;
+	public static final int PROSPERITY = 4; // has 25 cards
 	public static final int PROMO = 5; // has 3 cards
-	public static final int USER = 6;
+	public static final int USER = 6; // always have to be the number!
 	public static boolean RANDOMIZE_COMPLETELY_NEW = true;
 	public static int SETS_SAVE = 5;
 	public static int CURRENT_SET = 0;
@@ -46,7 +46,7 @@ public class Dominion {
 			numberOfCardsFromExp[loop] = 0;			
 		}
 		expansions = new Cards[USER+1];
-		presets = new CardPresets[4]; 
+		presets = new CardPresets[PROMO]; // as promo always is the last expansion!
 		presets[BASE] = new CardPresets(5);
 		presets[BASE].setExpansion(BASE);
 		presets[BASE].setPreset(0, Locale.get("preset.base.FirstGame"), new int[][] { 
@@ -131,7 +131,7 @@ public class Dominion {
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("prosperity"));
 		//#debug dominizer
 		System.out.println("reading prosperity");
-		readResource(PROSPERITY, "prosperity", 0); // TODO real supposedly 25
+		readResource(PROSPERITY, "prosperity", 25);
 		//#debug dominizer
 		System.out.println("size prosperity: " + expansions[PROSPERITY].size());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("promo"));
@@ -212,19 +212,20 @@ public class Dominion {
 					total++;
 		Cards blackMarket = new Cards(total, Cards.IS_NOT_SET);
 		Rand.resetSeed();
-		int randomize = Rand.randomInt(total);
+		int randomize;
 		for ( loop = 0; loop < expansions.length; loop++)
 			for ( j = 0; j < expansions[loop].size(); j++)
 				if (expansions[loop].isBlackMarketAvailable(j) &&
 						expansions[loop].isPlaying(j) == 0 ) {
-					while (blackMarket.getName(randomize) != null)
+					do {
 						randomize = Rand.randomInt(total);
+					} while (blackMarket.getName(randomize) != null);
 					blackMarket.setCard(randomize, expansions[loop].getCard(j));
 				}
 		return blackMarket;
 	}
 	
-	private int[] getCardInfo(String card) {
+	private static int[] getCardInfo(String card) {
 		//#debug dominizer
 		System.out.println("the read card info: " + card);
 		if ( card.indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, 1) > 0 ) {
@@ -289,15 +290,7 @@ public class Dominion {
 			throw new DominionException("No currently selected cards.");
 		return sortCards(selectedCards, sortMethod);
 	}
-/*
-	public Cards getExpansion(int expansion) {
-		return expansions[expansion];
-	}
 
-	public boolean[] getExpansionPlayingStates() {
-		return playingExpansions;
-	}
-*/
 	public String getExpansionPlayingStatesAsSave() {
 		sb = new StringBuffer(playingExpansions.length);
 		for ( loop = 0 ; loop < numberOfCardsFromExp.length ; loop++ )
@@ -562,32 +555,35 @@ public class Dominion {
 		return presets.length;
 	}
 	
-	public void randomizeCards(int playingSet) {
-		int selectedElement = 0, tmpSum = 0;
+	public void randomizeCards(int playingSet) throws DominionException {
+		int selectedElement = 0, tmpExp = 0;
+		checkAvailability();
+		resetSelectedCards();
 		Rand.resetSeed();
 		//#debug dominizer
-		System.out.println("using randomizing cards");
+		System.out.println("using randomizing cards with total cards " + TOTAL_CARDS + " selected: " + selected);
 		while ( selected < numberOfRandomCards ) {
 			selectedElement = Rand.randomInt(TOTAL_CARDS);
-			tmpSum = getLinearExpansionIndex(selectedElement);
+			tmpExp = getLinearExpansionIndex(selectedElement);
 			selectedElement = getLinearCardIndex(selectedElement);
-			if ( selectCard(playingSet, tmpSum, selectedElement, selected) ) {
+			if ( selectCard(playingSet, tmpExp, selectedElement, selected) ) {
 				//#debug dominizer
-				System.out.println("choosing expansion: " + tmpSum + ". together with card: " + selectedElement);
+				System.out.println("choosing expansion: " + tmpExp + ". together with card: " + selectedElement);
 				selected++;
 			}
 		}
 	}
 	
 	public void randomizeCardsPrevent(int playingSet) throws DominionException {
-		resetSelectedCards();
 		checkAvailability();
 		randomizeCards(90);
-		removePlayingSet(playingSet);
 		for ( int i = 0 ; i < expansions.length ; i++ )
-			for ( loop = 0 ; loop < expansions[i].size() ; loop++ )
-				if ( expansions[i].isPlayingSet(loop, 89) )
+			for ( loop = 0 ; loop < expansions[i].size() ; loop++ ) {
+				if ( expansions[i].isPlayingSet(loop, playingSet) )
+					expansions[i].setPlaying(loop, 0);
+				if ( expansions[i].isPlayingSet(loop, 90) )
 					expansions[i].setPlaying(loop, playingSet);
+			}
 	}
 
 	private void readResource(int exp, String fileName, int totalCards) {
@@ -810,25 +806,66 @@ public class Dominion {
 		System.out.println("finished reading preferred sort succesfully");
 		
 		//#debug dominizer
-		System.out.println("start reading conditions");
+		System.out.println("start reading local conditions");
+		StringBuffer sb = new StringBuffer();
+		tmp = "      ";
+		InputStreamReader isr = null;
+		loop = 0;
+		start = 0;
+		if ( SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.condition")) )
+			while ( SettingsRecordStorage.instance().readKey("name" + start) != null )
+				start++;
+		try {
+			isr = new InputStreamReader(getClass().getResourceAsStream("/condition"), "UTF8");
+			int ch;
+			while ((ch = isr.read()) > -1) {
+				if ( (char) ch == ';' )
+					loop++;
+			}
+			isr.close();
+			 
+			
+			condition = new Condition(loop + start);
+			//#debug dominizer
+			System.out.println("readed conditions: "+condition.size());
+			condition.setInitial(loop);
+			start = 0;
+			isr = new InputStreamReader(getClass().getResourceAsStream("/condition"), "UTF8");
+			while ((ch = isr.read()) > -1) {
+				sb.append((char) ch);
+				if ( (char) ch == ';' ) {
+					//#debug dominizer
+					System.out.println("condition processing " + sb.toString() + ":" + sb.toString().substring(0, sb.toString().length() - 1));
+					condition.setName(start, sb.toString().trim().substring(0, sb.toString().trim().indexOf(':')));
+					condition.setAvailable(start, true);
+					condition.setPercentage(start, 0);
+					condition.setCondition(start, sb.toString().substring(sb.toString().indexOf(':')+1, sb.toString().length() - 1));
+					sb.delete(0, sb.toString().length());
+					start++;
+				} else if ((char) ch == '\n') {
+					sb.delete(0, sb.toString().length() - 1);
+				}
+			}
+			if (isr != null)
+				isr.close();
+		} catch (Exception ex) {
+			//#debug dominizer
+			System.out.println("exception on reading" + ex.toString());
+		}
+		//#debug dominizer
+		System.out.println("start reading user conditions");
 		if ( SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.condition")) ) {
 			loop = 0;
 			while ( SettingsRecordStorage.instance().readKey("name" + loop) != null ) {
-				loop++;
-			}
-			//#debug dominizer
-			System.out.println("readed conditions: "+loop);
-			condition = new Condition(loop);
-			loop = 0;
-			while ( SettingsRecordStorage.instance().readKey("name" + loop) != null ) {
-				condition.setName(loop, SettingsRecordStorage.instance().readKey("name" + loop).substring(2));
-				condition.setAvailable(loop, SettingsRecordStorage.instance().readKey("name" + loop).substring(0,1).equals("1"));
+				condition.setName(start, SettingsRecordStorage.instance().readKey("name" + loop).substring(2));
+				condition.setAvailable(start, SettingsRecordStorage.instance().readKey("name" + loop).substring(0,1).equals("1"));
 				if ( SettingsRecordStorage.instance().readKey("name" + loop).substring(1,2).equals("*") )
-					condition.setPercentage(loop, 10);
+					condition.setPercentage(start, 10);
 				else
-					condition.setPercentage(loop, Integer.parseInt(SettingsRecordStorage.instance().readKey("name" + loop).substring(1,2)));
-				condition.setCondition(loop, SettingsRecordStorage.instance().readKey("" + loop));				
+					condition.setPercentage(start, Integer.parseInt(SettingsRecordStorage.instance().readKey("name" + loop).substring(1,2)));
+				condition.setCondition(start, SettingsRecordStorage.instance().readKey("" + loop));				
 				loop++;
+				start++;
 			}
 		}
 		//#debug dominizer
@@ -873,7 +910,6 @@ public class Dominion {
 			if ( parseCondition(this.condition.getCondition(condition)) ) {
 				//#debug dominizer
 				System.out.println("condition succeded");
-				CURRENT_SET++;
 				return true;
 			}
 			resetIsPlaying(CURRENT_SET + 1);

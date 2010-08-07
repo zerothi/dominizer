@@ -170,7 +170,7 @@ public class ConditionForm extends List implements CommandListener {
 		} else if ( cmd.equals(newCmd) ) {
 			isOnGauge = false;
 			InputForm.instance().clearInput();
-			GameApp.instance().changeToScreen(InputForm.instance().instance(Locale.get("screen.RandomizedCards.InputMessage"), this));
+			GameApp.instance().changeToScreen(InputForm.instance().instance(Locale.get("screen.Condition.InputMessage"), this));
 		} else if ( cmd.equals(perGaugeCmd) ) {
 			isOnGauge = true;
 			GaugeForm.instance().setGauge(Locale.get("screen.Condition.Percentage"), true, 10, 0);
