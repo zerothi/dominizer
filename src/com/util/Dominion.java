@@ -23,6 +23,7 @@ public class Dominion {
 	public static int SETS_SAVE = 5;
 	public static int CURRENT_SET = 0;
 	
+	private static ImageCreator imgC = null;
 	public static Cards[] expansions = null;
 	private Cards selectedCards = null;
 	private int selected = 0;
@@ -39,6 +40,7 @@ public class Dominion {
 	private int loop = 0;
 
 	private Dominion() {
+		imgC = new ImageCreator();
 		playingExpansions = new boolean[USER+1];
 		numberOfCardsFromExp = new int[USER+1];
 		for ( loop = 0 ; loop < playingExpansions.length ; loop++ ) {
@@ -1055,6 +1057,11 @@ public class Dominion {
 	
 	
 	public static Image getExpansionImage(int expansion) {
+		if ( expansion == BASE ) {
+			//#debug dominizer
+			System.out.println("using my custom! :)");
+			return imgC.getCardImage(0, 0);
+		}
 		try {
 			if ( Dominion.getExpansionImageName(expansion) == null )
 				return null;
