@@ -467,8 +467,19 @@ public class Dominion {
 		boolean fulfilled = true;
 		for ( int i = 0 ; i < option.length() ; i++ ) {
 			if ( option.substring(i, i + 1).equals("(") ) {
-				fulfilled = parseCondition(option.substring(i+1, option.indexOf(")", i)));
-				i = option.indexOf(")", i);
+				int p = 0;
+				for ( int j = i + 1 ; j < option.length() ; j++ ) {
+					if ( option.charAt(j) == ')' && p == 0 ) {
+						p = j;
+						break;
+					} else if ( option.charAt(j) == ')' ) {
+						p--;
+					} else if ( option.charAt(j) == '(' ) {
+						p++;
+					}
+				}
+				fulfilled = parseCondition(option.substring(i+1, p));
+				i = p;
 			} else if ( option.substring(i, i + 1).equals(")") ) {
 				// do nothing. Has been parsed. Shouldn't happen either
 			} else if ( option.substring(i, i + 1).equals("&") ) {
@@ -482,14 +493,14 @@ public class Dominion {
 				for ( int j = 0 ; j < 7 ; j++ ) { // TODO update when cards are changed!
 					if ( parseType(option.substring(i,i+1), j) ) {
 						fulfilled = parseCardsOption(0, option.substring(i), j);
-						j = 8;
+						break;
 					}
 				}
 				// checking if it is an adds condition
 				for ( int j = 0 ; j < 9 ; j++ ) { 
 					if ( parseInformation(option.substring(i,i+1), j) > 0 ) {
 						fulfilled = parseCardsOption(1, option.substring(i), j);
-						j = 9;
+						break;
 					}
 				}
 				// checking if it is an expansion condition

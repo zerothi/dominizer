@@ -73,7 +73,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		super();
 		app = this;
 		//SettingsRecordStorage.instance().deleteRecordStore(Locale.get("rms.file.preset"));
-		//SettingsRecordStorage.instance().deleteRecordStore(Locale.get("rms.file.settings"));
+		SettingsRecordStorage.instance().deleteRecordStore(Locale.get("rms.file.settings"));
 		//#debug dominizer
 		System.out.println("initialisation done.");
 	}
