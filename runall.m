@@ -1,17 +1,18 @@
 writeimg("base.png","x1d",1);
 writeimg("base.png","x1r",0);
 
-#writeimg("in.png","x2d",1);
-#writeimg("in.png","x2r",0);
+writeimg("intrigue.png","x2d",1);
+writeimg("intrigue.png","x2r",0);
 
-#writeimg("se.png","x3d",1);
-#writeimg("se.png","x3r",0);
+writeimg("seaside.png","x3d",1);
+writeimg("seaside.png","x3r",0);
 
-writeimg("al.png","x4d",1);
-writeimg("al.png","x4r",0);
 
-#writeimg("black.png","p1d",1);
-#writeimg("black.png","p1r",0);
+writeimg("alchemy.png","x4d",1);
+writeimg("alchemy.png","x4r",0);
+
+writeimg("black.png","p1d",1);
+writeimg("black.png","p1r",0);
 
 writeimg("envoy.png","p2d",1);
 writeimg("envoy.png","p2r",0);

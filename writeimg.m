@@ -1,13 +1,14 @@
 function writeimg(imgname,outputname,down)
 img = imread(imgname);
-thresh = 1;
+thresh = 20;
 img_size = size(img);
-first_point = 0;
+first_point = 1;
 found = 0;
-if ( down )
+out = "";
+if ( down == 0)
   for i = 1:img_size(1)
-    if ( max(max( img(i,:,:)) ) > thresh )
-      out = ["d;\n" num2str(i) ";\n"];
+    if ( min(min( img(i,:,:)) ) < thresh )
+      out = ["r;" num2str(i) ";\n"];
       first_point = i;
       break;
     endif
@@ -15,9 +16,9 @@ if ( down )
   for i = first_point:img_size(1)
     found = 0;
     for j = 1:img_size(2)
-      if ( max(img(i,j,:) ) > thresh && found == 0 )
+      if ( max(img(i,j,:) ) < thresh && found == 0 )
 	found = j;
-      elseif ( max( img(i,j,:) ) < thresh && found != 0 )
+      elseif ( max( img(i,j,:) ) > thresh && found != 0 )
 	out = ["" out num2str(found) "+" num2str(j-1-found) ","];
 	found = 0;
       endif
@@ -30,8 +31,8 @@ if ( down )
   endfor
 else
   for i = 1:img_size(2)
-    if ( max(max( img(:,i,:)) ) > thresh )
-      out = ["r;\n" num2str(i) ";\n"];
+    if ( min(min( img(:,i,:)) ) < thresh )
+      out = ["d;" num2str(i) ";\n"];
       first_point = i;
       break;
     endif
@@ -39,9 +40,9 @@ else
   for j = first_point:img_size(2)
     found = 0;
     for i = 1:img_size(1)
-      if ( max(img(i,j,:) ) > thresh && found == 0 )
+      if ( max(img(i,j,:) ) < thresh && found == 0 )
 	found = i;
-      elseif ( max( img(i,j,:) ) < thresh && found != 0 )
+      elseif ( max( img(i,j,:) ) > thresh && found != 0 )
 	out = ["" out num2str(found) "+" num2str(i-1-found) ","];
 	found = 0;
       endif
