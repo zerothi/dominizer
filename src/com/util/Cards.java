@@ -460,15 +460,9 @@ public class Cards {
 				g.drawString(""+getCost(card), source.getWidth() / 2, source.getHeight() / 2, Graphics.HCENTER | Graphics.VCENTER);
 			}*/
 			if ( getPotionCost(card) > 0 ) {
-				if ( getCost(card) == 0 )
-					return Image.createImage("/treaP.png");
-				else
-					return Image.createImage("/trea" + getCost(card) + "P.png");
+				return Image.createImage("/t" + getCost(card) + "P.png");
 			} else {
-				if ( getCost(card) == 0 )
-					return Image.createImage("/trea.png");
-				else
-					return Image.createImage("/trea" + getCost(card) + ".png");
+				return Image.createImage("/t" + getCost(card) + ".png");
 			}
 		} catch (IOException exp) {
 			return null;
@@ -551,10 +545,7 @@ public class Cards {
 	public static final int TYPE_DURATION_VICTORY = 61;
 	public static final int TYPE_DURATION_TREASURY = 62;
 	
-	
-	
-	
-	
+		
 	// TODO : When changing the below to non-consecutive numbers please update method "parseCondition" in Dominion
 	public static final int ADDS_CARDS = 0;
 	public static final int ADDS_ACTIONS = 1;

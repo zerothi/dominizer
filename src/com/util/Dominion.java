@@ -364,48 +364,35 @@ public class Dominion {
 		if (selectedCards == null)
 			return "";
 		StringBuffer sb = new StringBuffer(50);
-		int action = 0, attack = 0, reaction = 0, treasury = 0, victory = 0, duration = 0;
-		for ( int i = 0 ; i < expansions.length ; i++ )
-			for ( loop = 0 ; loop < expansions[i].size() ; loop++ ) {
-				if ( expansions[i].isPlayingSet(loop, playingSet) ) {
-					if (expansions[i].isType(loop, Cards.TYPE_ACTION))
-						action++;
-					if (expansions[i].isType(loop, Cards.TYPE_ATTACK))
-						attack++;
-					if (expansions[i].isType(loop, Cards.TYPE_REACTION))
-						reaction++;
-					if (expansions[i].isType(loop, Cards.TYPE_TREASURY))
-						treasury++;
-					if (expansions[i].isType(loop, Cards.TYPE_VICTORY))
-						victory++;
-					if (expansions[i].isType(loop, Cards.TYPE_DURATION))
-						duration++;
-				}
-			}
+		try {
+			getCurrentlySelected(playingSet);
+		} catch (DominionException e) {
+			// TODO is it necessary with a check here? do nothing
+		}
 		sb.append("Action    : ");
-		if (action < 10)
+		if ( selectedCards.getTypes(Cards.TYPE_ACTION) < 10 )
 			sb.append(" ");
-		sb.append("" + action + " / " + selectedCards.size() + "\n");
+		sb.append("" + selectedCards.getTypes(Cards.TYPE_ACTION) + " / " + selectedCards.size() + "\n");
 		sb.append("Attack    : ");
-		if (attack < 10)
+		if (selectedCards.getTypes(Cards.TYPE_ATTACK) < 10)
 			sb.append(" ");
-		sb.append("" + attack + " / " + selectedCards.size() + "\n");
+		sb.append("" + selectedCards.getTypes(Cards.TYPE_ATTACK) + " / " + selectedCards.size() + "\n");
 		sb.append("Reaction  : ");
-		if (reaction < 10)
+		if (selectedCards.getTypes(Cards.TYPE_REACTION) < 10)
 			sb.append(" ");
-		sb.append("" + reaction + " / " + selectedCards.size() + "\n");
+		sb.append("" + selectedCards.getTypes(Cards.TYPE_REACTION) + " / " + selectedCards.size() + "\n");
 		sb.append("Treasury  : ");
-		if (treasury < 10)
+		if (selectedCards.getTypes(Cards.TYPE_TREASURY) < 10)
 			sb.append(" ");
-		sb.append("" + treasury + " / " + selectedCards.size() + "\n");
+		sb.append("" + selectedCards.getTypes(Cards.TYPE_TREASURY) + " / " + selectedCards.size() + "\n");
 		sb.append("Victory   : ");
-		if (victory < 10)
+		if (selectedCards.getTypes(Cards.TYPE_VICTORY) < 10)
 			sb.append(" ");
-		sb.append("" + victory + " / " + selectedCards.size() + "\n");
+		sb.append("" + selectedCards.getTypes(Cards.TYPE_VICTORY) + " / " + selectedCards.size() + "\n");
 		sb.append("Duration  : ");
-		if (duration < 10)
+		if (selectedCards.getTypes(Cards.TYPE_DURATION) < 10)
 			sb.append(" ");
-		sb.append("" + duration + " / " + selectedCards.size());
+		sb.append("" + selectedCards.getTypes(Cards.TYPE_DURATION) + " / " + selectedCards.size());
 		return sb.toString();
 	}
 	
