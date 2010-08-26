@@ -6,6 +6,18 @@ import javax.microedition.lcdui.Image;
 
 
 
+/**
+ * @author nick
+ *
+ */
+/**
+ * @author nick
+ *
+ */
+/**
+ * @author nick
+ *
+ */
 public class Cards {
 
 	private String[] name = null;
@@ -71,22 +83,25 @@ public class Cards {
 	}
 
 	/**
-	 * @return the name
+	 * @param index the index of the card in the list
+	 * @return the name of the card
 	 */
 	public String getName(int index) {
 		return name[index];
 	}
 
+
 	/**
-	 * @param name
-	 *            the name to set
+	 * @param index the index of the card in the list
+	 * @param name the name that should be given to the card
 	 */
 	public void setName(int index, String name) {
 		this.name[index] = name;
 	}
 
+	
 	/**
-	 * @return the game
+	 * @return the expansion number of the list determined from the first card
 	 */
 	public int getExpansion() {
 		if ( expansion != null)
@@ -94,8 +109,10 @@ public class Cards {
 		return -1;
 	}
 	
+
 	/**
-	 * @return the game
+	 * @param index the index of the card in the list
+	 * @return the expansion number of the card
 	 */
 	public int getExpansion(int index) {
 		if ( expansion.length == 1 )
@@ -103,45 +120,54 @@ public class Cards {
 		return expansion[index];
 	}
 
+	
 	/**
-	 * @param game
-	 *            the game to set
+	 * @param index the index of the card in the list
+	 * @param expansion the expansion which should be assigned with the card
 	 */
 	public void setExpansion(int index, int expansion) {
 		this.expansion[index] = expansion;
 	}
 	
+
 	/**
-	 * @return the percentage
+	 * @param index the index of the card in the list
+	 * @return the percentage set on the card
 	 */
 	public int getPercentage(int index) {
 		return percentage[index];
 	}
 
+	
 	/**
-	 * @param percentage the percentage to set
+	 * @param index the index of the card in the list
+	 * @param percentage the percentage which is to be assigned with the card
 	 */
 	public void setPercentage(int index, int percentage) {
 		this.percentage[index] = percentage;
 	}
 
+	
 	/**
-	 * @param game
-	 *            the game to set
+	 * @param expansion sets the default expansion number
 	 */
 	public void setExpansion(int expansion) {
 		this.expansion[0] = expansion;
 	}
-	
+
 	/**
-	 * @return the isPlaying
+	 * @param index the index of the card in the list
+	 * @return an integer which determines the state of the card
 	 */
 	public int isPlaying(int index) {
 		return playing[index];
 	}
 	
+	
 	/**
-	 * @return the isPlaying
+	 * @param index the index of the card in the list
+	 * @param playingSet the playingset which needs to be checked
+	 * @return true if the card is playing in the playingset, otherwise false
 	 */
 	public boolean isPlayingSet(int index, int playingSet) {
 		if ( playing[index] > 100 )
@@ -150,37 +176,52 @@ public class Cards {
 	}
 
 	/**
-	 * @param isPlaying
-	 *            the isPlaying to set
+	 * @param index the index of the card in the list
+	 * @param playing the playing state of the card
 	 */
 	public void setPlaying(int index, int playing) {
 		this.playing[index] = playing;
 	}
 	
+	/**
+	 * @param index the index of the card in the list
+	 * @return how much the card costs in potions
+	 */
 	public int getPotionCost(int index) {
 		return (cost[index] - cost[index] % 100) / 100;
 	}
 	
 	/**
-	 * @return the isPlaying
+	 * @param index the index of the card in the list
+	 * @return the actual playing set
 	 */
+	@Deprecated
 	public int getPlaying(int index) {
 		if ( playing[index] > 100 )
 			return playing[index] - 100;
 		return playing[index];
 	}
 	
+	/**
+	 * @param index the index of the card in the list
+	 * @param playingSet the playing set to be checked
+	 * @return true if the card is holded on the playingset, false otherwise
+	 */
 	public boolean isHold(int index, int playingSet) {
 		return playing[index] == playingSet + 100;
 	}
 	
+	/**
+	 * @param index the index of the card in the list
+	 * @return true if the card is holded on any playingset, false otherwise
+	 */
 	public boolean isHold(int index) {
 		return playing[index] > 100;
 	}
 	
 	/**
-	 * @param name
-	 * @param hold 
+	 * @param name the name of the card
+	 * @param the new hold state of the card
 	 */
 	public void setHoldCard(String name, boolean hold) {
 		for ( i = 0 ; i < playing.length ; i++ )
@@ -190,6 +231,10 @@ public class Cards {
 			}
 	}
 	
+	/**
+	 * @param index the index of the card in the list
+	 * @param the new hold state of the card 
+	 */
 	public void setHoldCard(int index, boolean hold) {
 		if ( hold ) {
 			if ( 0 < playing[index] & playing[index] < 100 )
@@ -202,59 +247,79 @@ public class Cards {
 	
 
 	/**
-	 * @return the selected
+	 * @param index the index of the card in the list
+	 * @return the availability of the card
 	 */
 	public boolean isAvailable(int index) {
 		return isGamingRelated[index][0];
 	}
 
+	
 	/**
-	 * @param available
-	 *            the selected to set
+	 * @param index the index of the card in the list
+	 * @param available the available state of the card
 	 */
 	public void setAvailable(int index, boolean available) {
 		isGamingRelated[index][0] = available;
 	}
 
 	/**
-	 * @return the bmSelected
+	 * @param index the index of the card in the list
+	 * @return true if the card is available for the Black Market
 	 */
 	public boolean isBlackMarketAvailable(int index) {
 		return isGamingRelated[index][1];
 	}
 
 	/**
-	 * @param bmSelected
-	 *            the bmSelected to set
+	 * @param index the index of the card in the list
+	 * @param bmAvailable the state of the Black Market availability
 	 */
 	public void setBlackMarketAvailable(int index, boolean bmAvailable) {
 		isGamingRelated[index][1] = bmAvailable;
 	}
 
 	/**
-	 * @return the cost
+	 * @param index the index of the card in the list
+	 * @return the cobber cost of the card
 	 */
 	public int getCost(int index) {
 		return cost[index] % 100;
 	}
-
+	
 	/**
-	 * @param cost
-	 *            the cost to set
+	 * @param index the index of the card in the list
+	 * @param cost the cost in cobber of the card
+	 * @param potions the cost in potions of the card
 	 */
 	public void setCost(int index, int cost, int potions) {
 		this.cost[index] = cost + 100 * potions;
 	}
 
+	/**
+	 * @param index the index of the card in the list
+	 * @param whichType which type is the card
+	 * @param state sets if it is the type of card or not
+	 */
 	public void setType(int index, int whichType, boolean state) {
 		isSpecific[index][whichType] = state;
 	}
 		
 	
+	/**
+	 * @param index the index of the card in the list
+	 * @param whichType the type to check for
+	 * @return true if it is the type, false otherwise
+	 */
 	public boolean isType(int index, int whichType) {
 		return isSpecific[index][whichType];
 	}
 	
+	/**
+	 * @param index the index of the card in the list
+	 * @param whichType the type to check for
+	 * @return true if the card is only that one type, false otherwise
+	 */
 	public boolean isOnlyType(int index, int whichType) {
 		boolean tmp = false;
 		for (int i = 0 ; i < isSpecific[index].length ; i++ )
@@ -262,6 +327,10 @@ public class Cards {
 		return !(isSpecific[index][whichType] & tmp);
 	}
 		
+	/**
+	 * @param index
+	 * @return
+	 */
 	public int getCardType(int index) {
 		if ( isType(index, TYPE_ACTION) ) {
 			if ( isType(index, TYPE_VICTORY) )
@@ -328,7 +397,7 @@ public class Cards {
 		tmp[6] = new Boolean(isType(index, TYPE_TREASURY));
 		tmp[7] = new Boolean(isType(index, TYPE_REACTION));
 		tmp[8] = new Boolean(isType(index, TYPE_DURATION));
-		tmp[9] = new Integer(getPlaying(index));
+		tmp[9] = new Integer(isPlaying(index));
 		tmp[10] = new Boolean(isAvailable(index));
 		tmp[11] = new Boolean(isBlackMarketAvailable(index));
 		tmp[12] = new Integer(getAddInfo(index, ADDS_CARDS));
