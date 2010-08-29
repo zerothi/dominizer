@@ -7,6 +7,7 @@ import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Ticker;
 
 import com.dominizer.GameApp;
 import com.util.Dominion;
@@ -32,6 +33,7 @@ public class ConditionForm extends List implements CommandListener {
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.ITEM, 50);
 	
 	private String newName = null, newCondition = null;
+	private Ticker ticker = null;
 	
 	private boolean isOnGauge = true;
 	/**
@@ -52,6 +54,11 @@ public class ConditionForm extends List implements CommandListener {
 		//#debug dominizer
 		System.out.println("initializing conditionTableForm");
 		ptF = new ConditionTableForm();
+		//#style mainTicker
+		ticker = new Ticker("");
+		if ( getCurrentIndex() > -1 )
+			ticker.setString("< " + Dominion.I().condition.getCondition(getCurrentIndex()) + " >");		
+		setTicker(ticker);
 		//#debug dominizer
 		System.out.println("done initializing");
 	}
@@ -153,6 +160,7 @@ public class ConditionForm extends List implements CommandListener {
 		case Canvas.KEY_POUND:
 		case Canvas.KEY_STAR:
 		default:
+			ticker.setString("< " + Dominion.I().condition.getCondition(getCurrentIndex()) + " >");
 			//#= super.keyPressed(keyCode);
 		}
 	}

@@ -114,7 +114,7 @@
 					<variable name="polish.debug.error" value="false" if="final"/>
 					<!--variable name="polish.useDynamicStyles" value="true"/-->
 				</variables>
-				<resources dir="${resource.dir}" defaultexcludes="yes" excludes="readme.txt,icon">
+				<resources dir="${resource.dir}" defaultexcludes="yes" excludes="readme.txt,icons">
 					<!--root dir="${resource.dir}"/-->
 					<root dir="${resource.dir}/lang"/>
 					<root dir="${resource.dir}/img" />
