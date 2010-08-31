@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import javax.microedition.lcdui.Image;
 
 import com.GaugeForm;
+import com.ShowCardsForm;
 
 import de.enough.polish.util.Locale;
 
@@ -553,6 +554,26 @@ public class Dominion {
 
 	public int presetSize() {
 		return presets.length;
+	}
+	
+	public void randomizeCards() throws DominionException {
+		int selectedElement = 0, tmpExp = 0;
+		checkAvailability();
+		resetSelectedCards();
+		Rand.resetSeed();
+		CURRENT_SET = CURRENT_SET + 1;
+		//#debug dominizer
+		System.out.println("using randomizing cards with total cards " + TOTAL_CARDS + " selected: " + selected);
+		while ( selected < numberOfRandomCards ) {
+			selectedElement = Rand.randomInt(TOTAL_CARDS);
+			tmpExp = getLinearExpansionIndex(selectedElement);
+			selectedElement = getLinearCardIndex(selectedElement);
+			if ( selectCard(CURRENT_SET, tmpExp, selectedElement, selected) ) {
+				//#debug dominizer
+				System.out.println("choosing expansion: " + tmpExp + ". together with card: " + selectedElement);
+				selected++;
+			}
+		}
 	}
 	
 	public void randomizeCards(int playingSet) throws DominionException {

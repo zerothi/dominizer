@@ -56,14 +56,22 @@ public class QuickRandomizeList extends List implements CommandListener {
 			Dominion.I().resetSelectedCards();
 			try {
 				Dominion.I().checkAvailability();
+				// TODO implement correct randomization processes!
+				Dominion.I().useMinimumExpansionCards(Dominion.CURRENT_SET);
+				if ( Dominion.CURRENT_SET == 0 ) {
+					Dominion.I().resetIsPlaying(0);
+					try {
+						ShowCardsForm.instance().randomizeNewSet();
+						GameApp.instance().changeToScreen(ShowCardsForm.instance());
+					} catch (DominionException e) {
+						GameApp.instance().showAlert(e.toString());
+					}
+				} else 
+					GameApp.instance().changeToScreen(ShowCardsForm.instance());
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 				return;
 			}
-			// TODO implement correct randomization processes!
-			Dominion.I().useMinimumExpansionCards(Dominion.CURRENT_SET);
-			GameApp.instance().showRandomizedCards();
-			//GameApp.instance().changeToScreen(ShowCardsForm.instance());
 		} else if ( cmd.equals(gaugeCmd) ) {
 			tmp = UiAccess.getFocusedIndex(this);
 			String tmpS = Dominion.getExpansionName(tmp);

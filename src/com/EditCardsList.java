@@ -10,6 +10,7 @@ import javax.microedition.lcdui.Image;
 
 import com.dominizer.GameApp;
 import com.util.Dominion;
+import com.util.DominionException;
 
 import de.enough.polish.ui.List;
 import de.enough.polish.util.Locale;
@@ -81,7 +82,13 @@ public class EditCardsList extends List implements CommandListener {
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(randomizeCmd) ) {
 			updateCards(true);
-			GameApp.instance().showRandomizedCards();
+			try {
+				Dominion.I().randomizeCards();
+				ShowCardsForm.instance().addNewCards(Dominion.I().getCurrentlySelected(Dominion.CURRENT_SET));
+			} catch (DominionException e) {
+				GameApp.instance().showAlert(e.toString());
+			}
+			
 		} else if ( cmd.equals(perGaugeCmd) ) {
 			/*if ( getFilterText().length() != 0 ) {
 				GameApp.instance().showAlert(Locale.get("alert.Filter.Availability"));

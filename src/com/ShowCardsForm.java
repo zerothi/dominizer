@@ -52,7 +52,7 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 		}
 		return scF;
 	}
-	
+
 	public void randomizeNewSet() throws DominionException {
 		if ( Dominion.CURRENT_SET < cardSet.length ) {
 			cardSet[Dominion.CURRENT_SET].reRandomize();

@@ -193,17 +193,6 @@ public class Cards {
 	
 	/**
 	 * @param index the index of the card in the list
-	 * @return the actual playing set
-	 */
-	@Deprecated
-	public int getPlaying(int index) {
-		if ( playing[index] > 100 )
-			return playing[index] - 100;
-		return playing[index];
-	}
-	
-	/**
-	 * @param index the index of the card in the list
 	 * @param playingSet the playing set to be checked
 	 * @return true if the card is holded on the playingset, false otherwise
 	 */

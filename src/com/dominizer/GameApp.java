@@ -84,20 +84,6 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		return app;
 	}
 
-	public void showRandomizedCards() {
-		currentTab = getCurrentTab();
-		if ( Dominion.CURRENT_SET == 0 ) {
-			Dominion.I().resetIsPlaying(0);
-			try {
-				ShowCardsForm.instance().randomizeNewSet();
-				changeToScreen(ShowCardsForm.instance());
-			} catch (DominionException e) {
-				GameApp.instance().showAlert(e.toString());
-			}
-		} else 
-			changeToScreen(ShowCardsForm.instance());
-	}
-
 	public void showBlackMarketDeck(int previousScreen) {
 		bmF.setBlackMarketDeck(Dominion.I().getBlackMarketDeck());
 		changeToScreen(bmF);
@@ -105,6 +91,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	}
 
 	public void changeToScreen(Displayable displayable) {
+		currentTab = getCurrentTab();
 		if ( alert != null )
 			alert = null;
 		if ( displayable == null )
