@@ -53,32 +53,23 @@ public class QuickRandomizeList extends List implements CommandListener {
 			getSelectedFlags(flags);
 			Dominion.I().setExpansionPlayingState(flags);
 			GameApp.instance().ecFL.updateCards(false);
-			Dominion.I().resetSelectedCards();
-			try {
-				Dominion.I().checkAvailability();
-				// TODO implement correct randomization processes!
-				Dominion.I().useMinimumExpansionCards(Dominion.CURRENT_SET);
-				if ( Dominion.CURRENT_SET == 0 ) {
-					Dominion.I().resetIsPlaying(0);
-					try {
-						ShowCardsForm.instance().randomizeNewSet();
-						GameApp.instance().changeToScreen(ShowCardsForm.instance());
-					} catch (DominionException e) {
-						GameApp.instance().showAlert(e.toString());
-					}
-				} else 
+			if ( Dominion.CURRENT_SET == 0 ) {
+				try {
+					Dominion.I().randomizeCards();
+					ShowCardsForm.instance().addNewCards(Dominion.I().getCurrentlySelected(Dominion.CURRENT_SET));
 					GameApp.instance().changeToScreen(ShowCardsForm.instance());
-			} catch (DominionException e) {
-				GameApp.instance().showAlert(e.toString());
-				return;
-			}
+				} catch (DominionException e) {
+					GameApp.instance().showAlert(e.toString());
+				}
+			} else 
+				GameApp.instance().changeToScreen(ShowCardsForm.instance());
 		} else if ( cmd.equals(gaugeCmd) ) {
 			tmp = UiAccess.getFocusedIndex(this);
 			String tmpS = Dominion.getExpansionName(tmp);
 			if ( tmp == Dominion.PROMO )
-				GaugeForm.instance().setGauge(Locale.get("gauge.expansion.setCards", tmpS), true, 3, 0);
+				GaugeForm.instance().setGauge(Locale.get("gauge.expansion.setCards", tmpS), true, Dominion.expansions[Dominion.PROMO].size(), 0);
 			else
-				GaugeForm.instance().setGauge(Locale.get("gauge.expansion.setCards", tmpS), true, 10, 0);
+				GaugeForm.instance().setGauge(Locale.get("gauge.expansion.setCards", tmpS), true, Dominion.I().getNumberOfRandomCards(), 0);
 			GaugeForm.instance().setGaugeValue(Dominion.I().numberOfCardsFromExp[tmp]);
 			GaugeForm.instance().setCommandListener(this);
 			GameApp.instance().changeToScreen(GaugeForm.instance());

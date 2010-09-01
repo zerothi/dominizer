@@ -85,6 +85,7 @@ public class EditCardsList extends List implements CommandListener {
 			try {
 				Dominion.I().randomizeCards();
 				ShowCardsForm.instance().addNewCards(Dominion.I().getCurrentlySelected(Dominion.CURRENT_SET));
+				GameApp.instance().changeToScreen(ShowCardsForm.instance());
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}

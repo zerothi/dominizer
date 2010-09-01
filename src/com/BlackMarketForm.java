@@ -23,12 +23,12 @@ public class BlackMarketForm extends List implements CommandListener {
 
 	private Vector
 	//#if polish.android
-		<String>
+		//#= <String>
 	//#endif
 		blackMarketDeck = null;
 	private Vector
 	//#if polish.android
-		<String>
+    	//#= <String>
 	//#endif	
 		drawnDeck = null;
 	private Command cancelBuyCmd = new Command( Locale.get("cmd.BlackMarket.CancelBuy"), Command.SCREEN, 1);
@@ -107,7 +107,7 @@ public class BlackMarketForm extends List implements CommandListener {
 					GameApp.instance().showInfo(Locale.get("screen.BlackMarket.InfoMessage") + "\n" + blackMarketDeck.elementAt(i).toString() + ".", 2000);
 					drawnDeck.addElement(blackMarketDeck.elementAt(i));
 					blackMarketDeck.removeElementAt(i);
-					i = 1000;
+					i = blackMarketDeck.size() + 1;
 				}
 			}
 		}
@@ -195,12 +195,12 @@ public class BlackMarketForm extends List implements CommandListener {
 		deleteAll();
 		drawnDeck = new Vector
 		//#if polish.android
-			<String>
+			//#= <String>
 		//#endif
 			(blackMarketDeck.size());
 		this.blackMarketDeck = new Vector
 		//#if polish.android
-			<String>
+			//#= <String>
 		//#endif
 			(blackMarketDeck.size());
 		for ( int i = 0 ; i < blackMarketDeck.size() ; i++ )

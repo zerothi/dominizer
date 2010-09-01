@@ -55,7 +55,7 @@ public class ConditionForm extends List implements CommandListener {
 		System.out.println("initializing conditionTableForm");
 		ptF = new ConditionTableForm();
 		//#style mainTicker
-		ticker = new Ticker("");
+		ticker = new Ticker("< >");
 		if ( getCurrentIndex() > -1 )
 			ticker.setString("< " + Dominion.I().condition.getCondition(getCurrentIndex()) + " >");		
 		setTicker(ticker);
@@ -160,18 +160,18 @@ public class ConditionForm extends List implements CommandListener {
 		case Canvas.KEY_POUND:
 		case Canvas.KEY_STAR:
 		default:
-			ticker.setString("< " + Dominion.I().condition.getCondition(getCurrentIndex()) + " >");
 			//#= super.keyPressed(keyCode);
 		}
+		ticker.setString("< " + Dominion.I().condition.getCondition(getCurrentIndex()) + " >");
+		Dominion.I().condition.setInitial(getCurrentIndex());
 	}
 
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(selectCmd) ) {
 			try {
-				if ( Dominion.I().selectCondition(getCurrentIndex()) ) {
-					ShowCardsForm.instance().addNewCards(Dominion.I().getCurrentlySelected(Dominion.CURRENT_SET));
-					GameApp.instance().changeToScreen(ShowCardsForm.instance());
-				}
+				Dominion.I().randomizeCards(-1, Dominion.RAND_HOLD + Dominion.RAND_CONDITION, getCurrentIndex());
+				ShowCardsForm.instance().addNewCards(Dominion.I().getCurrentlySelected(Dominion.CURRENT_SET));
+				GameApp.instance().changeToScreen(ShowCardsForm.instance());
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}

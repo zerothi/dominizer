@@ -21,15 +21,15 @@ import javax.microedition.lcdui.Image;
 public class Cards {
 
 	private String[] name = null;
-	private int[] expansion = null;
+	private short[] expansion = null;
 	
-	private int[] playing = null;
+	private short[] playing = null;
 	/*
-	 * #0 = Is Selected for availability
-	 * #1 = Is Black Market available
+	 * 1 = Is Selected for availability
+	 * 2 = Is Black Market available
 	 */
-	private boolean[][] isGamingRelated = null; 
-	private int[] cost = null;
+	private short[] isGamingRelated = null; 
+	private short[] cost = null;
 	/*
 	 * #0 = Action
 	 * #1 = Victory
@@ -55,23 +55,26 @@ public class Cards {
 	public Cards(int size, int isSet) {
 		if ( size > 0 ) {
 			name = new String[size];
-			playing = new int[size];
-			isGamingRelated = new boolean[size][2];
-			cost = new int[size];
+			playing = new short[size];
+			isGamingRelated = new short[size];
+			cost = new short[size];
 			isSpecific = new boolean[size][6];
 			addsInfo = new int[size][8];
 			if ( isSet == IS_SET )
-				expansion = new int[1];
+				expansion = new short[1];
 			else
-				expansion = new int[size];
+				expansion = new short[size];
 			expansion[0] = -1;
 			percentage = new int[size];
 			for ( i = 0 ; i < size ; i++ ) {
 				name[i] = null;
 				cost[i] = 0;
 				playing[i] = 0;
-				isGamingRelated[i][0] = true;
-				isGamingRelated[i][1] = true;
+				/*
+				 * Adding 1 makes it selected for availability
+				 * Adding 2 makes it selectable for the Black Market deck
+				 */
+				isGamingRelated[i] = 1 + 2;
 				for ( k = 0 ; k < addsInfo[i].length ; k++ )
 					addsInfo[i][k] = 0;
 				if ( isSet == IS_NOT_SET )
@@ -126,7 +129,7 @@ public class Cards {
 	 * @param expansion the expansion which should be assigned with the card
 	 */
 	public void setExpansion(int index, int expansion) {
-		this.expansion[index] = expansion;
+		this.expansion[index] = (short) expansion;
 	}
 	
 
@@ -152,7 +155,7 @@ public class Cards {
 	 * @param expansion sets the default expansion number
 	 */
 	public void setExpansion(int expansion) {
-		this.expansion[0] = expansion;
+		this.expansion[0] = (short) expansion;
 	}
 
 	/**
@@ -180,7 +183,7 @@ public class Cards {
 	 * @param playing the playing state of the card
 	 */
 	public void setPlaying(int index, int playing) {
-		this.playing[index] = playing;
+		this.playing[index] = (short) playing;
 	}
 	
 	/**
@@ -188,7 +191,7 @@ public class Cards {
 	 * @return how much the card costs in potions
 	 */
 	public int getPotionCost(int index) {
-		return (cost[index] - cost[index] % 100) / 100;
+		return (cost[index] >>> 5);
 	}
 	
 	/**
@@ -227,10 +230,10 @@ public class Cards {
 	public void setHoldCard(int index, boolean hold) {
 		if ( hold ) {
 			if ( 0 < playing[index] & playing[index] < 100 )
-				playing[index] = playing[index] + 100;
+				playing[index] = (short) (playing[index] + 100);
 		} else {
 			if ( playing[index] > 100 )
-				playing[index] = playing[index] - 100;
+				playing[index] = (short) (playing[index] - 100);
 		}
 	}
 	
@@ -240,7 +243,7 @@ public class Cards {
 	 * @return the availability of the card
 	 */
 	public boolean isAvailable(int index) {
-		return isGamingRelated[index][0];
+		return (isGamingRelated[index] & 1) > 0;
 	}
 
 	
@@ -249,7 +252,12 @@ public class Cards {
 	 * @param available the available state of the card
 	 */
 	public void setAvailable(int index, boolean available) {
-		isGamingRelated[index][0] = available;
+		if ( available )
+			isGamingRelated[index] = (short) (isGamingRelated[index] | 1);
+		else
+			isGamingRelated[index] -= (short) (isGamingRelated[index] & 1) ;
+		
+			
 	}
 
 	/**
@@ -257,7 +265,7 @@ public class Cards {
 	 * @return true if the card is available for the Black Market
 	 */
 	public boolean isBlackMarketAvailable(int index) {
-		return isGamingRelated[index][1];
+		return ((isGamingRelated[index] >> 1) & 1) > 0;
 	}
 
 	/**
@@ -265,7 +273,10 @@ public class Cards {
 	 * @param bmAvailable the state of the Black Market availability
 	 */
 	public void setBlackMarketAvailable(int index, boolean bmAvailable) {
-		isGamingRelated[index][1] = bmAvailable;
+		if ( bmAvailable )
+			isGamingRelated[index] = (short) (isGamingRelated[index] | 2);
+		else
+			isGamingRelated[index] -= (short) (isGamingRelated[index] & 2) ;
 	}
 
 	/**
@@ -273,7 +284,7 @@ public class Cards {
 	 * @return the cobber cost of the card
 	 */
 	public int getCost(int index) {
-		return cost[index] % 100;
+		return (cost[index] & 31);
 	}
 	
 	/**
@@ -282,7 +293,7 @@ public class Cards {
 	 * @param potions the cost in potions of the card
 	 */
 	public void setCost(int index, int cost, int potions) {
-		this.cost[index] = cost + 100 * potions;
+		this.cost[index] = (short) ((potions << 5) | cost);
 	}
 
 	/**
@@ -424,7 +435,7 @@ public class Cards {
 		}
 		setName(index, cardInfo[0].toString());
 		setExpansion(index, ((Integer)cardInfo[1]).intValue());
-		this.cost[index] = ((Integer)cardInfo[2]).intValue(); // simply to bypass the potion cost.	
+		this.cost[index] = (short)((Integer)cardInfo[2]).intValue(); // simply to bypass the potion cost.	
 		setType(index, TYPE_ACTION, ((Boolean)cardInfo[3]).booleanValue());
 		setType(index, TYPE_VICTORY, ((Boolean)cardInfo[4]).booleanValue());
 		setType(index, TYPE_ATTACK, ((Boolean)cardInfo[5]).booleanValue());
@@ -614,6 +625,6 @@ public class Cards {
 	public static final int ADDS_VICTORY_POINTS = 6;
 	public static final int ADDS_POTIONS = 7;
 	
-	
 	public static final int COST_POTIONS = 100;
+	
 }

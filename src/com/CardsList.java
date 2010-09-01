@@ -42,14 +42,8 @@ public class CardsList extends List implements CommandListener {
 	
 	private static Command anotherSetCmd = new Command( Locale.get("cmd.AnotherSet"), Command.ITEM, 2);
 	private static Command randSetPreventCmd = new Command( Locale.get("cmd.Randomize.SetPrevent"), Command.ITEM, 4);
-	
-	private static Command sortCmd = new Command( Locale.get("cmd.Sort.Main"), Command.SCREEN, 5);
-	private static Command sortExpNameCmd = new Command( Locale.get("cmd.Sort.ExpName"), Command.ITEM, 4);
-	private static Command sortExpCostCmd = new Command( Locale.get("cmd.Sort.ExpCost"), Command.ITEM, 5);
-	private static Command sortNameCmd = new Command( Locale.get("cmd.Sort.Name"), Command.ITEM, 6);
-	private static Command sortCostNameCmd = new Command( Locale.get("cmd.Sort.CostName"), Command.ITEM, 7);
-	private static Command sortCostExpCmd = new Command( Locale.get("cmd.Sort.CostExp"), Command.ITEM, 8);
-	
+	//private static Command randExpCmd = new Command( Locale.get("cmd.Randomize.ExpansionLimit"), Command.ITEM, 5);
+	private static Command randConditionCmd = new Command( Locale.get("cmd.Randomize.Condition"), Command.ITEM, 8);
 	
 	private static Command optionsCmd = new Command( Locale.get("cmd.Options.Main"), Command.ITEM, 10);
 	private static Command showInfoCmd = new Command( Locale.get("cmd.ShowChosenCardInfo"), Command.ITEM, 12);
@@ -69,23 +63,14 @@ public class CardsList extends List implements CommandListener {
 		//addCommand(blackMarketCmd);
 		addCommand(anotherSetCmd);
 		addCommand(randSetPreventCmd);
+		//addCommand(randExpCmd);
+		addCommand(randConditionCmd);
 		//#if !polish.android
-			addCommand(sortCmd);
-			UiAccess.addSubCommand(sortExpNameCmd, sortCmd, this);
-			UiAccess.addSubCommand(sortExpCostCmd, sortCmd, this);
-			UiAccess.addSubCommand(sortNameCmd, sortCmd, this);
-			UiAccess.addSubCommand(sortCostExpCmd, sortCmd, this);
-			UiAccess.addSubCommand(sortCostNameCmd, sortCmd, this);
 			addCommand(optionsCmd);
 			UiAccess.addSubCommand(showInfoCmd, optionsCmd, this);
 			UiAccess.addSubCommand(deleteSetCmd, optionsCmd, this);
 			UiAccess.addSubCommand(saveCmd, optionsCmd, this);
 		//#else
-			addCommand(sortExpNameCmd);
-			addCommand(sortExpCostCmd);
-			addCommand(sortNameCmd);
-			addCommand(sortCostExpCmd);
-			addCommand(sortCostNameCmd);
 			addCommand(showInfoCmd);
 			addCommand(deleteSetCmd);
 			addCommand(saveCmd);
@@ -155,12 +140,6 @@ public class CardsList extends List implements CommandListener {
 		}
 	}
 	
-	public void reRandomize() throws DominionException {
-		Dominion.I().resetIsPlaying(cardSet);
-		Dominion.I().randomizeCards(cardSet);
-		setCards(Dominion.I().getCurrentlySelected(cardSet));
-	}
-
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(backCmd) ) {
 			GameApp.instance().changeToScreen(null);
@@ -169,19 +148,29 @@ public class CardsList extends List implements CommandListener {
 		else if ( cmd.equals(randomizeSetCmd) ) {
 			updateCards(true);
 			try {
-				reRandomize();
+				Dominion.I().randomizeCards(cardSet);
+				setCards(Dominion.I().getCurrentlySelected(cardSet));		
+			} catch (DominionException e) {
+				GameApp.instance().showAlert(e.toString());
+			}
+		} else if ( cmd.equals(randConditionCmd) ) {
+			updateCards(true);
+			try {
+				Dominion.I().randomizeCards(cardSet, Dominion.RAND_HOLD + Dominion.RAND_CONDITION);
+				setCards(Dominion.I().getCurrentlySelected(cardSet));		
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}
 		} else if ( cmd.equals(anotherSetCmd) ) {
 			try {
-				ShowCardsForm.instance().randomizeNewSet();
+				Dominion.I().randomizeCards();
+				ShowCardsForm.instance().addNewCards(Dominion.I().getCurrentlySelected(Dominion.CURRENT_SET));
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}
 		} else if ( cmd.equals(randSetPreventCmd) ) {
 			try {
-				Dominion.I().randomizeCardsPrevent(cardSet);
+				Dominion.I().randomizeCards(cardSet, Dominion.RAND_EXPANSION_CARDS + Dominion.RAND_PERCENTAGE_CARDS + Dominion.RAND_PREVENT);
 				setCards(Dominion.I().getCurrentlySelected(cardSet));
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
@@ -215,7 +204,7 @@ public class CardsList extends List implements CommandListener {
 			InputForm.instance().clearInput();
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel"))) {
 			GameApp.instance().changeToScreen(this);
-		} else if ( cmd.equals(sortExpNameCmd) ) {
+		} /* else if ( cmd.equals(sortExpNameCmd) ) {
 			try {
 				setCards(Dominion.I().getCurrentlySelected(cardSet, Cards.COMPARE_EXPANSION_NAME));
 				Cards.COMPARE_PREFERRED = Cards.COMPARE_EXPANSION_NAME;
@@ -243,6 +232,7 @@ public class CardsList extends List implements CommandListener {
 				Cards.COMPARE_PREFERRED = Cards.COMPARE_COST_EXPANSION;
 			} catch (DominionException e) {}
 		}
+		*/
 	}
 	
 	public void keyPressed(int keyCode) {

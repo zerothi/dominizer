@@ -8,7 +8,7 @@ colors {
 	eevenBrightColor: 			rgb(40,70,95);
 	translucentBgColor:  		argb(130, 165,190,247);
 	darkTranslucentBgColor: 	argb(100, 145,175,247);
-	/* Font Colors*/
+	/* Font Colors */
 	titleFontColor: 			rgb(175,210,247);
 	fontColor: 					rgb( 76, 95,160);
 	hiddenFontColor: 			rgb(166,185,248);
@@ -30,14 +30,14 @@ backgrounds {
 	}
 	alertTop {
 		type: round-rect;
-		color: #fff;
+		color: translucentBgColor;
 	}
 	alertBg {
 		type: round-rect;
-		color: #a333;
+		color: darkTranslucentBgColor;
 	}
 	alertOverlay {
-		color: #9fff;
+		color: fontColor;
 	}
 	plainBg {
 		color: brightBgColor;
@@ -276,6 +276,42 @@ info {
 	layout: left;
 }
 
+/**
+ *
+ * Choicegroup on optionfrom
+ *
+ */
+.horizontalChoice {
+	label-style: choiceGroupLabel;
+	background-type: round-rect;
+	background-color: darkTranslucentBgColor;
+	include-label: true;
+	layout: expand;
+	view-type: horizontal-choice;
+	horizontalview-left-arrow: url( arrow-left.png );
+	horizontalview-right-arrow: url( arrow-right.png );
+}
+.horizontalChoice:hover {
+	background-color: translucentBgColor;
+}
+
+.choiceItem {
+	font-color: fontColor;
+	text-wrap: false;
+}
+
+.choiceItem:hover {
+	font-color: fontColor;
+	font-style: bold;
+}
+
+.choiceGroupLabel {
+	font-style: italic;
+	font-size: small;
+	layout: newline-after;
+}
+
+
 /*************   MENU BAR     *************/
 
 menubar {
@@ -504,6 +540,7 @@ messagetext {
  **************/
 .tabbedPane {
 	title-menu: true;
+	ticker-position: bottom;
 }
 
 .tabbedPaneIcons {
@@ -519,6 +556,7 @@ messagetext {
 		color: translucentBgColor;
 	}
 	layout: expand;
+	ticker-position: bottom;
 }
 
 .tabIcon {
@@ -562,65 +600,13 @@ messagetext {
 	max-width: 12%;
 }
 
-/* Calendar */
-.calendar {
-	layout: expand;
-	label-style: calendarMonth;
-}
-
-.calendar:hover {
-}
-
-.calendarMonth {
-	font-color: #222;
-	font-style: bold;
-	font-size: small;
-	before: url( arrow-left.png );
-	after: url( arrow-right.png );
-	layout: expand | center;
-}
-
-.calendarWeekday {
-	layout: center;
-	font-style: italic | bold;
-	min-width: 12%;
-}
-
-.calendarDay {
-	padding: 2px;
-	font-style: italic;
-	font-color: #222;
-	layout: right;
-}
-
-.calendarDay:hover {
-	background-color: #222;
-	font-color: #efefef;
-}
-
-.calendarCurrentday extends .calendarDay {
-	background-color: #8f8;
-}
-
-.calendarCurrentday:hover {
-	background-color: #1a1;
-	font-color: #fff;
-}
-
-.calendarDayInactive extends .calendarDay {
-	font-color: #666;
-}
-
-.calendarDayInactive:hover {
-	background-color: #666;
-	font-color: #fff;
-}
-
 /**
  * Blackmarket ticker
  */
 .mainTicker {
+	ticker-position: bottom;
 	ticker-step: 4;
+	ticker-direction: left;
 	padding-horizontal: 5;
 	layout: vertical-center;
 	font-color: translucentBrightFontColor;

@@ -52,27 +52,12 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 		}
 		return scF;
 	}
-
-	public void randomizeNewSet() throws DominionException {
-		if ( Dominion.CURRENT_SET < cardSet.length ) {
-			cardSet[Dominion.CURRENT_SET].reRandomize();
-			Dominion.CURRENT_SET++;
-			//#= String tmp = "" + Dominion.CURRENT_SET;
-			//#style tabIconSet
-			//#= addTab(cardSet[Dominion.CURRENT_SET-1], null, Locale.get("screen.RandomizedCards.title2", tmp));
-			cardSet[Dominion.CURRENT_SET - 1].setBlackMarket(Dominion.I().isBlackMarketPlaying());
-			setFocus(Dominion.CURRENT_SET - 1);
-		} else {
-			//Dominion.I().randomizeCards(0, 0); // this should throw an Exception!
-		}
-	}
 	
 	public void addNewCards(Cards cards) {
 		if ( cards == null )
 			return;
-		if ( Dominion.CURRENT_SET + 1 < cardSet.length ) {
-			cardSet[Dominion.CURRENT_SET].setCards(cards);
-			Dominion.CURRENT_SET++;
+		if ( Dominion.CURRENT_SET > this.getCount() & Dominion.CURRENT_SET <= cardSet.length ) {
+			cardSet[Dominion.CURRENT_SET - 1].setCards(cards);
 			//#= String tmp = "" + Dominion.CURRENT_SET;
 			//#style tabIconSet
 			//#= addTab(cardSet[Dominion.CURRENT_SET-1], null, Locale.get("screen.RandomizedCards.title2", tmp));

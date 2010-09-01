@@ -24,7 +24,7 @@ public class GameCalendarForm extends Form implements CommandListener {
 	private GameCalendarForm(String title) {
 		//#style mainScreen
 		super(title);
-		//#style calendar
+		// #style calendar
 		calendar = new CalendarItem();
 		append(calendar);
 		addCommand(addGameCmd);

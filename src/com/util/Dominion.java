@@ -20,6 +20,11 @@ public class Dominion {
 	public static final int PROSPERITY = 4; // has 25 cards
 	public static final int PROMO = 5; // has 3 cards
 	public static final int USER = 6; // always have to be the number!
+	public static final int RAND_EXPANSION_CARDS = 1;
+	public static final int RAND_PERCENTAGE_CARDS = 2;
+	public static final int RAND_HOLD = 16;
+	public static final int RAND_CONDITION = 4;
+	public static final int RAND_PREVENT = 8;
 	public static boolean RANDOMIZE_COMPLETELY_NEW = true;
 	public static int SETS_SAVE = 5;
 	public static int CURRENT_SET = 0;
@@ -169,7 +174,7 @@ public class Dominion {
 				throw new DominionException(Locale.get("alert.Randomization.Availability", t));
 			}
 		}
-		if (sum < numberOfRandomCards) {
+		if (sum < getNumberOfRandomCards()) {
 			String t = "" + sum;
 			throw new DominionException(Locale.get("alert.Randomization.TotalAvailability", t));
 		}
@@ -282,14 +287,15 @@ public class Dominion {
 	}
 
 	public Cards getCurrentlySelected(int playingSet, int sortMethod) throws DominionException {
-		selectedCards = new Cards(numberOfRandomCards, Cards.IS_NOT_SET);
+		selectedCards = new Cards(getNumberOfRandomCards(), Cards.IS_NOT_SET);
 		int card = 0;
 		for ( int i = 0 ; i < expansions.length ; i++ )
 			for ( loop = 0 ; loop < expansions[i].size() ; loop++ ) {
 				if ( expansions[i].isPlayingSet(loop, playingSet) )
 					selectedCards.setCard(card++, expansions[i].getCard(loop) );
 			}
-		if ( card != numberOfRandomCards )
+		if ( card != getNumberOfRandomCards() )
+			// TODO fix exception to handle correct!
 			throw new DominionException("No currently selected cards.");
 		return sortCards(selectedCards, sortMethod);
 	}
@@ -557,56 +563,97 @@ public class Dominion {
 	}
 	
 	public void randomizeCards() throws DominionException {
-		int selectedElement = 0, tmpExp = 0;
-		checkAvailability();
-		resetSelectedCards();
-		Rand.resetSeed();
-		CURRENT_SET = CURRENT_SET + 1;
-		//#debug dominizer
-		System.out.println("using randomizing cards with total cards " + TOTAL_CARDS + " selected: " + selected);
-		while ( selected < numberOfRandomCards ) {
-			selectedElement = Rand.randomInt(TOTAL_CARDS);
-			tmpExp = getLinearExpansionIndex(selectedElement);
-			selectedElement = getLinearCardIndex(selectedElement);
-			if ( selectCard(CURRENT_SET, tmpExp, selectedElement, selected) ) {
-				//#debug dominizer
-				System.out.println("choosing expansion: " + tmpExp + ". together with card: " + selectedElement);
-				selected++;
-			}
-		}
+		// Hold doesn't make a difference here!
+		randomizeCards(-1, RAND_EXPANSION_CARDS + RAND_PERCENTAGE_CARDS + RAND_HOLD, condition.getInitial());
 	}
 	
 	public void randomizeCards(int playingSet) throws DominionException {
-		int selectedElement = 0, tmpExp = 0;
-		checkAvailability();
-		resetSelectedCards();
-		Rand.resetSeed();
-		//#debug dominizer
-		System.out.println("using randomizing cards with total cards " + TOTAL_CARDS + " selected: " + selected);
-		while ( selected < numberOfRandomCards ) {
-			selectedElement = Rand.randomInt(TOTAL_CARDS);
-			tmpExp = getLinearExpansionIndex(selectedElement);
-			selectedElement = getLinearCardIndex(selectedElement);
-			if ( selectCard(playingSet, tmpExp, selectedElement, selected) ) {
-				//#debug dominizer
-				System.out.println("choosing expansion: " + tmpExp + ". together with card: " + selectedElement);
-				selected++;
-			}
-		}
+		randomizeCards(playingSet, RAND_EXPANSION_CARDS + RAND_PERCENTAGE_CARDS + RAND_HOLD, condition.getInitial());
 	}
 	
-	public void randomizeCardsPrevent(int playingSet) throws DominionException {
-		checkAvailability();
-		randomizeCards(90);
-		for ( int i = 0 ; i < expansions.length ; i++ )
-			for ( loop = 0 ; loop < expansions[i].size() ; loop++ ) {
-				if ( expansions[i].isPlayingSet(loop, playingSet) )
-					expansions[i].setPlaying(loop, 0);
-				if ( expansions[i].isPlayingSet(loop, 90) )
-					expansions[i].setPlaying(loop, playingSet);
-			}
+	public void randomizeCards(int playingSet, int randomizeMethod) throws DominionException {
+		randomizeCards(playingSet, randomizeMethod, condition.getInitial());
 	}
-
+	
+	public void randomizeCards(int playingSet, int randomizeMethod, int condition) throws DominionException {
+		int selectedElement = 0, tmpExp = 0, tmpPlayingSet = 0;
+		checkAvailability();
+		resetSelectedCards();
+		resetIsPlaying(playingSet);
+		Rand.resetSeed();
+		if ( playingSet < 0 );
+			playingSet = CURRENT_SET + 1;
+		/*
+		 * RandomizeMethod contains a bit number 0 + 1 + 2 + 4 + 8...
+		 * We compare them by using the bit wise AND operator
+		 */
+		if ( (randomizeMethod & RAND_PREVENT) > 0 ) {
+			tmpPlayingSet = playingSet;
+			playingSet = 90;
+		}
+		if ( (randomizeMethod & RAND_HOLD) > 0 ) {
+			useHoldCards(playingSet);
+		}
+		if ( (randomizeMethod & RAND_EXPANSION_CARDS) > 0 ) {
+			useMinimumExpansionCards(playingSet);
+		}
+		if ( (randomizeMethod & RAND_PERCENTAGE_CARDS) > 0 ) {
+			usePercentageCards(playingSet);
+		}
+		if ( (randomizeMethod & RAND_CONDITION) > 0 ) {
+			int i = 0;
+			for ( i = 0 ; i < Condition.MAX_RUNS ; i++ ) {
+				//#debug dominizer
+				System.out.println("condition tried for the '"+i+"' time.");
+				Rand.resetSeed();
+				while ( selected < getNumberOfRandomCards() ) {
+					selectedElement = Rand.randomInt(TOTAL_CARDS);
+					tmpExp = getLinearExpansionIndex(selectedElement);
+					selectedElement = getLinearCardIndex(selectedElement);
+					if ( selectCard(playingSet, tmpExp, selectedElement, selected) ) {
+						//#debug dominizer
+						System.out.println("choosing expansion: " + tmpExp + ". together with card: " + selectedElement);
+						selected++;
+					}
+				}
+				if ( parseCondition(this.condition.getCondition(condition)) ) {
+					//#debug dominizer
+					System.out.println("condition succeded");
+					i = Condition.MAX_RUNS + Condition.MAX_RUNS;
+				} else
+					resetIsPlaying(playingSet);
+			}
+			if ( i != Condition.MAX_RUNS + Condition.MAX_RUNS ) {
+				//#debug dominizer
+				System.out.println("condition failed");
+				throw new DominionException(Locale.get("randomize.condition.failed"));
+			}
+		} else {
+			//#debug dominizer
+			System.out.println("using randomizing cards with total cards " + TOTAL_CARDS + " selected: " + selected);
+			while ( selected < getNumberOfRandomCards() ) {
+				selectedElement = Rand.randomInt(TOTAL_CARDS);
+				tmpExp = getLinearExpansionIndex(selectedElement);
+				selectedElement = getLinearCardIndex(selectedElement);
+				if ( selectCard(playingSet, tmpExp, selectedElement, selected++) ) {
+					//#debug dominizer
+					System.out.println("choosing expansion: " + tmpExp + ". together with card: " + selectedElement);
+				}
+			}
+		}
+		if ( (randomizeMethod & RAND_PREVENT) > 0 ) {
+			for ( int i = 0 ; i < expansions.length ; i++ )
+				for ( loop = 0 ; loop < expansions[i].size() ; loop++ ) {
+					if ( expansions[i].isPlayingSet(loop, tmpPlayingSet) )
+						expansions[i].setPlaying(loop, 0);
+					if ( expansions[i].isPlayingSet(loop, playingSet) )
+						expansions[i].setPlaying(loop, tmpPlayingSet);
+				}
+		}
+		if ( playingSet > CURRENT_SET )
+			CURRENT_SET = playingSet;
+	}
+	
 	private void readResource(int exp, String fileName, int totalCards) {
 		if ( exp == USER ) {
 			if ( totalCards > -1 )
@@ -800,11 +847,11 @@ public class Dominion {
 			//#debug dominizer
 			System.out.println("reading from: " + SettingsRecordStorage.instance().readKey("" + numberSaves ));
 			start = -1;
-			for ( loop = 0 ; loop < numberOfRandomCards ; loop++ ) {
+			for ( loop = 0 ; loop < getNumberOfRandomCards() ; loop++ ) {
 				start = SettingsRecordStorage.instance().readKey("" + numberSaves).toString().indexOf(
 								SettingsRecordStorage.MEDIUM_SPLITTER,
 								start + 1);
-				if (loop == numberOfRandomCards - 1 )
+				if (loop == getNumberOfRandomCards() - 1 )
 					card = getCardInfo(SettingsRecordStorage.instance().readKey("" + numberSaves).toString().substring(start));
 				else
 					card = getCardInfo(SettingsRecordStorage.instance().readKey("" + numberSaves).toString().substring(start,
@@ -919,27 +966,10 @@ public class Dominion {
 	}
 	
 	public void resetSelectedCards() {
-		selectedCards = new Cards(numberOfRandomCards, Cards.IS_NOT_SET);
+		selectedCards = new Cards(getNumberOfRandomCards(), Cards.IS_NOT_SET);
 		selected = 0;
 	}
 	
-	public boolean selectCondition(int condition) throws DominionException {
-		for ( int i = 0 ; i < Condition.MAX_RUNS ; i++ ) {
-			//#debug dominizer
-			System.out.println("condition tried for the "+i+" time.");
-			randomizeCards(CURRENT_SET + 1);
-			if ( parseCondition(this.condition.getCondition(condition)) ) {
-				//#debug dominizer
-				System.out.println("condition succeded");
-				return true;
-			}
-			resetIsPlaying(CURRENT_SET + 1);
-		}
-		//#debug dominizer
-		System.out.println("condition failed");
-		return false;
-	}
-
 	public boolean selectCard(int playingSet, int exp, int card, int placement) {
 		//#debug dominizer
 		System.out.println("try: " + exp + " - " + card);
@@ -1041,7 +1071,7 @@ public class Dominion {
 			if ( playingExpansions[i] & 0 < numberOfCardsFromExp[i] & expansions[i].size() > 0 ) {
 				//#debug dominizer
 				System.out.println("selecting for expansion: " + i + " already chosen: "+ selectedCards.fromExpansion(i));
-				while ( selectedCards.fromExpansion(i) < numberOfCardsFromExp[i] && selected < numberOfRandomCards ) {
+				while ( selectedCards.fromExpansion(i) < numberOfCardsFromExp[i] && selected < getNumberOfRandomCards() ) {
 					//#debug dominizer
 					System.out.println("selecting for expansion1: " +i+ " already chosen: "+ selectedCards.fromExpansion(i));
 					loop = Rand.randomInt(expansions[i].size());
@@ -1061,9 +1091,7 @@ public class Dominion {
 		for ( int i = 0 ; i < expansions.length ; i++ )
 			selected += ensurePercentageCards(playingSet, i);
 	}
-	
-	
-	
+		
 	public static Image getExpansionImage(int expansion) {
 		try {
 			if ( Dominion.getExpansionImageName(expansion) == null )
@@ -1115,6 +1143,22 @@ public class Dominion {
 			return "";
 		}
 	}
+	/**
+	 * @param numberOfRandomCards the numberOfRandomCards to set
+	 */
+	public void setNumberOfRandomCards(int numberOfRandomCards) {
+		this.numberOfRandomCards = numberOfRandomCards;
+	}
+
+
+	/**
+	 * @return the numberOfRandomCards
+	 */
+	public int getNumberOfRandomCards() {
+		return numberOfRandomCards;
+	}
+
+
 	public static Dominion I() {
 		if (dom == null)
 			dom = new Dominion();
