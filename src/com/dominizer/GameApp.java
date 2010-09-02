@@ -119,7 +119,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		pFL = new PresetList(null, List.IMPLICIT);
 		//#style tabIcon
 		//#= tabbedPane.addTab(pFL, null, Locale.get("tab.Preset.title"));
-		cF = new ConditionForm(null, List.MULTIPLE);
+		cF = new ConditionForm(null, List.EXCLUSIVE);
 		//#style tabIcon
 		//#= tabbedPane.addTab(cF, null, Locale.get("tab.Condition.title"));
 		// # style tabIcon

@@ -34,6 +34,7 @@ public class ConditionForm extends List implements CommandListener {
 	
 	private String newName = null, newCondition = null;
 	private Ticker ticker = null;
+	private int listType = 0;
 	
 	private boolean isOnGauge = true;
 	/**
@@ -42,6 +43,7 @@ public class ConditionForm extends List implements CommandListener {
 	public ConditionForm(String title, int listType) {
 		//#style mainScreen
 		super(title, listType);
+		this.listType = listType;
 		addCommand(selectCmd);
 		populateConditions();
 		//#= setSelectCommand(selectCmd);
@@ -71,7 +73,7 @@ public class ConditionForm extends List implements CommandListener {
 			System.out.println("adding condition: " + i);
 			if ( Dominion.I().condition.getName(i) != null ) {
 				//#style label
-				ci = new CardItem(Dominion.I().condition.getName(i), List.MULTIPLE);
+				ci = new CardItem(Dominion.I().condition.getName(i), listType);
 				append(ci);
 				setPercentage(i, Dominion.I().condition.getPercentage(i));
 			}
@@ -83,11 +85,11 @@ public class ConditionForm extends List implements CommandListener {
 		CardItem ci;
 		if ( deciPercentage > 0 ) {
 			//#style label
-			ci = new CardItem(Dominion.I().condition.getName(index)+" "+(deciPercentage*10)+"%", List.MULTIPLE);
+			ci = new CardItem(Dominion.I().condition.getName(index)+" "+(deciPercentage*10)+"%", listType);
 			Dominion.I().condition.setPercentage(index, deciPercentage);
 		} else {
 			//#style label
-			ci = new CardItem(Dominion.I().condition.getName(index), List.MULTIPLE);
+			ci = new CardItem(Dominion.I().condition.getName(index), listType);
 			Dominion.I().condition.setPercentage(index, 0);
 		}
 		set(index, ci);
@@ -163,7 +165,8 @@ public class ConditionForm extends List implements CommandListener {
 			//#= super.keyPressed(keyCode);
 		}
 		ticker.setString("< " + Dominion.I().condition.getCondition(getCurrentIndex()) + " >");
-		Dominion.I().condition.setInitial(getCurrentIndex());
+		Dominion.I().condition.setInitial(getSelectedIndex());
+		//Dominion.I().condition.setInitial(getCurrentIndex());
 	}
 
 	public void commandAction(Command cmd, Displayable disp) {

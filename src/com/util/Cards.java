@@ -388,7 +388,7 @@ public class Cards {
 		Object[] tmp = new Object[20];
 		tmp[0] = getName(index);
 		tmp[1] = new Integer(getExpansion(index));
-		tmp[2] = new Integer(getCost(index)+getPotionCost(index)*100);
+		tmp[2] = new Integer((getPotionCost(index) << 5) + getCost(index));
 		tmp[3] = new Boolean(isType(index, TYPE_ACTION));
 		tmp[4] = new Boolean(isType(index, TYPE_VICTORY));
 		tmp[5] = new Boolean(isType(index, TYPE_ATTACK));

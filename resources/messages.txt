@@ -7,9 +7,11 @@ screen.Condition.InputMessage=Condition name:
 randomize.condition.failed=Dominizer failed to find a suitable set of cards to fulfill your condition. Try again.
 screen.options.sort=Sort Method
 screen.options.info=Defines the default sorting method.
+screen.RandomizedCards.title.tab=#{0}
 cmd.save=Save
 cmd.Randomize.Condition=Rand. Cond.
-cmd.Randomize.ExpansionLimit=Rand. Exp.
+cmd.Randomize.Pure=Pure Rand.
+alert.adding.cards=The cards could not be added.
 
 
 ################
@@ -34,7 +36,6 @@ table.heading.AttackCard=A
 table.heading.DurationCard=D
 table.heading.PotionCard=P
 screen.RandomizedCards.title=Randomized Cards
-screen.RandomizedCards.title2=#{0}
 screen.RandomizedCards.InputMessage=Saved preset name:
 screen.BlackMarket.title=Black Market
 screen.BlackMarket.DrawTextInfo=Draw cards. 

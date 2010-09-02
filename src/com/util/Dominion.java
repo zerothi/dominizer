@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import javax.microedition.lcdui.Image;
 
 import com.GaugeForm;
-import com.ShowCardsForm;
 
 import de.enough.polish.util.Locale;
 
@@ -19,7 +18,7 @@ public class Dominion {
 	public static final int ALCHEMY = 3; // has 12 cards (the 13th card Potion is not counted)
 	public static final int PROSPERITY = 4; // has 25 cards
 	public static final int PROMO = 5; // has 3 cards
-	public static final int USER = 6; // always have to be the number!
+	public static final int USER = 6; // always have to be the highest number!
 	public static final int RAND_EXPANSION_CARDS = 1;
 	public static final int RAND_PERCENTAGE_CARDS = 2;
 	public static final int RAND_HOLD = 16;
@@ -579,6 +578,8 @@ public class Dominion {
 	
 	public void randomizeCards(int playingSet, int randomizeMethod, int condition) throws DominionException {
 		int selectedElement = 0, tmpExp = 0, tmpPlayingSet = 0;
+		//#debug dominizer
+		System.out.println("trying to randomize with " + playingSet + ". With method " + randomizeMethod);
 		if ( (randomizeMethod & RAND_PREVENT) > 0 ) {
 			tmpPlayingSet = playingSet;
 			playingSet = 90;
@@ -587,13 +588,13 @@ public class Dominion {
 		}
 		checkAvailability();
 		resetSelectedCards();
-		if ( playingSet < 0 );
+		
+		if ( playingSet < 0 )
 			playingSet = CURRENT_SET + 1;
-		/*
+		/**
 		 * RandomizeMethod contains a bit number 0 + 1 + 2 + 4 + 8...
 		 * We compare them by using the bit wise AND operator
 		 */
-		
 		if ( (randomizeMethod & RAND_HOLD) > 0 )
 			useHoldCards(playingSet);
 		if ( (randomizeMethod & RAND_EXPANSION_CARDS) > 0 )
@@ -653,6 +654,7 @@ public class Dominion {
 					if ( expansions[i].isPlayingSet(loop, playingSet) )
 						expansions[i].setPlaying(loop, tmpPlayingSet);
 				}
+			playingSet = tmpPlayingSet;
 		}
 		if ( playingSet > CURRENT_SET )
 			CURRENT_SET = playingSet;
@@ -947,16 +949,16 @@ public class Dominion {
 	}
 
 	public void removePlayingSet(int playingSet) {
+		if ( playingSet <= 0 )
+			return;
 		for ( int i = 0 ; i < expansions.length ; i++ ) {
 			for ( loop = 0 ; loop < expansions[i].size() ; loop++ ) {
 				if ( expansions[i].isPlayingSet(loop, playingSet) )
 					expansions[i].setPlaying(loop, 0);
-				else if ( expansions[i].isPlaying(loop) != 0 ) {
-					if ( expansions[i].isPlaying(loop) > 100 & expansions[i].isPlaying(loop) - 100 > playingSet )
-						expansions[i].setPlaying(loop, expansions[i].isPlaying(loop) - 1);
-					else if ( expansions[i].isPlaying(loop) < 100 & expansions[i].isPlaying(loop) > playingSet )
-						expansions[i].setPlaying(loop, expansions[i].isPlaying(loop) - 1);
-				}
+				else if ( expansions[i].isPlaying(loop) > 100 & expansions[i].isPlaying(loop) - 100 > playingSet )
+					expansions[i].setPlaying(loop, expansions[i].isPlaying(loop) - 1);
+				else if ( expansions[i].isPlaying(loop) < 100 & expansions[i].isPlaying(loop) > playingSet )
+					expansions[i].setPlaying(loop, expansions[i].isPlaying(loop) - 1);
 			}
 		}
 		CURRENT_SET--;

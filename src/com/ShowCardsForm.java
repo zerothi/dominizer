@@ -12,6 +12,7 @@ import de.enough.polish.ui.Screen;
 import de.enough.polish.ui.TabListener;
 import de.enough.polish.ui.TabbedFormListener;
 import de.enough.polish.ui.TabbedPane;
+import de.enough.polish.util.Locale;
 //#= import de.enough.polish.util.Locale;
 
 public class ShowCardsForm extends TabbedPane implements TabListener, TabbedFormListener {
@@ -38,7 +39,7 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 					Dominion.CURRENT_SET = i + 1;
 					//#= String tmp = "" + Dominion.CURRENT_SET;
 					//#style tabIconSet
-					//#= addTab(cardSet[i], null, Locale.get("screen.RandomizedCards.title2", tmp));
+					//#= addTab(cardSet[i], null, Locale.get("screen.RandomizedCards.title.tab", tmp));
 				} catch ( DominionException e) {
 					// Do nothing as there has been an error in reading. Highly unlikely
 				}
@@ -60,7 +61,7 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 			cardSet[Dominion.CURRENT_SET - 1].setCards(cards);
 			//#= String tmp = "" + Dominion.CURRENT_SET;
 			//#style tabIconSet
-			//#= addTab(cardSet[Dominion.CURRENT_SET-1], null, Locale.get("screen.RandomizedCards.title2", tmp));
+			//#= addTab(cardSet[Dominion.CURRENT_SET-1], null, Locale.get("screen.RandomizedCards.title.tab", tmp));
 			cardSet[Dominion.CURRENT_SET - 1].setBlackMarket(Dominion.I().isBlackMarketPlaying());
 			setFocus(Dominion.CURRENT_SET - 1);
 			for ( int i = 0 ; i < cardSet.length ; i++ )
@@ -102,15 +103,16 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
     		if ( Dominion.I().isSetPlaying(i) ) {
     			try {
 	    			cardSet[i - 1].setCards(Dominion.I().getCurrentlySelected(i));
-	    			//#= String tmp = "" + i;
+	    			String tmp = "" + i;
 	    			//#style tabIconSet
-	    			//#= addTab(cardSet[i - 1], null, Locale.get("screen.RandomizedCards.title2", tmp));
+	    			addTab(cardSet[i - 1], null, Locale.get("screen.RandomizedCards.title.tab", tmp));
 	    			cardSet[i - 1].setBlackMarket(Dominion.I().isBlackMarketPlaying());
 	    			Dominion.CURRENT_SET = i;
     			} catch ( DominionException e ) {
-    				// TODO what to do here? Will it ever happen?
+    				GameApp.instance().showAlert(Locale.get("alert.adding.cards"));
     			}
-    		}
+    		} else
+    			cardSet[i - 1].setCards(null);
     	}
     	if ( this.size() == 0 )
     		GameApp.instance().returnToPreviousScreen();

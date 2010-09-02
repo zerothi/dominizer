@@ -42,8 +42,9 @@ public class CardsList extends List implements CommandListener {
 	
 	private static Command anotherSetCmd = new Command( Locale.get("cmd.AnotherSet"), Command.ITEM, 2);
 	private static Command randSetPreventCmd = new Command( Locale.get("cmd.Randomize.SetPrevent"), Command.ITEM, 4);
-	//private static Command randExpCmd = new Command( Locale.get("cmd.Randomize.ExpansionLimit"), Command.ITEM, 5);
+	
 	private static Command randConditionCmd = new Command( Locale.get("cmd.Randomize.Condition"), Command.ITEM, 8);
+	private static Command randPureCmd = new Command( Locale.get("cmd.Randomize.Pure"), Command.ITEM, 9);
 	
 	private static Command optionsCmd = new Command( Locale.get("cmd.Options.Main"), Command.ITEM, 10);
 	private static Command showInfoCmd = new Command( Locale.get("cmd.ShowChosenCardInfo"), Command.ITEM, 12);
@@ -63,7 +64,7 @@ public class CardsList extends List implements CommandListener {
 		//addCommand(blackMarketCmd);
 		addCommand(anotherSetCmd);
 		addCommand(randSetPreventCmd);
-		//addCommand(randExpCmd);
+		addCommand(randPureCmd);
 		addCommand(randConditionCmd);
 		//#if !polish.android
 			addCommand(optionsCmd);
@@ -153,6 +154,14 @@ public class CardsList extends List implements CommandListener {
 			updateCards(true);
 			try {
 				Dominion.I().randomizeCards(cardSet, Dominion.RAND_HOLD + Dominion.RAND_CONDITION);
+				setCards(Dominion.I().getCurrentlySelected(cardSet));		
+			} catch (DominionException e) {
+				GameApp.instance().showAlert(e.toString());
+			}
+		} else if ( cmd.equals(randPureCmd) ) {
+			updateCards(true);
+			try {
+				Dominion.I().randomizeCards(cardSet, Dominion.RAND_HOLD);
 				setCards(Dominion.I().getCurrentlySelected(cardSet));		
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
