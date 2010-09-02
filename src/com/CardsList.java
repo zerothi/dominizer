@@ -99,28 +99,24 @@ public class CardsList extends List implements CommandListener {
 	}
 	
 	public void setBlackMarket(boolean isPlaying) {
-		if ( isPlaying ) {
-			if ( !hasBlackMarketCmd ) {
-			//#if !polish.android
-				UiAccess.addSubCommand(blackMarketCmd, optionsCmd, this);
-			//#else
-				addCommand(blackMarketCmd);
-			//#endif
-				hasBlackMarketCmd = isPlaying;
+		if ( isPlaying & !hasBlackMarketCmd ) {
+		//#if !polish.android
+			UiAccess.addSubCommand(blackMarketCmd, optionsCmd, this);
+		//#else
+			addCommand(blackMarketCmd);
+		//#endif
+			hasBlackMarketCmd = isPlaying;
+		} else if ( hasBlackMarketCmd ) {
+		//#if !polish.android
+			try {
+				//#= UiAccess.removeSubCommand(blackMarketCmd, optionsCmd, this);
+			} catch ( Exception e) {
+				// Do nothing
 			}
-		} else {
-			if ( hasBlackMarketCmd ) {
-			//#if !polish.android
-				try {
-					//#= UiAccess.removeSubCommand(blackMarketCmd, optionsCmd, this);
-				} catch ( Exception e) {
-					// Do nothing
-				}
-			//#else
-				removeCommand(blackMarketCmd);
-			//#endif
-				hasBlackMarketCmd = isPlaying;
-			}
+		//#else
+			removeCommand(blackMarketCmd);
+		//#endif
+			hasBlackMarketCmd = isPlaying;
 		}
 	}
 	
@@ -149,7 +145,7 @@ public class CardsList extends List implements CommandListener {
 			updateCards(true);
 			try {
 				Dominion.I().randomizeCards(cardSet);
-				setCards(Dominion.I().getCurrentlySelected(cardSet));		
+				setCards(Dominion.I().getCurrentlySelected(cardSet));
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}

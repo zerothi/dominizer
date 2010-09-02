@@ -174,7 +174,7 @@ public class Cards {
 	 */
 	public boolean isPlayingSet(int index, int playingSet) {
 		if ( playing[index] > 100 )
-			return playing[index] - 100 == playingSet;
+			return (playing[index] - 100) == playingSet;
 		return playing[index] == playingSet;
 	}
 
@@ -200,7 +200,7 @@ public class Cards {
 	 * @return true if the card is holded on the playingset, false otherwise
 	 */
 	public boolean isHold(int index, int playingSet) {
-		return playing[index] == playingSet + 100;
+		return playing[index] == (playingSet + 100);
 	}
 	
 	/**
@@ -256,8 +256,6 @@ public class Cards {
 			isGamingRelated[index] = (short) (isGamingRelated[index] | 1);
 		else
 			isGamingRelated[index] -= (short) (isGamingRelated[index] & 1) ;
-		
-			
 	}
 
 	/**
@@ -265,7 +263,7 @@ public class Cards {
 	 * @return true if the card is available for the Black Market
 	 */
 	public boolean isBlackMarketAvailable(int index) {
-		return ((isGamingRelated[index] >> 1) & 1) > 0;
+		return ((isGamingRelated[index] >>> 1) & 1) > 0;
 	}
 
 	/**
