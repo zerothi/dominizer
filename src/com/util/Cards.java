@@ -38,7 +38,7 @@ public class Cards {
 	 * #4 = Reaction
 	 * #5 = Duration
 	 */
-	private boolean[][] isSpecific = null;
+	private short[] isSpecific = null;
 	/*
 	 * #0 = Adds # Cards
 	 * #1 = Adds # Actions
@@ -58,7 +58,7 @@ public class Cards {
 			playing = new short[size];
 			isGamingRelated = new short[size];
 			cost = new short[size];
-			isSpecific = new boolean[size][6];
+			isSpecific = new short[size];
 			addsInfo = new int[size][8];
 			if ( isSet == IS_SET )
 				expansion = new short[1];
@@ -300,7 +300,10 @@ public class Cards {
 	 * @param state sets if it is the type of card or not
 	 */
 	public void setType(int index, int whichType, boolean state) {
-		isSpecific[index][whichType] = state;
+		if ( state )
+			isSpecific[index] = (short) (isSpecific[index] | (1 << whichType));
+		else if ( (isSpecific[index] >>> whichType & 1) == 1 )
+			isSpecific[index] = (short) (isSpecific[index] ^ (1 << whichType));
 	}
 		
 	
@@ -310,7 +313,7 @@ public class Cards {
 	 * @return true if it is the type, false otherwise
 	 */
 	public boolean isType(int index, int whichType) {
-		return isSpecific[index][whichType];
+		return ((isSpecific[index] >>> whichType) & 1) == 1;
 	}
 	
 	/**
@@ -319,10 +322,7 @@ public class Cards {
 	 * @return true if the card is only that one type, false otherwise
 	 */
 	public boolean isOnlyType(int index, int whichType) {
-		boolean tmp = false;
-		for (int i = 0 ; i < isSpecific[index].length ; i++ )
-			tmp = (i == whichType ? tmp : tmp | isSpecific[index][i]);
-		return !(isSpecific[index][whichType] & tmp);
+		return (isSpecific[index] & ( 1 << whichType )) == ( 1 << whichType );  
 	}
 		
 	/**
@@ -385,27 +385,22 @@ public class Cards {
 	}
 	
 	public Object[] getCard(int index) {
-		Object[] tmp = new Object[20];
+		Object[] tmp = new Object[15];
 		tmp[0] = getName(index);
 		tmp[1] = new Integer(getExpansion(index));
 		tmp[2] = new Integer((getPotionCost(index) << 5) + getCost(index));
-		tmp[3] = new Boolean(isType(index, TYPE_ACTION));
-		tmp[4] = new Boolean(isType(index, TYPE_VICTORY));
-		tmp[5] = new Boolean(isType(index, TYPE_ATTACK));
-		tmp[6] = new Boolean(isType(index, TYPE_TREASURY));
-		tmp[7] = new Boolean(isType(index, TYPE_REACTION));
-		tmp[8] = new Boolean(isType(index, TYPE_DURATION));
-		tmp[9] = new Integer(isPlaying(index));
-		tmp[10] = new Boolean(isAvailable(index));
-		tmp[11] = new Boolean(isBlackMarketAvailable(index));
-		tmp[12] = new Integer(getAddInfo(index, ADDS_CARDS));
-		tmp[13] = new Integer(getAddInfo(index, ADDS_ACTIONS));
-		tmp[14] = new Integer(getAddInfo(index, ADDS_BUYS));
-		tmp[15] = new Integer(getAddInfo(index, ADDS_COINS));
-		tmp[16] = new Integer(getAddInfo(index, ADDS_TRASH));
-		tmp[17] = new Integer(getAddInfo(index, ADDS_CURSE));
-		tmp[18] = new Integer(getAddInfo(index, ADDS_POTIONS));
-		tmp[19] = new Integer(getAddInfo(index, ADDS_VICTORY_POINTS));
+		tmp[3] = new Short(isSpecific[index]);
+		tmp[4] = new Integer(isPlaying(index));
+		tmp[5] = new Boolean(isAvailable(index));
+		tmp[6] = new Boolean(isBlackMarketAvailable(index));
+		tmp[7] = new Integer(getAddInfo(index, ADDS_CARDS));
+		tmp[8] = new Integer(getAddInfo(index, ADDS_ACTIONS));
+		tmp[9] = new Integer(getAddInfo(index, ADDS_BUYS));
+		tmp[10] = new Integer(getAddInfo(index, ADDS_COINS));
+		tmp[11] = new Integer(getAddInfo(index, ADDS_TRASH));
+		tmp[12] = new Integer(getAddInfo(index, ADDS_CURSE));
+		tmp[13] = new Integer(getAddInfo(index, ADDS_POTIONS));
+		tmp[14] = new Integer(getAddInfo(index, ADDS_VICTORY_POINTS));
 		return tmp;
 	}
 	
@@ -433,24 +428,19 @@ public class Cards {
 		}
 		setName(index, cardInfo[0].toString());
 		setExpansion(index, ((Integer)cardInfo[1]).intValue());
-		this.cost[index] = (short)((Integer)cardInfo[2]).intValue(); // simply to bypass the potion cost.	
-		setType(index, TYPE_ACTION, ((Boolean)cardInfo[3]).booleanValue());
-		setType(index, TYPE_VICTORY, ((Boolean)cardInfo[4]).booleanValue());
-		setType(index, TYPE_ATTACK, ((Boolean)cardInfo[5]).booleanValue());
-		setType(index, TYPE_TREASURY, ((Boolean)cardInfo[6]).booleanValue());
-		setType(index, TYPE_REACTION, ((Boolean)cardInfo[7]).booleanValue());
-		setType(index, TYPE_DURATION, ((Boolean)cardInfo[8]).booleanValue());
-		setPlaying(index, ((Integer)cardInfo[9]).intValue());
-		setAvailable(index, ((Boolean)cardInfo[10]).booleanValue());
-		setBlackMarketAvailable(index, ((Boolean)cardInfo[11]).booleanValue());
-		setAddInfo(index, ADDS_CARDS, ((Integer)cardInfo[12]).intValue());
-		setAddInfo(index, ADDS_ACTIONS, ((Integer)cardInfo[13]).intValue());
-		setAddInfo(index, ADDS_BUYS, ((Integer)cardInfo[14]).intValue());
-		setAddInfo(index, ADDS_COINS, ((Integer)cardInfo[15]).intValue());
-		setAddInfo(index, ADDS_TRASH, ((Integer)cardInfo[16]).intValue());
-		setAddInfo(index, ADDS_CURSE, ((Integer)cardInfo[17]).intValue());
-		setAddInfo(index, ADDS_POTIONS, ((Integer)cardInfo[18]).intValue());
-		setAddInfo(index, ADDS_VICTORY_POINTS, ((Integer)cardInfo[19]).intValue());
+		this.cost[index] = (short)((Integer)cardInfo[2]).intValue(); // simply to bypass the potion cost.
+		isSpecific[index] = ((Short) cardInfo[3]).shortValue();
+		setPlaying(index, ((Integer)cardInfo[4]).intValue());
+		setAvailable(index, ((Boolean)cardInfo[5]).booleanValue());
+		setBlackMarketAvailable(index, ((Boolean)cardInfo[6]).booleanValue());
+		setAddInfo(index, ADDS_CARDS, ((Integer)cardInfo[7]).intValue());
+		setAddInfo(index, ADDS_ACTIONS, ((Integer)cardInfo[8]).intValue());
+		setAddInfo(index, ADDS_BUYS, ((Integer)cardInfo[9]).intValue());
+		setAddInfo(index, ADDS_COINS, ((Integer)cardInfo[10]).intValue());
+		setAddInfo(index, ADDS_TRASH, ((Integer)cardInfo[11]).intValue());
+		setAddInfo(index, ADDS_CURSE, ((Integer)cardInfo[12]).intValue());
+		setAddInfo(index, ADDS_POTIONS, ((Integer)cardInfo[13]).intValue());
+		setAddInfo(index, ADDS_VICTORY_POINTS, ((Integer)cardInfo[14]).intValue());
 	}
 	
 	public static int compare(Object[] first, Object[] compareTo, int method) {
