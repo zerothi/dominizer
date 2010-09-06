@@ -48,7 +48,7 @@
 		         You can also define localized attributes in the resources/messages.txt files -->
 			<info 
 				name="${app.name}" 
-				version="0.17" 
+				version="0.18" 
 				description="A Dominion Card randomizer" 
 				vendorName="Nick Papior Andersen A/S" 
 				infoUrl="http://www.boardgamegeek.com/wiki/page/Dominizer" 
@@ -124,7 +124,7 @@
 					<localization unless="debug or debugDominizer or single">
 						<!--locale name="da" encoding="UTF-8"/-->
 						<locale name="en" encoding="UTF-8"/>
-						<locale name="de" encoding="UTF-8"/>
+						<!--locale name="de" encoding="UTF-8"/-->
 						<!--locale name="es" encoding="UTF-8"/-->
 						<!--locale name="pl" encoding="UTF-8"/-->
 						<!--locale name="fr" encoding="UTF-8"/>
@@ -211,6 +211,7 @@
 	
 	<target name="debugAndroid" description="debug Android" depends="enableDebugDominizer, enableAndroid, j2mepolish" />
 	<target name="debugNokia" description="debug Nokia" depends="enableDebugDominizer, enableNokia, j2mepolish" />
+	<target name="debugGeneric" description="debug Generic" depends="enableDebugDominizer, enableGeneric, j2mepolish" />
 	<target name="debugTouch" description="debug Touch" depends="enableDebugDominizer, enableTouch, j2mepolish" />
 	
 	<target name="enableAll" depends="donotsign">
@@ -242,6 +243,11 @@
 	<target name="enableAndroid" depends="dosign">
 		<property name="devices" value="Generic/Android"/>
 		<property name="device" value="Generic/Android"/>
+	</target>
+	
+	<target name="enableSpecialTargets" depends="donotsign">
+		<property name="devices" value="Nokia/N95"/>
+		<property name="device" value="Nokia/N95"/>
 	</target>
 	
 	<target name="enableTouch" depends="donotsign">

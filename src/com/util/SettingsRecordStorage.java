@@ -50,7 +50,7 @@ public class SettingsRecordStorage {
 		} finally {
 			try {
 				//#debug dominizer
-				System.out.println("opening record store");
+				System.out.println("opening record store '" + recordStore + "'");
 				store = RecordStore.openRecordStore(recordStore, true);
 				currentStore = recordStore;
 				data = readData();
@@ -100,7 +100,7 @@ public class SettingsRecordStorage {
 			return data;
 		try {
 			//#debug dominizer
-			System.out.println("found " + store.getNumRecords() + " records");
+			System.out.println("found " + store.getNumRecords() + " records in recordstore '" + store.getName() + "'");
 			if ( store.getNumRecords() == 0 ) {
 				throw new RecordStoreException("there is no records to be found");
 			}
@@ -174,7 +174,7 @@ public class SettingsRecordStorage {
 					store.addRecord(data.elementAt(i).toString().getBytes(), 0, data.elementAt(i).toString().getBytes().length);
 				}
 			//#debug dominizer
-			System.out.println("Succes");
+			System.out.println("Succes writing recordstore '" + store.getName() + "'");
 		} catch (Exception e) {
 			succes = false;
 		}

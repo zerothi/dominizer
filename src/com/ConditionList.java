@@ -22,7 +22,7 @@ import de.enough.polish.util.Locale;
  * @author nick
  *
  */
-public class ConditionForm extends List implements CommandListener {
+public class ConditionList extends List implements CommandListener {
 	
 	private ConditionTableForm ptF = null;
 	private Command selectCmd = new Command( Locale.get("polish.command.select"), Command.BACK, 0);
@@ -40,11 +40,13 @@ public class ConditionForm extends List implements CommandListener {
 	/**
 	 * 
 	 */
-	public ConditionForm(String title, int listType) {
+	public ConditionList(String title, int listType) {
 		//#style mainScreen
 		super(title, listType);
 		this.listType = listType;
 		addCommand(selectCmd);
+		//#debug dominizer
+		System.out.println("initializing with " + Dominion.I().condition.getPreferredCondition());
 		populateConditions();
 		//#= setSelectCommand(selectCmd);
 		addCommand(newCmd);
@@ -61,8 +63,12 @@ public class ConditionForm extends List implements CommandListener {
 		if ( getCurrentIndex() > -1 )
 			ticker.setString("< " + Dominion.I().condition.getCondition(getCurrentIndex()) + " >");		
 		setTicker(ticker);
+		if ( Dominion.I().condition.getPreferredCondition() < this.size() ) {
+			setSelectedIndex(Dominion.I().condition.getPreferredCondition(), true);
+			focus(Dominion.I().condition.getPreferredCondition());
+		}
 		//#debug dominizer
-		System.out.println("done initializing");
+		System.out.println("done initializing with " + Dominion.I().condition.getPreferredCondition() + " size= " + this.size());
 	}
 	
 	public void populateConditions() {
@@ -75,10 +81,10 @@ public class ConditionForm extends List implements CommandListener {
 				//#style label
 				ci = new CardItem(Dominion.I().condition.getName(i), listType);
 				append(ci);
-				setPercentage(i, Dominion.I().condition.getPercentage(i));
+				//setPercentage(i, Dominion.I().condition.getPercentage(i));
 			}
 		}
-		updateCards(false, -1);
+		//updateCards(false, -1);
 	}
 	
 	public void setPercentage(int index, int deciPercentage) {
@@ -101,8 +107,8 @@ public class ConditionForm extends List implements CommandListener {
 	}
 	
 	public void removeCondition(int index) {
-		updateCards(true, -1);
-		if ( 0 <= index & index < size() ) {
+		//updateCards(true, -1);
+		if ( 0 <= index && index < size() ) {
 			Dominion.I().condition.deleteCondition(index);
 			delete(index);
 			if ( index > 0 )
@@ -115,7 +121,7 @@ public class ConditionForm extends List implements CommandListener {
 	public void saveCondition() {
 		newCondition = ptF.getOption();
 		if ( Dominion.I().condition.addCondition(newName, newCondition) ) {
-			updateCards(true, -1);
+			//updateCards(true, -1);
 			populateConditions();
 		}
 	}
@@ -145,6 +151,8 @@ public class ConditionForm extends List implements CommandListener {
 	}
 	
 	public void keyPressed(int keyCode) {
+		ticker.setString("< " + Dominion.I().condition.getCondition(getCurrentIndex()) + " >");
+		Dominion.I().condition.setPreferredCondition(getSelectedIndex());
 		switch (keyCode) {
 		case Canvas.KEY_NUM0:
 		case Canvas.KEY_NUM1:
@@ -156,22 +164,21 @@ public class ConditionForm extends List implements CommandListener {
 		case Canvas.KEY_NUM7:
 		case Canvas.KEY_NUM8:
 		case Canvas.KEY_NUM9:
-		
 			//setPercentage(getCurrentIndex(), keyCode - Canvas.KEY_NUM0);
 			break;
 		case Canvas.KEY_POUND:
 		case Canvas.KEY_STAR:
+			break;
 		default:
 			//#= super.keyPressed(keyCode);
 		}
-		ticker.setString("< " + Dominion.I().condition.getCondition(getCurrentIndex()) + " >");
-		Dominion.I().condition.setInitial(getSelectedIndex());
-		//Dominion.I().condition.setInitial(getCurrentIndex());
 	}
 
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(selectCmd) ) {
 			try {
+				Dominion.I().condition.setPreferredCondition(getCurrentIndex());
+				setSelectedIndex(getCurrentIndex(), true);
 				Dominion.I().randomizeCards(-1, Dominion.RAND_HOLD + Dominion.RAND_CONDITION, getCurrentIndex());
 				ShowCardsForm.instance().addNewCards(Dominion.I().getCurrentlySelected(Dominion.CURRENT_SET));
 				GameApp.instance().changeToScreen(ShowCardsForm.instance());

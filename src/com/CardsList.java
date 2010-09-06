@@ -49,7 +49,8 @@ public class CardsList extends List implements CommandListener {
 	private static Command optionsCmd = new Command( Locale.get("cmd.Options.Main"), Command.ITEM, 10);
 	private static Command showInfoCmd = new Command( Locale.get("cmd.ShowChosenCardInfo"), Command.ITEM, 12);
 	private static Command deleteSetCmd = new Command( Locale.get("cmd.Set.Delete"), Command.ITEM, 13);
-	private static Command saveCmd = new Command( Locale.get("cmd.SaveAsPreset"), Command.ITEM, 14);
+	private static Command deleteAllSetsCmd = new Command( Locale.get("cmd.Set.DeleteAll"), Command.ITEM, 14);
+	private static Command saveCmd = new Command( Locale.get("cmd.SaveAsPreset"), Command.ITEM, 15);
 	
 	private static Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 50);
 	//private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
@@ -70,10 +71,12 @@ public class CardsList extends List implements CommandListener {
 			addCommand(optionsCmd);
 			UiAccess.addSubCommand(showInfoCmd, optionsCmd, this);
 			UiAccess.addSubCommand(deleteSetCmd, optionsCmd, this);
+			UiAccess.addSubCommand(deleteAllSetsCmd, optionsCmd, this);
 			UiAccess.addSubCommand(saveCmd, optionsCmd, this);
 		//#else
 			addCommand(showInfoCmd);
 			addCommand(deleteSetCmd);
+			addCommand(deleteAllSetsCmd);
 			addCommand(saveCmd);
 		//#endif
 		addCommand(backCmd);
@@ -93,7 +96,7 @@ public class CardsList extends List implements CommandListener {
 			cI.setBothSides(false);
 			append(cI);
 			//#debug dominizer
-			System.out.println("appending to list with card "+cards.getName(i) + " index "+i + " is hold: " +cards.isHold(i));
+			System.out.println("appending to list with card "+cards.getName(i) + " index "+i + " is hold: " +cards.isHold(i) + " on set " + cardSet);
 		}
 		updateCards(false);
 		setBlackMarket(Dominion.I().isBlackMarketPlaying());
@@ -182,6 +185,11 @@ public class CardsList extends List implements CommandListener {
 			}
 		} else if ( cmd.equals(deleteSetCmd) ) {
 			Dominion.I().removePlayingSet(cardSet);
+			setCards(null);
+			ShowCardsForm.instance().updateTabs();
+		} else if ( cmd.equals(deleteAllSetsCmd) ) {
+			Dominion.I().resetIsPlaying(-1);
+			Dominion.CURRENT_SET = 0;
 			setCards(null);
 			ShowCardsForm.instance().updateTabs();
 		} else if ( cmd.equals(showInfoCmd) )

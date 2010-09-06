@@ -12,6 +12,7 @@ import de.enough.polish.util.Locale;
 public class Dominion {
 	private static Dominion dom = null;
 	public static int TOTAL_CARDS = 25 + 25 + 26 + 12 + 3 + 25;
+	public static final int MAX_SETS = 25;
 	public static final int BASE = 0; // has 25 cards
 	public static final int INTRIGUE = 1; // has 25 cards
 	public static final int SEASIDE = 2; // has 26 cards
@@ -25,7 +26,7 @@ public class Dominion {
 	public static final int RAND_CONDITION = 4;
 	public static final int RAND_PREVENT = 8;
 	public static boolean RANDOMIZE_COMPLETELY_NEW = true;
-	public static int SETS_SAVE = 5;
+	public static int SETS_SAVE = 10;
 	public static int CURRENT_SET = 0;
 	
 	//private static ImageCreator imgC = null;
@@ -42,15 +43,13 @@ public class Dominion {
 
 	private StringBuffer sb;
 	
-	private int loop = 0;
-
 	private Dominion() {
 		//imgC = new ImageCreator();
 		playingExpansions = new boolean[USER+1];
 		numberOfCardsFromExp = new int[USER+1];
-		for ( loop = 0 ; loop < playingExpansions.length ; loop++ ) {
-			playingExpansions[loop] = true;
-			numberOfCardsFromExp[loop] = 0;			
+		for ( int i = 0 ; i < playingExpansions.length ; i++ ) {
+			playingExpansions[i] = true;
+			numberOfCardsFromExp[i] = 0;			
 		}
 		expansions = new Cards[USER+1];
 		presets = new CardPresets[PROMO]; // as promo always is the last expansion!
@@ -161,15 +160,15 @@ public class Dominion {
 	
 	public void checkAvailability() throws DominionException {
 		int tmp = 0, sum = 0;
-		for ( loop = 0; loop < expansions.length; loop++) {
+		for ( int i = 0; i < expansions.length; i++) {
 			tmp = 0;
-			for (int j = 0; j < expansions[loop].size(); j++) {
-				if (expansions[loop].isAvailable(j) & expansions[loop].isPlaying(j) == 0 )
+			for (int j = 0; j < expansions[i].size(); j++) {
+				if (expansions[i].isAvailable(j) && expansions[i].isPlaying(j) == 0 )
 					tmp++;
 			}
 			sum += tmp;
-			if (tmp < numberOfCardsFromExp[loop] & playingExpansions[loop]) {
-				String t = getExpansionName(loop);
+			if (tmp < numberOfCardsFromExp[i] && playingExpansions[i]) {
+				String t = getExpansionName(i);
 				throw new DominionException(Locale.get("alert.Randomization.Availability", t));
 			}
 		}
@@ -203,31 +202,31 @@ public class Dominion {
 	
 	public String getAvailableAsSave() {
 		StringBuffer sb = new StringBuffer(TOTAL_CARDS);
-		for ( loop = 0; loop < expansions.length; loop++)
-			for (int j = 0; j < expansions[loop].size(); j++)
-				sb.append("" + (expansions[loop].isAvailable(j) ? "1" : "0"));
+		for ( int i = 0; i < expansions.length; i++)
+			for (int j = 0; j < expansions[i].size(); j++)
+				sb.append("" + (expansions[i].isAvailable(j) ? "1" : "0"));
 		return sb.toString();
 	}
 	
 	public Cards getBlackMarketDeck() {
 		int total = 0;
-		int j = 0;
-		for ( loop = 0; loop < expansions.length; loop++)
-			for ( j = 0; j < expansions[loop].size(); j++)
-				if (expansions[loop].isBlackMarketAvailable(j)	&& 
-						expansions[loop].isPlaying(j) == 0 )
+		int j = 0, i = 0;
+		for ( i = 0; i < expansions.length; i++)
+			for ( j = 0; j < expansions[i].size(); j++)
+				if (expansions[i].isBlackMarketAvailable(j)	&& 
+						expansions[i].isPlaying(j) == 0 )
 					total++;
 		Cards blackMarket = new Cards(total, Cards.IS_NOT_SET);
 		Rand.resetSeed();
 		int randomize;
-		for ( loop = 0; loop < expansions.length; loop++)
-			for ( j = 0; j < expansions[loop].size(); j++)
-				if (expansions[loop].isBlackMarketAvailable(j) &&
-						expansions[loop].isPlaying(j) == 0 ) {
+		for ( i = 0; i < expansions.length; i++)
+			for ( j = 0; j < expansions[i].size(); j++)
+				if (expansions[i].isBlackMarketAvailable(j) &&
+						expansions[i].isPlaying(j) == 0 ) {
 					do {
 						randomize = Rand.randomInt(total);
 					} while (blackMarket.getName(randomize) != null);
-					blackMarket.setCard(randomize, expansions[loop].getCard(j));
+					blackMarket.setCard(randomize, expansions[i].getCard(j));
 				}
 		return blackMarket;
 	}
@@ -257,25 +256,25 @@ public class Dominion {
 		int j;
 		for ( int i = 0 ; i < expansions.length ; i++ )
 			for ( j = 0 ; j < expansions[i].size() ; j++ )
-				if ( expansions[i].getName(j).equals(cardName) )
+				if ( cardName.equals(expansions[i].getName(j)) )
 					return new int[] { i, j};
 		return new int[] { -1, -1};
 	}
 
 	public String getCardsUsedForExpansionAsSave() {
 		sb = new StringBuffer(numberOfCardsFromExp.length);
-		for ( loop = 0 ; loop < numberOfCardsFromExp.length ; loop++ )
-			sb.append(numberOfCardsFromExp[loop]);
+		for ( int i = 0 ; i < numberOfCardsFromExp.length ; i++ )
+			sb.append(numberOfCardsFromExp[i]);
 		return sb.toString();
 	}
 
 	public String getCurrentAsSave(int playingSet) {
 		StringBuffer sb = new StringBuffer(50);
-		for ( loop = 0; loop < expansions.length; loop++ )
-			for (int j = 0; j < expansions[loop].size(); j++ )
-				if ( expansions[loop].isPlayingSet(j, playingSet) )
+		for ( int i = 0; i < expansions.length; i++ )
+			for ( int j = 0; j < expansions[i].size(); j++ )
+				if ( expansions[i].isPlayingSet(j, playingSet) )
 					sb.append("" + SettingsRecordStorage.MEDIUM_SPLITTER
-						+ loop + SettingsRecordStorage.SMALL_SPLITTER + j);
+						+ i + SettingsRecordStorage.SMALL_SPLITTER + j);
 		if ( sb.toString().trim().length() < 5 )
 			return null;
 		return sb.toString();
@@ -289,9 +288,9 @@ public class Dominion {
 		selectedCards = new Cards(getNumberOfRandomCards(), Cards.IS_NOT_SET);
 		int card = 0;
 		for ( int i = 0 ; i < expansions.length ; i++ ) {
-			for ( loop = 0 ; loop < expansions[i].size() ; loop++ ) {
-				if ( expansions[i].isPlayingSet(loop, playingSet) )
-					selectedCards.setCard(card++, expansions[i].getCard(loop) );
+			for ( int j = 0 ; j < expansions[i].size() ; j++ ) {
+				if ( expansions[i].isPlayingSet(j, playingSet) )
+					selectedCards.setCard(card++, expansions[i].getCard(j) );
 			}
 		}
 		if ( card != getNumberOfRandomCards() ) {
@@ -303,8 +302,8 @@ public class Dominion {
 
 	public String getExpansionPlayingStatesAsSave() {
 		sb = new StringBuffer(playingExpansions.length);
-		for ( loop = 0 ; loop < numberOfCardsFromExp.length ; loop++ )
-			sb.append(playingExpansions[loop] ? "1" : "0");
+		for ( int i = 0 ; i < numberOfCardsFromExp.length ; i++ )
+			sb.append(playingExpansions[i] ? "1" : "0");
 		return sb.toString();
 	}
 
@@ -338,9 +337,9 @@ public class Dominion {
 
 	public String getPercentagesAsSave() {
 		StringBuffer sb = new StringBuffer(TOTAL_CARDS);
-		for ( loop = 0; loop < expansions.length; loop++)
-			for (int j = 0; j < expansions[loop].size(); j++)
-				sb.append( expansions[loop].getPercentage(j) == 10 ? "*" : "" + expansions[loop].getPercentage(j) );
+		for ( int i = 0; i < expansions.length; i++)
+			for (int j = 0; j < expansions[i].size(); j++)
+				sb.append( expansions[i].getPercentage(j) == 10 ? "*" : "" + expansions[i].getPercentage(j) );
 		return sb.toString();
 	}
 
@@ -353,9 +352,9 @@ public class Dominion {
 		if ( presets[presetDeck].getExpansion() > -1 ) {
 			sb.append(presets[presetDeck].getPresetName(preset) + ":\n");
 		}
-		for ( loop = 0 ; loop < presets[presetDeck].size(preset) ; loop++) {
-			sb.append("" + expansions[presets[presetDeck].getPreset(preset)[loop][0]].getName(
-					presets[presetDeck].getPreset(preset)[loop][1]) + "\n");
+		for ( int i = 0 ; i < presets[presetDeck].size(preset) ; i++) {
+			sb.append("" + expansions[presets[presetDeck].getPreset(preset)[i][0]].getName(
+					presets[presetDeck].getPreset(preset)[i][1]) + "\n");
 		}
 		return sb.toString();
 	}
@@ -400,7 +399,15 @@ public class Dominion {
 		sb.append("Duration  : ");
 		if (selectedCards.getTypes(Cards.TYPE_DURATION) < 10)
 			sb.append(" ");
-		sb.append("" + selectedCards.getTypes(Cards.TYPE_DURATION) + " / " + selectedCards.size());
+		sb.append("" + selectedCards.getTypes(Cards.TYPE_DURATION) + " / " + selectedCards.size() + "\n");
+		sb.append("+ Draws   :  " + selectedCards.getAdds(Cards.ADDS_CARDS) + "\n");
+		sb.append("+ Action  :  " + selectedCards.getAdds(Cards.ADDS_ACTIONS) + "\n");
+		sb.append("+ Buys    :  " + selectedCards.getAdds(Cards.ADDS_BUYS) + "\n");
+		sb.append("+ Coins   :  " + selectedCards.getAdds(Cards.ADDS_COINS) + "\n");
+		sb.append("+ Trash   :  " + selectedCards.getAdds(Cards.ADDS_TRASH) + "\n");
+		sb.append("+ Curse   :  " + selectedCards.getAdds(Cards.ADDS_CURSE) + "\n");
+		sb.append("+ Victory :  " + selectedCards.getAdds(Cards.ADDS_VICTORY_POINTS) + "\n");
+		sb.append("+ Potions :  " + selectedCards.getAdds(Cards.ADDS_POTIONS));
 		return sb.toString();
 	}
 	
@@ -410,52 +417,51 @@ public class Dominion {
 	
 	public boolean isSetPlaying(int playingSet) {
 		for ( int i = 0 ; i < expansions.length ; i++ ) 
-			for ( loop = 0 ; loop < expansions[i].size() ; loop++ ) {
-				if ( expansions[i].isPlayingSet(loop, playingSet) )
+			for ( int j = 0 ; j < expansions[i].size() ; j++ ) {
+				if ( expansions[i].isPlayingSet(j, playingSet) ) {
+					//#debug dominizer
+					System.out.println("checking playingset: " + playingSet + " and returning true");
 					return true;
+				}
 			}
+		//#debug dominizer
+		System.out.println("checking playingset: " + playingSet + " and returning false");
 		return false;
 	}
 	
 	private int parseInformation(String information, int whichInfo) {
-		if ( whichInfo == Cards.ADDS_CARDS && -1 < information.indexOf("d") )
-			return parseInt(information.substring(information.indexOf("d")));
-		else if ( whichInfo == Cards.ADDS_ACTIONS && -1 < information.indexOf("a") )
-			return parseInt(information.substring(information.indexOf("a")));
-		else if ( whichInfo == Cards.ADDS_COINS && -1 < information.indexOf("c") )
-			return parseInt(information.substring(information.indexOf("c")));
-		else if ( whichInfo == Cards.ADDS_BUYS && -1 < information.indexOf("b") )
-			return parseInt(information.substring(information.indexOf("b")));
-		else if ( whichInfo == Cards.ADDS_TRASH && -1 < information.indexOf("t") )
-			return parseInt(information.substring(information.indexOf("t")));
-		else if ( whichInfo == Cards.ADDS_CURSE && -1 < information.indexOf("u") )
-			return parseInt(information.substring(information.indexOf("u")));
-		else if ( whichInfo == Cards.ADDS_POTIONS && -1 < information.indexOf("p") )
-			return parseInt(information.substring(information.indexOf("p")));
-		else if ( whichInfo == Cards.ADDS_VICTORY_POINTS && -1 < information.indexOf("v") )
-			return parseInt(information.substring(information.indexOf("v")));
-		else if ( whichInfo == Cards.COST_POTIONS && -1 < information.indexOf("P") )
-			return parseInt(information.substring(information.indexOf("P")));
+		try {
+			if ( whichInfo == Cards.ADDS_CARDS && -1 < information.indexOf("d") )
+				return parseInt(information.substring(information.indexOf("d")));
+			else if ( whichInfo == Cards.ADDS_ACTIONS && -1 < information.indexOf("a") )
+				return parseInt(information.substring(information.indexOf("a")));
+			else if ( whichInfo == Cards.ADDS_COINS && -1 < information.indexOf("c") )
+				return parseInt(information.substring(information.indexOf("c")));
+			else if ( whichInfo == Cards.ADDS_BUYS && -1 < information.indexOf("b") )
+				return parseInt(information.substring(information.indexOf("b")));
+			else if ( whichInfo == Cards.ADDS_TRASH && -1 < information.indexOf("t") )
+				return parseInt(information.substring(information.indexOf("t")));
+			else if ( whichInfo == Cards.ADDS_CURSE && -1 < information.indexOf("u") )
+				return parseInt(information.substring(information.indexOf("u")));
+			else if ( whichInfo == Cards.ADDS_POTIONS && -1 < information.indexOf("p") )
+				return parseInt(information.substring(information.indexOf("p")));
+			else if ( whichInfo == Cards.ADDS_VICTORY_POINTS && -1 < information.indexOf("v") )
+				return parseInt(information.substring(information.indexOf("v")));
+			else if ( whichInfo == Cards.COST_POTIONS && -1 < information.indexOf("P") )
+				return parseInt(information.substring(information.indexOf("P")));
+		} catch (Exception e) {return 1;}
 		return 0;
 	}
 	
-	private int parseInt(String info) {
+	private int parseInt(String info) throws Exception {
 		if ( info.length() > 2 ) {
 			try {
 				return Integer.parseInt(info.substring(1,3));
 			} catch (Exception e) {
-				try {
-					return Integer.parseInt(info.substring(1,2));
-				} catch (Exception ee) {
-					return 1;
-				}
+				return Integer.parseInt(info.substring(1,2));
 			}
 		} else if ( info.length() > 1 ) {
-			try {
-				return Integer.parseInt(info.substring(1,2));
-			} catch (Exception e) {
-				return 1;
-			}
+			return Integer.parseInt(info.substring(1,2));
 		}
 		return 1;
 	}
@@ -480,16 +486,18 @@ public class Dominion {
 			} else if ( option.substring(i, i + 1).equals(")") ) {
 				// do nothing. Has been parsed. Shouldn't happen either
 			} else if ( option.substring(i, i + 1).equals("&") ) {
-				fulfilled = fulfilled & parseCondition(option.substring(i+1));
+				fulfilled = fulfilled && parseCondition(option.substring(i+1));
 				i = option.length();
 			} else if ( option.substring(i, i + 1).equals("|") ) {
-				fulfilled = fulfilled | parseCondition(option.substring(i+1));
+				fulfilled = fulfilled || parseCondition(option.substring(i+1));
 				i = option.length();
 			} else {
 				// checking if it is an type condition
 				for ( int j = 0 ; j < 7 ; j++ ) { // TODO update when cards are changed!
 					if ( parseType(option.substring(i,i+1), j) ) {
 						fulfilled = parseCardsOption(0, option.substring(i), j);
+						//#debug dominizer
+						System.out.println("parsing expansion condition0: " + option.substring(i) + " returned " + fulfilled);
 						break;
 					}
 				}
@@ -497,15 +505,19 @@ public class Dominion {
 				for ( int j = 0 ; j < 9 ; j++ ) { 
 					if ( parseInformation(option.substring(i,i+1), j) > 0 ) {
 						fulfilled = parseCardsOption(1, option.substring(i), j);
+						//#debug dominizer
+						System.out.println("parsing expansion condition1: " + option.substring(i) + " returned " + fulfilled);
 						break;
 					}
 				}
 				// checking if it is an expansion condition
 				try {
 					int tmp = parseInt(" "+option.substring(0,3));
-					//#debug dominizer
-					System.out.println("parsing expansion condition: " + ( tmp > 9 ? option.substring(1) : option ));
+					// #debug dominizer
+					//System.out.println("parsing expansion condition: " + ( tmp > 9 ? option.substring(1) : option ));
 					fulfilled = parseCardsOption(2, ( tmp > 9 ? option.substring(1) : option ), tmp);
+					//#debug dominizer
+					System.out.println("parsing expansion condition2: " + ( tmp > 9 ? option.substring(1) : option ) + " returned " + fulfilled);
 				} catch (Exception e) {}//do nothing as it is a check
 				// to not jump over things that are already processed!
 				i += 2;
@@ -518,6 +530,7 @@ public class Dominion {
 	 * Remember that this also has meaning for ADDS!
 	 */
 	private boolean parseCardsOption(int typeOption, String option, int typeInfo) {
+		try {
 		if ( option.substring(1,2).equals("=") ) {
 			if ( typeOption == 0 )
 				return selectedCards.getTypes(typeInfo) == parseInt(option.substring(1));
@@ -540,6 +553,7 @@ public class Dominion {
 			else if ( typeOption == 2 )
 				return selectedCards.fromExpansion(typeInfo) < parseInt(option.substring(1));
 		}
+		} catch (Exception e) {}
 		return false;
 	}
 
@@ -565,15 +579,15 @@ public class Dominion {
 	
 	public void randomizeCards() throws DominionException {
 		// Hold doesn't make a difference here, but still included! At the max some extra computation time
-		randomizeCards(-1, RAND_EXPANSION_CARDS + RAND_PERCENTAGE_CARDS + RAND_HOLD, condition.getInitial());
+		randomizeCards(-1, RAND_EXPANSION_CARDS + RAND_PERCENTAGE_CARDS + RAND_HOLD, condition.getPreferredCondition());
 	}
 	
 	public void randomizeCards(int playingSet) throws DominionException {
-		randomizeCards(playingSet, RAND_EXPANSION_CARDS + RAND_PERCENTAGE_CARDS + RAND_HOLD, condition.getInitial());
+		randomizeCards(playingSet, RAND_EXPANSION_CARDS + RAND_PERCENTAGE_CARDS + RAND_HOLD, condition.getPreferredCondition());
 	}
 	
 	public void randomizeCards(int playingSet, int randomizeMethod) throws DominionException {
-		randomizeCards(playingSet, randomizeMethod, condition.getInitial());
+		randomizeCards(playingSet, randomizeMethod, condition.getPreferredCondition());
 	}
 	
 	public void randomizeCards(int playingSet, int randomizeMethod, int condition) throws DominionException {
@@ -583,7 +597,7 @@ public class Dominion {
 		if ( (randomizeMethod & RAND_PREVENT) > 0 ) {
 			tmpPlayingSet = playingSet;
 			playingSet = 90;
-		} else {
+		} else if ( playingSet > 0 ){
 			resetIsPlaying(playingSet);
 		}
 		checkAvailability();
@@ -648,11 +662,11 @@ public class Dominion {
 		}
 		if ( (randomizeMethod & RAND_PREVENT) > 0 ) {
 			for ( int i = 0 ; i < expansions.length ; i++ )
-				for ( loop = 0 ; loop < expansions[i].size() ; loop++ ) {
-					if ( expansions[i].isPlayingSet(loop, tmpPlayingSet) )
-						expansions[i].setPlaying(loop, 0);
-					if ( expansions[i].isPlayingSet(loop, playingSet) )
-						expansions[i].setPlaying(loop, tmpPlayingSet);
+				for ( int j = 0 ; j < expansions[i].size() ; j++ ) {
+					if ( expansions[i].isPlayingSet(j, tmpPlayingSet) )
+						expansions[i].setPlaying(j, 0);
+					if ( expansions[i].isPlayingSet(j, playingSet) )
+						expansions[i].setPlaying(j, tmpPlayingSet);
 				}
 			playingSet = tmpPlayingSet;
 		}
@@ -697,9 +711,15 @@ public class Dominion {
 					expansions[exp].setExpansion(exp);
 					start = sb.toString().indexOf(":", start) + 1;
 					tmp = sb.toString().substring(start-1, sb.toString().indexOf(":", start));
-					expansions[exp].setCost(cardRead, 
-							parseInt(tmp) == 1 ? 0 : parseInt(tmp),
-							parseInformation(tmp, Cards.COST_POTIONS));
+					try {
+						expansions[exp].setCost(cardRead, 
+								parseInt(tmp),
+								parseInformation(tmp, Cards.COST_POTIONS));
+					} catch (Exception e) {
+						expansions[exp].setCost(cardRead, 
+								0,
+								parseInformation(tmp, Cards.COST_POTIONS));
+					}
 					start = sb.toString().indexOf(":", start) + 1;
 					tmp = sb.toString().substring(start, sb.toString().indexOf(":", start));
 					expansions[exp].setType(cardRead, Cards.TYPE_ACTION, parseType(tmp, Cards.TYPE_ACTION));
@@ -748,7 +768,7 @@ public class Dominion {
 
 	private void readSettings() {
 		SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.preset"));
-		int start = 0;
+		int start = 0, i = 0;
 		int numberSaves = 0;
 		if (SettingsRecordStorage.instance().data() == null) {
 			//#debug dominizer
@@ -760,24 +780,24 @@ public class Dominion {
 			presets[3] = new CardPresets(SettingsRecordStorage.instance().data().size());
 			int[][] preset;
 			int k;
-			for ( loop = 0; loop < SettingsRecordStorage.instance().data().size(); loop++) {
+			for ( i = 0; i < SettingsRecordStorage.instance().data().size(); i++) {
 				//#debug dominizer
-				System.out.println("presets: " + SettingsRecordStorage.instance().data().elementAt(loop).toString());
+				System.out.println("presets: " + SettingsRecordStorage.instance().data().elementAt(i).toString());
 				start = 0;
 				preset = new int[10][2];
 				for ( k = 0 ; k < 10 ; k++ ) {
-					start = SettingsRecordStorage.instance().data().elementAt(loop).toString().indexOf(
+					start = SettingsRecordStorage.instance().data().elementAt(i).toString().indexOf(
 									SettingsRecordStorage.MEDIUM_SPLITTER,
 									start + 1);
 					if (k == 9)
-						preset[k] = getCardInfo(SettingsRecordStorage.instance().data().elementAt(loop).toString().substring(start));
+						preset[k] = getCardInfo(SettingsRecordStorage.instance().data().elementAt(i).toString().substring(start));
 					else
-						preset[k] = getCardInfo(SettingsRecordStorage.instance().data().elementAt(loop).toString().substring(start,
-								SettingsRecordStorage.instance().data().elementAt(loop).toString().indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1)));
+						preset[k] = getCardInfo(SettingsRecordStorage.instance().data().elementAt(i).toString().substring(start,
+								SettingsRecordStorage.instance().data().elementAt(i).toString().indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1)));
 				}
 				presets[3].setPreset(numberSaves,
-						SettingsRecordStorage.instance().data().elementAt(loop).toString().substring(0,
-								SettingsRecordStorage.instance().data().elementAt(loop).toString().indexOf(SettingsRecordStorage.BIG_SPLITTER)),
+						SettingsRecordStorage.instance().data().elementAt(i).toString().substring(0,
+								SettingsRecordStorage.instance().data().elementAt(i).toString().indexOf(SettingsRecordStorage.BIG_SPLITTER)),
 								preset);
 				numberSaves++;
 			}
@@ -792,8 +812,8 @@ public class Dominion {
 		//#debug dominizer
 		System.out.println("expansions: " + tmp);
 		if (tmp != null) {
-			for ( loop = 0 ; loop < tmp.length() ; loop++ ) 
-				playingExpansions[loop] = tmp.substring(loop, loop + 1).equals("1");
+			for ( i = 0 ; i < tmp.length() ; i++ ) 
+				playingExpansions[i] = tmp.substring(i, i + 1).equals("1");
 		}
 		//#debug dominizer
 		System.out.println("finished reading expansion states successfully");
@@ -804,8 +824,8 @@ public class Dominion {
 		//#debug dominizer
 		System.out.println("usedcards: " + tmp);
 		if (tmp != null) {
-			for ( loop = 0 ; loop < tmp.length() ; loop++ ) 
-				numberOfCardsFromExp[loop] = Integer.parseInt(tmp.substring(loop, loop + 1));
+			for ( i = 0 ; i < tmp.length() ; i++ ) 
+				numberOfCardsFromExp[i] = Integer.parseInt(tmp.substring(i, i + 1));
 		}
 		//#debug dominizer
 		System.out.println("finished reading number of cards succesfully\nstart reading available cards");
@@ -816,9 +836,9 @@ public class Dominion {
 		//#debug dominizer
 		System.out.println("available from " + tmp);
 		if (tmp != null) {
-			for ( loop = 0 ; loop < tmp.length() ; loop++ )
-				expansions[getLinearExpansionIndex(loop)].setAvailable(
-						getLinearCardIndex(loop), tmp.substring(loop, loop + 1).equals("1"));
+			for ( i = 0 ; i < tmp.length() ; i++ )
+				expansions[getLinearExpansionIndex(i)].setAvailable(
+						getLinearCardIndex(i), tmp.substring(i, i + 1).equals("1"));
 		}
 		//#debug dominizer
 		System.out.println("finished reading available cards");
@@ -829,12 +849,12 @@ public class Dominion {
 		//#debug dominizer
 		System.out.println("percentages from " + tmp);
 		if (tmp != null) {
-			for ( loop = 0; loop < tmp.length() ; loop++)
-				if ( tmp.substring(loop, loop + 1).equals("*") )
-					expansions[getLinearExpansionIndex(loop)].setPercentage(getLinearCardIndex(loop), 10);
+			for ( i = 0; i < tmp.length() ; i++)
+				if ( tmp.substring(i, i + 1).equals("*") )
+					expansions[getLinearExpansionIndex(i)].setPercentage(getLinearCardIndex(i), 10);
 				else
-					expansions[getLinearExpansionIndex(loop)].setPercentage(getLinearCardIndex(loop), 
-							Integer.parseInt(tmp.substring(loop, loop + 1)));
+					expansions[getLinearExpansionIndex(i)].setPercentage(getLinearCardIndex(i), 
+							Integer.parseInt(tmp.substring(i, i + 1)));
 		}
 		//#debug dominizer
 		System.out.println("finished reading cards percentages succesfully");
@@ -850,23 +870,28 @@ public class Dominion {
 		//#debug dominizer
 		System.out.println("start reading old randomized cards");
 		int[] card; 
-		numberSaves = 0;
-		while ( SettingsRecordStorage.instance().readKey("" + (++numberSaves) ) != null && numberSaves < SETS_SAVE ) {
+		numberSaves = 1;
+		while ( SettingsRecordStorage.instance().readKey("" + numberSaves ) != null && numberSaves <= SETS_SAVE ) {
 			//#debug dominizer
 			System.out.println("reading from: " + SettingsRecordStorage.instance().readKey("" + numberSaves ));
 			start = -1;
-			for ( loop = 0 ; loop < getNumberOfRandomCards() ; loop++ ) {
-				start = SettingsRecordStorage.instance().readKey("" + numberSaves).toString().indexOf(
+			for ( i = 0 ; i < getNumberOfRandomCards() ; i++ ) {
+				start = SettingsRecordStorage.instance().readKey("" + numberSaves).indexOf(
 								SettingsRecordStorage.MEDIUM_SPLITTER,
 								start + 1);
-				if (loop == getNumberOfRandomCards() - 1 )
-					card = getCardInfo(SettingsRecordStorage.instance().readKey("" + numberSaves).toString().substring(start));
-				else
-					card = getCardInfo(SettingsRecordStorage.instance().readKey("" + numberSaves).toString().substring(start,
-							SettingsRecordStorage.instance().readKey("" + numberSaves).toString().indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1)));
-				expansions[card[0]].setPlaying(card[1], numberSaves);
+				if ( start >= 0 ) {
+					if (i == getNumberOfRandomCards() - 1 )
+						card = getCardInfo(SettingsRecordStorage.instance().readKey("" + numberSaves).substring(start));
+					else
+						card = getCardInfo(SettingsRecordStorage.instance().readKey("" + numberSaves).substring(start,
+								SettingsRecordStorage.instance().readKey("" + numberSaves).indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1)));
+					expansions[card[0]].setPlaying(card[1], numberSaves);
+				}
 			}
+			CURRENT_SET = numberSaves;
+			numberSaves++;
 		}
+		
 		//#debug dominizer
 		System.out.println("finished reading old randomized cards");
 		
@@ -886,7 +911,7 @@ public class Dominion {
 		StringBuffer sb = new StringBuffer();
 		tmp = "      ";
 		InputStreamReader isr = null;
-		loop = 0;
+		i = 0;
 		start = 0;
 		if ( SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.condition")) )
 			while ( SettingsRecordStorage.instance().readKey("name" + start) != null )
@@ -896,22 +921,20 @@ public class Dominion {
 			int ch;
 			while ((ch = isr.read()) > -1) {
 				if ( (char) ch == ';' )
-					loop++;
+					i++;
 			}
 			isr.close();
-			 
-			
-			condition = new Condition(loop + start);
+			condition = new Condition(i + start);
 			//#debug dominizer
 			System.out.println("readed conditions: "+condition.size());
-			condition.setInitial(loop);
+			condition.setInitial(i);
 			start = 0;
 			isr = new InputStreamReader(getClass().getResourceAsStream("/condition"), "UTF8");
 			while ((ch = isr.read()) > -1) {
 				sb.append((char) ch);
 				if ( (char) ch == ';' ) {
 					//#debug dominizer
-					System.out.println("condition processing " + sb.toString() + ":" + sb.toString().substring(0, sb.toString().length() - 1));
+					System.out.println("condition processing " + sb.toString().substring(0, sb.toString().length() - 1));
 					condition.setName(start, sb.toString().trim().substring(0, sb.toString().trim().indexOf(':')));
 					condition.setAvailable(start, true);
 					condition.setPercentage(start, 0);
@@ -931,17 +954,23 @@ public class Dominion {
 		//#debug dominizer
 		System.out.println("start reading user conditions");
 		if ( SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.condition")) ) {
-			loop = 0;
-			while ( SettingsRecordStorage.instance().readKey("name" + loop) != null ) {
-				condition.setName(start, SettingsRecordStorage.instance().readKey("name" + loop).substring(2));
-				condition.setAvailable(start, SettingsRecordStorage.instance().readKey("name" + loop).substring(0,1).equals("1"));
-				if ( SettingsRecordStorage.instance().readKey("name" + loop).substring(1,2).equals("*") )
+			i = 0;
+			while ( SettingsRecordStorage.instance().readKey("name" + i) != null ) {
+				condition.setName(start, SettingsRecordStorage.instance().readKey("name" + i).substring(2));
+				condition.setAvailable(start, SettingsRecordStorage.instance().readKey("name" + i).substring(0,1).equals("1"));
+				if ( SettingsRecordStorage.instance().readKey("name" + i).substring(1,2).equals("*") )
 					condition.setPercentage(start, 10);
 				else
-					condition.setPercentage(start, Integer.parseInt(SettingsRecordStorage.instance().readKey("name" + loop).substring(1,2)));
-				condition.setCondition(start, SettingsRecordStorage.instance().readKey("" + loop));				
-				loop++;
+					condition.setPercentage(start, Integer.parseInt(SettingsRecordStorage.instance().readKey("name" + i).substring(1,2)));
+				condition.setCondition(start, SettingsRecordStorage.instance().readKey("" + i));				
+				i++;
 				start++;
+			}
+			tmp = SettingsRecordStorage.instance().readKey("preferred");
+			//#debug dominizer
+			System.out.println("preferred condition: " + tmp);
+			if (tmp != null) {
+				condition.setPreferredCondition(Integer.parseInt(tmp));
 			}
 		}
 		//#debug dominizer
@@ -952,16 +981,24 @@ public class Dominion {
 		if ( playingSet <= 0 )
 			return;
 		for ( int i = 0 ; i < expansions.length ; i++ ) {
-			for ( loop = 0 ; loop < expansions[i].size() ; loop++ ) {
-				if ( expansions[i].isPlayingSet(loop, playingSet) )
-					expansions[i].setPlaying(loop, 0);
-				else if ( expansions[i].isPlaying(loop) > 100 & expansions[i].isPlaying(loop) - 100 > playingSet )
-					expansions[i].setPlaying(loop, expansions[i].isPlaying(loop) - 1);
-				else if ( expansions[i].isPlaying(loop) < 100 & expansions[i].isPlaying(loop) > playingSet )
-					expansions[i].setPlaying(loop, expansions[i].isPlaying(loop) - 1);
+			for ( int j = 0 ; j < expansions[i].size() ; j++ ) {
+				if ( expansions[i].isPlayingSet(j, playingSet) ) {
+					//#debug dominizer
+					System.out.println("resetting card [" + i +"][" + j + "] with " + expansions[i].isPlaying(j));
+					expansions[i].setPlaying(j, 0);
+				} else if ( expansions[i].isPlaying(j) > 100 && expansions[i].isPlaying(j) - 100 > playingSet ) {
+					//#debug dominizer
+					System.out.println("setting card [" + i +"][" + j + "] with " + (expansions[i].isPlaying(j) - 1) + " instead of " + expansions[i].isPlaying(j));
+					expansions[i].setPlaying(j, expansions[i].isPlaying(j) - 1);
+				} else if ( expansions[i].isPlaying(j) < 100 && expansions[i].isPlaying(j) > playingSet ) {
+					//#debug dominizer
+					System.out.println("setting card [" + i +"][" + j + "] with " + (expansions[i].isPlaying(j) - 1) + " instead of " + expansions[i].isPlaying(j));
+					expansions[i].setPlaying(j, expansions[i].isPlaying(j) - 1);
+				}
 			}
 		}
-		CURRENT_SET--;
+		if ( CURRENT_SET > 0 )
+			CURRENT_SET--;
 	}
 
 	public void resetIsPlaying(int playingSet) {
@@ -969,7 +1006,7 @@ public class Dominion {
 			for (int j = 0; j < expansions[i].size(); j++)
 				if ( playingSet <= 0 )
 					expansions[i].setPlaying(j, 0);
-				else if ( expansions[i].isPlayingSet(j, playingSet) & !expansions[i].isHold(j, playingSet))
+				else if ( expansions[i].isPlayingSet(j, playingSet) && !expansions[i].isHold(j, playingSet))
 					expansions[i].setPlaying(j, 0);
 	}
 	
@@ -982,8 +1019,8 @@ public class Dominion {
 		//#debug dominizer
 		System.out.println("try: " + exp + " - " + card);
 		if ( expansions[exp].isAvailable(card) 
-				& !selectedCards.contains(expansions[exp].getName(card))
-				& ( expansions[exp].isPlaying(card) == 0 | expansions[exp].isHold(card, playingSet) ) ) {
+				&& !selectedCards.contains(expansions[exp].getName(card))
+				&& ( expansions[exp].isPlaying(card) == 0 || expansions[exp].isHold(card, playingSet) ) ) {
 			if ( !expansions[exp].isHold(card, playingSet) )
 				expansions[exp].setPlaying(card, playingSet);
 			//#debug dominizer
@@ -1029,8 +1066,8 @@ public class Dominion {
 	}
 
 	public void setExpansionPlayingState(boolean[] isAvailable) {
-		for ( loop = 0; loop < playingExpansions.length; loop++)
-			setExpansionPlayingState(loop, isAvailable[loop]);
+		for ( int i = 0; i < playingExpansions.length; i++)
+			setExpansionPlayingState(i, isAvailable[i]);
 	}
 	
 	public void setExpansionPlayingState(int exp, boolean isAvailable) {
@@ -1075,20 +1112,20 @@ public class Dominion {
 	public void useMinimumExpansionCards(int playingSet) {
 		//#debug dominizer
 		System.out.println("using minimum expansion cards, already selected: " + selected);
-		for ( int i = 0 ; i < expansions.length ; i++ ) {
+		for ( int i = 0, j = 0 ; i < expansions.length ; i++ ) {
 			//#debug dominizer
 			System.out.println("trying expansion: " + i + " - State: " + playingExpansions[i] + " - Number: " + numberOfCardsFromExp[i]);
-			if ( playingExpansions[i] & 0 < numberOfCardsFromExp[i] & expansions[i].size() > 0 ) {
+			if ( playingExpansions[i] && 0 < numberOfCardsFromExp[i] && expansions[i].size() > 0 ) {
 				//#debug dominizer
 				System.out.println("selecting for expansion: " + i + " already chosen: "+ selectedCards.fromExpansion(i));
 				while ( selectedCards.fromExpansion(i) < numberOfCardsFromExp[i] && selected < getNumberOfRandomCards() ) {
 					//#debug dominizer
 					System.out.println("selecting for expansion1: " +i+ " already chosen: "+ selectedCards.fromExpansion(i));
-					loop = Rand.randomInt(expansions[i].size());
-					if ( selectCard(playingSet, i, loop, selected) ) {
+					j = Rand.randomInt(expansions[i].size());
+					if ( selectCard(playingSet, i, j, selected) ) {
 						selected++;
 						//#debug dominizer
-						System.out.println("selected: " + i + " - " + selected);
+						System.out.println("selected: " + j + " - " + selected);
 					}
 				}
 			}

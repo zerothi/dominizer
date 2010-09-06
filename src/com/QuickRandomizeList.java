@@ -106,14 +106,14 @@ public class QuickRandomizeList extends List implements CommandListener {
 		//#debug dominizer
 		System.out.println("trying to set cards from expansion");
 		setCardsFromExpansion(UiAccess.getFocusedIndex(this), numberCards);
-		
 	}
 
 	private void setCardsFromExpansion(int exp, int numberOfCards) {
 		if ( -1 < exp & exp < Dominion.I().getExpansions() ) {
-			if ( Dominion.I().expansions[exp].size() < numberOfCards )
-				GameApp.instance().showAlert(Locale.get("alert.CardsFromExpansion.Promo"));
-			else {
+			if ( Dominion.I().expansions[exp].size() < numberOfCards ) {
+				String tmp = "" + Dominion.I().expansions[exp].size();
+				GameApp.instance().showAlert(Locale.get("alert.CardsFromExpansion", tmp));
+			} else {
 				if ( numberOfCards > 0 ) {
 					//#style label
 					set(exp, Dominion.getExpansionName(exp) + " " + numberOfCards, getImage(exp));

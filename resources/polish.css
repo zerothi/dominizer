@@ -68,10 +68,12 @@ backgrounds {
 title {
 	max-width: 0%;
 	padding: 3;
-	font-face: proportional;
-	font-size: medium;
-	font-style: bold;
-	font-color: titleFontColor;
+	font {
+		face: proportional;
+		size: medium;
+		style: bold;
+		color: titleFontColor;
+	}
 	border: none;
 	layout: horizontal-center | horizontal-expand;
 	background: titleGradient;
@@ -96,6 +98,8 @@ label {
 	layout: center | expand;
 	checkbox-plain: url( ch0.png );
 	checkbox-selected: url( ch1.png );
+	radiobox-plain: url( ra0.png );
+	radiobox-selected: url( ra1.png );
 }
 
 @media touchscreen {
@@ -597,7 +601,7 @@ messagetext {
 }	
 
 .tabIconSet extends tabIcon {
-	max-width: 10%;
+	max-width: 12%;
 }
 
 /**
@@ -669,3 +673,10 @@ messagetext {
 	font-size: medium;
 }
 .keyMode {}
+
+
+.pieChart {
+	background: selectedBg;
+	padding: 3;
+	view-type: chart-pie;
+}

@@ -29,10 +29,10 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 		
 		addTabListener(this);
 		setTabbedFormListener(this);
-		cardSet = new CardsList[Dominion.TOTAL_CARDS / 10];
+		cardSet = new CardsList[Dominion.MAX_SETS];
 		
 		for ( int i = 0 ; i < cardSet.length ; i++ ) {
-			cardSet[i] = new CardsList(null, List.MULTIPLE, i+1);
+			cardSet[i] = new CardsList(null, List.MULTIPLE, i + 1);
 			if ( Dominion.I().isSetPlaying(i + 1) ) {
 				try {
 					cardSet[i].setCards(Dominion.I().getCurrentlySelected(i + 1));
@@ -53,11 +53,12 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 		}
 		return scF;
 	}
+
 	
-	public void addNewCards(Cards cards) {
+	public void addNewCards(Cards cards) throws DominionException {
 		if ( cards == null )
 			return;
-		if ( Dominion.CURRENT_SET > this.getCount() & Dominion.CURRENT_SET <= cardSet.length ) {
+		if ( Dominion.CURRENT_SET > getCount() && Dominion.CURRENT_SET <= cardSet.length ) {
 			cardSet[Dominion.CURRENT_SET - 1].setCards(cards);
 			//#= String tmp = "" + Dominion.CURRENT_SET;
 			//#style tabIconSet
@@ -66,6 +67,8 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 			setFocus(Dominion.CURRENT_SET - 1);
 			for ( int i = 0 ; i < cardSet.length ; i++ )
 				cardSet[i].setBlackMarket(Dominion.I().isBlackMarketPlaying());
+		} else {
+			throw new DominionException(Locale.get("alert.NoMoreSets"));
 		}
 	}
 
@@ -99,9 +102,12 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
     	int i = 0;
     	for ( i = this.size() - 1 ; i > -1 ; i-- )
     		removeTab(i);
+    	Dominion.CURRENT_SET = 0;
     	for ( i = 1 ; i <= cardSet.length ; i++ ) {
     		if ( Dominion.I().isSetPlaying(i) ) {
     			try {
+    				//#debug dominizer
+    	    		System.out.println("adding tab for set " + i);
 	    			cardSet[i - 1].setCards(Dominion.I().getCurrentlySelected(i));
 	    			String tmp = "" + i;
 	    			//#style tabIconSet
@@ -111,12 +117,19 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
     			} catch ( DominionException e ) {
     				GameApp.instance().showAlert(Locale.get("alert.adding.cards"));
     			}
-    		} else
+    		} else {
+    			//#debug dominizer
+	    		System.out.println("resetting tab with no playing " + i);
     			cardSet[i - 1].setCards(null);
+    		}
     	}
-    	if ( this.size() == 0 )
+    	if ( this.size() == 0 ) {
+    		//#debug dominizer
+    		System.out.println("form is empty");
     		GameApp.instance().returnToPreviousScreen();
-    	else {
+    	} else {
+    		//#debug dominizer
+    		System.out.println("form has card lists");
     		setFocus(0);
     		repaint();
     	}

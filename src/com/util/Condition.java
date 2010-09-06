@@ -7,7 +7,10 @@ public class Condition {
 	private String[] name = null;
 	private String[] condition = null;
 	private int[] percentage;
-	private int initial = 2;
+	private int preferredCondition = 0;
+	
+
+	private int initial = 8; // the number of conditions in the file
 	
 	public Condition(int size) {
 		if ( size == 0 )
@@ -212,5 +215,19 @@ public class Condition {
 
 	public int getInitial() {
 		return initial;
+	}
+	
+	/**
+	 * @return the preferredCondition
+	 */
+	public int getPreferredCondition() {
+		return preferredCondition;
+	}
+
+	/**
+	 * @param preferredCondition the preferredCondition to set
+	 */
+	public void setPreferredCondition(int preferredCondition) {
+		this.preferredCondition = preferredCondition;
 	}
 }
