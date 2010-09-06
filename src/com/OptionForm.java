@@ -9,8 +9,10 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Item;
+//#if dominizer.ticker
 import javax.microedition.lcdui.ItemStateListener;
 import javax.microedition.lcdui.Ticker;
+//#endif
 import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreFullException;
 import javax.microedition.rms.RecordStoreNotFoundException;
@@ -25,14 +27,20 @@ import de.enough.polish.util.Locale;
  * @author nick
  *
  */
-public class OptionForm extends Form implements CommandListener, ItemStateListener {
+public class OptionForm extends Form implements CommandListener
+//#if dominizer.ticker
+	, ItemStateListener
+//#endif
+{
 
 	private Command saveCmd = new Command( Locale.get("cmd.save"), Command.BACK, 1);
 	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 3);
 	
 	private ChoiceGroup[] options = null;
 	private String[] info = null;
-	private Ticker ticker = null;
+	//#if dominizer.ticker
+		private Ticker ticker = null;
+	//#endif
 	
 	/**
 	 * @param title the title of the screen
@@ -49,11 +57,15 @@ public class OptionForm extends Form implements CommandListener, ItemStateListen
 		options[0].append(Locale.get("cmd.Sort.Name"), null);
 		options[0].append(Locale.get("cmd.Sort.CostName"), null);
 		options[0].append(Locale.get("cmd.Sort.CostExp"), null);
+		
 		info[0] = new String(Locale.get("screen.options.info"));
 		append(options[0]);
-		//#style mainTicker
-		ticker = new Ticker(info[0]);
-		setTicker(ticker);
+		//#if dominizer.ticker
+			setItemStateListener(this);
+			//#style mainTicker
+			ticker = new Ticker(info[0]);
+			setTicker(ticker);
+		//#endif
 		
 		addCommand(saveCmd);
 		addCommand(backCmd);
@@ -80,11 +92,12 @@ public class OptionForm extends Form implements CommandListener, ItemStateListen
 			GameApp.instance().returnToPreviousScreen();
 		}
 	}
-
-	public void itemStateChanged(Item itm) {
-		for ( int i = 0 ; i < options.length ; i++ )
-			if ( itm.equals(options[i]) ) 
-				ticker.setString(info[i]);
-		
-	}
+	//#if dominizer.ticker
+		public void itemStateChanged(Item itm) {
+			for ( int i = 0 ; i < options.length ; i++ )
+				if ( itm.equals(options[i]) ) 
+					ticker.setString(info[i]);
+			
+		}
+	//#endif
 }

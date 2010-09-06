@@ -56,7 +56,7 @@ public class QuickRandomizeList extends List implements CommandListener {
 			if ( Dominion.CURRENT_SET == 0 ) {
 				try {
 					Dominion.I().randomizeCards();
-					ShowCardsForm.instance().addNewCards(Dominion.I().getCurrentlySelected(Dominion.CURRENT_SET));
+					ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.CURRENT_SET));
 					GameApp.instance().changeToScreen(ShowCardsForm.instance());
 				} catch (DominionException e) {
 					GameApp.instance().showAlert(e.toString());

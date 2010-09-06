@@ -82,14 +82,16 @@ public class EditCardsList extends List implements CommandListener {
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(randomizeCmd) ) {
 			updateCards(true);
-			try {
-				Dominion.I().randomizeCards();
-				ShowCardsForm.instance().addNewCards(Dominion.I().getCurrentlySelected(Dominion.CURRENT_SET));
+			if ( Dominion.CURRENT_SET == 0 ) {
+				try {
+					Dominion.I().randomizeCards();
+					ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.CURRENT_SET));
+					GameApp.instance().changeToScreen(ShowCardsForm.instance());
+				} catch (DominionException e) {
+					GameApp.instance().showAlert(e.toString());
+				}
+			} else 
 				GameApp.instance().changeToScreen(ShowCardsForm.instance());
-			} catch (DominionException e) {
-				GameApp.instance().showAlert(e.toString());
-			}
-			
 		} else if ( cmd.equals(perGaugeCmd) ) {
 			/*if ( getFilterText().length() != 0 ) {
 				GameApp.instance().showAlert(Locale.get("alert.Filter.Availability"));

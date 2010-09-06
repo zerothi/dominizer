@@ -22,9 +22,9 @@ public class Dominion {
 	public static final int USER = 6; // always have to be the highest number!
 	public static final int RAND_EXPANSION_CARDS = 1;
 	public static final int RAND_PERCENTAGE_CARDS = 2;
-	public static final int RAND_HOLD = 16;
 	public static final int RAND_CONDITION = 4;
 	public static final int RAND_PREVENT = 8;
+	public static final int RAND_HOLD = 16;
 	public static boolean RANDOMIZE_COMPLETELY_NEW = true;
 	public static int SETS_SAVE = 10;
 	public static int CURRENT_SET = 0;
@@ -52,7 +52,7 @@ public class Dominion {
 			numberOfCardsFromExp[i] = 0;			
 		}
 		expansions = new Cards[USER+1];
-		presets = new CardPresets[PROMO]; // as promo always is the last expansion!
+		presets = new CardPresets[USER]; // as promo always is the last expansion!
 		presets[BASE] = new CardPresets(5);
 		presets[BASE].setExpansion(BASE);
 		presets[BASE].setPreset(0, Locale.get("preset.base.FirstGame"), new int[][] { 
@@ -110,6 +110,55 @@ public class Dominion {
 		presets[SEASIDE].setPreset(5, Locale.get("preset.seaside.GiveAndTake"), new int[][] {
 			new int[] { 0, 10 }, new int[] { 0, 11 }, new int[] { 0, 15 }, new int[] { 0, 22 }, new int[] { 2,  0 }, 
 			new int[] { 2,  6 }, new int[] { 2,  8 }, new int[] { 2,  9 }, new int[] { 2, 18 }, new int[] { 2, 20 } });
+		presets[ALCHEMY] = new CardPresets(6);
+		presets[ALCHEMY].setExpansion(ALCHEMY);
+		presets[ALCHEMY].setPreset(0, Locale.get("preset.alchemy.ForbiddenArts"), new int[][] {
+			new int[] { 0,  2 }, new int[] { 0,  5 }, new int[] { 0,  8 }, new int[] { 0,  9 }, new int[] { 0, 19 }, 
+			new int[] { 0, 20 }, new int[] { 3,  2 }, new int[] { 3,  4 }, new int[] { 3,  7 }, new int[] { 3, 10 } });
+		presets[ALCHEMY].setPreset(1, Locale.get("preset.alchemy.PotionMixers"), new int[][] {
+			new int[] { 0,  2 }, new int[] { 0,  3 }, new int[] { 0,  7 }, new int[] { 0, 12 }, new int[] { 0, 17 }, 
+			new int[] { 3,  0 }, new int[] { 3,  1 }, new int[] { 3,  4 }, new int[] { 3,  5 }, new int[] { 3, 10 } });
+		presets[ALCHEMY].setPreset(2, Locale.get("preset.alchemy.ChemistryLesson"), new int[][] {
+			new int[] { 0,  1 }, new int[] { 0, 11 }, new int[] { 0, 14 }, new int[] { 0, 16 }, new int[] { 0, 22 }, 
+			new int[] { 0, 23 }, new int[] { 3,  0 }, new int[] { 3,  4 }, new int[] { 3,  6 }, new int[] { 3, 10 } });
+		presets[ALCHEMY].setPreset(3, Locale.get("preset.alchemy.Servants"), new int[][] {
+			new int[] { 1,  2 }, new int[] { 1,  6 }, new int[] { 1, 11 }, new int[] { 1, 13 }, new int[] { 1, 18 }, 
+			new int[] { 3,  4 }, new int[] { 3,  7 }, new int[] { 3,  8 }, new int[] { 3,  9 }, new int[] { 3, 11 } });
+		presets[ALCHEMY].setPreset(4, Locale.get("preset.alchemy.SecretResearch"), new int[][] {
+			new int[] { 1,  1 }, new int[] { 1,  9 }, new int[] { 1, 11 }, new int[] { 1, 12 }, new int[] { 1, 17 }, 
+			new int[] { 1, 20 }, new int[] { 3,  3 }, new int[] { 3,  5 }, new int[] { 3,  7 }, new int[] { 3, 10 } });
+		presets[ALCHEMY].setPreset(5, Locale.get("preset.alchemy.PoolsToolsFools"), new int[][] {
+			new int[] { 1,  0 }, new int[] { 1,  3 }, new int[] { 1,  8 }, new int[] { 1, 12 }, new int[] { 1, 21 }, 
+			new int[] { 1, 24 }, new int[] { 3,  1 }, new int[] { 3,  2 }, new int[] { 3,  4 }, new int[] { 3,  8 } });
+		presets[PROSPERITY] = new CardPresets(9);
+		presets[PROSPERITY].setExpansion(PROSPERITY);
+		presets[PROSPERITY].setPreset(0, Locale.get("preset.prosperity.Beginners"), new int[][] {
+			new int[] { 4,  0 }, new int[] { 4,  4 }, new int[] { 4,  5 }, new int[] { 4,  7 }, new int[] { 4, 13 }, 
+			new int[] { 4, 17 }, new int[] { 4, 18 }, new int[] { 4, 22 }, new int[] { 4, 23 }, new int[] { 4, 24 } });
+		presets[PROSPERITY].setPreset(1, Locale.get("preset.prosperity.FriendlyInteractive"), new int[][] {
+			new int[] { 4,  1 }, new int[] { 4,  2 }, new int[] { 4,  3 }, new int[] { 4,  6 }, new int[] { 4,  9 }, 
+			new int[] { 4, 15 }, new int[] { 4, 18 }, new int[] { 4, 20 }, new int[] { 4, 21 }, new int[] { 4, 24 } });
+		presets[PROSPERITY].setPreset(2, Locale.get("preset.prosperity.BigActions"), new int[][] {
+			new int[] { 4,  2 }, new int[] { 4,  5 }, new int[] { 4,  8 }, new int[] { 4, 10 }, new int[] { 4, 11 }, 
+			new int[] { 4, 12 }, new int[] { 4, 16 }, new int[] { 4, 17 }, new int[] { 4, 19 }, new int[] { 4, 21 } });
+		presets[PROSPERITY].setPreset(3, Locale.get("preset.prosperity.BiggestMoney"), new int[][] {
+			new int[] { 0,  0 }, new int[] { 0,  9 }, new int[] { 0, 13 }, new int[] { 0, 15 }, new int[] { 0, 18 }, 
+			new int[] { 4,  0 }, new int[] { 4,  8 }, new int[] { 4, 12 }, new int[] { 4, 18 }, new int[] { 4, 22 } });
+		presets[PROSPERITY].setPreset(4, Locale.get("preset.prosperity.TheKingsArmy"), new int[][] {
+			new int[] { 0,  1 }, new int[] { 0,  5 }, new int[] { 0, 14 }, new int[] { 0, 18 }, new int[] { 0, 21 }, 
+			new int[] { 4,  5 }, new int[] { 4,  7 }, new int[] { 4, 10 }, new int[] { 4, 17 }, new int[] { 4, 21 } });
+		presets[PROSPERITY].setPreset(5, Locale.get("preset.prosperity.TheGoodLife"), new int[][] {
+			new int[] { 0,  1 }, new int[] { 0,  2 }, new int[] { 0,  3 }, new int[] { 0,  8 }, new int[] { 0, 21 }, 
+			new int[] { 4,  3 }, new int[] { 4,  4 }, new int[] { 4,  9 }, new int[] { 4, 13 }, new int[] { 4, 14 } });
+		presets[PROSPERITY].setPreset(6, Locale.get("preset.prosperity.PathsToVictory"), new int[][] {
+			new int[] { 1,  0 }, new int[] { 1,  7 }, new int[] { 1, 13 }, new int[] { 1, 17 }, new int[] { 1, 23 }, 
+			new int[] { 4,  1 }, new int[] { 4,  4 }, new int[] { 4,  7 }, new int[] { 4, 13 }, new int[] { 4, 15 } });
+		presets[PROSPERITY].setPreset(7, Locale.get("preset.prosperity.AllAlongTheWatchtower"), new int[][] {
+			new int[] { 1,  1 }, new int[] { 1,  6 }, new int[] { 1, 10 }, new int[] { 1, 13 }, new int[] { 1, 20 }, 
+			new int[] { 4,  9 }, new int[] { 4, 19 }, new int[] { 4, 20 }, new int[] { 4, 21 }, new int[] { 4, 23 } });
+		presets[PROSPERITY].setPreset(8, Locale.get("preset.prosperity.LuckySeven"), new int[][] {
+			new int[] { 1,  2 }, new int[] { 1,  3 }, new int[] { 1, 19 }, new int[] { 1, 22 }, new int[] { 1, 24 }, 
+			new int[] { 4,  0 }, new int[] { 4,  5 }, new int[] { 4,  6 }, new int[] { 4, 10 }, new int[] { 4, 21 } });
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("base"));
 		//#debug dominizer
 		System.out.println("reading base");
@@ -280,11 +329,11 @@ public class Dominion {
 		return sb.toString();
 	}
 
-	public Cards getCurrentlySelected(int playingSet) throws DominionException {
-		return getCurrentlySelected(playingSet, Cards.COMPARE_PREFERRED);
+	public Cards getSelectedCards(int playingSet) throws DominionException {
+		return getSelectedCards(playingSet, Cards.COMPARE_PREFERRED);
 	}
 
-	public Cards getCurrentlySelected(int playingSet, int sortMethod) throws DominionException {
+	public Cards getSelectedCards(int playingSet, int sortMethod) throws DominionException {
 		selectedCards = new Cards(getNumberOfRandomCards(), Cards.IS_NOT_SET);
 		int card = 0;
 		for ( int i = 0 ; i < expansions.length ; i++ ) {
@@ -295,7 +344,7 @@ public class Dominion {
 		}
 		if ( card != getNumberOfRandomCards() ) {
 			// TODO fix exception to handle correct!
-			throw new DominionException("No currently selected cards." + card + " and " + getNumberOfRandomCards());
+			throw new DominionException(Locale.get("alert.NotEnoughSelectedCards"));
 		}
 		return sortCards(selectedCards, sortMethod);
 	}
@@ -372,7 +421,7 @@ public class Dominion {
 			return "";
 		StringBuffer sb = new StringBuffer(50);
 		try {
-			getCurrentlySelected(playingSet);
+			getSelectedCards(playingSet);
 		} catch (DominionException e) {
 			// TODO is it necessary with a check here? do nothing
 		}
@@ -773,11 +822,11 @@ public class Dominion {
 		if (SettingsRecordStorage.instance().data() == null) {
 			//#debug dominizer
 			System.out.println("Read user settings: settings is null");
-			presets[3] = null;
+			presets[PROMO] = null;
 		} else {
 			//#debug dominizer
 			System.out.println("Read user settings: settings is size=" + SettingsRecordStorage.instance().data().size());
-			presets[3] = new CardPresets(SettingsRecordStorage.instance().data().size());
+			presets[PROMO] = new CardPresets(SettingsRecordStorage.instance().data().size());
 			int[][] preset;
 			int k;
 			for ( i = 0; i < SettingsRecordStorage.instance().data().size(); i++) {
@@ -795,7 +844,7 @@ public class Dominion {
 						preset[k] = getCardInfo(SettingsRecordStorage.instance().data().elementAt(i).toString().substring(start,
 								SettingsRecordStorage.instance().data().elementAt(i).toString().indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1)));
 				}
-				presets[3].setPreset(numberSaves,
+				presets[PROMO].setPreset(numberSaves,
 						SettingsRecordStorage.instance().data().elementAt(i).toString().substring(0,
 								SettingsRecordStorage.instance().data().elementAt(i).toString().indexOf(SettingsRecordStorage.BIG_SPLITTER)),
 								preset);
@@ -1008,6 +1057,8 @@ public class Dominion {
 					expansions[i].setPlaying(j, 0);
 				else if ( expansions[i].isPlayingSet(j, playingSet) && !expansions[i].isHold(j, playingSet))
 					expansions[i].setPlaying(j, 0);
+		if ( playingSet <= 0 )
+			CURRENT_SET = 0;
 	}
 	
 	public void resetSelectedCards() {

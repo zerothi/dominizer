@@ -35,7 +35,7 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 			cardSet[i] = new CardsList(null, List.MULTIPLE, i + 1);
 			if ( Dominion.I().isSetPlaying(i + 1) ) {
 				try {
-					cardSet[i].setCards(Dominion.I().getCurrentlySelected(i + 1));
+					cardSet[i].setCards(Dominion.I().getSelectedCards(i + 1));
 					Dominion.CURRENT_SET = i + 1;
 					//#= String tmp = "" + Dominion.CURRENT_SET;
 					//#style tabIconSet
@@ -63,13 +63,16 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 			//#= String tmp = "" + Dominion.CURRENT_SET;
 			//#style tabIconSet
 			//#= addTab(cardSet[Dominion.CURRENT_SET-1], null, Locale.get("screen.RandomizedCards.title.tab", tmp));
-			cardSet[Dominion.CURRENT_SET - 1].setBlackMarket(Dominion.I().isBlackMarketPlaying());
 			setFocus(Dominion.CURRENT_SET - 1);
-			for ( int i = 0 ; i < cardSet.length ; i++ )
-				cardSet[i].setBlackMarket(Dominion.I().isBlackMarketPlaying());
+			updateBlackMarket();
 		} else {
 			throw new DominionException(Locale.get("alert.NoMoreSets"));
 		}
+	}
+	
+	public void updateBlackMarket() {
+		for ( int i = 0 ; i < cardSet.length ; i++ )
+			cardSet[i].setBlackMarket(Dominion.I().isBlackMarketPlaying());		
 	}
 
 
@@ -102,18 +105,18 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
     	int i = 0;
     	for ( i = this.size() - 1 ; i > -1 ; i-- )
     		removeTab(i);
-    	Dominion.CURRENT_SET = 0;
+    	//Dominion.CURRENT_SET = 0;
     	for ( i = 1 ; i <= cardSet.length ; i++ ) {
     		if ( Dominion.I().isSetPlaying(i) ) {
     			try {
     				//#debug dominizer
     	    		System.out.println("adding tab for set " + i);
-	    			cardSet[i - 1].setCards(Dominion.I().getCurrentlySelected(i));
+	    			cardSet[i - 1].setCards(Dominion.I().getSelectedCards(i));
 	    			String tmp = "" + i;
 	    			//#style tabIconSet
 	    			addTab(cardSet[i - 1], null, Locale.get("screen.RandomizedCards.title.tab", tmp));
 	    			cardSet[i - 1].setBlackMarket(Dominion.I().isBlackMarketPlaying());
-	    			Dominion.CURRENT_SET = i;
+	    			//Dominion.CURRENT_SET = i;
     			} catch ( DominionException e ) {
     				GameApp.instance().showAlert(Locale.get("alert.adding.cards"));
     			}

@@ -99,18 +99,18 @@ public class CardsList extends List implements CommandListener {
 			System.out.println("appending to list with card "+cards.getName(i) + " index "+i + " is hold: " +cards.isHold(i) + " on set " + cardSet);
 		}
 		updateCards(false);
-		setBlackMarket(Dominion.I().isBlackMarketPlaying());
+		ShowCardsForm.instance().updateBlackMarket();
 	}
 	
 	public void setBlackMarket(boolean isPlaying) {
-		if ( isPlaying & !hasBlackMarketCmd ) {
+		if ( isPlaying && !hasBlackMarketCmd ) {
 		//#if !polish.android
 			UiAccess.addSubCommand(blackMarketCmd, optionsCmd, this);
 		//#else
 			addCommand(blackMarketCmd);
 		//#endif
 			hasBlackMarketCmd = isPlaying;
-		} else if ( hasBlackMarketCmd ) {
+		} else if ( !isPlaying && hasBlackMarketCmd ) {
 		//#if !polish.android
 			try {
 				//#= UiAccess.removeSubCommand(blackMarketCmd, optionsCmd, this);
@@ -149,7 +149,7 @@ public class CardsList extends List implements CommandListener {
 			updateCards(true);
 			try {
 				Dominion.I().randomizeCards(cardSet);
-				setCards(Dominion.I().getCurrentlySelected(cardSet));
+				setCards(Dominion.I().getSelectedCards(cardSet));
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}
@@ -157,7 +157,7 @@ public class CardsList extends List implements CommandListener {
 			updateCards(true);
 			try {
 				Dominion.I().randomizeCards(cardSet, Dominion.RAND_HOLD + Dominion.RAND_CONDITION);
-				setCards(Dominion.I().getCurrentlySelected(cardSet));		
+				setCards(Dominion.I().getSelectedCards(cardSet));		
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}
@@ -165,21 +165,21 @@ public class CardsList extends List implements CommandListener {
 			updateCards(true);
 			try {
 				Dominion.I().randomizeCards(cardSet, Dominion.RAND_HOLD);
-				setCards(Dominion.I().getCurrentlySelected(cardSet));		
+				setCards(Dominion.I().getSelectedCards(cardSet));		
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}
 		} else if ( cmd.equals(anotherSetCmd) ) {
 			try {
 				Dominion.I().randomizeCards();
-				ShowCardsForm.instance().addNewCards(Dominion.I().getCurrentlySelected(Dominion.CURRENT_SET));
+				ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.CURRENT_SET));
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}
 		} else if ( cmd.equals(randSetPreventCmd) ) {
 			try {
 				Dominion.I().randomizeCards(cardSet, Dominion.RAND_EXPANSION_CARDS + Dominion.RAND_PERCENTAGE_CARDS + Dominion.RAND_PREVENT);
-				setCards(Dominion.I().getCurrentlySelected(cardSet));
+				setCards(Dominion.I().getSelectedCards(cardSet));
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}
@@ -189,7 +189,6 @@ public class CardsList extends List implements CommandListener {
 			ShowCardsForm.instance().updateTabs();
 		} else if ( cmd.equals(deleteAllSetsCmd) ) {
 			Dominion.I().resetIsPlaying(-1);
-			Dominion.CURRENT_SET = 0;
 			setCards(null);
 			ShowCardsForm.instance().updateTabs();
 		} else if ( cmd.equals(showInfoCmd) )

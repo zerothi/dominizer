@@ -18,6 +18,7 @@ chart.attributes=Attributes
 alert.NoMoreSets=You cannot create anymore sets.
 chart.title=Card Info
 alert.CardsFromExpansion=You cannot have more than {0} cards from the current deck.\nUse fewer!
+alert.NotEnoughSelectedCards=There is not enough cards in the selection.
 
 ################
 #
@@ -175,7 +176,22 @@ preset.seaside.ReachForTomorrow=Reach For Tomorrow
 preset.seaside.Repetition=Repetition
 preset.seaside.GiveAndTake=Give and Take
 
-preset.alchemy.=
+preset.alchemy.ForbiddenArts=Forbidden Arts
+preset.alchemy.PotionMixers=Potion Mixers
+preset.alchemy.ChemistryLesson=Chemistry Lesson
+preset.alchemy.Servants=Servants
+preset.alchemy.SecretResearch=Secret Research
+preset.alchemy.PoolsToolsFools=Pools, Tools and Fools
+
+preset.prosperity.Beginners=Beginners
+preset.prosperity.FriendlyInteractive=Friendly Interactive
+preset.prosperity.BigActions=Big Actions
+preset.prosperity.BiggestMoney=Biggest Money
+preset.prosperity.TheKingsArmy=The King's Army
+preset.prosperity.TheGoodLife=The Good Life
+preset.prosperity.PathsToVictory=Paths To Victory
+preset.prosperity.AllAlongTheWatchtower=All Along the Watchtower
+preset.prosperity.LuckySeven=Lucky Seven
 
 ################
 #

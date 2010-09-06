@@ -5,7 +5,9 @@ import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
+//#if dominizer.ticker
 import javax.microedition.lcdui.Ticker;
+//#endif
 
 import com.dominizer.GameApp;
 import com.util.Cards;
@@ -36,8 +38,10 @@ public class BlackMarketForm extends List implements CommandListener {
 	private Command selectCardCmd = new Command( Locale.get("polish.command.select"), Command.BACK, 1);
 	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 3);
 	private String randomizeCardHolder = null;
-	private Ticker ticker = null;
-	private String[] tickerArgs = null;
+	//#if dominizer.ticker
+		private Ticker ticker = null;
+		private String[] tickerArgs = null;
+	//#endif
 	private int currentlyReachedCard = 0;
 	
 	/**
@@ -48,13 +52,15 @@ public class BlackMarketForm extends List implements CommandListener {
 		super(title, List.IMPLICIT);
 		addCommand(backCmd);
 		setCommandListener(this);
-		tickerArgs = new String[3];
-		tickerArgs[0] = Locale.get("screen.BlackMarket.DrawTextInfo");
-		tickerArgs[1] = "0";
-		tickerArgs[2] = "0";
-		//#style mainTicker
-		ticker = new Ticker(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
-		setTicker(ticker);
+		//#if dominizer.ticker
+			tickerArgs = new String[3];
+			tickerArgs[0] = Locale.get("screen.BlackMarket.DrawTextInfo");
+			tickerArgs[1] = "0";
+			tickerArgs[2] = "0";
+			//#style mainTicker
+			ticker = new Ticker(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
+			setTicker(ticker);
+		//#endif
 	}
 	
 	public void drawCards() {
@@ -112,13 +118,15 @@ public class BlackMarketForm extends List implements CommandListener {
 			}
 		}
 		deleteAll();
-		if ( blackMarketDeck.size() != 0 )
-			tickerArgs[0] = Locale.get("screen.BlackMarket.DrawTextInfo");
-		else
-			tickerArgs[0] = Locale.get("screen.BlackMarket.DeckEmpty");
-		tickerArgs[1] = "" + drawnDeck.size();
-		tickerArgs[2] = "" + blackMarketDeck.size();
-		ticker.setString(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
+		//#if dominizer.ticker
+			if ( blackMarketDeck.size() != 0 )
+				tickerArgs[0] = Locale.get("screen.BlackMarket.DrawTextInfo");
+			else
+				tickerArgs[0] = Locale.get("screen.BlackMarket.DeckEmpty");
+			tickerArgs[1] = "" + drawnDeck.size();
+			tickerArgs[2] = "" + blackMarketDeck.size();
+			ticker.setString(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
+		//#endif
 	}
 	
 	private void cancelBuy(boolean show) {
@@ -206,10 +214,12 @@ public class BlackMarketForm extends List implements CommandListener {
 		for ( int i = 0 ; i < blackMarketDeck.size() ; i++ )
 			this.blackMarketDeck.addElement(blackMarketDeck.getName(i));
 		currentlyReachedCard = 0;
-		tickerArgs[0] = Locale.get("screen.BlackMarket.DrawTextInfo");
-		tickerArgs[1] = "" + drawnDeck.size();
-		tickerArgs[2] = "" + blackMarketDeck.size();
-		ticker.setString(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
+		//#if dominizer.ticker
+			tickerArgs[0] = Locale.get("screen.BlackMarket.DrawTextInfo");
+			tickerArgs[1] = "" + drawnDeck.size();
+			tickerArgs[2] = "" + blackMarketDeck.size();
+			ticker.setString(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
+		//#endif
 		updateCommands();
 	}
 	
@@ -248,10 +258,12 @@ public class BlackMarketForm extends List implements CommandListener {
 	public void commandAction(Command cmd, Displayable screen) {
 		if ( cmd.equals(drawCardsCmd) ) {
 			drawCards();
-			tickerArgs[0] = "";
-			tickerArgs[1] = "" + drawnDeck.size();
-			tickerArgs[2] = "" + blackMarketDeck.size();
-			ticker.setString(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
+			//#if dominizer.ticker
+				tickerArgs[0] = "";
+				tickerArgs[1] = "" + drawnDeck.size();
+				tickerArgs[2] = "" + blackMarketDeck.size();
+				ticker.setString(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
+			//#endif
 		} else if ( cmd.equals(selectCardCmd) ) {
 			selectCard();
 		} else if ( cmd.equals(cancelBuyCmd) ) {
@@ -261,16 +273,20 @@ public class BlackMarketForm extends List implements CommandListener {
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.ok")) ) {
 			cancelBuy(false);
 			GameApp.instance().changeToScreen(this);
-			tickerArgs[0] = Locale.get("screen.BlackMarket.DrawTextInfo");
-			tickerArgs[1] = "" + drawnDeck.size();
-			tickerArgs[2] = "" + blackMarketDeck.size();
-			ticker.setString(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
+			//#if dominizer.ticker
+				tickerArgs[0] = Locale.get("screen.BlackMarket.DrawTextInfo");
+				tickerArgs[1] = "" + drawnDeck.size();
+				tickerArgs[2] = "" + blackMarketDeck.size();
+				ticker.setString(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
+			//#endif
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel")) ) {
 			GameApp.instance().changeToScreen(this);
-			tickerArgs[0] = Locale.get("screen.BlackMarket.DrawTextInfo");
-			tickerArgs[1] = "" + drawnDeck.size();
-			tickerArgs[2] = "" + blackMarketDeck.size();
-			ticker.setString(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
+			//#if dominizer.ticker
+				tickerArgs[0] = Locale.get("screen.BlackMarket.DrawTextInfo");
+				tickerArgs[1] = "" + drawnDeck.size();
+				tickerArgs[2] = "" + blackMarketDeck.size();
+				ticker.setString(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
+			//#endif
 		} 
 		updateCommands();
 	}

@@ -7,7 +7,9 @@ import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
+//#if dominizer.ticker
 import javax.microedition.lcdui.Ticker;
+//#endif
 
 import com.dominizer.GameApp;
 import com.util.Dominion;
@@ -33,7 +35,9 @@ public class ConditionList extends List implements CommandListener {
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.ITEM, 50);
 	
 	private String newName = null, newCondition = null;
-	private Ticker ticker = null;
+	//#if dominizer.ticker
+		private Ticker ticker = null;
+	//#endif
 	private int listType = 0;
 	
 	private boolean isOnGauge = true;
@@ -58,11 +62,13 @@ public class ConditionList extends List implements CommandListener {
 		//#debug dominizer
 		System.out.println("initializing conditionTableForm");
 		ptF = new ConditionTableForm();
-		//#style mainTicker
-		ticker = new Ticker("< >");
-		if ( getCurrentIndex() > -1 )
-			ticker.setString("< " + Dominion.I().condition.getCondition(getCurrentIndex()) + " >");		
-		setTicker(ticker);
+		//#if dominizer.ticker
+			//#style mainTicker
+			ticker = new Ticker("< >");
+			if ( getCurrentIndex() > -1 )
+				ticker.setString("< " + Dominion.I().condition.getCondition(getCurrentIndex()) + " >");		
+			setTicker(ticker);
+		//#endif
 		if ( Dominion.I().condition.getPreferredCondition() < this.size() ) {
 			setSelectedIndex(Dominion.I().condition.getPreferredCondition(), true);
 			focus(Dominion.I().condition.getPreferredCondition());
@@ -151,7 +157,9 @@ public class ConditionList extends List implements CommandListener {
 	}
 	
 	public void keyPressed(int keyCode) {
-		ticker.setString("< " + Dominion.I().condition.getCondition(getCurrentIndex()) + " >");
+		//#if dominizer.ticker
+			ticker.setString("< " + Dominion.I().condition.getCondition(getCurrentIndex()) + " >");
+		//#endif
 		Dominion.I().condition.setPreferredCondition(getSelectedIndex());
 		switch (keyCode) {
 		case Canvas.KEY_NUM0:
@@ -180,7 +188,7 @@ public class ConditionList extends List implements CommandListener {
 				Dominion.I().condition.setPreferredCondition(getCurrentIndex());
 				setSelectedIndex(getCurrentIndex(), true);
 				Dominion.I().randomizeCards(-1, Dominion.RAND_HOLD + Dominion.RAND_CONDITION, getCurrentIndex());
-				ShowCardsForm.instance().addNewCards(Dominion.I().getCurrentlySelected(Dominion.CURRENT_SET));
+				ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.CURRENT_SET));
 				GameApp.instance().changeToScreen(ShowCardsForm.instance());
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());

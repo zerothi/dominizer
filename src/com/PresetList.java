@@ -25,7 +25,6 @@ public class PresetList extends List implements CommandListener {
 	private Command deleteCmd = new Command( Locale.get("cmd.Preset.DeletePreset"), Command.SCREEN, 4);
 	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
-	private int[] tmp = new int[] { 0, 0};
 	
 	public PresetList(String title, int listType) {
 		//#style mainScreen
@@ -38,20 +37,20 @@ public class PresetList extends List implements CommandListener {
 		addCommand(quickRandomizeCardsCmd);
 		addCommand(quitCmd);
 		setCommandListener(this);
-		for ( tmp[0] = 0 ; tmp[0] < Dominion.I().presetSize() ; tmp[0]++ )
-			addPresets(Dominion.I().getPreset(tmp[0]));
+		for ( int i = 0 ; i < Dominion.I().presetSize() ; i++ )
+			addPresets(Dominion.I().getPreset(i));
 	}
 
 	public void addPresets(CardPresets cardPreset) {
 		if ( cardPreset == null )
 			return;
-		for ( tmp[1] = 0 ; tmp[1] < cardPreset.size() ; tmp[1]++ ) {
+		for ( int i = 0 ; i < cardPreset.size() ; i++ ) {
 			if ( cardPreset.getExpansion() > -1 ) { 
 				//#style label
-				append(cardPreset.getPresetName(tmp[1]), Dominion.getExpansionImage(cardPreset.getExpansion()));
+				append(cardPreset.getPresetName(i), Dominion.getExpansionImage(cardPreset.getExpansion()));
 			} else {
 				//#style label
-				append(cardPreset.getPresetName(tmp[1]), null);
+				append(cardPreset.getPresetName(i), null);
 				getItem(size() - 1).addCommand(deleteCmd);
 			}
 		}
@@ -66,17 +65,17 @@ public class PresetList extends List implements CommandListener {
 				focus(0);
 			break;
 		case Canvas.KEY_POUND:
-			tmp[0] = Dominion.I().getPreset(0).size();
-			if ( tmp[0] - 1 < getCurrentIndex() )
-				tmp[0] += Dominion.I().getPreset(1).size();
-			if ( tmp[0] - 1 < getCurrentIndex() ) {
-				tmp[0] += Dominion.I().getPreset(2).size();
-				if ( Dominion.I().getPreset(3) == null )
-					tmp[0] = 0;
+			int tmp = 0;
+			for ( int i = 0 ; i < Dominion.I().presetSize() - 1 ; i++ ) {
+				tmp += Dominion.I().getPreset(i).size();
+				if ( tmp > getCurrentIndex() && tmp < size() ) {
+					focus(tmp);
+					tmp = 10000;
+					break;
+				}
 			}
-			if ( tmp[0] <= getCurrentIndex() )
-				tmp[0] = 0;
-			focus(tmp[0]);
+			if ( getCurrentIndex() >= tmp | tmp == size() )
+				focus(0);
 			break;
 		default:
 			//#= super.keyPressed(keyCode);
@@ -92,7 +91,7 @@ public class PresetList extends List implements CommandListener {
 				GameApp.instance().showAlert(Locale.get("alert.Filter.Availability"));
 				return;
 			}*/
-			tmp = Dominion.I().getPresetLocation(getString(getCurrentIndex()));
+			int[] tmp = Dominion.I().getPresetLocation(getString(getCurrentIndex()));
 			if ( tmp[0] > -1 ) 
 				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(tmp[0], tmp[1]), Alert.FOREVER);
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.select")) ) {
