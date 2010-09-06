@@ -13,14 +13,14 @@ public class TiltedPieChartForm extends Form {
 		super(title);
 		addCommand(new Command(Locale.get("polish.command.ok"), Command.OK, 1));
 		chart = new ChartItem[numberOfCharts];
-		for ( int i = 0 ; i < chart.length ; i++ )
-			append(chart[i]);
 	}
 	//Locale.get("chart.types")
 	public void setChart(int chartNumber, String chartTitle, int[][][] info) {
 		//#style pieChart
 		chart[chartNumber] = new ChartItem(chartTitle, info[0], info[1][0]);
+		append(chart[chartNumber]);
 		//#= repaint();
+		
 	}
 	
 	

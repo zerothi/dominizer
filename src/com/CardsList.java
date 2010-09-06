@@ -191,9 +191,15 @@ public class CardsList extends List implements CommandListener {
 			Dominion.I().resetIsPlaying(-1);
 			setCards(null);
 			ShowCardsForm.instance().updateTabs();
-		} else if ( cmd.equals(showInfoCmd) )
+		} else if ( cmd.equals(showInfoCmd) ) {
 			GameApp.instance().showInfo(Dominion.I().getSelectedInfo(cardSet), Alert.FOREVER);
-		else if ( cmd.equals(saveCmd) ) {
+			/*
+			try {
+				GameApp.instance().showCardInfo(Dominion.I().getSelectedCards(cardSet).getTypeInfo(), Dominion.I().getSelectedCards(cardSet).getAddsInfo());
+			} catch (DominionException e) {
+
+			}*/
+		} else if ( cmd.equals(saveCmd) ) {
 			GameApp.instance().changeToScreen(InputForm.instance().instance(Locale.get("screen.RandomizedCards.InputMessage"), this));
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.ok"))) {
 			if ( InputForm.instance().getInput().indexOf(SettingsRecordStorage.BIG_SPLITTER) > 0 )
