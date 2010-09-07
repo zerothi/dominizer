@@ -7,6 +7,8 @@ import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Item;
+import javax.microedition.lcdui.ItemStateListener;
 import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreFullException;
 import javax.microedition.rms.RecordStoreNotFoundException;
@@ -26,7 +28,7 @@ import de.enough.polish.util.Locale;
  * @author nick
  *
  */
-public class CardsList extends List implements CommandListener {
+public class CardsList extends List implements CommandListener, ItemStateListener {
 	
 	private boolean hasBlackMarketCmd = false;
 
@@ -82,6 +84,7 @@ public class CardsList extends List implements CommandListener {
 		addCommand(backCmd);
 		
 		setCommandListener(this);
+		setItemStateListener(this);
 	}
 
 	public void setCards(Cards cards) {
@@ -99,7 +102,6 @@ public class CardsList extends List implements CommandListener {
 			System.out.println("appending to list with card "+cards.getName(i) + " index "+i + " is hold: " +cards.isHold(i) + " on set " + cardSet);
 		}
 		updateCards(false);
-		ShowCardsForm.instance().updateBlackMarket();
 	}
 	
 	public void setBlackMarket(boolean isPlaying) {
@@ -150,6 +152,7 @@ public class CardsList extends List implements CommandListener {
 			try {
 				Dominion.I().randomizeCards(cardSet);
 				setCards(Dominion.I().getSelectedCards(cardSet));
+				ShowCardsForm.instance().updateBlackMarket();
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}
@@ -165,7 +168,8 @@ public class CardsList extends List implements CommandListener {
 			updateCards(true);
 			try {
 				Dominion.I().randomizeCards(cardSet, Dominion.RAND_HOLD);
-				setCards(Dominion.I().getSelectedCards(cardSet));		
+				setCards(Dominion.I().getSelectedCards(cardSet));
+				ShowCardsForm.instance().updateBlackMarket();
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}
@@ -180,6 +184,7 @@ public class CardsList extends List implements CommandListener {
 			try {
 				Dominion.I().randomizeCards(cardSet, Dominion.RAND_EXPANSION_CARDS + Dominion.RAND_PERCENTAGE_CARDS + Dominion.RAND_PREVENT);
 				setCards(Dominion.I().getSelectedCards(cardSet));
+				ShowCardsForm.instance().updateBlackMarket();
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}
@@ -295,5 +300,11 @@ public class CardsList extends List implements CommandListener {
 
 	public void release() {
 		this.deleteAll();
+	}
+
+	public void itemStateChanged(Item arg0) {
+		//#debug dominizer
+		System.out.println("item state changed");
+		
 	}
 }

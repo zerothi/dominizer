@@ -66,7 +66,54 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 	    sITitle = new StringItem(null, "");
 	    append(sITitle);
 	    //#style defaultTable
-	    tableItem = new TableItem();
+	    tableItem = new TableItem()
+	    //#if polish.android
+	    {
+		    @Override
+			public boolean handlePointerPressed(int relX, int relY) {
+				//#debug dominizer 
+				System.out.println("table pressed(" + relX + ", " + relY + ")");
+				int row = getRowIndex( relY );
+				int col = getColumnIndex( relX );
+				if (row != -1 && col != -1 ) {
+					//#debug dominizer 
+					System.out.println("table row,col touched " + row + "," + col);
+					keyPressed(Canvas.KEY_NUM0 + row * 3 + col + 1);
+					return true;
+				}
+				return super.handlePointerPressed(relX, relY);
+			}
+			@SuppressWarnings("unused")
+	        public boolean handleGestureSwipeLeft(int x, int y) {
+				//#debug dominizer
+				System.out.println("swipe left gesture recorded");
+				return true;
+			}
+			@SuppressWarnings("unused")
+			public boolean handleGestureSwipeRight(int x, int y) {
+				//#debug dominizer
+				System.out.println("swipe right gesture recorded");
+				return true;
+			}
+			@SuppressWarnings("unused")
+			public boolean handleGestureHold(int x, int y) {
+				//#debug dominizer
+				System.out.println("hold gesture recorded");
+				if ( tableItem.isInItemArea(x - tableItem.relativeX, y - tableItem.relativeY) ) {
+					Item item = tableItem.getItemAt(x - tableItem.relativeX, y - tableItem.relativeY);
+					if ( item != null ) {
+						int pos = tableItem.getPosition(item);
+						//#debug dominizer
+						System.out.println("table position: " + pos);
+						//for ( int i = 1 ; i < 11 ; i++ ) {
+						//	if ( ((StringItem) table.get(0, i)).getText().equals( item.getText()) )
+					}
+				}
+				return true;
+			}
+	    }
+	    //#endif
+	    ;
 	    tableItem.setDimension(3, 3);
 	    tableItem.setSelectionMode(TableItem.SELECTION_MODE_CELL | TableItem.SELECTION_MODE_COLUMN | TableItem.SELECTION_MODE_ROW);
 	    tableItem.setDefaultCommand(selectCmd);

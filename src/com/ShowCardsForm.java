@@ -115,7 +115,6 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 	    			String tmp = "" + i;
 	    			//#style tabIconSet
 	    			addTab(cardSet[i - 1], null, Locale.get("screen.RandomizedCards.title.tab", tmp));
-	    			cardSet[i - 1].setBlackMarket(Dominion.I().isBlackMarketPlaying());
 	    			//Dominion.CURRENT_SET = i;
     			} catch ( DominionException e ) {
     				GameApp.instance().showAlert(Locale.get("alert.adding.cards"));
@@ -126,6 +125,7 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
     			cardSet[i - 1].setCards(null);
     		}
     	}
+    	updateBlackMarket();
     	if ( this.size() == 0 ) {
     		//#debug dominizer
     		System.out.println("form is empty");

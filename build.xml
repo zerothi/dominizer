@@ -73,7 +73,10 @@
 			<!-- build settings -->
 			<build symbols="Dominizer"
 				usePolishGui="true" 
-				workDir="${dir.work}">
+				workDir="${dir.work}"
+				imageLoadStrategy="foreground" 
+				>
+				<!-- imageLoadStrategy should speed up application, suppress memory -->
 				<!-- javacTarget="${javac.target}" -->
 				<!-- preverify="${preverify.file}"
 			midp2Path="${polish.home}/import/midp-2.0.jar"
@@ -120,7 +123,8 @@
 				<resources dir="${resource.dir}" defaultexcludes="yes" excludes="readme.txt,icons">
 					<!--root dir="${resource.dir}"/-->
 					<root dir="${resource.dir}/lang"/>
-					<root dir="${resource.dir}/img" />
+					<root dir="${resource.dir}/img"/>
+					<root dir="${resource.dir}/img/22x22" if="polish.android"/>
 					<localization if="debug or debugDominizer or single">
 						<locale name="${debugLang}" encoding="UTF-8"/>
 					</localization>
@@ -148,14 +152,15 @@
 				<debug if="debug and not final"
 					showLogOnError="true"
 					verbose="true"
-					level="debug">
+					level="debug" >
+					<filter package="com.nokia.*" level="fatal"/>
 				</debug>
 				<debug if="debugDominizer and not final"
 					showLogOnError="false"
 					verbose="false"
 					level="error"
 					levels="dominizer">
-					<filter package="com.nokia.*" level="fatal"/>
+				<filter package="com.nokia.*" level="fatal"/>
 				</debug>
 				<debug if="final" showLogOnError="true" level="error">
 				</debug>
@@ -241,8 +246,8 @@
 	</target>
 	
 	<target name="enableAndroid" depends="dosign">
-		<property name="devices" value="Generic/Android"/>
-		<property name="device" value="Generic/Android"/>
+		<property name="devices" value="Generic/Android1.5"/>
+		<property name="device" value="Generic/Android1.5"/>
 	</target>
 	
 	<target name="enableSpecialTargets" depends="donotsign">

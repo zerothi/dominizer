@@ -12,7 +12,7 @@ import de.enough.polish.util.Locale;
 public class Dominion {
 	private static Dominion dom = null;
 	public static int TOTAL_CARDS = 25 + 25 + 26 + 12 + 3 + 25;
-	public static final int MAX_SETS = 25;
+	public static final int MAX_SETS = 6;
 	public static final int BASE = 0; // has 25 cards
 	public static final int INTRIGUE = 1; // has 25 cards
 	public static final int SEASIDE = 2; // has 26 cards
@@ -1091,7 +1091,6 @@ public class Dominion {
 	}
 
 	public boolean selectPreset(int presetDeck, int preset) {
-		resetIsPlaying(0);
 		//#debug dominizer
 		System.out.println("fetching preset: " + presetDeck + " and " + preset);
 		selectedCards = new Cards(presets[presetDeck].size(preset),
