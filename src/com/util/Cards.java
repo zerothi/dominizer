@@ -485,10 +485,11 @@ public class Cards {
 	}
 	
 	public boolean contains(String cardName) {
+		if ( cardName == null )
+			return false;
 		for ( i = 0 ; i < size() ; i++ )
-			if ( getName(i) != null )
-				if ( getName(i).equals(cardName) )
-					return true;
+			if ( cardName.equals(getName(i)) )
+				return true;
 		return false;
 	}
 	

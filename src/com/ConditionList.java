@@ -7,6 +7,8 @@ import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Item;
+import javax.microedition.lcdui.ItemStateListener;
 //#if dominizer.ticker
 import javax.microedition.lcdui.Ticker;
 //#endif
@@ -24,7 +26,7 @@ import de.enough.polish.util.Locale;
  * @author nick
  *
  */
-public class ConditionList extends List implements CommandListener {
+public class ConditionList extends List implements CommandListener, ItemStateListener {
 	
 	private ConditionTableForm ptF = null;
 	private Command selectCmd = new Command( Locale.get("polish.command.select"), Command.BACK, 0);
@@ -35,9 +37,6 @@ public class ConditionList extends List implements CommandListener {
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.ITEM, 50);
 	
 	private String newName = null, newCondition = null;
-	//#if dominizer.ticker
-		private Ticker ticker = null;
-	//#endif
 	private int listType = 0;
 	
 	private boolean isOnGauge = true;
@@ -49,26 +48,18 @@ public class ConditionList extends List implements CommandListener {
 		super(title, listType);
 		this.listType = listType;
 		addCommand(selectCmd);
-		//#debug dominizer
-		System.out.println("initializing with " + Dominion.I().condition.getPreferredCondition());
 		populateConditions();
 		//#= setSelectCommand(selectCmd);
 		addCommand(newCmd);
 		addCommand(showCmd);
 		//addCommand(perGaugeCmd);
-		addCommand(deleteCmd);
+		//addCommand(deleteCmd);
 		addCommand(quitCmd);
 		setCommandListener(this);
+		setItemStateListener(this);
 		//#debug dominizer
 		System.out.println("initializing conditionTableForm");
 		ptF = new ConditionTableForm();
-		//#if dominizer.ticker
-			//#style mainTicker
-			ticker = new Ticker("< >");
-			if ( getCurrentIndex() > -1 )
-				ticker.setString("< " + Dominion.I().condition.getCondition(getCurrentIndex()) + " >");		
-			setTicker(ticker);
-		//#endif
 		if ( Dominion.I().condition.getPreferredCondition() < this.size() ) {
 			setSelectedIndex(Dominion.I().condition.getPreferredCondition(), true);
 			focus(Dominion.I().condition.getPreferredCondition());
@@ -86,6 +77,8 @@ public class ConditionList extends List implements CommandListener {
 			if ( Dominion.I().condition.getName(i) != null ) {
 				//#style label
 				ci = new CardItem(Dominion.I().condition.getName(i), listType);
+				if ( i >= Dominion.I().condition.getInitialConditions() )
+					ci.addCommand(deleteCmd);
 				append(ci);
 				//setPercentage(i, Dominion.I().condition.getPercentage(i));
 			}
@@ -157,10 +150,6 @@ public class ConditionList extends List implements CommandListener {
 	}
 	
 	public void keyPressed(int keyCode) {
-		//#if dominizer.ticker
-			ticker.setString("< " + Dominion.I().condition.getCondition(getCurrentIndex()) + " >");
-		//#endif
-		Dominion.I().condition.setPreferredCondition(getSelectedIndex());
 		switch (keyCode) {
 		case Canvas.KEY_NUM0:
 		case Canvas.KEY_NUM1:
@@ -180,14 +169,15 @@ public class ConditionList extends List implements CommandListener {
 		default:
 			//#= super.keyPressed(keyCode);
 		}
+		Dominion.I().condition.setPreferredCondition(getSelectedIndex());
 	}
 
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(selectCmd) ) {
 			try {
-				Dominion.I().condition.setPreferredCondition(getCurrentIndex());
 				setSelectedIndex(getCurrentIndex(), true);
-				Dominion.I().randomizeCards(-1, Dominion.RAND_HOLD + Dominion.RAND_CONDITION, getCurrentIndex());
+				Dominion.I().condition.setPreferredCondition(getCurrentIndex());
+				Dominion.I().randomizeCards(-1, Dominion.RAND_HOLD + Dominion.RAND_CONDITION);
 				ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.CURRENT_SET));
 				GameApp.instance().changeToScreen(ShowCardsForm.instance());
 			} catch (DominionException e) {
@@ -229,5 +219,11 @@ public class ConditionList extends List implements CommandListener {
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel"))) {
 			GameApp.instance().changeToScreen(null);
 		}
+	}
+
+	public void itemStateChanged(Item arg0) {
+		Dominion.I().condition.setPreferredCondition(getSelectedIndex());
+		//#debug dominizer
+		System.out.println("item state changed" + getCurrentIndex() + " and " + getSelectedIndex()+ " current condition is: " + Dominion.I().condition.getPreferredCondition());
 	}
 }

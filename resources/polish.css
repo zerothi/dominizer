@@ -1,60 +1,58 @@
-colors {
-	/* the overlay color for background screens */
-	overlay: argb( 136, 0, 0, 0 );
-	bgColor:  					rgb(0,10,25);
-	brightBgColor:  			rgb(0,25,50);
-	hiddenBrightBgColor:  		rgb(100,125,150);
-	evenBrightColor: 			rgb(10,45,65);
-	eevenBrightColor: 			rgb(40,70,95);
-	translucentBgColor:  		argb(130, 165,190,247);
-	darkTranslucentBgColor: 	argb(100, 145,175,247);
-	/* Font Colors */
-	titleFontColor: 			rgb(175,210,247);
-	fontColor: 					rgb( 76, 95,160);
-	hiddenFontColor: 			rgb(166,185,248);
-	brightFontColor: 			white; 
-	translucentFontColor:  		argb(130, 165,190,247);
-	translucentBrightFontColor: argb(150, 175,210,247);
-	completelyTransparentColor: argb(255, 0 ,0 ,0);
+/*colors {
+	darkBackgroundColor:  				rgb(0,10,25);
+	brightBackgroundColor:  			rgb(0,25,50);
+	veryBrightBackgroundColor:  		rgb(100,125,150);
+	selectionBackgroundColor: 			rgb(10,45,65);
+	eevenBrightColor: 					rgb(40,70,95);
+	borderSelectedColor:  				argb(130, 165,190,247);
 	
-	maskColor: 					red;
-	splitTop: 					brightBgColor;
-	splitBot: 					bgColor;
+	titleFontColor: 					rgb(175,210,247);
+	fontColor: 							rgb( 76, 95,160);
+	selectedFontColor:  				argb(130, 165,190,247);
+}*/
+colors {
+	darkBackgroundColor:  				rgb(5,5,5);
+	brightBackgroundColor:  			rgb(30,30,30);
+	veryBrightBackgroundColor:  		rgb(110,110,110);
+	selectionBackgroundColor: 			rgb(50,50,50);
+	eevenBrightColor: 					rgb(80,80,80);
+	borderSelectedColor:  				argb(130, 190,190,190);
+	
+	titleFontColor: 					rgb(205,205,205);
+	fontColor: 							rgb(100,100,100);
+	selectedFontColor:  				argb(130, 205,205,205);
 }
 
 backgrounds {
 	titleGradient {
 		type: vertical-gradient;
-		top-color: splitTop;
-		bottom-color: splitBot;
+		top-color: brightBackgroundColor;
+		bottom-color: darkBackgroundColor;
 	}
 	alertTop {
 		type: round-rect;
-		color: translucentBgColor;
+		color: borderSelectedColor;
 	}
 	alertBg {
 		type: round-rect;
-		color: darkTranslucentBgColor;
+		color: veryBrightBackgroundColor;
 	}
 	alertOverlay {
 		color: fontColor;
 	}
-	plainBg {
-		color: brightBgColor;
-	}
 	selectedPlainBg {
-		color: eevenBrightColor;
+		color: selectionBackgroundColor;
 	}
 	selectedBg {
 		type: round-rect;
 		arc: 8;
-		color: brightBgColor;
-		border-color: fontColor;
+		color: brightBackgroundColor;
+		border-color: veryBrightBackgroundColor;
 		border-width: 2;
 	}
 	selectedSmallArcBg {
 		type: round-rect;
-		arc: 5;
+		arc: 3;
 		color: eevenBrightColor;
 		border-color: eevenBrightColor;
 		border-width: 0;
@@ -88,7 +86,7 @@ title {
 
 label {
 	background {
-		color: brightBgColor;
+		color: brightBackgroundColor;
 	}
 	font {
 		style: bold;
@@ -111,13 +109,12 @@ label {
 .labelCard extends label {
 	layout: expand | left;
 }
-
-.labelCard:hover {
+.labelCard:hover extends focused {
 	padding: 2;
 	background: selectedBg;
 	font {
 		style: bold;
-		color: translucentBrightFontColor;
+		color: selectedFontColor;
 		size: small;
 	}
 	layout: expand | left;
@@ -134,7 +131,7 @@ focused {
 	background: selectedBg;
 	font {
 		style: bold;
-		color: translucentBrightFontColor;
+		color: selectedFontColor;
 		size: small;
 	}
 	layout: expand | center;
@@ -151,11 +148,11 @@ focused {
 	padding-left: 10;
 	padding-right: 10;
 	layout: horizontal-expand | horizontal-center | vertical-center;
-	font-color: translucentFontColor;
+	font-color: selectedFontColor;
 	background {
 		type: vertical-gradient;
-		top-color: splitTop;
-		bottom-color: splitBot;
+		top-color: brightBackgroundColor;
+		bottom-color: darkBackgroundColor;
 	}
 }
 .mainScreen:landscape {}
@@ -175,11 +172,11 @@ focused {
 	padding: 2;
 	padding-left: 10;
 	padding-right: 10;
-	font-color: translucentFontColor;
+	font-color: selectedFontColor;
 	background {
 		type: vertical-gradient;
-		top-color: splitTop;
-		bottom-color: splitBot;
+		top-color: brightBackgroundColor;
+		bottom-color: darkBackgroundColor;
 	}
 	//#if polish.android
 		layout: top | vertical-shrink;
@@ -220,16 +217,6 @@ listItem {
 }
 @media touchscreen {
 	.mainCommand {
-		font-size: medium;
-	}
-}
-
-.mainItem {
-	font-color: translucentBrightFontColor;
-	font-size: small;
-}
-@media touchscreen {
-	.mainItem {	
 		font-size: medium;
 	}
 }
@@ -288,7 +275,7 @@ info {
 .horizontalChoice {
 	label-style: choiceGroupLabel;
 	background-type: round-rect;
-	background-color: darkTranslucentBgColor;
+	background-color: borderSelectedColor;
 	include-label: true;
 	layout: expand;
 	view-type: horizontal-choice;
@@ -296,7 +283,7 @@ info {
 	horizontalview-right-arrow: url( arrow-right.png );
 }
 .horizontalChoice:hover {
-	background-color: translucentBgColor;
+	background-color: borderSelectedColor;
 }
 
 .choiceItem {
@@ -322,12 +309,12 @@ menubar {
 	margin: 0;
 	padding-top: 3;
 	padding: 2;
-	/*menubar-color: bgColor;*/
-	font-color: translucentFontColor;
+	/*menubar-color: darkBackgroundColor;*/
+	font-color: selectedFontColor;
 	background {
 		type: vertical-gradient;
-		top-color: bgColor;
-		bottom-color: brightBgColor;
+		top-color: darkBackgroundColor;
+		bottom-color: brightBackgroundColor;
 		start: 10%;
 		end: 100%;
 	}
@@ -345,7 +332,7 @@ leftcommand {
 		padding-top: 7;
 	//#endif
 	padding-bottom: 0;
-	font-color: translucentFontColor;
+	font-color: selectedFontColor;
 	font-style: plain;
 	font-size: small;
 }
@@ -393,7 +380,7 @@ menu {
 	padding: 2;
 	background: selectedBg;
 	font {
-		color: translucentFontColor;
+		color: selectedFontColor;
 		style: bold;
 		size: small;
 	}
@@ -419,7 +406,7 @@ menuItem {
 	padding: 2;
 	padding-left: 5;
 	font {
-		color: translucentFontColor;
+		color: selectedFontColor;
 		size: small;
 		style: bold;
 	}
@@ -428,7 +415,7 @@ menuItem {
 
 menuItem:hover {
 	background: selectedSmallArcBg;
-	font-color: translucentFontColor;
+	font-color: selectedFontColor;
 	layout: left | horizontal-expand;
 }
 @media touchscreen {
@@ -442,15 +429,15 @@ menuItem:hover {
 		padding-bottom: 4px;
 		font-size: medium;
 		background: selectedSmallArcBg;
-		font-color: translucentFontColor;
+		font-color: selectedFontColor;
 		layout: left | horizontal-expand;
 	}
 }
 
 .inputTextField {
 	padding: 5;
-	font-color: translucentBrightFontColor;
-	background-color: bgColor;
+	font-color: selectedFontColor;
+	background-color: darkBackgroundColor;
 	layout: horizontal-shrink | center;
 }
 
@@ -461,10 +448,10 @@ menuItem:hover {
 	padding: 0;
 	columns: 3;
 	columns-width: equal;
-	font-color: translucentFontColor;
+	font-color: selectedFontColor;
 	font-size: small;
 	table-selected-background: selectedPlainBg;
-	table-line-color: translucentFontColor;
+	table-line-color: selectedFontColor;
 	table-line-stroke: solid;
 	background: selectedBg;
 	view-type-sequential-traversal: true;
@@ -480,7 +467,7 @@ menuItem:hover {
 .tableHeading {
 	margin: 0px;
 	padding: 0px;
-	font-color: translucentFontColor;
+	font-color: selectedFontColor;
 	font-style: bold;
 	font-size: small;
 }
@@ -500,25 +487,16 @@ menuItem:hover {
 	font-size: small;
 }
 
-.tableCellCentered extends tableCell {
-	layout: vertical-shrink | center;
-	background {
-		type: radial-gradient;
-		outer-color: #a98934;
-		inner-color: #e9d363;
-	}
-}
-
 messageheadline {
 	min-width: 31%;
-	font-color: translucentFontColor;
+	font-color: selectedFontColor;
 	font-style: bold;
 	font-size: normal;
 	layout: center;
 }
 
 messagetext {
-	font-color: translucentFontColor;
+	font-color: selectedFontColor;
 	font-size: small;
 	layout: center;
 }
@@ -544,7 +522,10 @@ messagetext {
  **************/
 .tabbedPane {
 	title-menu: true;
-	ticker-position: bottom;
+	ticker-position: top;
+	/* nyt 
+	title-position: bottom;
+	*/
 }
 
 .tabbedPaneIcons {
@@ -552,12 +533,12 @@ messagetext {
 	view-type-sequential-traversal: true;
 	background {
 		type: vertical-gradient;
-		top-color: bgColor;
-		bottom-color: brightBgColor;
+		top-color: darkBackgroundColor;
+		bottom-color: brightBackgroundColor;
 	}
 	border {
 		top-width: 1;
-		color: translucentBgColor;
+		color: borderSelectedColor;
 	}
 	layout: expand;
 	ticker-position: bottom;
@@ -567,6 +548,7 @@ messagetext {
 	margin: 1px;
 	padding: 2px;
 	max-width: 33.3%;
+	min-width: 10%;
 	layout: expand | center | vertical-center;
 	font-size: small;
 	font-color: fontColor;
@@ -577,12 +559,12 @@ messagetext {
 	background {
 		type: round-rect;
 		arc: 8;
-		color: evenBrightColor;
+		color: selectionBackgroundColor;
 	}
 	border {
 		type: round-rect;
 		arc: 8;
-		color: translucentBgColor;
+		color: borderSelectedColor;
 	}
 	font-color: titleFontColor;
 }
@@ -613,10 +595,10 @@ messagetext {
 	ticker-direction: left;
 	padding-horizontal: 5;
 	layout: vertical-center;
-	font-color: translucentBrightFontColor;
+	font-color: selectedFontColor;
 	font-size: small;
 	text-effect: shadow;
-	text-shadow-color: translucentFontColor;
+	text-shadow-color: selectedFontColor;
 }
 @media touchscreen {
 	.mainTicker {
@@ -641,15 +623,15 @@ messagetext {
 }
 
 .loadingGauge {
-	gauge-background-color: bgColor;
+	gauge-background-color: darkBackgroundColor;
 	gauge-animation-mode: leftright;
-	gauge-gap-color: hiddenBrightBgColor;
+	gauge-gap-color: veryBrightBackgroundColor;
 	gauge-color: eevenBrightColor;
 	background-anchor: h-center | v-center;
 	background: selectedBg;
 	border {
 		type: drop-shadow;
-		inner-color: brightBgColor;
+		inner-color: brightBackgroundColor;
 		outer-color: eevenBrightColor;
 		width: 5;
 		orientation: all;

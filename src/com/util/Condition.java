@@ -9,9 +9,6 @@ public class Condition {
 	private int[] percentage;
 	private int preferredCondition = 0;
 	
-
-	private int initial = 8; // the number of conditions in the file
-	
 	public Condition(int size) {
 		if ( size == 0 )
 			return;
@@ -208,26 +205,32 @@ public class Condition {
 		}
 		return -1;
 	}
-
-	public void setInitial(int initial) {
-		this.initial = initial;
-	}
-
-	public int getInitial() {
-		return initial;
-	}
 	
 	/**
-	 * @return the preferredCondition
+	 * @return the preferred condition
 	 */
 	public int getPreferredCondition() {
-		return preferredCondition;
+		return preferredCondition & 127;
 	}
 
 	/**
 	 * @param preferredCondition the preferredCondition to set
 	 */
 	public void setPreferredCondition(int preferredCondition) {
-		this.preferredCondition = preferredCondition;
+		this.preferredCondition = (( this.preferredCondition >>> 7 ) << 7 ) | preferredCondition;
+	}
+	
+	/**
+	 * @return the initial conditions
+	 */
+	public int getInitialConditions() {
+		return preferredCondition >>> 7;
+	}
+
+	/**
+	 * @param initialConditions the number of initial conditions to set
+	 */
+	public void setInitialConditions(int initialConditions) {
+		this.preferredCondition = getPreferredCondition() + ( initialConditions << 7 );
 	}
 }

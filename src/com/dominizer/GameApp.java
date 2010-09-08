@@ -241,7 +241,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 			if ( SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.condition")) ) {
 				SettingsRecordStorage.instance().addData("preferred", "" + Dominion.I().condition.getPreferredCondition());
 				int userCreated = 0;
-				for ( i = Dominion.I().condition.getInitial() ; i < Dominion.I().condition.size() ; i++ ) {
+				for ( i = Dominion.I().condition.getInitialConditions() ; i < Dominion.I().condition.size() ; i++ ) {
 					SettingsRecordStorage.instance().addData("" + userCreated, Dominion.I().condition.getCondition(i));
 					SettingsRecordStorage.instance().addData("name" + userCreated, Dominion.I().condition.getNameAsSave(i));
 					userCreated++;

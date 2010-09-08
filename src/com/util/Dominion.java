@@ -517,13 +517,15 @@ public class Dominion {
 	
 	private boolean parseCondition(String option) {
 		boolean fulfilled = true;
+		//#debug dominizer
+		System.out.println("condition parsing: " + option);
 		for ( int i = 0 ; i < option.length() ; i++ ) {
 			if ( option.substring(i, i + 1).equals("(") ) {
 				int p = 0;
 				for ( int j = i + 1 ; j < option.length() ; j++ ) {
 					if ( option.charAt(j) == ')' && p == 0 ) {
 						p = j;
-						break;
+						j = option.length();
 					} else if ( option.charAt(j) == ')' ) {
 						p--;
 					} else if ( option.charAt(j) == '(' ) {
@@ -640,9 +642,11 @@ public class Dominion {
 	}
 	
 	public void randomizeCards(int playingSet, int randomizeMethod, int condition) throws DominionException {
-		int selectedElement = 0, tmpExp = 0, tmpPlayingSet = 0;
 		//#debug dominizer
-		System.out.println("trying to randomize with " + playingSet + ". With method " + randomizeMethod);
+		System.out.println("trying to randomize with " + playingSet + ". With method " + randomizeMethod + " and condition= " + condition);
+		if ( (randomizeMethod & RAND_CONDITION) > 0 && ( condition < 0 || condition >= this.condition.size() ) )
+			throw new DominionException(Locale.get("alert.Condition.NoSelection"));
+		int selectedElement = 0, tmpExp = 0, tmpPlayingSet = 0;
 		if ( (randomizeMethod & RAND_PREVENT) > 0 ) {
 			tmpPlayingSet = playingSet;
 			playingSet = 90;
@@ -659,7 +663,7 @@ public class Dominion {
 		 * We compare them by using the bit wise AND operator
 		 */
 		if ( (randomizeMethod & RAND_HOLD) > 0 )
-			useHoldCards(playingSet);
+			useHoldCards(playingSet, tmpPlayingSet);
 		if ( (randomizeMethod & RAND_EXPANSION_CARDS) > 0 )
 			useMinimumExpansionCards(playingSet);
 		if ( (randomizeMethod & RAND_PERCENTAGE_CARDS) > 0 )
@@ -675,8 +679,6 @@ public class Dominion {
 					tmpExp = getLinearExpansionIndex(selectedElement);
 					selectedElement = getLinearCardIndex(selectedElement);
 					if ( selectCard(playingSet, tmpExp, selectedElement, selected) ) {
-						//#debug dominizer
-						System.out.println("choosing expansion: " + tmpExp + ". together with card: " + selectedElement);
 						selected++;
 					}
 				}
@@ -687,6 +689,8 @@ public class Dominion {
 				} else {
 					resetIsPlaying(playingSet);
 					selected = 0;
+					if ( (randomizeMethod & RAND_HOLD) > 0 )
+						useHoldCards(playingSet, tmpPlayingSet);
 				}
 			}
 			if ( i < Condition.MAX_RUNS + Condition.MAX_RUNS ) {
@@ -694,6 +698,8 @@ public class Dominion {
 				System.out.println("condition failed");
 				throw new DominionException(Locale.get("randomize.condition.failed"));
 			}
+			//#debug dominizer
+			System.out.println("condition succeded with condition"+condition+" with name: "+ this.condition.getCondition(condition));
 		} else {
 			//#debug dominizer
 			System.out.println("using randomizing cards with total cards " + TOTAL_CARDS + " selected: " + selected);
@@ -703,8 +709,6 @@ public class Dominion {
 				tmpExp = getLinearExpansionIndex(selectedElement);
 				selectedElement = getLinearCardIndex(selectedElement);
 				if ( selectCard(playingSet, tmpExp, selectedElement, selected) ) {
-					//#debug dominizer
-					System.out.println("choosing expansion: " + tmpExp + ". together with card: " + selectedElement);
 					selected++;
 				}
 			}
@@ -714,11 +718,19 @@ public class Dominion {
 				for ( int j = 0 ; j < expansions[i].size() ; j++ ) {
 					if ( expansions[i].isPlayingSet(j, tmpPlayingSet) )
 						expansions[i].setPlaying(j, 0);
-					if ( expansions[i].isPlayingSet(j, playingSet) )
+					if ( expansions[i].isHold(j, playingSet) ) {
+						expansions[i].setPlaying(j, tmpPlayingSet);
+						expansions[i].setHoldCard(j, true);
+					} else if ( expansions[i].isPlayingSet(j, playingSet) )
 						expansions[i].setPlaying(j, tmpPlayingSet);
 				}
 			playingSet = tmpPlayingSet;
 		}
+		if ( selected != numberOfRandomCards ) {
+			removePlayingSet(playingSet);
+			throw new DominionException(Locale.get("alert.NotEnoughSelectedCards"));
+		}
+			
 		if ( playingSet > CURRENT_SET )
 			CURRENT_SET = playingSet;
 		//#debug dominizer
@@ -976,7 +988,7 @@ public class Dominion {
 			condition = new Condition(i + start);
 			//#debug dominizer
 			System.out.println("readed conditions: "+condition.size());
-			condition.setInitial(i);
+			condition.setInitialConditions(i);
 			start = 0;
 			isr = new InputStreamReader(getClass().getResourceAsStream("/condition"), "UTF8");
 			while ((ch = isr.read()) > -1) {
@@ -987,7 +999,7 @@ public class Dominion {
 					condition.setName(start, sb.toString().trim().substring(0, sb.toString().trim().indexOf(':')));
 					condition.setAvailable(start, true);
 					condition.setPercentage(start, 0);
-					condition.setCondition(start, sb.toString().substring(sb.toString().indexOf(':')+1, sb.toString().length() - 1));
+					condition.setCondition(start, sb.toString().substring(sb.toString().indexOf(':')+1, sb.toString().length() - 1).trim());
 					sb.delete(0, sb.toString().length());
 					start++;
 				} else if ((char) ch == '\n') {
@@ -1053,9 +1065,9 @@ public class Dominion {
 	public void resetIsPlaying(int playingSet) {
 		for (int i = 0; i < expansions.length; i++)
 			for (int j = 0; j < expansions[i].size(); j++)
-				if ( playingSet <= 0 )
+				if ( playingSet < 0 )
 					expansions[i].setPlaying(j, 0);
-				else if ( expansions[i].isPlayingSet(j, playingSet) && !expansions[i].isHold(j, playingSet))
+				else if ( expansions[i].isPlayingSet(j, playingSet) && !expansions[i].isHold(j, playingSet) )
 					expansions[i].setPlaying(j, 0);
 		if ( playingSet <= 0 )
 			CURRENT_SET = 0;
@@ -1075,7 +1087,7 @@ public class Dominion {
 			if ( !expansions[exp].isHold(card, playingSet) )
 				expansions[exp].setPlaying(card, playingSet);
 			//#debug dominizer
-			System.out.println("accepted: " + exp + " - " + card + " with playingset " + expansions[exp].isPlaying(card));
+			System.out.println("accepted: " + exp + " - " + card + " with playingset " + expansions[exp].isPlaying(card) + " #:" + (selected + 1));
 			if ( placement == -1 ) {
 				for ( int i = 0 ; i < selectedCards.size() ; i++ )
 					if ( selectedCards.getName(i) == null ) {
@@ -1146,12 +1158,21 @@ public class Dominion {
 		return cards;
 	}
 	
-	public void useHoldCards(int playingSet) {
+	public void useHoldCards(int playingSet, int tmpPlayingSet) {
 		//#debug dominizer
 		System.out.println("using hold cards");
 		for ( int i = 0 ; i < expansions.length ; i++ ) {
 			for ( int j = 0 ; j < expansions[i].size() ; j++ ) {
-				if ( expansions[i].isHold(j, playingSet) ) {
+				if ( expansions[i].isHold(j, playingSet) && tmpPlayingSet <= 0 ) {
+					//#debug dominizer
+					System.out.println("using the regular HOLD");
+					selectCard(playingSet, i, j, -1);
+					selected++;
+				} else if ( expansions[i].isHold(j, tmpPlayingSet) && tmpPlayingSet > 0 ) {
+					//#debug dominizer
+					System.out.println("using the prevent HOLD");
+					expansions[i].setPlaying(j, playingSet);
+					expansions[i].setHoldCard(j, true);
 					selectCard(playingSet, i, j, -1);
 					selected++;
 				}
