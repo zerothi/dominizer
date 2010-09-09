@@ -12,6 +12,7 @@ import javax.microedition.rms.RecordStoreNotFoundException;
 import com.dominizer.GameApp;
 import com.util.CardPresets;
 import com.util.Dominion;
+import com.util.DominionException;
 import com.util.Rand;
 import com.util.SettingsRecordStorage;
 
@@ -95,10 +96,11 @@ public class PresetList extends List implements CommandListener {
 			if ( tmp[0] > -1 ) 
 				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(tmp[0], tmp[1]), Alert.FOREVER);
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.select")) ) {
-			if ( Dominion.I().selectPreset(getString(getCurrentIndex())) ) {
-				
+			try {
+				ShowCardsForm.instance().addNewCards(Dominion.I().selectPreset(-1, getString(getCurrentIndex())));
+			} catch (DominionException e) {
+				GameApp.instance().showAlert(e.toString());
 			}
-				// TODO add implementation of preset selection
 		} else if ( cmd.equals(quitCmd) ) {
 			GameApp.instance().quit();
 		} else if ( cmd.equals(deleteCmd) ) {

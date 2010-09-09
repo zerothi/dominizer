@@ -1101,30 +1101,39 @@ public class Dominion {
 		}
 		return false;
 	}
-
-	public boolean selectPreset(int presetDeck, int preset) {
+	
+	public Cards selectPreset(int playingSet, int presetDeck, int preset) {
 		//#debug dominizer
 		System.out.println("fetching preset: " + presetDeck + " and " + preset);
-		selectedCards = new Cards(presets[presetDeck].size(preset),
-				Cards.IS_NOT_SET);
+		resetSelectedCards();
+		if ( playingSet <= 0 )
+			playingSet = CURRENT_SET + 1;
+		if ( playingSet > CURRENT_SET )
+			return null; 
 		if (presetDeck > presets.length | preset >= presets[presetDeck].size())
-			return false;
+			return null;
 		for (int i = 0; i < presets[presetDeck].size(preset); i++) {
 			//#debug dominizer
 			System.out.println("selecting expansion: " + presets[presetDeck].getPresetCardExpansion(preset, i) + " and card: " + presets[presetDeck].getPresetCardPlacement(preset, i));
 			//#debug dominizer
 			System.out.println("card: " + expansions[presets[presetDeck].getPresetCardExpansion(preset, i)].getName(presets[presetDeck].getPresetCardPlacement(preset, i)));
-			selectedCards.setCard(i, expansions[presets[presetDeck].getPresetCardExpansion(preset, i)].getCard(presets[presetDeck].getPresetCardPlacement(preset, i)));
+			if ( selectCard(playingSet, presets[presetDeck].getPresetCardExpansion(preset, i), presets[presetDeck].getPresetCardPlacement(preset, i), -1) )
+				selected++;
 		}
-		return true;
+		if ( selected != numberOfRandomCards ) {
+			removePlayingSet(playingSet);
+			throw new DominionException(Locale.get("alert.NotEnoughSelectedCards"));
+		} else {
+			return sortCards(selectedCards, Cards.COMPARE_PREFERRED);
+		}
 	}
 
-	public boolean selectPreset(String presetName) {
+	public Cards selectPreset(int playingSet, String presetName) {
 		for (int i = 0; i < presets.length; i++)
 			for (int j = 0; j < presets[i].size(); j++)
 				if (presets[i].getPresetName(j).equals(presetName))
-					return selectPreset(i, j);
-		return false;
+					return selectPreset(playingSet, i, j);
+		return null;
 	}
 
 	public void setExpansionPlayingState(boolean[] isAvailable) {
