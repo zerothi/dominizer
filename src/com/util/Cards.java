@@ -5,18 +5,8 @@ import java.io.IOException;
 import javax.microedition.lcdui.Image;
 
 
-
 /**
  * @author nick
- *
- */
-/**
- * @author nick
- *
- */
-/**
- * @author nick
- *
  */
 public class Cards {
 

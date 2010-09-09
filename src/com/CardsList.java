@@ -48,6 +48,7 @@ public class CardsList extends List implements CommandListener {
 	private static Command randPureCmd = new Command( Locale.get("cmd.Randomize.Pure"), Command.ITEM, 9);
 	
 	private static Command optionsCmd = new Command( Locale.get("cmd.Options.Main"), Command.ITEM, 10);
+	private static Command prosperityDiceCmd = new Command( Locale.get("cmd.Prosperity.Dice"), Command.ITEM, 11);
 	private static Command showInfoCmd = new Command( Locale.get("cmd.ShowChosenCardInfo"), Command.ITEM, 12);
 	private static Command deleteSetCmd = new Command( Locale.get("cmd.Set.Delete"), Command.ITEM, 13);
 	private static Command deleteAllSetsCmd = new Command( Locale.get("cmd.Set.DeleteAll"), Command.ITEM, 14);
@@ -100,6 +101,8 @@ public class CardsList extends List implements CommandListener {
 			//#debug dominizer
 			System.out.println("appending to list with card "+cards.getName(i) + " index "+i + " is hold: " +cards.isHold(i) + " on set " + cardSet);
 		}
+		if ( cards.fromExpansion(Dominion.PROSPERITY) )
+			addCommand(prosperityDiceCmd);
 		updateCards(false);
 	}
 	
@@ -204,6 +207,8 @@ public class CardsList extends List implements CommandListener {
 			} catch (DominionException e) {
 
 			}*/
+		} else if (cmd.equals(prosperityDiceCmd) ) {
+			//TODO insert prosperity Dice code!
 		} else if ( cmd.equals(saveCmd) ) {
 			GameApp.instance().changeToScreen(InputForm.instance().instance(Locale.get("screen.RandomizedCards.InputMessage"), this));
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.ok"))) {

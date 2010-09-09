@@ -1,10 +1,10 @@
 package com;
 
 
-
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.ItemStateListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Image;
 
@@ -15,7 +15,7 @@ import com.util.DominionException;
 import de.enough.polish.ui.List;
 import de.enough.polish.util.Locale;
 
-public class EditCardsList extends List implements CommandListener {
+public class EditCardsList extends List implements CommandListener, ItemStateListener {
 	
 	private Command randomizeCmd = new Command(Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 	private Command perGaugeCmd = new Command( Locale.get("cmd.Percentage.Gauge"), Command.SCREEN, 7);
@@ -187,5 +187,10 @@ public class EditCardsList extends List implements CommandListener {
 				Dominion.I().getLinearCardIndex(index), isAvailable);
 		Dominion.expansions[Dominion.I().getLinearExpansionIndex(index)].setBlackMarketAvailable(
 				Dominion.I().getLinearCardIndex(index), isAvailable);
+	}
+	
+	public void itemStateChanged(Item it) {
+		changeCard(i, it.isSelected);
+		
 	}
 }

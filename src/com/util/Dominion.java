@@ -726,7 +726,7 @@ public class Dominion {
 				}
 			playingSet = tmpPlayingSet;
 		}
-		if ( selected != numberOfRandomCards ) {
+		if ( selected != getNumberOfRandomCards() ) {
 			removePlayingSet(playingSet);
 			throw new DominionException(Locale.get("alert.NotEnoughSelectedCards"));
 		}
@@ -1120,7 +1120,7 @@ public class Dominion {
 			if ( selectCard(playingSet, presets[presetDeck].getPresetCardExpansion(preset, i), presets[presetDeck].getPresetCardPlacement(preset, i), -1) )
 				selected++;
 		}
-		if ( selected != numberOfRandomCards ) {
+		if ( selected != getNumberOfRandomCards() ) {
 			removePlayingSet(playingSet);
 			throw new DominionException(Locale.get("alert.NotEnoughSelectedCards"));
 		} else {
