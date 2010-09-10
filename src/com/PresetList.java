@@ -21,10 +21,13 @@ import de.enough.polish.util.Locale;
 
 public class PresetList extends List implements CommandListener {
 	
-	private Command selectCmd = new Command( Locale.get("polish.command.select"), Command.SCREEN, 6);
-	private Command infoCmd = new Command( Locale.get("cmd.Preset.ShowInfo"), Command.SCREEN, 2);
-	private Command deleteCmd = new Command( Locale.get("cmd.Preset.DeletePreset"), Command.SCREEN, 4);
 	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
+	
+	private Command infoCmd = new Command( Locale.get("cmd.Preset.ShowInfo"), Command.SCREEN, 2);
+	private Command selectCmd = new Command( Locale.get("polish.command.select"), Command.SCREEN, 6);
+	private Command deleteCmd = new Command( Locale.get("cmd.Preset.DeletePreset"), Command.SCREEN, 7);
+	private Command gotoCmd = new Command( Locale.get("cmd.Goto.RandomizeSets"), Command.SCREEN, 8);
+	
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
 	
 	public PresetList(String title, int listType) {
@@ -37,6 +40,7 @@ public class PresetList extends List implements CommandListener {
 		addCommand(infoCmd);
 		addCommand(quickRandomizeCardsCmd);
 		addCommand(quitCmd);
+		addCommand(gotoCmd);
 		setCommandListener(this);
 		for ( int i = 0 ; i < Dominion.I().presetSize() ; i++ )
 			addPresets(Dominion.I().getPreset(i));
@@ -97,10 +101,17 @@ public class PresetList extends List implements CommandListener {
 				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(tmp[0], tmp[1]), Alert.FOREVER);
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.select")) ) {
 			try {
-				ShowCardsForm.instance().addNewCards(Dominion.I().selectPreset(-1, getString(getCurrentIndex())));
+				Dominion.I().selectPreset(-1, getString(getCurrentIndex()));
+				ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
+				GameApp.instance().changeToScreen(ShowCardsForm.instance());
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}
+		} else if ( cmd.equals(gotoCmd) ) {
+			if ( Dominion.I().getCurrentSet() > 0 )
+				GameApp.instance().changeToScreen(ShowCardsForm.instance());
+			else
+				GameApp.instance().showInfo(Locale.get("info.randomized.Sets.NoneCreated"), Alert.FOREVER);
 		} else if ( cmd.equals(quitCmd) ) {
 			GameApp.instance().quit();
 		} else if ( cmd.equals(deleteCmd) ) {

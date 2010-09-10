@@ -12,7 +12,7 @@ import de.enough.polish.util.Locale;
 public class Dominion {
 	private static Dominion dom = null;
 	public static int TOTAL_CARDS = 25 + 25 + 26 + 12 + 3 + 25;
-	public static final int MAX_SETS = 6;
+	public static final int MAX_SETS = 15;
 	public static final int BASE = 0; // has 25 cards
 	public static final int INTRIGUE = 1; // has 25 cards
 	public static final int SEASIDE = 2; // has 26 cards
@@ -650,14 +650,17 @@ public class Dominion {
 		if ( (randomizeMethod & RAND_PREVENT) > 0 ) {
 			tmpPlayingSet = playingSet;
 			playingSet = 90;
-		} else if ( playingSet > 0 ){
+		} else if ( playingSet > 0 ) {
 			resetIsPlaying(playingSet);
 		}
 		checkAvailability();
-		resetSelectedCards();
+		selectedCards = new Cards(getNumberOfRandomCards(), Cards.IS_NOT_SET);
+		selected = 0;
 		
 		if ( playingSet < 0 )
-			playingSet = CURRENT_SET + 1;
+			playingSet = getCurrentSet() + 1;
+		if ( playingSet > MAX_SETS )
+			throw new DominionException(Locale.get("alert.NoMoreSets"));
 		/**
 		 * RandomizeMethod contains a bit number 0 + 1 + 2 + 4 + 8...
 		 * We compare them by using the bit wise AND operator
@@ -731,8 +734,8 @@ public class Dominion {
 			throw new DominionException(Locale.get("alert.NotEnoughSelectedCards"));
 		}
 			
-		if ( playingSet > CURRENT_SET )
-			CURRENT_SET = playingSet;
+		//if ( playingSet > CURRENT_SET )
+			//CURRENT_SET = playingSet;//TODO what if playingSet == CURRENT_SET + 2 
 		//#debug dominizer
 		System.out.println("exiting randomize method. found " + selected + " cards");
 	}
@@ -949,7 +952,7 @@ public class Dominion {
 					expansions[card[0]].setPlaying(card[1], numberSaves);
 				}
 			}
-			CURRENT_SET = numberSaves;
+			//CURRENT_SET = numberSaves;
 			numberSaves++;
 		}
 		
@@ -957,7 +960,7 @@ public class Dominion {
 		System.out.println("finished reading old randomized cards");
 		
 		//#debug dominizer
-		System.out.println("start reading preferres sort");
+		System.out.println("start reading preferred sort");
 		tmp = SettingsRecordStorage.instance().readKey(Locale.get("rms.preferredsort"));
 		//#debug dominizer
 		System.out.println("sort: " + tmp);
@@ -1058,8 +1061,6 @@ public class Dominion {
 				}
 			}
 		}
-		if ( CURRENT_SET > 0 )
-			CURRENT_SET--;
 	}
 
 	public void resetIsPlaying(int playingSet) {
@@ -1069,13 +1070,6 @@ public class Dominion {
 					expansions[i].setPlaying(j, 0);
 				else if ( expansions[i].isPlayingSet(j, playingSet) && !expansions[i].isHold(j, playingSet) )
 					expansions[i].setPlaying(j, 0);
-		if ( playingSet <= 0 )
-			CURRENT_SET = 0;
-	}
-	
-	public void resetSelectedCards() {
-		selectedCards = new Cards(getNumberOfRandomCards(), Cards.IS_NOT_SET);
-		selected = 0;
 	}
 	
 	public boolean selectCard(int playingSet, int exp, int card, int placement) {
@@ -1102,16 +1096,36 @@ public class Dominion {
 		return false;
 	}
 	
-	public Cards selectPreset(int playingSet, int presetDeck, int preset) {
+	public int getCurrentSet() {
+		int tmp = 0;
+		for ( int i = 0 ; i < expansions.length ; i++ ) {
+			for ( int j = 0 ; j < expansions[i].size() ; j++ ) {
+				if ( expansions[i].isPlaying(j) > 100 && expansions[i].isPlaying(j) - 100 > tmp )
+					tmp = expansions[i].isPlaying(j) - 100;
+				else if ( expansions[i].isPlaying(j) < 100 && expansions[i].isPlaying(j) > tmp )
+					tmp = expansions[i].isPlaying(j);
+			}
+		}
+		return tmp;
+	}
+	
+	public void selectPreset(int playingSet, int presetDeck, int preset) throws DominionException {
 		//#debug dominizer
 		System.out.println("fetching preset: " + presetDeck + " and " + preset);
-		resetSelectedCards();
+		if ( playingSet > 0 )
+			resetIsPlaying(playingSet);
+		checkAvailability();
+		selectedCards = new Cards(getNumberOfRandomCards(), Cards.IS_NOT_SET);
+		selected = 0;
+		
 		if ( playingSet <= 0 )
-			playingSet = CURRENT_SET + 1;
-		if ( playingSet > CURRENT_SET )
-			return null; 
-		if (presetDeck > presets.length | preset >= presets[presetDeck].size())
-			return null;
+			playingSet = getCurrentSet() + 1;
+		if ( playingSet > MAX_SETS )
+			throw new DominionException(Locale.get("alert.NoMoreSets") + " Cur: " + getCurrentSet() + " Playing: " + playingSet);
+		if ( presetDeck >= presets.length )
+			throw new DominionException(Locale.get("alert.preset.WrongInput"));
+		if ( preset >= presets[presetDeck].size() )
+			throw new DominionException(Locale.get("alert.preset.WrongInput"));
 		for (int i = 0; i < presets[presetDeck].size(preset); i++) {
 			//#debug dominizer
 			System.out.println("selecting expansion: " + presets[presetDeck].getPresetCardExpansion(preset, i) + " and card: " + presets[presetDeck].getPresetCardPlacement(preset, i));
@@ -1122,18 +1136,22 @@ public class Dominion {
 		}
 		if ( selected != getNumberOfRandomCards() ) {
 			removePlayingSet(playingSet);
-			throw new DominionException(Locale.get("alert.NotEnoughSelectedCards"));
-		} else {
-			return sortCards(selectedCards, Cards.COMPARE_PREFERRED);
+			//#debug dominizer
+			System.out.println("selecting selected: " + selected);
+			throw new DominionException(Locale.get("alert.preset.CardAlreadyUsed") + " Cur: " + getCurrentSet() + " Playing: " + playingSet);
 		}
+		//if ( playingSet > CURRENT_SET )
+			//CURRENT_SET = playingSet;//TODO what if playingSet == CURRENT_SET + 2 
+		//return sortCards(selectedCards, Cards.COMPARE_PREFERRED);
 	}
 
-	public Cards selectPreset(int playingSet, String presetName) {
+	public void selectPreset(int playingSet, String presetName) throws DominionException {
 		for (int i = 0; i < presets.length; i++)
 			for (int j = 0; j < presets[i].size(); j++)
-				if (presets[i].getPresetName(j).equals(presetName))
-					return selectPreset(playingSet, i, j);
-		return null;
+				if (presets[i].getPresetName(j).equals(presetName)) {
+					selectPreset(playingSet, i, j);
+					return;
+				}
 	}
 
 	public void setExpansionPlayingState(boolean[] isAvailable) {

@@ -4,12 +4,16 @@ import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.List;
+
 
 import com.dominizer.GameApp;
 import com.util.Dominion;
 import com.util.DominionException;
 
+import de.enough.polish.ui.Alert;
+import de.enough.polish.ui.Item;
+import de.enough.polish.ui.ItemStateListener;
+import de.enough.polish.ui.List;
 import de.enough.polish.ui.UiAccess;
 import de.enough.polish.util.Locale;
 
@@ -21,10 +25,11 @@ import de.enough.polish.util.Locale;
  * @author nick
  *
  */
-public class QuickRandomizeList extends List implements CommandListener {
+public class QuickRandomizeList extends List implements CommandListener, ItemStateListener {
 
 	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
-	private Command gaugeCmd = new Command( Locale.get("cmd.SetCards.Gauge"), Command.ITEM, 15);
+	private Command gaugeCmd = new Command( Locale.get("cmd.SetCards.Gauge"), Command.ITEM, 7);
+	private Command gotoCmd = new Command( Locale.get("cmd.Goto.RandomizeSets"), Command.ITEM, 9);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.ITEM, 16);
 	public boolean[] flags = new boolean[Dominion.USER+1];
 	private int tmp = 0;
@@ -45,24 +50,28 @@ public class QuickRandomizeList extends List implements CommandListener {
 		addCommand(quickRandomizeCardsCmd);
 		addCommand(gaugeCmd);
 		addCommand(quitCmd);
+		addCommand(gotoCmd);
 		setCommandListener(this);
+		setItemStateListener(this);
 	}
 
 	public void commandAction(Command cmd, Displayable screen) {
 		if ( cmd.equals(quickRandomizeCardsCmd) ) {
 			getSelectedFlags(flags);
 			Dominion.I().setExpansionPlayingState(flags);
-			GameApp.instance().ecFL.updateCards(false);
-			if ( Dominion.CURRENT_SET == 0 ) {
-				try {
-					Dominion.I().randomizeCards();
-					ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.CURRENT_SET));
-					GameApp.instance().changeToScreen(ShowCardsForm.instance());
-				} catch (DominionException e) {
-					GameApp.instance().showAlert(e.toString());
-				}
-			} else 
+			GameApp.instance().ecFL.updateCards(-1);
+			try {
+				Dominion.I().randomizeCards();
+				ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
 				GameApp.instance().changeToScreen(ShowCardsForm.instance());
+			} catch (DominionException e) {
+				GameApp.instance().showAlert(e.toString());
+			}
+		} else if ( cmd.equals(gotoCmd) ) {
+			if ( Dominion.I().getCurrentSet() > 0 )
+				GameApp.instance().changeToScreen(ShowCardsForm.instance());
+			else
+				GameApp.instance().showInfo(Locale.get("info.randomized.Sets.NoneCreated"), Alert.FOREVER);
 		} else if ( cmd.equals(gaugeCmd) ) {
 			tmp = UiAccess.getFocusedIndex(this);
 			String tmpS = Dominion.getExpansionName(tmp);
@@ -110,8 +119,8 @@ public class QuickRandomizeList extends List implements CommandListener {
 
 	private void setCardsFromExpansion(int exp, int numberOfCards) {
 		if ( -1 < exp & exp < Dominion.I().getExpansions() ) {
-			if ( Dominion.I().expansions[exp].size() < numberOfCards ) {
-				String tmp = "" + Dominion.I().expansions[exp].size();
+			if ( Dominion.expansions[exp].size() < numberOfCards ) {
+				String tmp = "" + Dominion.expansions[exp].size();
 				GameApp.instance().showAlert(Locale.get("alert.CardsFromExpansion", tmp));
 			} else {
 				if ( numberOfCards > 0 ) {
@@ -131,5 +140,16 @@ public class QuickRandomizeList extends List implements CommandListener {
 				UiAccess.setFocusedIndex(this, 0);
 			UiAccess.setFocusedIndex(this, exp);
 		}
+	}
+
+//#if polish.android
+	@Override
+//#endif
+	public void itemStateChanged(Item it) {
+		//#debug dominizer
+		System.out.println("trying to set expansion playing state " + getCurrentIndex() + " isSelected: " + isSelected(getCurrentIndex()));
+		Dominion.I().setExpansionPlayingState(getCurrentIndex(), isSelected(getCurrentIndex()));
+		GameApp.instance().ecFL.updateCards(-1);
+		//changeCard(getCurrentIndex(), isSelected(getCurrentIndex()));
 	}
 }

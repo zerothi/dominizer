@@ -4,7 +4,6 @@ package com;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.ItemStateListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Image;
 
@@ -12,14 +11,19 @@ import com.dominizer.GameApp;
 import com.util.Dominion;
 import com.util.DominionException;
 
+import de.enough.polish.ui.Alert;
+import de.enough.polish.ui.Item;
+import de.enough.polish.ui.ItemStateListener;
 import de.enough.polish.ui.List;
 import de.enough.polish.util.Locale;
 
 public class EditCardsList extends List implements CommandListener, ItemStateListener {
 	
 	private Command randomizeCmd = new Command(Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
-	private Command perGaugeCmd = new Command( Locale.get("cmd.Percentage.Gauge"), Command.SCREEN, 7);
-	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 11);
+	private Command perGaugeCmd = new Command( Locale.get("cmd.Percentage.Gauge"), Command.ITEM, 7);
+	private Command gotoCmd = new Command( Locale.get("cmd.Goto.RandomizeSets"), Command.ITEM, 9);
+	
+	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.ITEM, 11);
 	private int[] tmp = new int[] { 0, 0};
 	
 	public EditCardsList(String title, int listType) {
@@ -40,7 +44,9 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 		addCommand(randomizeCmd);
 		addCommand(perGaugeCmd);
 		addCommand(quitCmd);
+		addCommand(gotoCmd);
 		setCommandListener(this);
+		setItemStateListener(this);
 	}
 	
 	public void keyPressed(int keyCode) {
@@ -56,7 +62,7 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 			for ( int i = 0 ; i <= Dominion.I().getLinearExpansionIndex(getCurrentIndex()) ; i++ ) {
 				tmp += Dominion.expansions[i].size();
 			}
-			if ( tmp == Dominion.TOTAL_CARDS )
+			if ( tmp >= Dominion.TOTAL_CARDS )
 				tmp = 0;
 			focus(tmp);
 			break;
@@ -76,22 +82,22 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 		default:
 			//#= super.keyPressed(keyCode);
 		}
-		updateCards(true, getCurrentIndex());
 	}
 	
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(randomizeCmd) ) {
-			updateCards(true);
-			if ( Dominion.CURRENT_SET == 0 ) {
-				try {
-					Dominion.I().randomizeCards();
-					ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.CURRENT_SET));
-					GameApp.instance().changeToScreen(ShowCardsForm.instance());
-				} catch (DominionException e) {
-					GameApp.instance().showAlert(e.toString());
-				}
-			} else 
+			try {
+				Dominion.I().randomizeCards();
+				ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
 				GameApp.instance().changeToScreen(ShowCardsForm.instance());
+			} catch (DominionException e) {
+				GameApp.instance().showAlert(e.toString());
+			}
+		} else if ( cmd.equals(gotoCmd) ) {
+			if ( Dominion.I().getCurrentSet() > 0 )
+				GameApp.instance().changeToScreen(ShowCardsForm.instance());
+			else
+				GameApp.instance().showInfo(Locale.get("info.randomized.Sets.NoneCreated"), Alert.FOREVER);
 		} else if ( cmd.equals(perGaugeCmd) ) {
 			/*if ( getFilterText().length() != 0 ) {
 				GameApp.instance().showAlert(Locale.get("alert.Filter.Availability"));
@@ -139,10 +145,6 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 		focus(index);
 	}
 	
-	public void updateCards(boolean localUpdate) {
-		updateCards(localUpdate, -1);
-	}
-	
 	private void appendCard(String cardName, Image expImage, Image costImage) {
 		//#style label
 		CardItem ci = new CardItem(cardName, List.MULTIPLE);
@@ -151,31 +153,21 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 		append(ci);
 	}
 	
-	public void updateCards(boolean localUpdate, int specific) {
-		if ( localUpdate ) {
-			if ( specific == -1 ) {
-				for ( int i = 0 ; i < size() ; i++ ) {
-					changeCard(i, getItem(i).isSelected);
-				}
-			} else {
-				changeCard(specific, getItem(specific).isSelected);
+	public void updateCards(int specific) {
+		if ( specific == -1 ) {
+			for ( int i = 0 ; i < size() ; i++ ) {
+				/*
+				//#debug dominizer
+				System.out.println("changing: " + i + " to state: " + Dominion.expansions[
+						Dominion.I().getLinearExpansionIndex(i)].isAvailable(
+						Dominion.I().getLinearCardIndex(i)));
+						*/
+				changeCard(i, Dominion.expansions[Dominion.I().getLinearExpansionIndex(i)]
+				                                      .isAvailable(Dominion.I().getLinearCardIndex(i)));
 			}
 		} else {
-			if ( specific == -1 ) {
-				for ( int i = 0 ; i < size() ; i++ ) {
-					/*
-					//#debug dominizer
-					System.out.println("changing: " + i + " to state: " + Dominion.expansions[
-							Dominion.I().getLinearExpansionIndex(i)].isAvailable(
-							Dominion.I().getLinearCardIndex(i)));
-							*/
-					changeCard(i, Dominion.expansions[Dominion.I().getLinearExpansionIndex(i)]
-					                                      .isAvailable(Dominion.I().getLinearCardIndex(i)));
-				}
-			} else {
-				changeCard(specific, Dominion.expansions[Dominion.I().getLinearExpansionIndex(specific)]
-				                                             .isAvailable(Dominion.I().getLinearCardIndex(specific)));
-			}
+			changeCard(specific, Dominion.expansions[Dominion.I().getLinearExpansionIndex(specific)]
+			                                             .isAvailable(Dominion.I().getLinearCardIndex(specific)));
 		}
 	}
 	
@@ -188,9 +180,10 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 		Dominion.expansions[Dominion.I().getLinearExpansionIndex(index)].setBlackMarketAvailable(
 				Dominion.I().getLinearCardIndex(index), isAvailable);
 	}
-	
+//#if polish.android
+	@Override
+//#endif
 	public void itemStateChanged(Item it) {
-		changeCard(i, it.isSelected);
-		
+		changeCard(getCurrentIndex(), isSelected(getCurrentIndex()));
 	}
 }

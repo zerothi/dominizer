@@ -32,6 +32,7 @@ public class ConditionList extends List implements CommandListener, ItemStateLis
 	private Command selectCmd = new Command( Locale.get("polish.command.select"), Command.BACK, 0);
 	private Command newCmd = new Command( Locale.get("screen.Condition.New"), Command.ITEM, 5);
 	private Command showCmd = new Command( Locale.get("cmd.Condition.Show"), Command.ITEM, 6);
+	private Command gotoCmd = new Command( Locale.get("cmd.Goto.RandomizeSets"), Command.ITEM, 8);
 	private Command perGaugeCmd = new Command( Locale.get("cmd.Percentage.Gauge"), Command.ITEM, 7);
 	private Command deleteCmd = new Command( Locale.get("polish.command.delete"), Command.ITEM, 10);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.ITEM, 50);
@@ -52,6 +53,7 @@ public class ConditionList extends List implements CommandListener, ItemStateLis
 		//#= setSelectCommand(selectCmd);
 		addCommand(newCmd);
 		addCommand(showCmd);
+		addCommand(gotoCmd);
 		//addCommand(perGaugeCmd);
 		//addCommand(deleteCmd);
 		addCommand(quitCmd);
@@ -178,11 +180,16 @@ public class ConditionList extends List implements CommandListener, ItemStateLis
 				setSelectedIndex(getCurrentIndex(), true);
 				Dominion.I().condition.setPreferredCondition(getCurrentIndex());
 				Dominion.I().randomizeCards(-1, Dominion.RAND_HOLD + Dominion.RAND_CONDITION);
-				ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.CURRENT_SET));
+				ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
 				GameApp.instance().changeToScreen(ShowCardsForm.instance());
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}
+		} else if ( cmd.equals(gotoCmd) ) {
+			if ( Dominion.I().getCurrentSet() > 0 )
+				GameApp.instance().changeToScreen(ShowCardsForm.instance());
+			else
+				GameApp.instance().showInfo(Locale.get("info.randomized.Sets.NoneCreated"), Alert.FOREVER);
 		} else if ( cmd.equals(newCmd) ) {
 			isOnGauge = false;
 			InputForm.instance().clearInput();

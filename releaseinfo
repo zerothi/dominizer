@@ -1,0 +1,71 @@
+Release info
+
+#Dominizer 0.18
+
+This new version of Dominizer (0.18) has some new features! I think I have remembered them all below!
+
+* You have the possibility of creating several simultaneous sets. Only limited by the number of cards in the database!
+* I have added new randomization methods:
+ * Randomize pure only randomizes with the holded cards (i.e. your settings on how many cards from [i]x[/i] expansion and the percentages on cards are thus not used.
+ * Randomize with conditions! (See further down). This randomization method does not utilize the how many cards from [i]x[/i] expansion and the percentages on cards.
+ * The old randomize prevent utilizes the settings on how many cards from [i]x[/i] expansion and the percentages on cards
+* If a Prosperity card is in the set, you have the possibility of rolling a dice! It tells you if you should add the rest of the Prosperity cards.
+* Icons:
+ * I have added all icons! All promo cards are now displayed correctly, the Black Market icon has been selected to represent the Promo card in the expansion overlay!
+ * On the card list overview I have added icons for displaying the cost of the card. Thus it makes it a little easier to remember!
+ * Cards which has Potion in its cost are displayed with a small potion beside the normal cost. Custom cards can only display Potion cost up to 1. The maximum Coin cost on potion cards is 9. Thus in the range Potion + 0 coin to Potion + 9 coins.
+ * Cards which doesn't have potion cost can be set to cost in the range 0 - 12.
+* The presets for Alchemy and Prosperity has been added!
+* A conditional randomizer has been added (this is the fun part! :D)
+ * The tab is located beside Preset, i.e. on the main screen as the fourth tab. (It is thus hidden outside the screen)
+ * Here there are a few preset conditions which I feel was useful:
+  ** Att. + Reac. or 0: Both have attack and reaction, otherwise have zero cards of both types.
+  ** Alch. 3+ or 0: Have 3 or more cards from Alchemy, otherwise have zero cards from Alchemy.
+  ** Att. + Reac. + Alch. 3+: A combination of the above two. I.e. Att. + Reac. AND Alch. 3+, otherwise Att. + Reac. AND Alch. 0, otherwise 0 Att. 0 Reac. AND Alch. 3+, otherwise 0 Att. 0 Reac. AND Alch. 0.
+  ** 0 Curse: No cards which adds Curse cards.
+  ** 2+Act. 2+Draws: Minimum have a set of cards which give 2+ Actions and 2+ Draws.
+  ** 2+Buys 2+Coins: Minimum have a set of cards which give 2+ Buys and 2+ Coins.
+  ** 1+Trash 1+Curse: Minimum have a set of cards which give 1+ trash option and 1+ Curse.
+  ** 0 Dur.: Zero Duration cards.
+ * As with user cards described below you can just add to the file "condition" to have them always included!
+* In the conditional you can also add your own condition. For a hint of how they are structured just use the Show command which shows how they are built up.
+ * They are basically written such as regularly boolean expression. & means AND, and | means OR. If you create your own REMEBER the PARENTHESIS!
+ * See for instance how the parenthesis are used in Att. + Reac. + Alch. 3+.
+ * A good thing is to write it on a paper before actually beginning, you have to delete everything if you have forgotten a parenthesis in the beginning.
+ * I would like to further develop the Conditional input form, so that it becomes easier and detects errors. But I believe that for now it should be good enough.
+ * The letters I use can be seen on the wikipage for [wikipage=Dominizer]. Expansions have Numbers on the left of the conditional operator <>=.
+ * I have not yet added cost to the condition. That is in progress! A major restructure of the conditional code needs done.
+ * When you randomize on the Set overview you can press Rand. cond. which uses the last used condition to randomize against. It also does it with holded cards. So you can hold a card, and then randomize with conditions.
+ * At the moment it will try to find a suitable set within 1000 iterations. If this fails it will not generate a new set. If you know that it is doable you should just keep on trying until it finds the correct set! (It does it randomly so it should eventually pop up :) )
+  ** Therefore you should also try to NOT press several times! It can take some time, for example it takes approximately 4-5 seconds for mine to run through 1000 conditions.
+* Another interesting thing is custom cards! I have added a file in the .jar file which is named "user". This holds custom user cards and gets a special icon which represents the user cards.
+ * There is really many different combinations of user cards, example Duration + Reaction etc. And I have tried to generate all combinations of 2. So Duration + Reaction + Attack will only have two of them displayed!
+ * If you want to add your custom cards you should follow the below guide
+ ** At the moment you cannot add cards from within the program. I found this more easy and more portable (in this way you can transfer it around and still maintain user cards, if they where "internally" created they would not be transferred, and you had to add them after each program update! Those are security terms for applications.)
+ ** Take a look at [wikipage=Dominizer_Cards] to see the formatting of cards etc.
+* All randomized sets are saved, and thus next time you open Dominizer you can goto the screen and see them. 
+
+
+Adding user cards:
+
+1. Rename .jar file to .zip.
+2. Open file .zip with a zip program.
+3. Open file "user" with notepad-like program (preferably one which opens it in UTF8-encoding, could lead to errors if not) from within the zip file. (If you do not know how this is done then search around, several zip/jar hacks use this method)
+4. Add cards as you like.
+5. Edit the top number to be the number of cards you have added.
+5. Save the file "user" from within the zip program. And rename to jar again.
+6. Now try an load it on the phone. If it works skip the rest of the steps.
+7. The reason is probably due to you having installed it from the jad file, or that the jad file is placed on the phone. The jad file is only a text file so you can edit it using whatever you like.
+8. In the jad file there is the following line, which has a number stating the size of the file:
+MIDlet-Jar-Size: 207094
+9. Edit that line to the new Jar size. (The jar will change size due to number of character differences and such.) You can check the file size using various methods. It is the actual size in bytes (NOT the disk-consumption size, and NOT kilobytes). The disk-consumption is usually larger than the actual file size.
+10. Now you should be good to go. Try and install again. Succeed? Skip next step.
+11. Go through all the steps and check that you did it correctly. One can open the zip without unzipping (which is what you should do) so if you have done it by unzipping and zipping, then it probably wont work (due to some archiving differences between jar and zip).
+
+A sample of the "user" file could be this:
+[c]3;
+Stone March:4:CA:b2;
+Stone Dead:3:CR:d;
+Stone Alchemy:4P:AR:b2;[/c]
+This will add those 3 cards but if you only wrote 2; in the top, it would only load the two first cards. Notice that it has to be in this format!
+ 

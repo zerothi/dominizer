@@ -1,15 +1,16 @@
-/*colors {
+colors {
 	darkBackgroundColor:  				rgb(0,10,25);
 	brightBackgroundColor:  			rgb(0,25,50);
 	veryBrightBackgroundColor:  		rgb(100,125,150);
 	selectionBackgroundColor: 			rgb(10,45,65);
 	eevenBrightColor: 					rgb(40,70,95);
-	borderSelectedColor:  				argb(130, 165,190,247);
+	borderSelectedColor:  				argb(100, 145,175,247);
 	
 	titleFontColor: 					rgb(175,210,247);
 	fontColor: 							rgb( 76, 95,160);
 	selectedFontColor:  				argb(130, 165,190,247);
-}*/
+}
+/*
 colors {
 	darkBackgroundColor:  				rgb(5,5,5);
 	brightBackgroundColor:  			rgb(30,30,30);
@@ -21,7 +22,7 @@ colors {
 	titleFontColor: 					rgb(205,205,205);
 	fontColor: 							rgb(100,100,100);
 	selectedFontColor:  				argb(130, 205,205,205);
-}
+}*/
 
 backgrounds {
 	titleGradient {
@@ -553,6 +554,20 @@ messagetext {
 	font-size: small;
 	font-color: fontColor;
 }
+@media touchscreen {
+	.tabIcon {
+		margin: 1px;
+		padding: 2px;
+		max-width: 33.3%;
+		min-width: 10%;
+		layout: expand | center | vertical-center;
+		font-size: small;
+		font-color: fontColor;
+		padding-top: 4px;
+		padding-bottom: 4px;
+		font-size: medium;
+	}
+}
 
 .tabIcon:hover {
 	padding: 1px;
@@ -568,24 +583,66 @@ messagetext {
 	}
 	font-color: titleFontColor;
 }
-
 @media touchscreen {
-	.tabIcon {
-		padding-top: 4px;
-		padding-bottom: 4px;
-		font-size: medium;
-	}
 	.tabIcon:hover {
+		padding: 1px;
+		background {
+			type: round-rect;
+			arc: 8;
+			color: selectionBackgroundColor;
+		}
+		border {
+			type: round-rect;
+			arc: 8;
+			color: borderSelectedColor;
+		}
+		font-color: titleFontColor;
 		padding-top: 4px;
 		padding-bottom: 4px;
 		font-size: medium;
 	}
-}	
-
-.tabIconSet extends tabIcon {
-	max-width: 12%;
 }
 
+.tabIconSet extends tabIcon {
+	max-width: 15%;
+}
+
+.tabIconSet:hover {
+	padding: 1px;
+	max-width: 21%;
+	background {
+		type: round-rect;
+		arc: 8;
+		color: selectionBackgroundColor;
+	}
+	border {
+		type: round-rect;
+		arc: 8;
+		color: borderSelectedColor;
+	}
+	font-color: titleFontColor;
+	
+}
+@media touchscreen {
+	.tabIconSet:hover {
+		padding: 1px;
+		max-width: 20%;
+		background {
+			type: round-rect;
+			arc: 8;
+			color: selectionBackgroundColor;
+		}
+		border {
+			type: round-rect;
+			arc: 8;
+			color: borderSelectedColor;
+		}
+		font-color: titleFontColor;
+		padding-top: 4px;
+		padding-bottom: 4px;
+		font-size: medium;
+	}
+}
 /**
  * Blackmarket ticker
  */

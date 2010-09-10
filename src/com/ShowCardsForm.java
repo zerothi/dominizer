@@ -30,13 +30,12 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 		addTabListener(this);
 		setTabbedFormListener(this);
 		cardSet = new CardsList[Dominion.MAX_SETS];
-		
 		for ( int i = 0 ; i < cardSet.length ; i++ ) {
-			cardSet[i] = new CardsList(null, List.MULTIPLE, i + 1);
+			cardSet[i] = new CardsList("#" + ( i + 1 ) , List.MULTIPLE, i + 1);
 			if ( Dominion.I().isSetPlaying(i + 1) ) {
 				try {
 					cardSet[i].setCards(Dominion.I().getSelectedCards(i + 1));
-					Dominion.CURRENT_SET = i + 1;
+					//Dominion.CURRENT_SET = i + 1;
 					//#= String tmp = "" + Dominion.CURRENT_SET;
 					//#style tabIconSet
 					//#= addTab(cardSet[i], null, Locale.get("screen.RandomizedCards.title.tab", tmp));
@@ -58,12 +57,14 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 	public void addNewCards(Cards cards) throws DominionException {
 		if ( cards == null )
 			return;
-		if ( Dominion.CURRENT_SET > getCount() && Dominion.CURRENT_SET <= cardSet.length ) {
-			cardSet[Dominion.CURRENT_SET - 1].setCards(cards);
-			//#= String tmp = "" + Dominion.CURRENT_SET;
+		//#debug dominizer
+		System.out.println("adding new cards " + Dominion.I().getCurrentSet() + " getCount=" + getCount() + " s" +cards.isPlaying(1));
+		if ( Dominion.I().getCurrentSet() > getCount() && Dominion.I().getCurrentSet() <= cardSet.length ) {
+			cardSet[Dominion.I().getCurrentSet() - 1].setCards(cards);
+			//#= String tmp = "" + Dominion.I().getCurrentSet();
 			//#style tabIconSet
-			//#= addTab(cardSet[Dominion.CURRENT_SET-1], null, Locale.get("screen.RandomizedCards.title.tab", tmp));
-			setFocus(Dominion.CURRENT_SET - 1);
+			//#= addTab(cardSet[Dominion.I().getCurrentSet()-1], null, Locale.get("screen.RandomizedCards.title.tab", tmp));
+			setFocus(Dominion.I().getCurrentSet() - 1);
 			updateBlackMarket();
 		} else {
 			throw new DominionException(Locale.get("alert.NoMoreSets"));

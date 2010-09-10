@@ -128,7 +128,7 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 	    addCommand(backCmd);
 	    setCommandListener(this);
     }
-      
+    
     public void setConditionTitle(String title) {
     	sITitle.setLabel(title);
     	GaugeForm.instance().setCommandListener(this);
@@ -218,6 +218,7 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 		tableItem.setSelectedCell(1, 1);
 		//tableItem.focusChild(4);
     }
+    
 
 	public void keyPressed(int keyCode) {
 		switch (keyCode) {
@@ -359,6 +360,8 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
     	} else if ( cmd.equals(doneCmd) ) {
     		GameApp.instance().cF.saveCondition();
     		GameApp.instance().changeToScreen(null);
+    		option = "";
+    		sI.setText("");
     	} else if ( cmd.equals(backCmd) ) {
     		GameApp.instance().changeToScreen(null);
     	} else if ( cmd.equals(deleteCmd) ) {

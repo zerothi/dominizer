@@ -226,7 +226,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 					SettingsRecordStorage.instance().addData("" + i, Dominion.I().getCurrentAsSave(i));
 					if ( Dominion.I().getCurrentAsSave(i) != null )
 						sets++;
-				} while ( i < 15 );
+				} while ( i < Dominion.MAX_SETS );
 				// TODO when option allows for setting this variable move it up!
 				SettingsRecordStorage.instance().addData(Locale.get("rms.randomized.saves"), "" + sets);
 				SettingsRecordStorage.instance().writeData();
@@ -237,7 +237,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		} catch (RecordStoreException e) {
 		}
 		try {
-			SettingsRecordStorage.instance().deleteRecordStore(Locale.get("rms.file.condition")); 
+			SettingsRecordStorage.instance().deleteRecordStore(Locale.get("rms.file.condition"));
 			if ( SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.condition")) ) {
 				SettingsRecordStorage.instance().addData("preferred", "" + Dominion.I().condition.getPreferredCondition());
 				int userCreated = 0;
@@ -272,13 +272,12 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 	public boolean notifyTabChangeRequested(int from, int to) {
 		switch ( from ) {
 		case TAB_QUICK:
-			qrF.getSelectedFlags(qrF.flags);
-			Dominion.I().setExpansionPlayingState(qrF.flags);
+			//qrF.getSelectedFlags(qrF.flags);
+			//Dominion.I().setExpansionPlayingState(qrF.flags);
 			//#debug dominizer
 			System.out.println("updating flags");
 			break;
 		case TAB_EDIT:
-			ecFL.updateCards(true);
 			//#debug dominizer
 			System.out.println("updating cards internal");
 			break;
@@ -290,7 +289,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		}
 		switch ( to ) {
 		case TAB_EDIT:
-			ecFL.updateCards(false);
+			//ecFL.updateCards(-1);
 			//#debug dominizer
 			System.out.println("updating cards external");
 			break;
