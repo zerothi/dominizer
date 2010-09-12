@@ -524,6 +524,9 @@ messagetext {
 .tabbedPane {
 	title-menu: true;
 	ticker-position: top;
+	view-type-sequential-traversal: true;
+	scrollbar-slider-color: eevenBrightColor;
+	scrollbar-slider-mode: item;
 	/* nyt 
 	title-position: bottom;
 	*/
@@ -541,6 +544,8 @@ messagetext {
 		top-width: 1;
 		color: borderSelectedColor;
 	}
+	scrollbar-slider-color: eevenBrightColor;
+	scrollbar-slider-mode: item;
 	layout: expand;
 	ticker-position: bottom;
 }

@@ -21,6 +21,7 @@ import com.util.SettingsRecordStorage;
 
 import de.enough.polish.ui.Alert;
 import de.enough.polish.ui.List;
+import de.enough.polish.ui.Style;
 import de.enough.polish.ui.UiAccess;
 import de.enough.polish.util.Locale;
 
@@ -67,7 +68,11 @@ public class CardsList extends List implements CommandListener {
 	
 	public CardsList(String title, int listType, int cardSet) {
 		//#style mainScreenSet
-		super(title, listType);
+		//#= this(title, listType, cardSet);
+	}
+	
+	public CardsList(String title, int listType, int cardSet, Style style) {
+		super(title, listType, style);
 		this.listType = listType;
 		this.cardSet = cardSet;
 		//setCommandRandomize(true);

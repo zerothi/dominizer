@@ -733,9 +733,6 @@ public class Dominion {
 			removePlayingSet(playingSet);
 			throw new DominionException(Locale.get("alert.NotEnoughSelectedCards"));
 		}
-			
-		//if ( playingSet > CURRENT_SET )
-			//CURRENT_SET = playingSet;//TODO what if playingSet == CURRENT_SET + 2 
 		//#debug dominizer
 		System.out.println("exiting randomize method. found " + selected + " cards");
 	}
@@ -952,7 +949,6 @@ public class Dominion {
 					expansions[card[0]].setPlaying(card[1], numberSaves);
 				}
 			}
-			//CURRENT_SET = numberSaves;
 			numberSaves++;
 		}
 		

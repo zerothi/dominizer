@@ -26,17 +26,16 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 		super(title);
 		//#debug dominizer
 		System.out.println("showing cards initialize");
-		
 		addTabListener(this);
 		setTabbedFormListener(this);
 		cardSet = new CardsList[Dominion.MAX_SETS];
 		for ( int i = 0 ; i < cardSet.length ; i++ ) {
+			//#style mainScreenSet
 			cardSet[i] = new CardsList("#" + ( i + 1 ) , List.MULTIPLE, i + 1);
 			if ( Dominion.I().isSetPlaying(i + 1) ) {
 				try {
 					cardSet[i].setCards(Dominion.I().getSelectedCards(i + 1));
-					//Dominion.CURRENT_SET = i + 1;
-					//#= String tmp = "" + Dominion.CURRENT_SET;
+					//#= String tmp = "" + (i + 1);
 					//#style tabIconSet
 					//#= addTab(cardSet[i], null, Locale.get("screen.RandomizedCards.title.tab", tmp));
 				} catch ( DominionException e) {
@@ -98,7 +97,8 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
      * @see de.enough.polish.ui.TabbedFormListener#notifyTabChangeRequested(int, int)
      */
     public boolean notifyTabChangeRequested(int oldTabIndex, int newTabIndex) {
-	    // TODO Auto-generated method stub
+    	//#debug dominizer
+    	System.out.println("we have a change from " + oldTabIndex + " to " + newTabIndex);
 	    return true;
     }
     
@@ -116,7 +116,6 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 	    			String tmp = "" + i;
 	    			//#style tabIconSet
 	    			addTab(cardSet[i - 1], null, Locale.get("screen.RandomizedCards.title.tab", tmp));
-	    			//Dominion.CURRENT_SET = i;
     			} catch ( DominionException e ) {
     				GameApp.instance().showAlert(Locale.get("alert.adding.cards"));
     			}
@@ -137,5 +136,29 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
     		setFocus(0);
     		repaint();
     	}
+    }
+    
+    public void keyReleased(int keyCode) {
+    	//#ifdef polish.hasPointerEvents
+		if ( !hasPointerEvents() )
+		{
+		//#endif
+		int gameAction = 0;
+		try {
+			gameAction = getGameAction(keyCode);
+		} catch (Exception e) {
+			// ignore
+		}
+    	if (gameAction == RIGHT && keyCode != KEY_NUM6 && getCurrentIndex() == size() - 1 ) {
+			setFocus(0);
+			return;
+		} else if (gameAction == LEFT && keyCode != KEY_NUM4 && getCurrentIndex() == 0 ) {
+			setFocus( size() - 1 );
+			return;
+		}
+    	//#ifdef polish.hasPointerEvents
+		}
+		//#endif
+		super.keyReleased(keyCode);
     }
 }	

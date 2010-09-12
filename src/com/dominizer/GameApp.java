@@ -123,7 +123,25 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		}*/
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.gui"));
 		//#style tabbedPane
-		tabbedPane = new TabbedPane(null);
+		tabbedPane = new TabbedPane(null) {
+			public void keyReleased(int keyCode) {
+				int gameAction = 0;
+				try {
+					gameAction = getGameAction(keyCode);
+				} catch (Exception e) {
+					// ignore
+				}
+		    	if (gameAction == RIGHT && keyCode != KEY_NUM6 && getCurrentIndex() == size() - 1 ) {
+					setFocus(0);
+					return;
+				} else if (gameAction == LEFT && keyCode != KEY_NUM4 && getCurrentIndex() == 0 ) {
+					setFocus( size() - 1 );
+					return;
+				} else {
+					super.keyReleased(keyCode);
+				}
+		    }
+		};
 		tabbedPane.addTabListener(this);
 		tabbedPane.setTabbedFormListener(this);
 		qrF = new QuickRandomizeList(null, List.MULTIPLE);
