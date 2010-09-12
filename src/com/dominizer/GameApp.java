@@ -237,15 +237,25 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		} catch (RecordStoreException e) {
 		}
 		try {
-			SettingsRecordStorage.instance().deleteRecordStore(Locale.get("rms.file.condition"));
+			//SettingsRecordStorage.instance().deleteRecordStore(Locale.get("rms.file.condition"));
 			if ( SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.condition")) ) {
+				//#debug dominizer
+				System.out.println("initial " + Dominion.I().condition.getInitialConditions() + " preferred " + Dominion.I().condition.getPreferredCondition());
+				//#debug dominizer
+				System.out.println("reached condition writing");
 				SettingsRecordStorage.instance().addData("preferred", "" + Dominion.I().condition.getPreferredCondition());
+				//#debug dominizer
+				System.out.println("added the preferred condition: " + Dominion.I().condition.getPreferredCondition());
 				int userCreated = 0;
 				for ( i = Dominion.I().condition.getInitialConditions() ; i < Dominion.I().condition.size() ; i++ ) {
 					SettingsRecordStorage.instance().addData("" + userCreated, Dominion.I().condition.getCondition(i));
 					SettingsRecordStorage.instance().addData("name" + userCreated, Dominion.I().condition.getNameAsSave(i));
+					//#debug dominizer
+					System.out.println("added condition: " + Dominion.I().condition.getNameAsSave(i) + " with condition: " + Dominion.I().condition.getCondition(i));
 					userCreated++;
 				}
+				//#debug dominizer
+				System.out.println("beginning to write conditions");
 				SettingsRecordStorage.instance().writeData();
 				SettingsRecordStorage.instance().closeRecord();
 			}

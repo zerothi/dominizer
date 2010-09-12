@@ -210,27 +210,29 @@ public class Condition {
 	 * @return the preferred condition
 	 */
 	public int getPreferredCondition() {
-		return preferredCondition & 127;
+		return ( preferredCondition & 127 );
 	}
 
 	/**
 	 * @param preferredCondition the preferredCondition to set
 	 */
 	public void setPreferredCondition(int preferredCondition) {
-		this.preferredCondition = (( this.preferredCondition >>> 7 ) << 7 ) | preferredCondition;
+		if ( preferredCondition >= 0 )
+			this.preferredCondition = ( ( ( this.preferredCondition >>> 7 ) << 7 ) | preferredCondition );
 	}
 	
 	/**
 	 * @return the initial conditions
 	 */
 	public int getInitialConditions() {
-		return preferredCondition >>> 7;
+		return ( preferredCondition >>> 7 );
 	}
 
 	/**
 	 * @param initialConditions the number of initial conditions to set
 	 */
 	public void setInitialConditions(int initialConditions) {
-		this.preferredCondition = getPreferredCondition() + ( initialConditions << 7 );
+		if ( preferredCondition >= 0 )
+			this.preferredCondition = ( ( initialConditions << 7 ) | getPreferredCondition() );
 	}
 }
