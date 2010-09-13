@@ -33,8 +33,8 @@ public class PresetList extends List implements CommandListener {
 	public PresetList(String title, int listType) {
 		//#style mainScreen
 		super(title, listType);
+		addCommand(selectCmd);
 		//#if !polish.android
-			addCommand(selectCmd);
 			//#= setSelectCommand(selectCmd);
 		//#endif
 		addCommand(infoCmd);

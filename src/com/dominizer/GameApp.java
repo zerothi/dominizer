@@ -123,7 +123,8 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		}*/
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.gui"));
 		//#style tabbedPane
-		tabbedPane = new TabbedPane(null) {
+		tabbedPane = new TabbedPane(null)
+			/*{
 			public void keyReleased(int keyCode) {
 				int gameAction = 0;
 				try {
@@ -141,7 +142,8 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 					super.keyReleased(keyCode);
 				}
 		    }
-		};
+		}*/
+		;
 		tabbedPane.addTabListener(this);
 		tabbedPane.setTabbedFormListener(this);
 		qrF = new QuickRandomizeList(null, List.MULTIPLE);

@@ -934,7 +934,7 @@ public class Dominion {
 		numberSaves = 1;
 		while ( SettingsRecordStorage.instance().readKey("" + numberSaves ) != null && numberSaves <= SETS_SAVE ) {
 			//#debug dominizer
-			System.out.println("reading from: " + SettingsRecordStorage.instance().readKey("" + numberSaves ));
+			System.out.println("reading from: " + SettingsRecordStorage.instance().readKey("" + numberSaves));
 			start = -1;
 			for ( i = 0 ; i < getNumberOfRandomCards() ; i++ ) {
 				start = SettingsRecordStorage.instance().readKey("" + numberSaves).indexOf(
@@ -951,7 +951,6 @@ public class Dominion {
 			}
 			numberSaves++;
 		}
-		
 		//#debug dominizer
 		System.out.println("finished reading old randomized cards");
 		

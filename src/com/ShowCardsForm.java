@@ -106,7 +106,6 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
     	int i = 0;
     	for ( i = this.size() - 1 ; i > -1 ; i-- )
     		removeTab(i);
-    	//Dominion.CURRENT_SET = 0;
     	for ( i = 1 ; i <= cardSet.length ; i++ ) {
     		if ( Dominion.I().isSetPlaying(i) ) {
     			try {
@@ -137,7 +136,7 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
     		repaint();
     	}
     }
-    
+    /*
     public void keyReleased(int keyCode) {
     	//#ifdef polish.hasPointerEvents
 		if ( !hasPointerEvents() )
@@ -161,4 +160,5 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 		//#endif
 		super.keyReleased(keyCode);
     }
+    */
 }	
