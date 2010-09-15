@@ -196,7 +196,7 @@
 	<target name="emuNokia"
 		description="invokes the emulator">
 		<exec executable="${wtk.runmidlet}" dir="./${dist.root.dir}" spawn="true">
-		    <arg value="./Nokia-Series40E3-Dominizer-${debugLang}.jad"/>
+		    <arg value="./Nokia-6303_classic-Dominizer-${debugLang}.jad"/>
 		</exec>
 	</target>
 	
@@ -229,7 +229,7 @@
 	
 	<target name="enableGeneric" depends="donotsign">
 		<property name="devices" value="Generic/AnyPhone"/>
-		<property name="device" value="Generic/AnyPhone"/>
+		<property name="device" value="Generic/debug"/>
 	</target>
 	
 	<target name="enableNokia" depends="donotsign">

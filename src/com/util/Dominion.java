@@ -317,16 +317,15 @@ public class Dominion {
 		return sb.toString();
 	}
 
-	public String getCurrentAsSave(int playingSet) {
+	public String getPlayingSetAsSave(int playingSet) {
 		StringBuffer sb = new StringBuffer(50);
 		for ( int i = 0; i < expansions.length; i++ )
 			for ( int j = 0; j < expansions[i].size(); j++ )
 				if ( expansions[i].isPlayingSet(j, playingSet) )
-					sb.append("" + SettingsRecordStorage.MEDIUM_SPLITTER
-						+ i + SettingsRecordStorage.SMALL_SPLITTER + j);
+					sb.append("" + SettingsRecordStorage.MEDIUM_SPLITTER	+ i + SettingsRecordStorage.SMALL_SPLITTER + j);
 		if ( sb.toString().trim().length() < 5 )
 			return null;
-		return sb.toString();
+		return sb.toString().trim();
 	}
 
 	public Cards getSelectedCards(int playingSet) throws DominionException {
@@ -934,7 +933,7 @@ public class Dominion {
 		numberSaves = 1;
 		while ( SettingsRecordStorage.instance().readKey("" + numberSaves ) != null && numberSaves <= SETS_SAVE ) {
 			//#debug dominizer
-			System.out.println("reading from: " + SettingsRecordStorage.instance().readKey("" + numberSaves));
+			System.out.println("reading from: " + numberSaves + ":" + SettingsRecordStorage.instance().readKey("" + numberSaves));
 			start = -1;
 			for ( i = 0 ; i < getNumberOfRandomCards() ; i++ ) {
 				start = SettingsRecordStorage.instance().readKey("" + numberSaves).indexOf(
@@ -946,7 +945,11 @@ public class Dominion {
 					else
 						card = getCardInfo(SettingsRecordStorage.instance().readKey("" + numberSaves).substring(start,
 								SettingsRecordStorage.instance().readKey("" + numberSaves).indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1)));
-					expansions[card[0]].setPlaying(card[1], numberSaves);
+					if ( expansions[card[0]].isPlaying(card[1]) > 0 ) {
+						//#debug dominizer
+						System.out.println("READING AN ALREADY SET CARD: " + card[0] + " and " + card[1]);
+					} else
+						expansions[card[0]].setPlaying(card[1], numberSaves);
 				}
 			}
 			numberSaves++;
@@ -993,7 +996,7 @@ public class Dominion {
 				sb.append((char) ch);
 				if ( (char) ch == ';' ) {
 					//#debug dominizer
-					System.out.println("condition processing " + sb.toString().substring(0, sb.toString().length() - 1));
+					System.out.println("condition processing " + sb.toString().trim().substring(0, sb.toString().trim().length() - 1));
 					condition.setName(start, sb.toString().trim().substring(0, sb.toString().trim().indexOf(':')));
 					condition.setAvailable(start, true);
 					condition.setPercentage(start, 0);

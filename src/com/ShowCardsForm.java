@@ -136,29 +136,4 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
     		repaint();
     	}
     }
-    /*
-    public void keyReleased(int keyCode) {
-    	//#ifdef polish.hasPointerEvents
-		if ( !hasPointerEvents() )
-		{
-		//#endif
-		int gameAction = 0;
-		try {
-			gameAction = getGameAction(keyCode);
-		} catch (Exception e) {
-			// ignore
-		}
-    	if (gameAction == RIGHT && keyCode != KEY_NUM6 && getCurrentIndex() == size() - 1 ) {
-			setFocus(0);
-			return;
-		} else if (gameAction == LEFT && keyCode != KEY_NUM4 && getCurrentIndex() == 0 ) {
-			setFocus( size() - 1 );
-			return;
-		}
-    	//#ifdef polish.hasPointerEvents
-		}
-		//#endif
-		super.keyReleased(keyCode);
-    }
-    */
 }	

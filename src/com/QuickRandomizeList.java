@@ -31,6 +31,9 @@ public class QuickRandomizeList extends List implements CommandListener, ItemSta
 	private Command gaugeCmd = new Command( Locale.get("cmd.SetCards.Gauge"), Command.ITEM, 7);
 	private Command gotoCmd = new Command( Locale.get("cmd.Goto.RandomizeSets"), Command.ITEM, 9);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.ITEM, 16);
+	//#if debugDominizer
+		private Command showInfoCmd = new Command("INFO", Command.ITEM, 10);
+	//#endif
 	public boolean[] flags = new boolean[Dominion.USER+1];
 	private int tmp = 0;
 	
@@ -51,6 +54,9 @@ public class QuickRandomizeList extends List implements CommandListener, ItemSta
 		addCommand(gaugeCmd);
 		addCommand(quitCmd);
 		addCommand(gotoCmd);
+		//#if debugDominizer
+			addCommand(showInfoCmd);
+		//#endif
 		setCommandListener(this);
 		setItemStateListener(this);
 	}
@@ -88,8 +94,14 @@ public class QuickRandomizeList extends List implements CommandListener, ItemSta
 			setCardsFromExpansion(tmp, GaugeForm.instance().getGaugeValue());
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel")) ) {
 			GameApp.instance().changeToScreen(null);
-		} else if ( cmd.equals(this.quitCmd) )
+		} else if ( cmd.equals(this.quitCmd) ) {
 			GameApp.instance().quit();
+		}
+		//#if debugDominizer
+			else if ( cmd.equals(showInfoCmd) ) {
+				GameApp.instance().showInfo("Current set: " + Dominion.I().getCurrentSet(), Alert.FOREVER);
+			}
+		//#endif
 	}
 
 	public void keyPressed(int keyCode) {

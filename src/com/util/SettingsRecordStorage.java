@@ -77,7 +77,7 @@ public class SettingsRecordStorage {
 		if ( data == null )
 			return null;
 		for ( int i = 0 ; i < data.size() ; i++ )
-			if ( data.elementAt(i).toString().startsWith(key) )
+			if ( data.elementAt(i).toString().startsWith(key + BIG_SPLITTER) )
 				return data.elementAt(i).toString().substring(key.length() + 1);
 		return null;
 	}

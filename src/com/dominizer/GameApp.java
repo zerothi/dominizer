@@ -239,14 +239,18 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 				SettingsRecordStorage.instance().addData(Locale.get("rms.preferredsort"), "" + Cards.COMPARE_PREFERRED);
 				int sets = 0;
 				i = 0;
+				//#debug dominizer
+				System.out.println("WRITING OLD SETS");
 				do {
 					i++;
 					SettingsRecordStorage.instance().deleteData("" + i);
 					// the data will not be added if the data is null. So no need to test!
-					SettingsRecordStorage.instance().addData("" + i, Dominion.I().getCurrentAsSave(i));
-					if ( Dominion.I().getCurrentAsSave(i) != null )
+					SettingsRecordStorage.instance().addData("" + i, Dominion.I().getPlayingSetAsSave(i));
+					if ( Dominion.I().getPlayingSetAsSave(i) != null )
 						sets++;
 				} while ( i < Dominion.MAX_SETS );
+				//#debug dominizer
+				System.out.println("DONE WRITING OLD SETS");
 				// TODO when option allows for setting this variable move it up!
 				SettingsRecordStorage.instance().addData(Locale.get("rms.randomized.saves"), "" + sets);
 				SettingsRecordStorage.instance().writeData();

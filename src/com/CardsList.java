@@ -261,7 +261,7 @@ public class CardsList extends List implements CommandListener {
 				GameApp.instance().showAlert(Locale.get("alert.Randomization.Save.IllegalChar"));
 			else if ( !InputForm.instance().getInput().equals("") ) {
 				SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.preset"));
-				SettingsRecordStorage.instance().addData(InputForm.instance().getInput(), Dominion.I().getCurrentAsSave(cardSet));
+				SettingsRecordStorage.instance().addData(InputForm.instance().getInput(), Dominion.I().getPlayingSetAsSave(cardSet));
 				try {
 					SettingsRecordStorage.instance().writeData();
 				} catch (RecordStoreFullException e) {

@@ -533,7 +533,7 @@ messagetext {
 }
 
 .tabbedPaneIcons {
-	view-type: horizontal;
+	view-type: horizontal; /* horizontal */
 	view-type-sequential-traversal: true;
 	background {
 		type: vertical-gradient;

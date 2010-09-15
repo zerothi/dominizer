@@ -23,6 +23,10 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 	private Command perGaugeCmd = new Command( Locale.get("cmd.Percentage.Gauge"), Command.ITEM, 7);
 	private Command gotoCmd = new Command( Locale.get("cmd.Goto.RandomizeSets"), Command.ITEM, 9);
 	
+	//#if debugDominizer
+		private Command showInfoCmd = new Command("INFO", Command.ITEM, 10);
+	//#endif
+	
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.ITEM, 11);
 	private int[] tmp = new int[] { 0, 0};
 	
@@ -45,6 +49,9 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 		addCommand(perGaugeCmd);
 		addCommand(quitCmd);
 		addCommand(gotoCmd);
+		//#if debugDominizer
+			addCommand(showInfoCmd);
+		//#endif
 		setCommandListener(this);
 		setItemStateListener(this);
 	}
@@ -120,6 +127,11 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 		} else if ( cmd.equals(quitCmd) ) {
 			GameApp.instance().quit();
 		}
+		//#if debugDominizer
+			else if ( cmd.equals(showInfoCmd) ) {
+				GameApp.instance().showInfo("Current set: " + Dominion.I().getCurrentSet(), Alert.FOREVER);
+			}
+		//#endif
 	}
 	
 	public void setPercentage(int index, int exp, int card, int deciPercentage) {
