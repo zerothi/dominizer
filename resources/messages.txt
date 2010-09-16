@@ -6,7 +6,11 @@
 screen.Condition.InputMessage=Condition name:
 randomize.condition.failed=Dominizer failed to find a suitable set of cards to fulfill your condition. Try again.
 screen.options.sort=Sort Method
-screen.options.info=Defines the default sorting method.
+screen.options.sort.info=Defines the default sorting method.
+screen.options.numberofsavedsets=# Saved sets
+screen.options.numberofsavedsets.info=How many sets are saved after a restart of Dominizer
+screen.options.preferredcondition=Preferred condition
+screen.options.preferredcondition.info=The condition which is used on the sets screen.
 screen.RandomizedCards.title.tab=#{0}
 info.randomized.Prosperity=You have {0} cards from {1}.\nYou rolled a {2}.\n{3}
 info.randomized.Prosperity.Succes=You should use the additional {0} cards.

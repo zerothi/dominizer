@@ -19,6 +19,7 @@ import javax.microedition.rms.RecordStoreNotFoundException;
 
 import com.dominizer.GameApp;
 import com.util.Cards;
+import com.util.Dominion;
 import com.util.SettingsRecordStorage;
 
 import de.enough.polish.util.Locale;
@@ -48,18 +49,31 @@ public class OptionForm extends Form implements CommandListener
 	public OptionForm(String title) {
 		//#style behindScreen
 		super(title);
-		options = new ChoiceGroup[1];
-		info = new String[1];
+		options = new ChoiceGroup[3];
+		info = new String[options.length];
 		//#style horizontalChoice
 		options[0] = new ChoiceGroup(Locale.get("screen.options.sort"), ChoiceGroup.EXCLUSIVE);
+		info[0] = new String(Locale.get("screen.options.sort.info"));
 		options[0].append(Locale.get("cmd.Sort.ExpName"), null);
 		options[0].append(Locale.get("cmd.Sort.ExpCost"), null);
 		options[0].append(Locale.get("cmd.Sort.Name"), null);
 		options[0].append(Locale.get("cmd.Sort.CostName"), null);
 		options[0].append(Locale.get("cmd.Sort.CostExp"), null);
-		
-		info[0] = new String(Locale.get("screen.options.info"));
 		append(options[0]);
+		
+		options[1]  = new ChoiceGroup(Locale.get("screen.options.numberofsavedsets"));
+		info[1] = new String(Locale.get("screen.options.numberofsavedsets.info"));
+		for (int i = 0 ; i < Dominion.MAX_SETS ; i++ )
+			options[1].append("" + i, null);
+		append(options[1]);
+		
+		options[2]  = new ChoiceGroup(Locale.get("screen.options.preferredcondition"));
+		info[2] = new String(Locale.get("screen.options.preferredcondition.info"));
+		for (int i = 0 ; i < Dominion.I().condition.size() ; i++ )
+			options[2].append(Dominion.I().condition.getName(i), null);
+		append(options[2]);
+		
+		
 		//#if dominizer.ticker
 			setItemStateListener(this);
 			//#style mainTicker
@@ -84,6 +98,7 @@ public class OptionForm extends Form implements CommandListener
 					SettingsRecordStorage.instance().writeData();
 					SettingsRecordStorage.instance().closeRecord();
 				}
+				GameApp.instance().showInfo(""); //TODO SAVE SUCCESFULL
 			} catch (RecordStoreFullException e) {
 			} catch (RecordStoreNotFoundException e) {
 			} catch (RecordStoreException e) {
