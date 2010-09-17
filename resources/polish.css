@@ -689,17 +689,17 @@ messagetext {
 	gauge-animation-mode: leftright;
 	gauge-gap-color: veryBrightBackgroundColor;
 	gauge-color: eevenBrightColor;
-	background-anchor: h-center | v-center;
+	background-anchor: top | h-center;
 	background: selectedBg;
 	border {
 		type: drop-shadow;
 		inner-color: brightBackgroundColor;
 		outer-color: eevenBrightColor;
-		width: 5;
+		width: 2;
 		orientation: all;
 	}
 	label-style: labelLoadingGauge;
-	layout: horizontal-center | horizontal-expand;
+	layout: horizontal-center;
 }
 @media touchscreen {
 	.mainTicker {
@@ -707,7 +707,7 @@ messagetext {
 	}
 }
 .labelLoadingGauge extends label {
-	font-size: large;
+	font-size: medium;
 }
 .inputGauge extends loadingGauge {
 	label-style: labelGauge;

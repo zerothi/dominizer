@@ -1,11 +1,14 @@
 package com.dominizer;
 
+import java.io.IOException;
+
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Image;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 import javax.microedition.rms.RecordStoreException;
@@ -30,6 +33,8 @@ import de.enough.polish.ui.Screen;
 import de.enough.polish.ui.TabListener;
 import de.enough.polish.ui.TabbedFormListener;
 import de.enough.polish.ui.TabbedPane;
+import de.enough.polish.ui.splash.ApplicationInitializer;
+import de.enough.polish.ui.splash.InitializerSplashScreen;
 import de.enough.polish.util.Locale;
 /**
  * <p>The main app for Dominizer</p>
@@ -42,7 +47,11 @@ import de.enough.polish.util.Locale;
  * </pre>
  * @author Nick Papior Andersen, nickpapior@gmail.com
  */
-public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
+public class GameApp extends MIDlet implements TabListener, TabbedFormListener
+//#if !polish.classes.ApplicationInitializer:defined
+//	, ApplicationInitializer
+//#endif
+	{
 	
 	public static final int TAB_QUICK = 0;
 	public static final int TAB_EDIT = 1;
@@ -102,10 +111,21 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener {
 		else
 			changeToScreen(tabbedPane);
 	}
+	/*
+	protected void startApp() throws MIDletStateChangeException {
+		try {
+			display = Display.getDisplay(this);
+			Image splashImage = Image.createImage("/splash.png");
+			InitializerSplashScreen splashScreen = new InitializerSplashScreen(display, splashImage, 0, null, 0, this);
+			display.setCurrent(splashScreen);
+		} catch (IOException e) {
+			//#debug error
+			System.out.println("Unable to load splash image." + e);
+		}
+	}*/
 
 	protected void startApp() throws MIDletStateChangeException {
 		display = Display.getDisplay(this);
-		GaugeForm.instance(true).setGaugeLabel(Locale.get("gauge.loading"));
 		display.setCurrent(GaugeForm.instance());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.cards"));
 		Dominion.I().getExpansions();

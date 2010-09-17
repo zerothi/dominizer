@@ -9,9 +9,7 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemStateListener;
-//#if dominizer.ticker
 import javax.microedition.lcdui.Ticker;
-//#endif
 
 import com.dominizer.GameApp;
 import com.util.Dominion;

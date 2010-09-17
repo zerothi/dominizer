@@ -9,10 +9,8 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Item;
-//#if dominizer.ticker
 import javax.microedition.lcdui.ItemStateListener;
 import javax.microedition.lcdui.Ticker;
-//#endif
 import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreFullException;
 import javax.microedition.rms.RecordStoreNotFoundException;
@@ -22,26 +20,21 @@ import com.util.Cards;
 import com.util.Dominion;
 import com.util.SettingsRecordStorage;
 
+import de.enough.polish.ui.Alert;
 import de.enough.polish.util.Locale;
 
 /**
  * @author nick
  *
  */
-public class OptionForm extends Form implements CommandListener
-//#if dominizer.ticker
-	, ItemStateListener
-//#endif
-{
+public class OptionForm extends Form implements CommandListener, ItemStateListener {
 
 	private Command saveCmd = new Command( Locale.get("cmd.save"), Command.BACK, 1);
 	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 3);
 	
 	private ChoiceGroup[] options = null;
 	private String[] info = null;
-	//#if dominizer.ticker
-		private Ticker ticker = null;
-	//#endif
+	private Ticker ticker = null;
 	
 	/**
 	 * @param title the title of the screen
@@ -61,25 +54,23 @@ public class OptionForm extends Form implements CommandListener
 		options[0].append(Locale.get("cmd.Sort.CostExp"), null);
 		append(options[0]);
 		
-		options[1]  = new ChoiceGroup(Locale.get("screen.options.numberofsavedsets"));
+		options[1]  = new ChoiceGroup(Locale.get("screen.options.numberofsavedsets"), ChoiceGroup.EXCLUSIVE);
 		info[1] = new String(Locale.get("screen.options.numberofsavedsets.info"));
 		for (int i = 0 ; i < Dominion.MAX_SETS ; i++ )
 			options[1].append("" + i, null);
 		append(options[1]);
 		
-		options[2]  = new ChoiceGroup(Locale.get("screen.options.preferredcondition"));
+		options[2]  = new ChoiceGroup(Locale.get("screen.options.preferredcondition"), ChoiceGroup.EXCLUSIVE);
 		info[2] = new String(Locale.get("screen.options.preferredcondition.info"));
 		for (int i = 0 ; i < Dominion.I().condition.size() ; i++ )
 			options[2].append(Dominion.I().condition.getName(i), null);
 		append(options[2]);
 		
 		
-		//#if dominizer.ticker
-			setItemStateListener(this);
-			//#style mainTicker
-			ticker = new Ticker(info[0]);
-			setTicker(ticker);
-		//#endif
+		setItemStateListener(this);
+		//#style mainTicker
+		ticker = new Ticker(info[0]);
+		setTicker(ticker);
 		
 		addCommand(saveCmd);
 		addCommand(backCmd);
@@ -98,7 +89,7 @@ public class OptionForm extends Form implements CommandListener
 					SettingsRecordStorage.instance().writeData();
 					SettingsRecordStorage.instance().closeRecord();
 				}
-				GameApp.instance().showInfo(""); //TODO SAVE SUCCESFULL
+				GameApp.instance().showInfo("", Alert.FOREVER); //TODO SAVE SUCCESFULL
 			} catch (RecordStoreFullException e) {
 			} catch (RecordStoreNotFoundException e) {
 			} catch (RecordStoreException e) {
@@ -107,12 +98,10 @@ public class OptionForm extends Form implements CommandListener
 			GameApp.instance().returnToPreviousScreen();
 		}
 	}
-	//#if dominizer.ticker
-		public void itemStateChanged(Item itm) {
-			for ( int i = 0 ; i < options.length ; i++ )
-				if ( itm.equals(options[i]) ) 
-					ticker.setString(info[i]);
-			
-		}
-	//#endif
+	public void itemStateChanged(Item itm) {
+		for ( int i = 0 ; i < options.length ; i++ )
+			if ( itm.equals(options[i]) ) 
+				ticker.setString(info[i]);
+		
+	}
 }

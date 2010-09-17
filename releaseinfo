@@ -29,7 +29,7 @@ This new version of Dominizer (0.18) has some new features! I think I have remem
   ** 0 Dur.: Zero Duration cards.
  * As with user cards described below you can just add to the file "condition" to have them always included!
 * In the conditional you can also add your own condition. For a hint of how they are structured just use the Show command which shows how they are built up.
- * They are basically written such as regularly boolean expression. & means AND, and | means OR. If you create your own REMEBER the PARENTHESIS!
+ * They are basically written such as regularly boolean expression. & means AND, and | means OR. If you create your own REMEMBER the PARENTHESIS!
  * See for instance how the parenthesis are used in Att. + Reac. + Alch. 3+.
  * A good thing is to write it on a paper before actually beginning, you have to delete everything if you have forgotten a parenthesis in the beginning.
  * I would like to further develop the Conditional input form, so that it becomes easier and detects errors. But I believe that for now it should be good enough.
@@ -68,4 +68,26 @@ Stone March:4:CA:b2;
 Stone Dead:3:CR:d;
 Stone Alchemy:4P:AR:b2;[/c]
 This will add those 3 cards but if you only wrote 2; in the top, it would only load the two first cards. Notice that it has to be in this format!
+
+Finally I would like to thank all the testers and their good comments!
+
+Ultimately people will find out that the Dominizer application has been giving a new icon! This is a really awesome creation and has been done by:
+[user=lee elektrik]
+
+He has been awarded 5GG for his work! I am really happy with the outcome of this icon!
+
+In terms of the condition form. It is not at all fail proof. It will not syntax check. So you have to be aware of how they should be written and not. Take a look at these:
+Att. + Reac. or 0:(A=0&R=0)|(A>0&R>0);
+Alch. 3+ or 0:3=0|3>2;
+Att.+Reac.+Alch. 3+:((A=0&R=0)|(A>0&R>0))&(3=0|3>2);
+0 Curse:u=0;
+2+Act. 2+Draw:d>1&a>1;
+2+Buys 2+Coins:c>1&b>1;
+1+Trash 1+Curse:t>1&u>1;
+0 Dur:D=0;
+Test:D=0&D=1;
+
+All but the last is included in the release and they are all working. But have a look at the last "Test" it has the requirement D=0&D=1. This will never succeed as you will never have 0 Duration AND 1 Duration at the same time. Therefore this will create a loop of tryings in an indefinite loop. I have inserted a maximum loop count of 1000. Then it will display an error. If you're sure that there exists a possibility of a set meeting your condition just keep pressing until it comes! :D
+ 
+
  

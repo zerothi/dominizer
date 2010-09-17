@@ -3,6 +3,10 @@
 # Version 0.18 translations
 #
 #######
+
+
+#Uploaded translations
+
 screen.Condition.InputMessage=Condition name:
 randomize.condition.failed=Dominizer failed to find a suitable set of cards to fulfill your condition. Try again.
 screen.options.sort=Sort Method
