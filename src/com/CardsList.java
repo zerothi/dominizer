@@ -41,30 +41,31 @@ public class CardsList extends List implements CommandListener {
 	
 	private static Command randomizeSetCmd = new Command( Locale.get("cmd.Randomize.Set"), Command.BACK, 0);
 	
-	private static Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.SCREEN, 1);
+	private static Command anotherSetCmd = new Command( Locale.get("cmd.AnotherSet"), Command.ITEM, 1);
 	
-	private static Command anotherSetCmd = new Command( Locale.get("cmd.AnotherSet"), Command.ITEM, 2);
+	private static Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.ITEM, 15);
+	
 	private static Command randSetPreventCmd = new Command( Locale.get("cmd.Randomize.SetPrevent"), Command.ITEM, 4);
-	
 	private static Command randConditionCmd = new Command( Locale.get("cmd.Randomize.Condition"), Command.ITEM, 8);
 	private static Command randPureCmd = new Command( Locale.get("cmd.Randomize.Pure"), Command.ITEM, 9);
 	
 	private static Command optionsCmd = new Command( Locale.get("cmd.Options.Main"), Command.ITEM, 10);
-	private static Command prosperityDiceCmd = new Command( Locale.get("cmd.Prosperity.Dice"), Command.ITEM, 11);
-	private static Command showInfoCmd = new Command( Locale.get("cmd.ShowChosenCardInfo"), Command.ITEM, 12);
-	private static Command deleteSetCmd = new Command( Locale.get("cmd.Set.Delete"), Command.ITEM, 13);
-	private static Command deleteAllSetsCmd = new Command( Locale.get("cmd.Set.DeleteAll"), Command.ITEM, 14);
-	private static Command saveCmd = new Command( Locale.get("cmd.SaveAsPreset"), Command.ITEM, 15);
+	private static Command showInfoCmd = new Command( Locale.get("cmd.ShowChosenCardInfo"), Command.ITEM, 20);
+	private static Command deleteSetCmd = new Command( Locale.get("cmd.Set.Delete"), Command.ITEM, 25);
+	private static Command deleteAllSetsCmd = new Command( Locale.get("cmd.Set.DeleteAll"), Command.ITEM, 26);
+	private static Command saveCmd = new Command( Locale.get("cmd.SaveAsPreset"), Command.ITEM, 30);
 	
-	private static Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 50);
+	
 	
 	private static Command sortCmd = new Command( Locale.get("cmd.Sort.Main"), Command.SCREEN, 5);
-	private static Command sortExpNameCmd = new Command( Locale.get("cmd.Sort.ExpName"), Command.ITEM, 4);
-	private static Command sortExpCostCmd = new Command( Locale.get("cmd.Sort.ExpCost"), Command.ITEM, 5);
-	private static Command sortNameCmd = new Command( Locale.get("cmd.Sort.Name"), Command.ITEM, 6);
-	private static Command sortCostNameCmd = new Command( Locale.get("cmd.Sort.CostName"), Command.ITEM, 7);
-	private static Command sortCostExpCmd = new Command( Locale.get("cmd.Sort.CostExp"), Command.ITEM, 8);
-	//private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.EXIT, 10 );
+	private static Command sortExpNameCmd = new Command( Locale.get("cmd.Sort.ExpName"), Command.ITEM, 35);
+	private static Command sortExpCostCmd = new Command( Locale.get("cmd.Sort.ExpCost"), Command.ITEM, 36);
+	private static Command sortNameCmd = new Command( Locale.get("cmd.Sort.Name"), Command.ITEM, 37);
+	private static Command sortCostNameCmd = new Command( Locale.get("cmd.Sort.CostName"), Command.ITEM, 38);
+	private static Command sortCostExpCmd = new Command( Locale.get("cmd.Sort.CostExp"), Command.ITEM, 39);
+	
+	private static Command prosperityDiceCmd = new Command( Locale.get("cmd.Prosperity.Dice"), Command.ITEM, 45);
+	private static Command backCmd = new Command( Locale.get("cmd.Back"), Command.ITEM, 50);
 	
 	public CardsList(String title, int listType, int cardSet) {
 		//#style mainScreenSet

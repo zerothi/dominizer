@@ -41,8 +41,8 @@ This new version of Dominizer (0.18) has some new features! I think I have remem
 * Another interesting thing is custom cards! I have added a file in the .jar file which is named "user". This holds custom user cards and gets a special icon which represents the user cards.
  * There is really many different combinations of user cards, example Duration + Reaction etc. And I have tried to generate all combinations of 2. So Duration + Reaction + Attack will only have two of them displayed!
  * If you want to add your custom cards you should follow the below guide
- ** At the moment you cannot add cards from within the program. I found this more easy and more portable (in this way you can transfer it around and still maintain user cards, if they where "internally" created they would not be transferred, and you had to add them after each program update! Those are security terms for applications.)
- ** Take a look at [wikipage=Dominizer_Cards] to see the formatting of cards etc.
+  ** At the moment you cannot add cards from within the program. I found this more easy and more portable (in this way you can transfer it around and still maintain user cards, if they where "internally" created they would not be transferred, and you had to add them after each program update! Those are security terms for applications.)
+  ** Take a look at [wikipage=Dominizer_Cards] to see the formatting of cards etc.
 * All randomized sets are saved, and thus next time you open Dominizer you can goto the screen and see them. 
 
 
