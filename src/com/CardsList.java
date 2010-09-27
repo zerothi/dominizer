@@ -7,7 +7,6 @@ import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Item;
 import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreFullException;
 import javax.microedition.rms.RecordStoreNotFoundException;
@@ -31,13 +30,11 @@ import de.enough.polish.util.Locale;
  */
 public class CardsList extends List implements CommandListener {
 	
-	private boolean hasBlackMarketCmd = false;
-
-	private int listType = List.MULTIPLE;
-	
-	private int cardSet = 0;
-	
+	private static long timer = -1;
 	private static int i = 0;
+	private boolean hasBlackMarketCmd = false;
+	private int listType = List.MULTIPLE;
+	private int cardSet = 0;
 	
 	private static Command randomizeSetCmd = new Command( Locale.get("cmd.Randomize.Set"), Command.BACK, 0);
 	
@@ -54,9 +51,7 @@ public class CardsList extends List implements CommandListener {
 	private static Command deleteSetCmd = new Command( Locale.get("cmd.Set.Delete"), Command.ITEM, 25);
 	private static Command deleteAllSetsCmd = new Command( Locale.get("cmd.Set.DeleteAll"), Command.ITEM, 26);
 	private static Command saveCmd = new Command( Locale.get("cmd.SaveAsPreset"), Command.ITEM, 30);
-	
-	
-	
+		
 	private static Command sortCmd = new Command( Locale.get("cmd.Sort.Main"), Command.SCREEN, 5);
 	private static Command sortExpNameCmd = new Command( Locale.get("cmd.Sort.ExpName"), Command.ITEM, 35);
 	private static Command sortExpCostCmd = new Command( Locale.get("cmd.Sort.ExpCost"), Command.ITEM, 36);
@@ -68,8 +63,7 @@ public class CardsList extends List implements CommandListener {
 	private static Command backCmd = new Command( Locale.get("cmd.Back"), Command.ITEM, 50);
 	
 	public CardsList(String title, int listType, int cardSet) {
-		//#style mainScreenSet
-		//#= this(title, listType, cardSet);
+		this(title, listType, cardSet, null);
 	}
 	
 	public CardsList(String title, int listType, int cardSet, Style style) {
@@ -328,8 +322,30 @@ public class CardsList extends List implements CommandListener {
 			}
 			repaint();
 			break;
+		case Canvas.KEY_POUND:
+		case Canvas.KEY_STAR:
+			timer = System.currentTimeMillis();
+			break;
 		default:
 			//#= super.keyPressed(keyCode);
+		}
+	}
+	
+	
+	public void keyReleased(int keyCode) {
+		switch (keyCode) {
+		case Canvas.KEY_STAR:
+			if ( System.currentTimeMillis() - timer > 600 && timer > 0 ) {
+				commandAction(deleteSetCmd, this);
+				timer = -1;
+				break;
+			}
+		case Canvas.KEY_POUND:
+			commandAction(prosperityDiceCmd, this);
+			timer = -1;
+			break;
+		default:
+			//#= super.keyReleased(keyCode);
 		}
 	}
 	
@@ -351,11 +367,4 @@ public class CardsList extends List implements CommandListener {
 	public void release() {
 		this.deleteAll();
 	}
-/*
-	public void itemStateChanged(Item arg0) {
-		//#debug dominizer
-		System.out.println("item state changed");
-		
-	}
-*/
 }

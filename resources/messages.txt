@@ -3,6 +3,9 @@
 # Version 0.18 translations
 #
 #######
+info.randomized.Prosperity={1} cards: {0}\nDice roll: {2}.\n{3}
+info.randomized.Prosperity.Succes=USE the additional {0} cards.
+info.randomized.Prosperity.Failed=DO NOT use the additional {0} cards.
 
 
 #Uploaded translations
@@ -16,9 +19,6 @@ screen.options.numberofsavedsets.info=How many sets are saved after a restart of
 screen.options.preferredcondition=Preferred condition
 screen.options.preferredcondition.info=The condition which is used on the sets screen.
 screen.RandomizedCards.title.tab=#{0}
-info.randomized.Prosperity=You have {0} cards from {1}.\nYou rolled a {2}.\n{3}
-info.randomized.Prosperity.Succes=You should use the additional {0} cards.
-info.randomized.Prosperity.Failed=You not should use the additional {0} cards.
 info.randomized.Sets.NoneCreated=You have not created any sets. 
 cmd.save=Save
 cmd.Randomize.Condition=Rand. Cond.

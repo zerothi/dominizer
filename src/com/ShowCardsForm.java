@@ -9,6 +9,7 @@ import com.util.DominionException;
 
 import de.enough.polish.ui.List;
 import de.enough.polish.ui.Screen;
+import de.enough.polish.ui.Style;
 import de.enough.polish.ui.TabListener;
 import de.enough.polish.ui.TabbedFormListener;
 import de.enough.polish.ui.TabbedPane;
@@ -22,8 +23,11 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 	private CardsList[] cardSet = null;
 	
 	private ShowCardsForm(String title) {
-		//#style tabbedPane
-		super(title);
+		this(title, null);
+	}
+	
+	private ShowCardsForm(String title, Style style) {
+		super(title, style);
 		//#debug dominizer
 		System.out.println("showing cards initialize");
 		addTabListener(this);
@@ -47,6 +51,7 @@ public class ShowCardsForm extends TabbedPane implements TabListener, TabbedForm
 	
 	public static ShowCardsForm instance() {
 		if ( scF == null ) {
+			//#style tabbedPane
 			scF = new ShowCardsForm(null);//Locale.get("screen.RandomizedCards.title")
 		}
 		return scF;

@@ -342,7 +342,8 @@ public class Dominion {
 			}
 		}
 		if ( card != getNumberOfRandomCards() ) {
-			// TODO fix exception to handle correct!
+			removePlayingSet(playingSet);
+			// TODO fix exception to handle correct!	
 			throw new DominionException(Locale.get("alert.NotEnoughSelectedCards"));
 		}
 		return sortCards(selectedCards, sortMethod);

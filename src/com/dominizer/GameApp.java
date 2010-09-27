@@ -47,7 +47,7 @@ import de.enough.polish.util.Locale;
  * </pre>
  * @author Nick Papior Andersen, nickpapior@gmail.com
  */
-public class GameApp extends MIDlet implements TabListener, TabbedFormListener
+public class GameApp extends MIDlet implements TabbedFormListener
 //#if !polish.classes.ApplicationInitializer:defined
 //	, ApplicationInitializer
 //#endif
@@ -97,8 +97,6 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener
 
 	public void changeToScreen(Displayable displayable) {
 		currentTab = getCurrentTab();
-		if ( alert != null )
-			alert = null;
 		if ( displayable == null )
 			changeToScreen(tabbedPane);
 		else
@@ -130,41 +128,9 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.cards"));
 		Dominion.I().getExpansions();
 		ShowCardsForm.instance();
-		//int j = Dominion.CURRENT_SET;
-		/*for ( int i = 1 ; i <= j ; i++ ) {
-			try {
-				//#debug dominizer
-				System.out.println("adding card sets: " + i + "/" + j + " is null = " + ( Dominion.I().getCurrentlySelected(i) == null));
-				Dominion.CURRENT_SET = i;
-				ShowCardsForm.instance().addNewCards(Dominion.I().getCurrentlySelected(i));
-			} catch (DominionException e) {
-				//showAlert(e.toString());
-			}	
-		}*/
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.gui"));
 		//#style tabbedPane
-		tabbedPane = new TabbedPane(null)
-			/*{
-			public void keyReleased(int keyCode) {
-				int gameAction = 0;
-				try {
-					gameAction = getGameAction(keyCode);
-				} catch (Exception e) {
-					// ignore
-				}
-		    	if (gameAction == RIGHT && keyCode != KEY_NUM6 && getCurrentIndex() == size() - 1 ) {
-					setFocus(0);
-					return;
-				} else if (gameAction == LEFT && keyCode != KEY_NUM4 && getCurrentIndex() == 0 ) {
-					setFocus( size() - 1 );
-					return;
-				} else {
-					super.keyReleased(keyCode);
-				}
-		    }
-		}*/
-		;
-		tabbedPane.addTabListener(this);
+		tabbedPane = new TabbedPane(null);
 		tabbedPane.setTabbedFormListener(this);
 		qrF = new QuickRandomizeList(null, List.MULTIPLE);
 		//#style tabIcon
@@ -309,9 +275,7 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener
 		}
 		notifyDestroyed();
 	}
-
-	public void tabChangeEvent(Screen scr) {}
-	
+		
 	public void changeToTab(int tab) {
 		tabbedPane.setFocus(tab);
 		currentTab = tab;
@@ -323,36 +287,9 @@ public class GameApp extends MIDlet implements TabListener, TabbedFormListener
 		currentTab = to;
 	}
 
-	public boolean notifyTabChangeRequested(int from, int to) {
-		switch ( from ) {
-		case TAB_QUICK:
-			//qrF.getSelectedFlags(qrF.flags);
-			//Dominion.I().setExpansionPlayingState(qrF.flags);
-			//#debug dominizer
-			System.out.println("updating flags");
-			break;
-		case TAB_EDIT:
-			//#debug dominizer
-			System.out.println("updating cards internal");
-			break;
-		case TAB_CONDITION:
-			//cF.updateCards(true, -1);
-			//#debug dominizer
-			System.out.println("updating conditions internal");
-			break;
-		}
-		switch ( to ) {
-		case TAB_EDIT:
-			//ecFL.updateCards(-1);
-			//#debug dominizer
-			System.out.println("updating cards external");
-			break;
-		case TAB_CONDITION:
-			//cF.updateCards(false, -1);
-			//#debug dominizer
-			System.out.println("updating conditions external");
-			break;
-		}
-		return true;
+	@Override
+	public boolean notifyTabChangeRequested(int oldTabIndex, int newTabIndex) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

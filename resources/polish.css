@@ -1,10 +1,11 @@
 colors {
-	darkBackgroundColor:  				rgb(0,10,25);
-	brightBackgroundColor:  			rgb(0,25,50);
-	veryBrightBackgroundColor:  		rgb(100,125,150);
-	selectionBackgroundColor: 			rgb(10,45,65);
-	eevenBrightColor: 					rgb(40,70,95);
-	borderSelectedColor:  				argb(100, 145,175,247);
+	veryDarkBGColor:  				rgb(0,10,25);
+	darkBGColor:  					rgb(0,25,50);
+	brightBGColor:  				rgb(100,125,150);
+	veryBrightBGColor:  			rgb(190,225,250);
+	selectionBGColor: 				rgb(10,45,65);
+	eevenBrightColor: 				rgb(40,70,95);
+	borderSelectedColor:  			argb(100, 145,175,247);
 	
 	titleFontColor: 					rgb(175,210,247);
 	fontColor: 							rgb( 76, 95,160);
@@ -12,10 +13,10 @@ colors {
 }
 /*
 colors {
-	darkBackgroundColor:  				rgb(5,5,5);
-	brightBackgroundColor:  			rgb(30,30,30);
-	veryBrightBackgroundColor:  		rgb(110,110,110);
-	selectionBackgroundColor: 			rgb(50,50,50);
+	veryDarkBGColor:  				rgb(5,5,5);
+	darkBGColor:  			rgb(30,30,30);
+	brightBGColor:  		rgb(110,110,110);
+	selectionBGColor: 			rgb(50,50,50);
 	eevenBrightColor: 					rgb(80,80,80);
 	borderSelectedColor:  				argb(130, 190,190,190);
 	
@@ -27,8 +28,8 @@ colors {
 backgrounds {
 	titleGradient {
 		type: vertical-gradient;
-		top-color: brightBackgroundColor;
-		bottom-color: darkBackgroundColor;
+		top-color: darkBGColor;
+		bottom-color: veryDarkBGColor;
 	}
 	alertTop {
 		type: round-rect;
@@ -36,19 +37,19 @@ backgrounds {
 	}
 	alertBg {
 		type: round-rect;
-		color: veryBrightBackgroundColor;
+		color: veryBrightBGColor; /*brightBGColor;*/
 	}
 	alertOverlay {
 		color: fontColor;
 	}
 	selectedPlainBg {
-		color: selectionBackgroundColor;
+		color: selectionBGColor;
 	}
 	selectedBg {
 		type: round-rect;
 		arc: 8;
-		color: brightBackgroundColor;
-		border-color: veryBrightBackgroundColor;
+		color: darkBGColor;
+		border-color: brightBGColor;
 		border-width: 2;
 	}
 	selectedSmallArcBg {
@@ -87,7 +88,7 @@ title {
 
 label {
 	background {
-		color: brightBackgroundColor;
+		color: darkBGColor;
 	}
 	font {
 		style: bold;
@@ -152,8 +153,8 @@ focused {
 	font-color: selectedFontColor;
 	background {
 		type: vertical-gradient;
-		top-color: brightBackgroundColor;
-		bottom-color: darkBackgroundColor;
+		top-color: darkBGColor;
+		bottom-color: veryDarkBGColor;
 	}
 }
 .mainScreen:landscape {}
@@ -176,8 +177,8 @@ focused {
 	font-color: selectedFontColor;
 	background {
 		type: vertical-gradient;
-		top-color: brightBackgroundColor;
-		bottom-color: darkBackgroundColor;
+		top-color: darkBGColor;
+		bottom-color: veryDarkBGColor;
 	}
 	//#if polish.android
 		layout: top | vertical-shrink;
@@ -310,12 +311,12 @@ menubar {
 	margin: 0;
 	padding-top: 3;
 	padding: 2;
-	/*menubar-color: darkBackgroundColor;*/
+	/*menubar-color: veryDarkBGColor;*/
 	font-color: selectedFontColor;
 	background {
 		type: vertical-gradient;
-		top-color: darkBackgroundColor;
-		bottom-color: brightBackgroundColor;
+		top-color: veryDarkBGColor;
+		bottom-color: darkBGColor;
 		start: 10%;
 		end: 100%;
 	}
@@ -438,7 +439,7 @@ menuItem:hover {
 .inputTextField {
 	padding: 5;
 	font-color: selectedFontColor;
-	background-color: darkBackgroundColor;
+	background-color: veryDarkBGColor;
 	layout: horizontal-shrink | center;
 }
 
@@ -537,8 +538,8 @@ messagetext {
 	view-type-sequential-traversal: true;
 	background {
 		type: vertical-gradient;
-		top-color: darkBackgroundColor;
-		bottom-color: brightBackgroundColor;
+		top-color: veryDarkBGColor;
+		bottom-color: darkBGColor;
 	}
 	border {
 		top-width: 1;
@@ -579,7 +580,7 @@ messagetext {
 	background {
 		type: round-rect;
 		arc: 8;
-		color: selectionBackgroundColor;
+		color: selectionBGColor;
 	}
 	border {
 		type: round-rect;
@@ -594,7 +595,7 @@ messagetext {
 		background {
 			type: round-rect;
 			arc: 8;
-			color: selectionBackgroundColor;
+			color: selectionBGColor;
 		}
 		border {
 			type: round-rect;
@@ -618,7 +619,7 @@ messagetext {
 	background {
 		type: round-rect;
 		arc: 8;
-		color: selectionBackgroundColor;
+		color: selectionBGColor;
 	}
 	border {
 		type: round-rect;
@@ -635,7 +636,7 @@ messagetext {
 		background {
 			type: round-rect;
 			arc: 8;
-			color: selectionBackgroundColor;
+			color: selectionBGColor;
 		}
 		border {
 			type: round-rect;
@@ -685,15 +686,15 @@ messagetext {
 }
 
 .loadingGauge {
-	gauge-background-color: darkBackgroundColor;
+	gauge-background-color: veryDarkBGColor;
 	gauge-animation-mode: leftright;
-	gauge-gap-color: veryBrightBackgroundColor;
+	gauge-gap-color: brightBGColor;
 	gauge-color: eevenBrightColor;
 	background-anchor: top | h-center;
 	background: selectedBg;
 	border {
 		type: drop-shadow;
-		inner-color: brightBackgroundColor;
+		inner-color: darkBGColor;
 		outer-color: eevenBrightColor;
 		width: 2;
 		orientation: all;
