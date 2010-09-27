@@ -109,6 +109,7 @@ public class GameApp extends MIDlet implements TabbedFormListener
 		else
 			changeToScreen(tabbedPane);
 	}
+	
 	/*
 	protected void startApp() throws MIDletStateChangeException {
 		try {
@@ -178,33 +179,36 @@ public class GameApp extends MIDlet implements TabbedFormListener
 	 * @param string
 	 */
 	public void showAlert(String message) {
+		alert = null;
 		//#style messageAlert
 		alert = new Alert(Locale.get("alert.alert"), message, null, AlertType.WARNING);
 		alert.setTimeout(Alert.FOREVER);
-		display.setCurrent(alert);
+		changeToScreen(alert);
 	}
 
 	/**
 	 * @param string
 	 */
 	public void showInfo(String message, int timeOut) {
+		alert = null;
 		//#style messageAlert
 		alert = new Alert(Locale.get("alert.info"), message, null, AlertType.INFO);
 		alert.setTimeout(timeOut);
-		display.setCurrent(alert);
+		changeToScreen(alert);
 	}
 	
 	public void showCardInfo(int[][][] types, int[][][] adds) {
 		TiltedPieChartForm fm = new TiltedPieChartForm(Locale.get("chart.title"), 2);
 		fm.setChart(0, Locale.get("chart.types"), types);
 		fm.setChart(1, Locale.get("chart.attributes"), adds);
-		display.setCurrent(fm);
+		changeToScreen(fm);
 	}
 
 	/**
 	 * @param string
 	 */
 	public void showConfirmation(String message, CommandListener cmdListener) {
+		alert = null;
 		//#style messageAlert
 		alert = new Alert(Locale.get("alert.confirmation"), message, null, AlertType.CONFIRMATION);
 		alert.addCommand(new Command(Locale.get("polish.command.ok"), Command.OK, 1));
@@ -238,7 +242,7 @@ public class GameApp extends MIDlet implements TabbedFormListener
 				//#debug dominizer
 				System.out.println("DONE WRITING OLD SETS");
 				// TODO when option allows for setting this variable move it up!
-				SettingsRecordStorage.instance().addData(Locale.get("rms.randomized.saves"), "" + sets);
+				//SettingsRecordStorage.instance().addData(Locale.get("rms.randomized.saves"), "" + sets);
 				SettingsRecordStorage.instance().writeData();
 				SettingsRecordStorage.instance().closeRecord();
 			}
@@ -287,7 +291,6 @@ public class GameApp extends MIDlet implements TabbedFormListener
 		currentTab = to;
 	}
 
-	@Override
 	public boolean notifyTabChangeRequested(int oldTabIndex, int newTabIndex) {
 		// TODO Auto-generated method stub
 		return false;
