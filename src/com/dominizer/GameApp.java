@@ -293,6 +293,6 @@ public class GameApp extends MIDlet implements TabbedFormListener
 
 	public boolean notifyTabChangeRequested(int oldTabIndex, int newTabIndex) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 }
