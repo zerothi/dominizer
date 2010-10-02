@@ -3,13 +3,13 @@
 # Version 0.18 translations
 #
 #######
-info.randomized.Prosperity={1} cards: {0}\nDice roll: {2}.\n{3}
-info.randomized.Prosperity.Succes=USE the additional {0} cards.
-info.randomized.Prosperity.Failed=DO NOT use the additional {0} cards.
-
 
 #Uploaded translations
 
+info.randomized.Prosperity={1} cards: {0}\nDice roll: {2}.\n{3}
+info.randomized.Prosperity.Succes=USE the additional {0} cards.
+info.randomized.Prosperity.Failed=DO NOT use the additional {0} cards.
+info.delete.set=Set {0} deleted.\n{1} remaining set(s).
 screen.Condition.InputMessage=Condition name:
 randomize.condition.failed=Dominizer failed to find a suitable set of cards to fulfill your condition. Try again.
 screen.options.sort=Sort Method

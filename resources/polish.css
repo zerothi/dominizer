@@ -9,21 +9,9 @@ colors {
 	
 	titleFontColor: 					rgb(175,210,247);
 	fontColor: 							rgb( 76, 95,160);
+	darkFontColor: 						rgb( 26, 45,110);
 	selectedFontColor:  				argb(130, 165,190,247);
 }
-/*
-colors {
-	veryDarkBGColor:  				rgb(5,5,5);
-	darkBGColor:  			rgb(30,30,30);
-	brightBGColor:  		rgb(110,110,110);
-	selectionBGColor: 			rgb(50,50,50);
-	eevenBrightColor: 					rgb(80,80,80);
-	borderSelectedColor:  				argb(130, 190,190,190);
-	
-	titleFontColor: 					rgb(205,205,205);
-	fontColor: 							rgb(100,100,100);
-	selectedFontColor:  				argb(130, 205,205,205);
-}*/
 
 backgrounds {
 	titleGradient {
@@ -151,11 +139,7 @@ focused {
 	padding-right: 10;
 	layout: horizontal-expand | horizontal-center | vertical-center;
 	font-color: selectedFontColor;
-	background {
-		type: vertical-gradient;
-		top-color: darkBGColor;
-		bottom-color: veryDarkBGColor;
-	}
+	background: titleGradient;
 }
 .mainScreen:landscape {}
 
@@ -175,11 +159,7 @@ focused {
 	padding-left: 10;
 	padding-right: 10;
 	font-color: selectedFontColor;
-	background {
-		type: vertical-gradient;
-		top-color: darkBGColor;
-		bottom-color: veryDarkBGColor;
-	}
+	background: titleGradient;
 	//#if polish.android
 		layout: top | vertical-shrink;
 	//#else
@@ -237,7 +217,7 @@ alertcontent {
 
 .messageAlertTitle {
 	padding-top: 20px;
-	font-color: fontColor;
+	font-color: darkFontColor;
 	font-style: bold;
 	font-size: normal;
 }
@@ -247,14 +227,15 @@ alertcontent {
 }
 
 .messageAlert {
-	padding: 20px;
-	padding-top: 1px;
-	view-type: none;
+	padding-left: 15;
+	padding-right: 15;
+	padding-bottom: 15;
+	padding-top: 1;
 	layout: horizontal-shrink | vertical-shrink | horizontal-center | vertical-center;
 	background {
 		type: layer;
 		layers: alertTop, alertBg;
-		margins: 10px, 0px;
+		margins: 5px, 5px;
 	}
 	repaint-previous-screen: true;
 	overlay-background: alertOverlay;
@@ -313,13 +294,7 @@ menubar {
 	padding: 2;
 	/*menubar-color: veryDarkBGColor;*/
 	font-color: selectedFontColor;
-	background {
-		type: vertical-gradient;
-		top-color: veryDarkBGColor;
-		bottom-color: darkBGColor;
-		start: 10%;
-		end: 100%;
-	}
+	background: titleGradient;
 }
 
 /**
@@ -536,11 +511,7 @@ messagetext {
 .tabbedPaneIcons {
 	view-type: horizontal; /* horizontal */
 	view-type-sequential-traversal: true;
-	background {
-		type: vertical-gradient;
-		top-color: veryDarkBGColor;
-		bottom-color: darkBGColor;
-	}
+	background: titleGradient;
 	border {
 		top-width: 1;
 		color: borderSelectedColor;

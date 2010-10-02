@@ -632,6 +632,7 @@ public class Dominion {
 		if ( (randomizeMethod & RAND_CONDITION) > 0 && ( condition < 0 || condition >= this.condition.size() ) )
 			throw new DominionException(Locale.get("alert.Condition.NoSelection"));
 		int selectedElement = 0, tmpExp = 0, tmpPlayingSet = 0;
+		
 		if ( (randomizeMethod & RAND_PREVENT) > 0 ) {
 			tmpPlayingSet = playingSet;
 			playingSet = 90;
@@ -644,8 +645,10 @@ public class Dominion {
 		
 		if ( playingSet < 0 )
 			playingSet = getCurrentSet() + 1;
-		if ( playingSet > MAX_SETS )
+		if ( playingSet > MAX_SETS && (randomizeMethod & RAND_PREVENT) == 0 )
 			throw new DominionException(Locale.get("alert.NoMoreSets"));
+		
+		
 		/**
 		 * RandomizeMethod contains a bit number 0 + 1 + 2 + 4 + 8...
 		 * We compare them by using the bit wise AND operator

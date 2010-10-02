@@ -217,6 +217,8 @@ public class CardsList extends List implements CommandListener {
 			Dominion.I().removePlayingSet(cardSet);
 			setCards(null);
 			ShowCardsForm.instance().updateTabs();
+			String[] tmp = new String[] { "" + cardSet , "" + Dominion.I().getCurrentSet()};
+			GameApp.instance().showInfo(Locale.get("info.delete.set", tmp), Alert.FOREVER);
 		} else if ( cmd.equals(deleteAllSetsCmd) ) {
 			Dominion.I().resetIsPlaying(-1);
 			setCards(null);
@@ -238,7 +240,7 @@ public class CardsList extends List implements CommandListener {
 				tmp[0] = "" + Dominion.I().getSelectedCards(cardSet).fromExpansion(Dominion.PROSPERITY);
 				tmp[1] = Locale.get("prosperity");
 				t = tmp[1];
-				i = Rand.randomInt(Dominion.I().getSelectedCards(cardSet).size());
+				i = Rand.randomInt(Dominion.I().getSelectedCards(cardSet).size()) + 1;
 				tmp[2] = "" + i;
 				if ( i <= Dominion.I().getSelectedCards(cardSet).fromExpansion(Dominion.PROSPERITY) )
 					tmp[3] = Locale.get("info.randomized.Prosperity.Succes", t);

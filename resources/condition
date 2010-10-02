@@ -6,4 +6,3 @@ Att.+Reac.+Alch. 3+:((A=0&R=0)|(A>0&R>0))&(3=0|3>2);
 2+Buys 2+Coins:c>1&b>1;
 1+Trash 1+Curse:t>1&u>1;
 0 Dur:D=0;
-Test:D=0&D=1;
