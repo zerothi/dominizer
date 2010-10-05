@@ -816,7 +816,7 @@ public class Dominion {
 	}
 
 	private void readSettings() {
-		SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.preset"));
+		SettingsRecordStorage.instance().changeToRecordStore("presets");
 		int start = 0, i = 0;
 		int numberSaves = 0;
 		if (SettingsRecordStorage.instance().data() == null) {
@@ -856,8 +856,8 @@ public class Dominion {
 		
 		//#debug dominizer
 		System.out.println("start reading expansion states");
-		SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.settings"));
-		String tmp = SettingsRecordStorage.instance().readKey(Locale.get("rms.expansions"));
+		SettingsRecordStorage.instance().changeToRecordStore("settings");
+		String tmp = SettingsRecordStorage.instance().readKey("expansions");
 		//#debug dominizer
 		System.out.println("expansions: " + tmp);
 		if (tmp != null) {
@@ -869,7 +869,7 @@ public class Dominion {
 		
 		//#debug dominizer
 		System.out.println("start reading number of cards");
-		tmp = SettingsRecordStorage.instance().readKey(Locale.get("rms.expansions.usedcards"));
+		tmp = SettingsRecordStorage.instance().readKey("expcards");
 		//#debug dominizer
 		System.out.println("usedcards: " + tmp);
 		if (tmp != null) {
@@ -881,7 +881,7 @@ public class Dominion {
 
 		//#debug dominizer
 		System.out.println("start reading available cards");
-		tmp = SettingsRecordStorage.instance().readKey(Locale.get("rms.available"));
+		tmp = SettingsRecordStorage.instance().readKey("available");
 		//#debug dominizer
 		System.out.println("available from " + tmp);
 		if (tmp != null) {
@@ -894,7 +894,7 @@ public class Dominion {
 
 		//#debug dominizer
 		System.out.println("read cards percentages");
-		tmp = SettingsRecordStorage.instance().readKey(Locale.get("rms.percentage"));
+		tmp = SettingsRecordStorage.instance().readKey("percentage");
 		//#debug dominizer
 		System.out.println("percentages from " + tmp);
 		if (tmp != null) {
@@ -910,7 +910,7 @@ public class Dominion {
 		
 		//#debug dominizer
 		System.out.println("reading randomized saves");
-		tmp = SettingsRecordStorage.instance().readKey(Locale.get("rms.randomized.saves"));
+		tmp = SettingsRecordStorage.instance().readKey("randsave");
 		if ( tmp != null )
 			SETS_SAVE = Integer.parseInt(tmp);
 		//#debug dominizer
@@ -948,7 +948,7 @@ public class Dominion {
 		
 		//#debug dominizer
 		System.out.println("start reading preferred sort");
-		tmp = SettingsRecordStorage.instance().readKey(Locale.get("rms.preferredsort"));
+		tmp = SettingsRecordStorage.instance().readKey("sort");
 		//#debug dominizer
 		System.out.println("sort: " + tmp);
 		if (tmp != null) {
@@ -964,7 +964,7 @@ public class Dominion {
 		InputStreamReader isr = null;
 		i = 0;
 		start = 0;
-		if ( SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.condition")) )
+		if ( SettingsRecordStorage.instance().changeToRecordStore("condition") )
 			while ( SettingsRecordStorage.instance().readKey("name" + start) != null )
 				start++;
 		try {
@@ -1004,7 +1004,7 @@ public class Dominion {
 		}
 		//#debug dominizer
 		System.out.println("start reading user conditions");
-		if ( SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.condition")) ) {
+		if ( SettingsRecordStorage.instance().changeToRecordStore("condition") ) {
 			i = 0;
 			while ( SettingsRecordStorage.instance().readKey("name" + i) != null ) {
 				condition.setName(start, SettingsRecordStorage.instance().readKey("name" + i).substring(2));

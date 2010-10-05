@@ -115,7 +115,7 @@ public class PresetList extends List implements CommandListener {
 		} else if ( cmd.equals(quitCmd) ) {
 			GameApp.instance().quit();
 		} else if ( cmd.equals(deleteCmd) ) {
-			SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.preset"));
+			SettingsRecordStorage.instance().changeToRecordStore("presets");
 			SettingsRecordStorage.instance().deleteData(getString(getCurrentIndex()));
 			try {
 				SettingsRecordStorage.instance().writeData();

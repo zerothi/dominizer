@@ -149,9 +149,9 @@ public class GameApp extends MIDlet implements TabbedFormListener
 		//tabbedPane.addTab(new GameCalendarForm(null), null, Locale.get("screen.Calendar.title"));
 		bmF = new BlackMarketForm(Locale.get("screen.BlackMarket.title"));
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.gui.settings"));
-		SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.settings"));
-		if ( SettingsRecordStorage.instance().readKey(Locale.get("rms.lasttab")) != null )
-			currentTab = Integer.parseInt(SettingsRecordStorage.instance().readKey(Locale.get("rms.lasttab")));
+		SettingsRecordStorage.instance().changeToRecordStore("settings");
+		if ( SettingsRecordStorage.instance().readKey("lasttab") != null )
+			currentTab = Integer.parseInt(SettingsRecordStorage.instance().readKey("lasttab"));
 		if ( currentTab != SHOWCARDS & currentTab > -1 )
 			tabbedPane.setFocus(currentTab);
 		//#debug dominizer
@@ -220,13 +220,13 @@ public class GameApp extends MIDlet implements TabbedFormListener
 	public void quit() {
 		int i;
 		try {
-			if ( SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.settings")) ) {
-				SettingsRecordStorage.instance().addData(Locale.get("rms.expansions"), Dominion.I().getExpansionPlayingStatesAsSave());
-				SettingsRecordStorage.instance().addData(Locale.get("rms.expansions.usedcards"), Dominion.I().getCardsUsedForExpansionAsSave());
-				SettingsRecordStorage.instance().addData(Locale.get("rms.available"), Dominion.I().getAvailableAsSave());
-				SettingsRecordStorage.instance().addData(Locale.get("rms.percentage"), Dominion.I().getPercentagesAsSave());
-				SettingsRecordStorage.instance().addData(Locale.get("rms.lasttab"), "" + currentTab);
-				SettingsRecordStorage.instance().addData(Locale.get("rms.preferredsort"), "" + Cards.COMPARE_PREFERRED);
+			if ( SettingsRecordStorage.instance().changeToRecordStore("settings") ) {
+				SettingsRecordStorage.instance().addData("expansions", Dominion.I().getExpansionPlayingStatesAsSave());
+				SettingsRecordStorage.instance().addData("expcards", Dominion.I().getCardsUsedForExpansionAsSave());
+				SettingsRecordStorage.instance().addData("available", Dominion.I().getAvailableAsSave());
+				SettingsRecordStorage.instance().addData("percentage", Dominion.I().getPercentagesAsSave());
+				SettingsRecordStorage.instance().addData("lasttab", "" + currentTab);
+				SettingsRecordStorage.instance().addData("sort", "" + Cards.COMPARE_PREFERRED);
 				int sets = 0;
 				i = 0;
 				//#debug dominizer
@@ -252,7 +252,7 @@ public class GameApp extends MIDlet implements TabbedFormListener
 		}
 		try {
 			//SettingsRecordStorage.instance().deleteRecordStore(Locale.get("rms.file.condition"));
-			if ( SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.condition")) ) {
+			if ( SettingsRecordStorage.instance().changeToRecordStore("condition") ) {
 				//#debug dominizer
 				System.out.println("initial " + Dominion.I().condition.getInitialConditions() + " preferred " + Dominion.I().condition.getPreferredCondition());
 				//#debug dominizer

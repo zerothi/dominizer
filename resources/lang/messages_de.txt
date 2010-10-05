@@ -3,9 +3,84 @@
 # App Specific translations
 #
 ################
+#######
+#
+# Version 0.18 translations
+#
+#######
+info.randomized.Prosperity={0} Karten: {1}\nWürfel werfen: {2}.\n{3}
+info.randomized.Prosperity.Succes={0} Nutze die zusätzlichen Basiskarten.
+info.randomized.Prosperity.Failed={0} Nutze die zusätzlichen Basiskarten NICHT.
+info.delete.set=Set {0} gelöscht.\n Es verbleiben {1}
+screen.Condition.InputMessage=Name der Bedingung:
+randomize.condition.failed=Es konnte kein passender Kartensatz für diese Bedingungen gefunden werden. Bitte neu versuchen.
+screen.options.sort=Art der Sortierung
+screen.options.sort.info=Bestimmt die Standart-Sortierung.
+screen.options.numberofsavedsets=# gespeicherte Kartensätze
+screen.options.numberofsavedsets.info=Wie viele Kartensätze bleiben für einen Neustart gespeichert
+screen.options.preferredcondition=Bevorzugte Bedingung
+screen.options.preferredcondition.info=Bedingung, die auf der Seite der Kartensätze genutzt wird.
+screen.RandomizedCards.title.tab=#{0}
+info.randomized.Prosperity=Es sind  Karten von .\nGewürfelt wurde eine .\n
+info.randomized.Prosperity.Succes=Du solltest die zusätzlichen Basiskarten nutzen.
+info.randomized.Prosperity.Failed=Du solltest die zusätzlichen Basiskarten NICHT nutzen.
+info.randomized.Sets.NoneCreated=Es gibt keine erzeugten Kartensätze. 
+cmd.save=Speichern
+cmd.Randomize.Condition=Bedingter Zufall
+cmd.Randomize.Pure=Völliger Zufall
+cmd.Goto.RandomizeSets=Zeige Sets
+cmd.Prosperity.Dice=Basiskarten zuwürfeln
+cmd.Set.DeleteAll=Alle löschen
+alert.adding.cards=Die Karten konnten nicht hinzugefügt werden
+chart.types=Typen
+chart.attributes=Attributes
+alert.NoMoreSets=Es können keine weiteren Kartensätze erstellt werden.
+chart.title=Karteninformation
+alert.CardsFromExpansion=Du kannst nicht mehr als {0} Karten aus dem aktuellen Kartensatz nutzen.\nWähle weniger!
+alert.NotEnoughSelectedCards=Die Karten dieser Auswahl reichen leider nicht aus.
+alert.Condition.NoSelection=Es wurde keine Bedingung ausgewählt. Bitte nachholen, bevor 'randomizing with conditions' erneut genutzt wird.
+alert.preset.CardAlreadyUsed=Alle verfügbaren Karten sind in anderen Kartensätzen genutzt.
+alert.preset.WrongInput=Falscheingabe. Der Dominizer hat sich verschluckt.
+card.type=Typ
+card.action=Aktion
+card.victory=Siegpunkte
+card.attack=Angriff
+card.reaction=Reaktion
+card.duration=Dauer
+card.treasury=Geld
 
-tab.Preset.title=Fixe 10er-Sätze
-tab.EditCards.title=Karten Einstellungen
+card.adds=Gibt
+card.adds.actions=Aktionen
+card.adds.victorypoints=SPs
+card.adds.buys=Käufe
+card.adds.draws=Karten
+card.adds.coins=Münzen
+card.adds.trash=Müll
+card.adds.curses=Flüche
+card.adds.potions=Tränke
+
+preset.alchemy.ForbiddenArts=Verbotene Künste
+preset.alchemy.PotionMixers=Quackslaber
+preset.alchemy.ChemistryLesson=Chemiestunden
+preset.alchemy.Servants=Diener
+preset.alchemy.SecretResearch=Geheime Forschungen
+preset.alchemy.PoolsToolsFools=Töpfe, Tränke, Trottel
+
+preset.prosperity.Beginners=Anfänger
+preset.prosperity.FriendlyInteractive=Freundliche Interaktion
+preset.prosperity.BigActions=Große Aktionen
+preset.prosperity.BiggestMoney=Haufenweise Geld
+preset.prosperity.TheKingsArmy=Die Armee des Königs
+preset.prosperity.TheGoodLife=Ein gutes Leben
+preset.prosperity.PathsToVictory=Pfade zum Sieg
+preset.prosperity.AllAlongTheWatchtower=Rund um den Wachturm
+preset.prosperity.LuckySeven=Glücksritter
+
+
+## 0.175
+
+tab.Preset.title=Empfohlene 10er-Sätze
+tab.EditCards.title=Karten-Einstellungen
 tab.Settings.title=Einstellungen
 tab.Calendar.title=Kalender
 table.heading.Name=Name
@@ -44,9 +119,9 @@ cmd.Sort.Name=Name
 cmd.Sort.CostName=Kosten - Name
 cmd.Sort.CostExp=Kosten - Erw.
 cmd.Percentage.Gauge=Prozentsatz
-cmd.Percentage.Main=Prozentsatz {0}
+cmd.Percentage.Main=Prozentsatz 
 cmd.Percentage.Remove=Entferne
-cmd.Percentage.Use=Nutze {0}%
+cmd.Percentage.Use=Nutze %
 cmd.Preset.ShowInfo=Zeige Karten
 cmd.Preset.DeletePreset=Lösche Voreinstellungen
 cmd.Calendar.AddGame=Spiel hinzufügen
@@ -64,8 +139,8 @@ gauge.loading.cards.settings=Lade Karten-Einstellungen
 gauge.loading.gui=Lade Oberfläche
 gauge.loading.gui.settings=Lade Einstellungen der Oberfläche
 gauge.loading.finished=Laden beendet
-gauge.card.percentage=Prozentsatz {0} setzen
-gauge.expansion.setCards=Minimum {0} Karten
+gauge.card.percentage=Prozentsatz  setzen
+gauge.expansion.setCards=Minimum  Karten
 alert.alert=Achtung
 alert.info=Info
 alert.confirmation=Bestätigung
@@ -76,7 +151,7 @@ alert.QuickSelectExpansions.NoneSelected=Es wurde keine Erweiterung ausgewählt.
 alert.CardsFromExpansion.Promo=Das Promo-Deck besteht nicht aus so vielen Karten.\nWähle weniger!
 alert.Randomization.Save.IllegalChar=Es kann nicht unter einem Namen mit '#' gespeichert werden.\nBitte einen anderen Namen wählen.
 alert.Randomization.Availability=In '{0}' sind nicht genügend Karten vorhanden um das gewünschte Minimum zu erfüllen.\nBitte berichtigen!
-alert.Randomization.TotalAvailability=Du hast nur noch {0} Karten zur Verfügung.\nSo können keine Sets mehr generiert werden!
+alert.Randomization.TotalAvailability=Du hast nur noch  Karten zur Verfügung.\nSo können keine Sets mehr generiert werden!
 
 # Expansion=Erweiterung
 # Cost=Kosten
@@ -92,13 +167,13 @@ alert.Randomization.TotalAvailability=Du hast nur noch {0} Karten zur Verfügung
 # Expansion Names
 #
 ################
-base=Was für eine Welt
+base=Was f��r eine Welt
 promo=Promo
 intrigue=Die Intrige
 seaside=Seaside
 ### No yet known
-alchemy=Alchemy
-prosperity=Prosperity
+alchemy=Die Alchemisten
+prosperity=Blütezeit
 card.BlackMarket=Schwarzmarkt
 
 preset.base.FirstGame=Erstes Spiel
@@ -107,13 +182,13 @@ preset.base.Interaction=Interaktion
 preset.base.SizeDistortion=Im Wandel
 preset.base.VillageSquare=Dorfplatz
 preset.intrigue.VictoryDance=Siegestanz
-preset.intrigue.SecretSchemes=Geheime Pläne
-preset.intrigue.BestWishes=Beste Wünsche
+preset.intrigue.SecretSchemes=Geheime Pl��ne
+preset.intrigue.BestWishes=Beste W��nsche
 preset.intrigue.Deconstruction=Demontage
 preset.intrigue.HandMadness=Eine Hand voll
 preset.intrigue.Underlings=Untergebene
 preset.seaside.HighSeas=Auf hoher See
-preset.seaside.BuriedTreasure=Vergrabene Schätze
+preset.seaside.BuriedTreasure=Vergrabene Sch��tze
 preset.seaside.Shipwrecks=Schiffswracks
 preset.seaside.ReachForTomorrow=Griff nach den Sternen
 preset.seaside.Repetition=Wiederholungen
@@ -130,11 +205,11 @@ polish.command.select=Auswahl
 polish.command.mark=Markieren
 polish.command.unmark=Ent-Markieren
 polish.command.options=Optionen
-polish.command.delete=Löschen
-polish.command.clear=Löschen
+polish.command.delete=L��schen
+polish.command.clear=L��schen
 polish.command.hide=Verstecken
 polish.title.input=Eingabe
-polish.command.entersymbol=Symbol hinzufügen
+polish.command.entersymbol=Symbol hinzuf��gen
 polish.command.followlink=Gehe
-polish.command.submit=Übermitteln
-polish.command.back=Zurück
+polish.command.submit=��bermitteln
+polish.command.back=Zur��ck

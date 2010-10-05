@@ -128,8 +128,8 @@
 					<localization unless="debug or debugDominizer or single">
 						<!--locale name="da" encoding="UTF-8"/-->
 						<locale name="en" encoding="UTF-8"/>
-						<!--locale name="de" encoding="UTF-8"/-->
-						<!--locale name="es" encoding="UTF-8"/-->
+						<locale name="de" encoding="UTF-8"/>
+						<locale name="es" encoding="UTF-8"/>
 						<!--locale name="pl" encoding="UTF-8"/-->
 						<!--locale name="fr" encoding="UTF-8"/>
 						<locale name="ch_SC" encoding="UTF-8"/>
@@ -311,13 +311,13 @@
 		<subant target="compileAllNonAndroid" 
 			description="Builds All Non-Android Devices" 
 			buildpath="." 
-			genericantfile="build.xml" 
+			genericantfile="dominizer.xml" 
 			inheritall="false" 
 			/>
 		<subant target="compileAndroid"
 			description="Builds All Android Devices"
 			buildpath="." 
-			genericantfile="build.xml" 
+			genericantfile="dominizer.xml" 
 			inheritall="false" 
 			/>
 	</target>
@@ -325,12 +325,12 @@
 		<subant target="compileAllNonAndroid" 
 			description="Builds All Non-Android Devices" 
 			buildpath="." 
-			genericantfile="build.xml" 
+			genericantfile="dominizer.xml" 
 			inheritall="false" />
 		<subant target="compileAndroid"
 			description="Builds All Android Devices"
 			buildpath="." 
-			genericantfile="build.xml" 
+			genericantfile="dominizer.xml" 
 			inheritall="false" />
 	</target>
 </project>

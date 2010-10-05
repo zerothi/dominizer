@@ -6,7 +6,7 @@
 
 tab.Preset.title=Predeterminados
 tab.EditCards.title=Editar Cartas
-tab.Settings.title=Configuración
+tab.Settings.title=Configuraci��n
 tab.Calendar.title=Calendario
 table.heading.Name=Nombre
 table.heading.Expansion=Exp.
@@ -25,8 +25,8 @@ screen.BlackMarket.DrawTextInfo=Por favor robe cartas.
 screen.BlackMarket.ChooseNone=Ninguno
 screen.BlackMarket.ChooseCards=Escoger Carta:
 screen.BlackMarket.InfoMessage=Usted ha escogido: 
-screen.BlackMarket.DeckEmpty=El mazo del Mercado Negro está vacío. 
-screen.BlackMarket.CancelBuy=¿Quiere rehacer la compra?\n
+screen.BlackMarket.DeckEmpty=El mazo del Mercado Negro est�� vac��o. 
+screen.BlackMarket.CancelBuy=��Quiere rehacer la compra?\n
 screen.BlackMarket.Ticker=< {0}Compras / Quedan: {1} / {2} >
 screen.Input.title=Entrada
 screen.Input.defaultmessage=
@@ -60,14 +60,14 @@ cmd.switch=Cambiar
 alert.alert=Alerta
 alert.info=Info
 alert.confirmation=Confirmar
-alert.Settings.CouldNotBeRead=La configuración no puede ser leída!\nLo sentimos.
-alert.Settings.CouldNotBeSaved=La configuración no puede ser guardada!\nLo sentimos.
-alert.QuickSelectExpansions.OnlyPromoSelected=Sólo ha seleccionado Promos.\nSeleccione más!
-alert.QuickSelectExpansions.NoneSelected=No ha seleccionado ninguna expansión.\nSelectione al menos una!
-alert.CardsFromExpansion.Promo=No puede tener más de 3 cartas del mazo de promociones.\nUse menos!
+alert.Settings.CouldNotBeRead=La configuraci��n no puede ser le��da!\nLo sentimos.
+alert.Settings.CouldNotBeSaved=La configuraci��n no puede ser guardada!\nLo sentimos.
+alert.QuickSelectExpansions.OnlyPromoSelected=S��lo ha seleccionado Promos.\nSeleccione m��s!
+alert.QuickSelectExpansions.NoneSelected=No ha seleccionado ninguna expansi��n.\nSelectione al menos una!
+alert.CardsFromExpansion.Promo=No puede tener m��s de 3 cartas del mazo de promociones.\nUse menos!
 alert.Randomization.Save.IllegalChar=El nombre no puede contener los caracateres '#'.\nPor favor ingrese otro nombre.
-alert.Randomization.Availability=Sus cartas disponibles en '{0}' no coinciden con el mínimo requisito de la carta.\nCorríjalo!
-alert.Randomization.TotalAvailability=Sólo tiene {0} cartas disponibles en total.\nNo se pueden generar más sets!
+alert.Randomization.Availability=Sus cartas disponibles en '{0}' no coinciden con el m��nimo requisito de la carta.\nCorr��jalo!
+alert.Randomization.TotalAvailability=S��lo tiene {0} cartas disponibles en total.\nNo se pueden generar m��s sets!
 
 ################
 #
@@ -78,17 +78,17 @@ base=Base
 promo=Promo
 intrigue=Intrigua
 seaside=Terramar
-alchemy=Alquimista
+alchemy=Alquimia
 prosperity=Prosperidad
 card.BlackMarket=Mercado Negro
 
 preset.base.FirstGame=Primer Juego
 preset.base.BigMoney=Gran Dinero
-preset.base.Interaction=Interacción
-preset.base.SizeDistortion=Distorción de Tamaño
+preset.base.Interaction=Interacci��n
+preset.base.SizeDistortion=Distorci��n de Tama��o
 preset.base.VillageSquare=Plaza de la Aldea
 preset.intrigue.VictoryDance=Baile de Victoria
-preset.intrigue.SecretSchemes=Regímenes Secretos
+preset.intrigue.SecretSchemes=Reg��menes Secretos
 preset.intrigue.BestWishes=Los Mejores Deseos
 preset.intrigue.Deconstruction=Deconstruction
 preset.intrigue.HandMadness=Locura de Mano
@@ -96,8 +96,8 @@ preset.intrigue.Underlings=Subordinados
 preset.seaside.HighSeas=Altamar
 preset.seaside.BuriedTreasure=Tesoro Enterrado
 preset.seaside.Shipwrecks=Naufragios
-preset.seaside.ReachForTomorrow=Añora el Mañana
-preset.seaside.Repetition=Repetición
+preset.seaside.ReachForTomorrow=A��ora el Ma��ana
+preset.seaside.Repetition=Repetici��n
 preset.seaside.GiveAndTake=Dar y Recibir
 
 ################
@@ -122,7 +122,7 @@ polish.command.hide=Ocultar
 # used when no direct input mode is activated:
 polish.title.input=Entrada
 # used for showing a screen for selecting symbols within TextFields:
-polish.command.entersymbol=Agregar Símbolo
+polish.command.entersymbol=Agregar S��mbolo
 # used by the HtmlBrowser for a links:
 polish.command.followlink=Ir
 # used by the HtmlBrowser for submitting a form:

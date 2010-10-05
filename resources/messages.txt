@@ -258,13 +258,6 @@ polish.command.submit=Submit
 polish.command.back=Back
 
 
-#################
-#
-# Card information
-#
-#################
-base.Adventurer.name=hej
-
 
 #################
 #
@@ -272,19 +265,19 @@ base.Adventurer.name=hej
 # only used for RMS
 #
 #################
-rms.file.settings=settings
-rms.file.preset=presets
-rms.file.condition=condition
-rms.expansions=expansions
-rms.expansions.usedcards=expcards
-rms.available=available
-rms.percentage=percentage
-rms.lasttab=lasttab
-rms.preferredsort=sort
-rms.randomized.saves=randsave
-rms.preset=preset
-rms.notselected=no
-rms.base=ba
-rms.promo=pr
-rms.intrigue=in
-rms.seaside=se
+#rms.file.settings=settings
+#rms.file.preset=presets
+#rms.file.condition=condition
+#rms.expansions=expansions
+#rms.expansions.usedcards=expcards
+#rms.available=available
+#rms.percentage=percentage
+#rms.lasttab=lasttab
+#rms.preferredsort=sort
+#rms.randomized.saves=randsave
+#rms.preset=preset
+#rms.notselected=no
+#rms.base=ba
+#rms.promo=pr
+#rms.intrigue=in
+#rms.seaside=se

@@ -83,9 +83,9 @@ public class OptionForm extends Form implements CommandListener, ItemStateListen
 	public void commandAction(Command cmd, Displayable screen) {
 		if ( cmd.equals(saveCmd) ) {
 			try {
-				if ( SettingsRecordStorage.instance().changeToRecordStore(Locale.get("rms.file.settings")) ) {
+				if ( SettingsRecordStorage.instance().changeToRecordStore("settings") ) {
 					//#= Cards.COMPARE_PREFERRED = options[0].getSelectedIndex();
-					SettingsRecordStorage.instance().addData(Locale.get("rms.preferredsort"), "" + Cards.COMPARE_PREFERRED);
+					SettingsRecordStorage.instance().addData("sort", "" + Cards.COMPARE_PREFERRED);
 					SettingsRecordStorage.instance().writeData();
 					SettingsRecordStorage.instance().closeRecord();
 				}
