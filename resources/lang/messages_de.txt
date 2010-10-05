@@ -9,9 +9,9 @@
 #
 #######
 info.randomized.Prosperity={0} Karten: {1}\nWürfel werfen: {2}.\n{3}
-info.randomized.Prosperity.Succes={0} Nutze die zusätzlichen Basiskarten.
-info.randomized.Prosperity.Failed={0} Nutze die zusätzlichen Basiskarten NICHT.
-info.delete.set=Set {0} gelöscht.\n Es verbleiben {1}
+info.randomized.Prosperity.Succes=Nutze die zusätzlichen {0} Karten.
+info.randomized.Prosperity.Failed=Nutze die zusätzlichen {0} Karten NICHT.
+info.delete.set=Satz {0} gelöscht.\nEs verbleiben {1}.
 screen.Condition.InputMessage=Name der Bedingung:
 randomize.condition.failed=Es konnte kein passender Kartensatz für diese Bedingungen gefunden werden. Bitte neu versuchen.
 screen.options.sort=Art der Sortierung
@@ -167,14 +167,14 @@ alert.Randomization.TotalAvailability=Du hast nur noch  Karten zur Verfügung.\n
 # Expansion Names
 #
 ################
-base=Was f��r eine Welt
-promo=Promo
-intrigue=Die Intrige
-seaside=Seaside
+expansion.base=Was f��r eine Welt
+expansion.promo=Promo
+expansion.intrigue=Die Intrige
+expansion.seaside=Seaside
 ### No yet known
-alchemy=Die Alchemisten
-prosperity=Blütezeit
-card.BlackMarket=Schwarzmarkt
+expansion.alchemy=Die Alchemisten
+expansion.prosperity=Blütezeit
+expansion.promo.BlackMarket=Schwarzmarkt
 
 preset.base.FirstGame=Erstes Spiel
 preset.base.BigMoney=Grosses Geld

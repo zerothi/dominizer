@@ -11,10 +11,10 @@
 # Expansion Names
 #
 ################
-base=Base
-promo=Promo
-intrigue=Entrails
-seaside=Genocide
+expansion.base=Base
+expansion.promo=Promo
+expansion.intrigue=Entrails
+expansion.seaside=Genocide
 
 ################
 #

@@ -132,8 +132,8 @@
 						<locale name="es" encoding="UTF-8"/>
 						<!--locale name="pl" encoding="UTF-8"/-->
 						<!--locale name="fr" encoding="UTF-8"/>
-						<locale name="ch_SC" encoding="UTF-8"/>
-						<locale name="ch_TC" encoding="UTF-8"/>
+						<locale name="zh_CH_SC" encoding="UTF-8"/>
+						<locale name="zh_CH_TC" encoding="UTF-8"/>
 						<locale name="zombinion" encoding="UTF-8"/-->
 						<!--locale name="christmas" encoding="UTF-8"/-->
 					</localization>

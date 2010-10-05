@@ -3,19 +3,17 @@
 # App Specific translations
 #
 ################
-# Currentlly usinng the same as the english version
-table.heading.Cost=€
 
 ################
 #
 # Expansion Names
 #
 ################
-base=Podstawka
-promo=Promo
-intrigue=Intryga
-seaside=Wybrzeże
-card.BlackMarket=Czarny Rynek
+expansion.base=Podstawka
+expansion.promo=Promo
+expansion.intrigue=Intryga
+expansion.seaside=Wybrze��e
+expansion.promo.BlackMarket=Czarny Rynek
 
 ################
 #

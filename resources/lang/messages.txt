@@ -176,14 +176,14 @@ alert.Filter.Availability=Currently you cannot search and edit at the same time.
 # Expansion Names
 #
 ################
-base=Base
-promo=Promo
-intrigue=Intrigue
-seaside=Seaside
-alchemy=Alchemy
-prosperity=Prosperity
-user=User Cards
-card.BlackMarket=Black Market
+expansion.base=Base
+expansion.promo=Promo
+expansion.intrigue=Intrigue
+expansion.seaside=Seaside
+expansion.alchemy=Alchemy
+expansion.prosperity=Prosperity
+expansion.user=User Cards
+expansion.promo.BlackMarket=Black Market
 
 preset.base.FirstGame=First Game
 preset.base.BigMoney=Big Money

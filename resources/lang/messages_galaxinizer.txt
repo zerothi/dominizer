@@ -8,14 +8,6 @@
 
 ################
 #
-# Expansion Names
-#
-################
-base=Base
-promo=Promo
-
-################
-#
 # Application Name
 #
 ################
