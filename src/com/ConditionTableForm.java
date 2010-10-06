@@ -193,19 +193,19 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 			tableItem.set(Cards.ADDS_POTIONS, new MessageItem("" + (Cards.ADDS_POTIONS+1), "Potions"));
 		} else if ( currentTableType == TABLE_EXPANSIONS ) {
 			//#style tableCell
-			tableItem.set(Dominion.BASE, new MessageItem("" + (Dominion.BASE+1), Locale.get("base")));
+			tableItem.set(Dominion.BASE, new MessageItem("" + (Dominion.BASE+1), Locale.get("expansion.base")));
 			//#style tableCell
-			tableItem.set(Dominion.INTRIGUE, new MessageItem("" + (Dominion.INTRIGUE+1), Locale.get("intrigue")));
+			tableItem.set(Dominion.INTRIGUE, new MessageItem("" + (Dominion.INTRIGUE+1), Locale.get("expansion.intrigue")));
 			//#style tableCell
-			tableItem.set(Dominion.SEASIDE, new MessageItem("" + (Dominion.SEASIDE+1), Locale.get("seaside")));
+			tableItem.set(Dominion.SEASIDE, new MessageItem("" + (Dominion.SEASIDE+1), Locale.get("expansion.seaside")));
 			//#style tableCell
-			tableItem.set(Dominion.ALCHEMY, new MessageItem("" + (Dominion.ALCHEMY+1), Locale.get("alchemy")));
+			tableItem.set(Dominion.ALCHEMY, new MessageItem("" + (Dominion.ALCHEMY+1), Locale.get("expansion.alchemy")));
 			//#style tableCell
-			tableItem.set(Dominion.PROSPERITY, new MessageItem("" + (Dominion.PROSPERITY+1), Locale.get("prosperity")));
+			tableItem.set(Dominion.PROSPERITY, new MessageItem("" + (Dominion.PROSPERITY+1), Locale.get("expansion.prosperity")));
 			//#style tableCell
-			tableItem.set(Dominion.PROMO, new MessageItem("" + (Dominion.PROMO+1), Locale.get("promo")));
+			tableItem.set(Dominion.PROMO, new MessageItem("" + (Dominion.PROMO+1), Locale.get("expansion.promo")));
 			//#style tableCell
-			tableItem.set(Dominion.USER, new MessageItem("" + (Dominion.USER+1), Locale.get("user")));			
+			tableItem.set(Dominion.USER, new MessageItem("" + (Dominion.USER+1), Locale.get("expansion.user")));			
 		} else if ( currentTableType == TABLE_NUMBER ) {
 			//#style tableCell
 			tableItem.set(LESS, new MessageItem("" + (LESS+1), "<"));

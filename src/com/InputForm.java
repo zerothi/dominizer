@@ -29,7 +29,7 @@ public class InputForm extends Form {
 	}
 	
 	public static InputForm instance() {
-		return instance(Locale.get("screen.Input.title"), Locale.get("screen.Input.defaultmessage"), null);
+		return instance(Locale.get("screen.Input.title"), "", null);
 	}
 	
 	public InputForm instance(String message, CommandListener cmdListener) {

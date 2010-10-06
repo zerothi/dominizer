@@ -33,7 +33,7 @@ public class GameCalendarForm extends Form implements CommandListener {
 	
 	public static GameCalendarForm I() {
 		if ( gcF == null ) {
-			gcF = new GameCalendarForm(Locale.get("screen.Calendar.title"));
+			gcF = new GameCalendarForm("Calendar");
 		}
 		return gcF;
 	}

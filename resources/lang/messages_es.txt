@@ -5,27 +5,16 @@
 #
 ################
 
-expansion.alchemy = Alquimia
-
-alert.QuickSelectExpansions.NoneSelected      = No ha seleccionado ninguna expansi\uFFFD\uFFFDn.\nSelectione al menos una!
-alert.QuickSelectExpansions.OnlyPromoSelected = S\uFFFD\uFFFDlo ha seleccionado Promos.\nSeleccione m\uFFFD\uFFFDs!
-alert.Randomization.Availability              = Sus cartas disponibles en '{0}' no coinciden con el m\uFFFD\uFFFDnimo requisito de la carta.\nCorr\uFFFD\uFFFDjalo!
+alert.QuickSelectExpansions.NoneSelected      = No ha seleccionado ninguna expansión.\nSelectione al menos una!
+alert.QuickSelectExpansions.OnlyPromoSelected = Sólo ha seleccionado Promos.\nSeleccione más!
+alert.Randomization.Availability              = Sus cartas disponibles en '{0}' no coinciden con el mínimo requisito de la carta.\nCorríjalo!
 alert.Randomization.Save.IllegalChar          = El nombre no puede contener los caracateres '#'.\nPor favor ingrese otro nombre.
-alert.Randomization.TotalAvailability         = S\uFFFD\uFFFDlo tiene {0} cartas disponibles en total.\nNo se pueden generar m\uFFFD\uFFFDs sets!
-alert.Settings.CouldNotBeRead                 = La configuraci\uFFFD\uFFFDn no puede ser le\uFFFD\uFFFDda!\nLo sentimos.
-alert.Settings.CouldNotBeSaved                = La configuraci\uFFFD\uFFFDn no puede ser guardada!\nLo sentimos.
+alert.Randomization.TotalAvailability         = Sólo tiene {0} cartas disponibles en total.\nNo se pueden generar más sets!
+alert.Settings.CouldNotBeRead                 = La configuración no puede ser leída!\nLo sentimos.
+alert.Settings.CouldNotBeSaved                = La configuración no puede ser guardada!\nLo sentimos.
 alert.alert                                   = Alerta
 alert.confirmation                            = Confirmar
 alert.info                                    = Info
-
-################
-#
-# Expansion Names
-#
-################
-expansion.base = Base
-
-expansion.promo.BlackMarket = Mercado Negro
 
 cmd.AnotherSet            = Otro Set
 cmd.Back                  = Volver
@@ -54,7 +43,18 @@ cmd.Sort.Main             = Ordenar
 cmd.Sort.Name             = Nombre
 cmd.switch                = Cambiar
 
-expansion.intrigue = Intrigua
+expansion.alchemy           = Alquimia
+################
+#
+# Expansion Names
+#
+################
+expansion.base              = Base
+expansion.intrigue          = Intrigua
+expansion.promo             = Promo
+expansion.promo.BlackMarket = Mercado Negro
+expansion.prosperity        = Prosperidad
+expansion.seaside           = Terramar
 
 # used by the RssBrowser for returning to the previous page:
 polish.command.back        = Volver
@@ -64,7 +64,7 @@ polish.command.clear       = Limpiar
 # for deleting a single char:
 polish.command.delete      = Borrar
 # used for showing a screen for selecting symbols within TextFields:
-polish.command.entersymbol = Agregar S\uFFFD\uFFFDmbolo
+polish.command.entersymbol = Agregar Símbolo
 # used by the HtmlBrowser for a links:
 polish.command.followlink  = Ir
 # for hiding menus on BlackBerry devices:
@@ -88,30 +88,26 @@ polish.title.input         = Entrada
 
 preset.base.BigMoney            = Gran Dinero
 preset.base.FirstGame           = Primer Juego
-preset.base.Interaction         = Interacci\uFFFD\uFFFDn
-preset.base.SizeDistortion      = Distorci\uFFFD\uFFFDn de Tama\uFFFD\uFFFDo
+preset.base.Interaction         = Interacción
+preset.base.SizeDistortion      = Distorción de Tamaño
 preset.base.VillageSquare       = Plaza de la Aldea
 preset.intrigue.BestWishes      = Los Mejores Deseos
 preset.intrigue.Deconstruction  = Deconstruction
 preset.intrigue.HandMadness     = Locura de Mano
-preset.intrigue.SecretSchemes   = Reg\uFFFD\uFFFDmenes Secretos
+preset.intrigue.SecretSchemes   = Regímenes Secretos
 preset.intrigue.Underlings      = Subordinados
 preset.intrigue.VictoryDance    = Baile de Victoria
 preset.seaside.BuriedTreasure   = Tesoro Enterrado
 preset.seaside.GiveAndTake      = Dar y Recibir
 preset.seaside.HighSeas         = Altamar
-preset.seaside.ReachForTomorrow = A\uFFFD\uFFFDora el Ma\uFFFD\uFFFDana
-preset.seaside.Repetition       = Repetici\uFFFD\uFFFDn
+preset.seaside.ReachForTomorrow = Añora el Mañana
+preset.seaside.Repetition       = Repetición
 preset.seaside.Shipwrecks       = Naufragios
 
-expansion.promo = Promo
-
-expansion.prosperity = Prosperidad
-
-screen.BlackMarket.CancelBuy        = \uFFFD\uFFFDQuiere rehacer la compra?\n
+screen.BlackMarket.CancelBuy        = ¿Quiere rehacer la compra?\n
 screen.BlackMarket.ChooseCards      = Escoger Carta:
 screen.BlackMarket.ChooseNone       = Ninguno
-screen.BlackMarket.DeckEmpty        = El mazo del Mercado Negro est\uFFFD\uFFFD vac\uFFFD\uFFFDo. 
+screen.BlackMarket.DeckEmpty        = El mazo del Mercado Negro está vacío. 
 screen.BlackMarket.DrawTextInfo     = Por favor robe cartas. 
 screen.BlackMarket.InfoMessage      = Usted ha escogido: 
 screen.BlackMarket.Ticker           = < {0}Compras / Quedan: {1} / {2} >
@@ -121,12 +117,10 @@ screen.Input.title                  = Entrada
 screen.RandomizedCards.InputMessage = Nombre predeterminado guardado:
 screen.RandomizedCards.title        = Cartas al Azar
 
-expansion.seaside = Terramar
-
 tab.Calendar.title         = Calendario
 tab.EditCards.title        = Editar Cartas
-tab.Preset.title           = Predeterminados
-tab.Settings.title         = Configuraci\uFFFD\uFFFDn
+tab.Preset.title           = Predeter- minados
+tab.Settings.title         = Configuración
 
 table.heading.ActionCard   = A
 table.heading.AttackCard   = A

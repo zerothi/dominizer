@@ -106,10 +106,6 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 			else
 				GameApp.instance().showInfo(Locale.get("info.randomized.Sets.NoneCreated"), Alert.FOREVER);
 		} else if ( cmd.equals(perGaugeCmd) ) {
-			/*if ( getFilterText().length() != 0 ) {
-				GameApp.instance().showAlert(Locale.get("alert.Filter.Availability"));
-				return;
-			}*/
 			tmp[0] = Dominion.I().getLinearExpansionIndex(getCurrentIndex());
 			tmp[1] = Dominion.I().getLinearCardIndex(getCurrentIndex());
 			if ( tmp[0] == -1 ) return;

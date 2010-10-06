@@ -5,11 +5,8 @@
 #
 ################
 
-### Translate here please
-expansion.alchemy = Alchemy
-
-alert.QuickSelectExpansions.NoneSelected      = \u6C92\u6709\u9078\u64C7\u4EFB\u4F55\u64F4\u5145\u4E0D\u81F3\u5C11\u9078\u4E00\u500B!
-alert.QuickSelectExpansions.OnlyPromoSelected = \u53EA\u9078\u64C7\u4E86\u7279\u5178\u5361\u4E0D\u9078\u66F4\u591A!
+alert.QuickSelectExpansions.NoneSelected      = 沒有選擇任何擴充不至少選一個!
+alert.QuickSelectExpansions.OnlyPromoSelected = 只選擇了特典卡不選更多!
 alert.Randomization.Availability              = Your available cards in '{0}' does not match your minimum card requirement.\nCorrect input!
 ### Translate here please (not \n)
 alert.Randomization.Save.IllegalChar          = Your save name can not contain the character '#'.\nPlease supply another name.
@@ -17,32 +14,23 @@ alert.Randomization.TotalAvailability         = You only have {0} available card
 ### Translate here please (not \n)
 alert.Settings.CouldNotBeRead                 = Settings could not be read!\nSorry.
 alert.Settings.CouldNotBeSaved                = Settings could not be saved!\nSorry.
-alert.alert                                   = \u8B66\u544A
-alert.confirmation                            = \u78BA\u8A8D
-alert.info                                    = \u4FE1\u606F
+alert.alert                                   = 警告
+alert.confirmation                            = 確認
+alert.info                                    = 信息
 
 ################
 #
 # Application Name
 #
 ################
-app.name = \u9818\u571F
-
-################
-#
-# Expansion Names
-#
-################
-expansion.base = \u7687\u8F3F\u722D\u9738
-
-expansion.promo.BlackMarket = \u9ED1\u5E02
+app.name = 領土
 
 cmd.AnotherSet            = Another Set
-cmd.Back                  = \u8FD4\u56DE
-cmd.BlackMarket           = \u9ED1\u5E02\u724C\u5806
-cmd.BlackMarket.CancelBuy = \u53D6\u6D88\u8CFC\u8CB7
-cmd.BlackMarket.Draw      = \u62BD\u65B0\u5361
-cmd.BlackMarket.Show      = \u986F\u793A\u9ED1\u5E02\u724C\u5806
+cmd.Back                  = 返回
+cmd.BlackMarket           = 黑市牌堆
+cmd.BlackMarket.CancelBuy = 取消購買
+cmd.BlackMarket.Draw      = 抽新卡
+cmd.BlackMarket.Show      = 顯示黑市牌堆
 cmd.Calendar.AddGame      = Add Game
 cmd.Options.Main          = Options
 cmd.Percentage.Main       = Percentage {0}
@@ -50,52 +38,64 @@ cmd.Percentage.Remove     = Remove
 cmd.Percentage.Use        = Use {0}%
 cmd.Preset.DeletePreset   = Delete
 cmd.Preset.ShowInfo       = Show Cards
-cmd.Quit                  = \u9000\u51FA
+cmd.Quit                  = 退出
 ### Translate here please
 cmd.Randomize.Set         = Rand. Set
-cmd.Randomize.Show        = \u96A8\u6A5F
+cmd.Randomize.Show        = 隨機
 cmd.SaveAsPreset          = Save
 cmd.ShowChosenCardInfo    = Show info
-cmd.ShowLog               = \u986F\u793A\u65E5\u8A8C
+cmd.ShowLog               = 顯示日誌
 cmd.Sort.CostExp          = Cost - Exp
 cmd.Sort.CostName         = Cost - Name
 cmd.Sort.ExpCost          = Exp. - Cost
 cmd.Sort.ExpName          = Exp. - Name
 cmd.Sort.Main             = Sort
 cmd.Sort.Name             = Name
-cmd.switch                = \u5207\u63DB
+cmd.switch                = 切換
 
-intrigue = \u6697\u6F6E\u6D36\u6E67
+### Translate here please
+expansion.alchemy           = Alchemy
+################
+#
+# Expansion Names
+#
+################
+expansion.base              = 皇輿爭霸
+expansion.intrigue          = 暗潮洶湧
+expansion.promo             = 特典
+expansion.promo.BlackMarket = 黑市
+expansion.prosperity        = Prosperity
+expansion.seaside           = 海國圖志
 
 # 用來返回前頁:
-polish.command.back        = \u8FD4\u56DE
-polish.command.cancel      = \u53D6\u6D88
+polish.command.back        = 返回
+polish.command.cancel      = 取消
 # 刪除整個文本:
-polish.command.clear       = \u6E05\u9664
+polish.command.clear       = 清除
 # 刪除一個標記:
-polish.command.delete      = \u522A\u9664
+polish.command.delete      = 刪除
 # 用來顯示幕選擇不含文本的符號:
-polish.command.entersymbol = \u6DFB\u52A0\u7B26\u865F
+polish.command.entersymbol = 添加符號
 # 用來給HTML遊覽器連結:
-polish.command.followlink  = \u8DF3\u8F49
+polish.command.followlink  = 跳轉
 # 在黑莓上隱藏菜單:
-polish.command.hide        = \u96B1\u85CF
-polish.command.mark        = \u6A19\u8A18
+polish.command.hide        = 隱藏
+polish.command.mark        = 標記
 ################
 #
 # Polish Settings
 #
 ################
-polish.command.ok          = \u597D
-polish.command.options     = \u9078\u9805
-polish.command.select      = \u9078\u64C7
+polish.command.ok          = 好
+polish.command.options     = 選項
+polish.command.select      = 選擇
 # 用來給HTML遊覽器提交表格:
-polish.command.submit      = \u63D0\u4EA4
-polish.command.unmark      = \u53D6\u6D88\u6A19\u8A18
+polish.command.submit      = 提交
+polish.command.unmark      = 取消標記
 # 沒標籤時顯示默認標題
 # 是定義一個文本. 這只是
 # 當直接輸入模式沒有啟動時使用:
-polish.title.input         = \u8F38\u5165
+polish.title.input         = 輸入
 
 preset.base.BigMoney            = Big Money
 ### Translate here please
@@ -116,26 +116,20 @@ preset.seaside.ReachForTomorrow = Reach For Tomorrow
 preset.seaside.Repetition       = Repetition
 preset.seaside.Shipwrecks       = Shipwrecks
 
-expansion.promo = \u7279\u5178
-
-expansion.prosperity = Prosperity
-
-screen.BlackMarket.CancelBuy        = \u8981\u91CD\u65B0\u8CB7\u5361?\u5426
-screen.BlackMarket.ChooseCards      = \u9078\u64C7\u5361\u7247:
-screen.BlackMarket.ChooseNone       = \u7121
-screen.BlackMarket.DeckEmpty        = \u9ED1\u5E02\u724C\u5806\u662F\u7A7A\u7684
-screen.BlackMarket.DrawTextInfo     = \u8ACB\u62BD\u5361
-screen.BlackMarket.InfoMessage      = \u4F60\u9078\u64C7\u4E86: 
+screen.BlackMarket.CancelBuy        = 要重新買卡?否
+screen.BlackMarket.ChooseCards      = 選擇卡片:
+screen.BlackMarket.ChooseNone       = 無
+screen.BlackMarket.DeckEmpty        = 黑市牌堆是空的
+screen.BlackMarket.DrawTextInfo     = 請抽卡
+screen.BlackMarket.InfoMessage      = 你選擇了: 
 ### Translate here please (not {x})
 screen.BlackMarket.Ticker           = < {0}Bought / Left: {1} / {2} >
-screen.BlackMarket.title            = \u9ED1\u5E02
+screen.BlackMarket.title            = 黑市
 screen.Input.inputname              = Input:
 screen.Input.title                  = Input
 ### Translate here please
 screen.RandomizedCards.InputMessage = Saved preset name:
-screen.RandomizedCards.title        = \u96A8\u6A5F\u9078\u5361
-
-expansion.seaside = \u6D77\u570B\u5716\u5FD7
+screen.RandomizedCards.title        = 隨機選卡
 
 tab.Calendar.title         = Calendar
 tab.EditCards.title        = Edit Cards
@@ -143,14 +137,14 @@ tab.EditCards.title        = Edit Cards
 tab.Preset.title           = Presets
 tab.Settings.title         = Settings
 
-table.heading.ActionCard   = \u884C\u52D5
-table.heading.AttackCard   = \u653B\u64CA
-table.heading.Cost         = \u50F9\u503C
-table.heading.DurationCard = \u905E\u5EF6
-table.heading.Expansion    = \u64F4\u5145.
-table.heading.Name         = \u540D\u5B57
+table.heading.ActionCard   = 行動
+table.heading.AttackCard   = 攻擊
+table.heading.Cost         = 價值
+table.heading.DurationCard = 遞延
+table.heading.Expansion    = 擴充.
+table.heading.Name         = 名字
 ### Translate here please
 table.heading.PotionCard   = P
-table.heading.ReactionCard = \u518D\u884C\u52D5
-table.heading.TreasuryCard = \u9322\u5E63
-table.heading.VictoryCard  = \u5206\u6578
+table.heading.ReactionCard = 再行動
+table.heading.TreasuryCard = 錢幣
+table.heading.VictoryCard  = 分數

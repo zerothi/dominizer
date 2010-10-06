@@ -24,7 +24,7 @@
 	<!-- import global properties                                 -->
 	<property file="${polish.home}/global.properties" />
 	
-	<property name="debugLang" value="en"/>
+	<property name="debugLang" value="de"/>
 	<property name="single" value="false"/>
 	
 	<taskdef name="j2mepolish" 
@@ -220,8 +220,8 @@
 	<target name="debugGeneric" description="debug Generic" depends="enableDebugDominizer, enableGeneric, j2mepolish" />
 	<target name="debugTouch" description="debug Touch" depends="enableDebugDominizer, enableTouch, j2mepolish" />
 	
-	<target name="enableAll" depends="donotsign">
-		<property name="devices" value="Generic/Java,Generic/AnyPhone,Generic/AnyTouch_320x480,Nokia/Series40E3,Sony-Ericsson/JavaPlatform7"/>
+	<target name="enableAll" depends="donotsign"> <!-- Generic/AnyTouch_320x480 /-->
+		<property name="devices" value="Generic/AnyPhone,Nokia/Series40E3,Nokia/Series60E2FP2,Sony-Ericsson/JavaPlatform7"/>
 	</target>
 	
 	<target name="enableGeneric" depends="donotsign">

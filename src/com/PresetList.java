@@ -92,10 +92,6 @@ public class PresetList extends List implements CommandListener {
 			Rand.resetSeed();
 			focus(Rand.randomInt(size()));
 		} else if ( cmd.equals(infoCmd) ) {
-			/*if ( getFilterText().length() != 0 ) {
-				GameApp.instance().showAlert(Locale.get("alert.Filter.Availability"));
-				return;
-			}*/
 			int[] tmp = Dominion.I().getPresetLocation(getString(getCurrentIndex()));
 			if ( tmp[0] > -1 ) 
 				GameApp.instance().showInfo(Dominion.I().getPresetAsInfo(tmp[0], tmp[1]), Alert.FOREVER);

@@ -238,7 +238,7 @@ public class CardsList extends List implements CommandListener {
 			int i;
 			try {
 				tmp[0] = "" + Dominion.I().getSelectedCards(cardSet).fromExpansion(Dominion.PROSPERITY);
-				tmp[1] = Locale.get("prosperity");
+				tmp[1] = Locale.get("expansion.prosperity");
 				t = tmp[1];
 				i = Rand.randomInt(Dominion.I().getSelectedCards(cardSet).size()) + 1;
 				tmp[2] = "" + i;

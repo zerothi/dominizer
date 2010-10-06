@@ -159,37 +159,37 @@ public class Dominion {
 		presets[PROSPERITY].setPreset(8, Locale.get("preset.prosperity.LuckySeven"), new int[][] {
 			new int[] { 1,  2 }, new int[] { 1,  3 }, new int[] { 1, 19 }, new int[] { 1, 22 }, new int[] { 1, 24 }, 
 			new int[] { 4,  0 }, new int[] { 4,  5 }, new int[] { 4,  6 }, new int[] { 4, 10 }, new int[] { 4, 21 } });
-		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("base"));
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.base"));
 		//#debug dominizer
 		System.out.println("reading base");
 		readResource(BASE, "base", 25);
 		//#debug dominizer
 		System.out.println("size ba " + expansions[BASE].size());
-		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("intrigue"));
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.intrigue"));
 		//#debug dominizer
 		System.out.println("reading intrigue");
 		readResource(INTRIGUE, "intrigue", 25);
 		//#debug dominizer
 		System.out.println("size intrigue: " + expansions[INTRIGUE].size());
-		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("seaside"));
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.seaside"));
 		//#debug dominizer
 		System.out.println("reading seaside");
 		readResource(SEASIDE, "seaside", 26);
 		//#debug dominizer
 		System.out.println("size seaside: " + expansions[SEASIDE].size());
-		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("alchemy"));
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.alchemy"));
 		//#debug dominizer
 		System.out.println("reading alchemy");
 		readResource(ALCHEMY, "alchemy", 12); // The 13th card is a Potion which is always available
 		//#debug dominizer
 		System.out.println("size alchemy: " + expansions[ALCHEMY].size());
-		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("prosperity"));
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.prosperity"));
 		//#debug dominizer
 		System.out.println("reading prosperity");
 		readResource(PROSPERITY, "prosperity", 25);
 		//#debug dominizer
 		System.out.println("size prosperity: " + expansions[PROSPERITY].size());
-		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("promo"));
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.promo"));
 		//#debug dominizer
 		System.out.println("reading promo");
 		readResource(PROMO, "promo", 3);
@@ -1258,19 +1258,19 @@ public class Dominion {
 	public static String getExpansionName(int expansion) {
 		switch (expansion) {
 		case BASE:
-			return Locale.get("base");
+			return Locale.get("expansion.base");
 		case PROMO:
-			return Locale.get("promo");
+			return Locale.get("expansion.promo");
 		case INTRIGUE:
-			return Locale.get("intrigue");
+			return Locale.get("expansion.intrigue");
 		case SEASIDE:
-			return Locale.get("seaside");
+			return Locale.get("expansion.seaside");
 		case ALCHEMY:
-			return Locale.get("alchemy");
+			return Locale.get("expansion.alchemy");
 		case PROSPERITY:
-			return Locale.get("prosperity");
+			return Locale.get("expansion.prosperity");
 		case USER:
-			return Locale.get("user");
+			return Locale.get("expansion.user");
 		default:
 			return "";
 		}
