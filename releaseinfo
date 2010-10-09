@@ -1,7 +1,6 @@
-Release info
+Hi all
 
-#Dominizer 0.18
-
+Release info:
 This new version of Dominizer (0.18) has some new features! I think I have remembered them all below!
 
 * You have the possibility of creating several simultaneous sets. Only limited by the number of cards in the database!
@@ -63,11 +62,11 @@ MIDlet-Jar-Size: 207094
 11. Go through all the steps and check that you did it correctly. One can open the zip without unzipping (which is what you should do) so if you have done it by unzipping and zipping, then it probably wont work (due to some archiving differences between jar and zip).
 
 A sample of the "user" file could be this:
-[c]3;
+[c]2;
 Stone March:4:CA:b2;
 Stone Dead:3:CR:d;
 Stone Alchemy:4P:AR:b2;[/c]
-This will add those 3 cards but if you only wrote 2; in the top, it would only load the two first cards. Notice that it has to be in this format!
+This will add only the first 2 as there is a 2 in the top. Notice that it has to be in this format!
 
 Finally I would like to thank all the testers and their good comments!
 
@@ -89,5 +88,5 @@ Test:D=0&D=1;
 
 All but the last is included in the release and they are all working. But have a look at the last "Test" it has the requirement D=0&D=1. This will never succeed as you will never have 0 Duration AND 1 Duration at the same time. Therefore this will create a loop of tryings in an indefinite loop. I have inserted a maximum loop count of 1000. Then it will display an error. If you're sure that there exists a possibility of a set meeting your condition just keep pressing until it comes! :D
  
-
+Kind regards Nick
  
