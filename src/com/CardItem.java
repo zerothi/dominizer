@@ -3,6 +3,7 @@
  */
 package com;
 
+import javax.microedition.lcdui.Choice;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
@@ -42,7 +43,7 @@ public class CardItem extends ChoiceItem {
 		super.paintContent(x, y, xBorder, yBorder, g);
 		if ( this.lI != null ) {
 			if ( isBothSides ) {
-				if ( choiceType == List.IMPLICIT ) {
+				if ( choiceType == Choice.IMPLICIT ) {
 					g.drawImage(this.lI, x + this.lI.getWidth() / 3, y, Graphics.TOP | Graphics.LEFT );
 				} else {
 					g.drawImage(this.lI, x + this.lI.getWidth() + this.lI.getWidth() / 3, y, Graphics.TOP | Graphics.LEFT );

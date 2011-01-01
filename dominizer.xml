@@ -24,7 +24,7 @@
 	<!-- import global properties                                 -->
 	<property file="${polish.home}/global.properties" />
 	
-	<property name="debugLang" value="de"/>
+	<property name="debugLang" value="en"/>
 	<property name="single" value="false"/>
 	
 	<taskdef name="j2mepolish" 

@@ -16,12 +16,12 @@ import javax.microedition.rms.RecordStoreFullException;
 import javax.microedition.rms.RecordStoreNotFoundException;
 
 import com.BlackMarketForm;
+import com.CardsList;
 import com.ConditionList;
 import com.EditCardsList;
 import com.GaugeForm;
 import com.PresetList;
 import com.QuickRandomizeList;
-import com.ShowCardsForm;
 import com.TiltedPieChartForm;
 import com.util.Cards;
 import com.util.Dominion;
@@ -104,9 +104,10 @@ public class GameApp extends MIDlet implements TabbedFormListener
 	}
 
 	public void returnToPreviousScreen() {
-		if ( currentTab == SHOWCARDS )
-			changeToScreen(ShowCardsForm.instance());
-		else
+		if ( currentTab == SHOWCARDS ) {
+			//changeToScreen(ShowCardsForm.instance());
+			changeToScreen(CardsList.instance());
+		} else
 			changeToScreen(tabbedPane);
 	}
 	
@@ -128,7 +129,7 @@ public class GameApp extends MIDlet implements TabbedFormListener
 		display.setCurrent(GaugeForm.instance());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.cards"));
 		Dominion.I().getExpansions();
-		ShowCardsForm.instance();
+		//ShowCardsForm.instance();
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.gui"));
 		//#style tabbedPane
 		tabbedPane = new TabbedPane(null);

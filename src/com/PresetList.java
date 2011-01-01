@@ -98,15 +98,18 @@ public class PresetList extends List implements CommandListener {
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.select")) ) {
 			try {
 				Dominion.I().selectPreset(-1, getString(getCurrentIndex()));
-				ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
-				GameApp.instance().changeToScreen(ShowCardsForm.instance());
+				//ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
+				CardsList.instance().setCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
+				//GameApp.instance().changeToScreen(ShowCardsForm.instance());
+				GameApp.instance().changeToScreen(CardsList.instance());
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}
 		} else if ( cmd.equals(gotoCmd) ) {
-			if ( Dominion.I().getCurrentSet() > 0 )
-				GameApp.instance().changeToScreen(ShowCardsForm.instance());
-			else
+			if ( Dominion.I().getCurrentSet() > 0 ) {
+				//GameApp.instance().changeToScreen(ShowCardsForm.instance());
+				GameApp.instance().changeToScreen(CardsList.instance());
+			} else
 				GameApp.instance().showInfo(Locale.get("info.randomized.Sets.NoneCreated"), Alert.FOREVER);
 		} else if ( cmd.equals(quitCmd) ) {
 			GameApp.instance().quit();

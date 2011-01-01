@@ -9,7 +9,6 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemStateListener;
-import javax.microedition.lcdui.Ticker;
 
 import com.dominizer.GameApp;
 import com.util.Dominion;
@@ -178,15 +177,18 @@ public class ConditionList extends List implements CommandListener, ItemStateLis
 				setSelectedIndex(getCurrentIndex(), true);
 				Dominion.I().condition.setPreferredCondition(getCurrentIndex());
 				Dominion.I().randomizeCards(-1, Dominion.RAND_HOLD + Dominion.RAND_CONDITION);
-				ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
-				GameApp.instance().changeToScreen(ShowCardsForm.instance());
+				//ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
+				CardsList.instance().setCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
+				//GameApp.instance().changeToScreen(ShowCardsForm.instance());
+				GameApp.instance().changeToScreen(CardsList.instance());
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());
 			}
 		} else if ( cmd.equals(gotoCmd) ) {
-			if ( Dominion.I().getCurrentSet() > 0 )
-				GameApp.instance().changeToScreen(ShowCardsForm.instance());
-			else
+			if ( Dominion.I().getCurrentSet() > 0 ) {
+				//GameApp.instance().changeToScreen(ShowCardsForm.instance());
+				GameApp.instance().changeToScreen(CardsList.instance());
+			} else
 				GameApp.instance().showInfo(Locale.get("info.randomized.Sets.NoneCreated"), Alert.FOREVER);
 		} else if ( cmd.equals(newCmd) ) {
 			isOnGauge = false;
