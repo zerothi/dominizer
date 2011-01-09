@@ -8,7 +8,6 @@ import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
 import de.enough.polish.ui.ChoiceItem;
-import de.enough.polish.ui.List;
 //#if polish.usePolishGui
 	//#= import de.enough.polish.ui.Style;
 //#endif

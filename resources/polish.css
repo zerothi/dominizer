@@ -260,10 +260,11 @@ info {
 	background-type: round-rect;
 	background-color: borderSelectedColor;
 	include-label: true;
-	layout: expand;
+	layout: center;
 	view-type: horizontal-choice;
-	horizontalview-left-arrow: url( arrow-left.png );
-	horizontalview-right-arrow: url( arrow-right.png );
+	/*horizontalview-left-arrow: url( arrow-left.png );
+	horizontalview-right-arrow: url( arrow-right.png );*/
+	
 }
 .horizontalChoice:hover {
 	background-color: borderSelectedColor;

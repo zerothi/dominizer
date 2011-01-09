@@ -498,16 +498,6 @@ public class Cards {
 	
 	public Image getCostImage(int card) {
 		try {
-			/*
-			 Image source = Image.createImage("/trea" + getCost(card) + ".png");
-		    Image copy = Image.createImage(source.getWidth(), source.getHeight());
-		    Graphics g = copy.getGraphics();
-		    g.drawImage(source, 0, 0, Graphics.TOP | Graphics.LEFT);
-			if ( copy.isMutable() ) {
-				//#debug dominizer
-				System.out.println("image is mutable");
-				g.drawString(""+getCost(card), source.getWidth() / 2, source.getHeight() / 2, Graphics.HCENTER | Graphics.VCENTER);
-			}*/
 			if ( getPotionCost(card) > 0 ) {
 				return Image.createImage("/t" + getCost(card) + "P.png");
 			} else {
@@ -521,12 +511,10 @@ public class Cards {
 	public Image getCardTypeImage(int card) {
 		try {
 			if ( getExpansion(card) == Dominion.PROMO ) {
-				if ( getName(card).equals(Dominion.expansions[Dominion.PROMO].getName(0)) )
-					return Image.createImage("/" + Dominion.getExpansionImageName(Dominion.PROMO) + "0.png");
-				else if ( getName(card).equals(Dominion.expansions[Dominion.PROMO].getName(1)) )
-					return Image.createImage("/" + Dominion.getExpansionImageName(Dominion.PROMO) + "1.png");
-				else if ( getName(card).equals(Dominion.expansions[Dominion.PROMO].getName(2)) )
-					return Image.createImage("/" + Dominion.getExpansionImageName(Dominion.PROMO) + "2.png");
+				for ( int i = 0 ; i < Dominion.expansions[Dominion.PROMO].size() ; i++ ) {
+					if ( getName(card).equals(Dominion.expansions[Dominion.PROMO].getName(i)) )
+						return Image.createImage("/" + Dominion.getExpansionImageName(Dominion.PROMO) + i + ".png");
+				}
 				return null;
 			} else {
 				return Image.createImage("/" + Dominion.getExpansionImageName(getExpansion(card)) + 

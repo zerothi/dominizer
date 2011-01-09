@@ -2,24 +2,28 @@ package com;
 
 import java.util.Vector;
 
+import javax.microedition.lcdui.Choice;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Ticker;
+import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Item;
+import javax.microedition.lcdui.StringItem;
 
 import com.dominizer.GameApp;
 import com.util.Cards;
 import com.util.Dominion;
 import com.util.Rand;
 
-import de.enough.polish.ui.List;
+import de.enough.polish.ui.ChoiceGroup;
+import de.enough.polish.ui.FramedForm;
 import de.enough.polish.util.Locale;
 
 /**
  * @author nick
  *
  */
-public class BlackMarketForm extends List implements CommandListener {
+public class BlackMarketForm extends FramedForm implements CommandListener {
 
 	private Vector
 	//#if polish.android
@@ -30,14 +34,16 @@ public class BlackMarketForm extends List implements CommandListener {
 	//#if polish.android
     	//#= <String>
 	//#endif	
-		drawnDeck = null;
+		boughtDeck = null;
 	private Command cancelBuyCmd = new Command( Locale.get("cmd.BlackMarket.CancelBuy"), Command.SCREEN, 1);
 	private Command drawCardsCmd = new Command( Locale.get("cmd.BlackMarket.Draw"), Command.BACK, 0);
 	private Command selectCardCmd = new Command( Locale.get("polish.command.select"), Command.BACK, 1);
 	private Command backCmd = new Command( Locale.get("cmd.Back"), Command.SCREEN, 3);
 	private String randomizeCardHolder = null;
-		private Ticker ticker = null;
-		private String[] tickerArgs = null;
+	private Item[] infoItem = null;
+	private ChoiceGroup cardChoice = null;
+		//private Ticker ticker = null;
+		//private String[] tickerArgs = null;
 	private int currentlyReachedCard = 0;
 	
 	/**
@@ -45,26 +51,31 @@ public class BlackMarketForm extends List implements CommandListener {
 	 */
 	public BlackMarketForm(String title) {
 		//#style behindScreen
-		super(title, List.IMPLICIT);
+		super(title);
 		addCommand(backCmd);
 		setCommandListener(this);
-		tickerArgs = new String[3];
-		tickerArgs[0] = Locale.get("screen.BlackMarket.DrawTextInfo");
-		tickerArgs[1] = "0";
-		tickerArgs[2] = "0";
-		//#style mainTicker
-		ticker = new Ticker(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
-		setTicker(ticker);
+		infoItem = new Item[3];
+		//TODO add styles to these items
+		String tmp = "0";
+		infoItem[0] = new StringItem(Locale.get("screen.BlackMarket.Cards.Bought", tmp), null);
+		infoItem[1] = new StringItem(Locale.get("screen.BlackMarket.Cards.Left", tmp), null);
+		infoItem[2] = new StringItem(Locale.get("screen.BlackMarket.DrawTextInfo"), null);
+		append(Graphics.TOP, infoItem[0]);
+		append(Graphics.TOP, infoItem[1]);
+		append(Graphics.TOP, infoItem[2]);
+		cardChoice = new ChoiceGroup(Locale.get("screen.BlackMarket.Cards.Select"), Choice.EXCLUSIVE);
+		cardChoice.addCommand(selectCardCmd);
+		append(Graphics.BOTTOM, cardChoice);
 	}
 	
 	public void drawCards() {
-		deleteAll();
+		cardChoice.deleteAll();
 		//#debug dominizer
 		System.out.println("new drawing");
 		//#style label
-		CardItem cI = new CardItem(Locale.get("screen.BlackMarket.ChooseNone"), List.IMPLICIT);
+		CardItem cI = new CardItem(Locale.get("screen.BlackMarket.ChooseNone"), Choice.EXCLUSIVE);
 		cI.setBothSides(true);
-		append(cI);
+		cardChoice.add(cI);
 		addNextCard(1);
 		addNextCard(2);
 		addNextCard(3);
@@ -75,20 +86,20 @@ public class BlackMarketForm extends List implements CommandListener {
 		//#debug dominizer
 		System.out.println("add next card. remaining: " + number);
 		if ( blackMarketDeck.size() == 0 )
-			deleteAll();
+			cardChoice.deleteAll();
 		else if ( blackMarketDeck.size() < number )
-			return;
+			return; // this check is what number is for, otherwise not needed!
 		else if ( currentlyReachedCard < blackMarketDeck.size() ) {
 			//#debug dominizer
 			System.out.println("just added. remaining: " + number + " name "+blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard)).toString());
 			int[] tmp = Dominion.I().getCardLocation(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard)).toString());
 			if ( tmp[0] > -1 ) { 
 				//#style label
-				CardItem cI = new CardItem(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard)).toString(), List.IMPLICIT);
+				CardItem cI = new CardItem(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard)).toString(), Choice.IMPLICIT);
 				cI.setBothSides(true);
 				cI.setLeftImage(Dominion.expansions[tmp[0]].getCardTypeImage(tmp[1]));
 				cI.setRightImage(Dominion.expansions[tmp[0]].getCostImage(tmp[1]));
-				append(cI);
+				cardChoice.add(cI);
 				currentlyReachedCard++;
 			}
 		} else if ( blackMarketDeck.size() <= currentlyReachedCard ) {
@@ -101,43 +112,51 @@ public class BlackMarketForm extends List implements CommandListener {
 	}
 	
 	private void selectCard() {
-		if ( 0 < getSelectedIndex() ) {
+		if ( 0 < cardChoice.getSelectedIndex() ) {
 			for ( int i = 0 ; i < blackMarketDeck.size() ; i++ ) {
-				if ( getString(getSelectedIndex()).equals(blackMarketDeck.elementAt(i)) ) {
+				if ( cardChoice.getString(cardChoice.getSelectedIndex()).equals(blackMarketDeck.elementAt(i)) ) {
 					GameApp.instance().showInfo(Locale.get("screen.BlackMarket.InfoMessage") + "\n" + blackMarketDeck.elementAt(i).toString() + ".", 2000);
-					drawnDeck.addElement(blackMarketDeck.elementAt(i));
+					boughtDeck.addElement(blackMarketDeck.elementAt(i));
 					blackMarketDeck.removeElementAt(i);
 					i = blackMarketDeck.size() + 1;
 				}
 			}
 		}
-		deleteAll();
+		cardChoice.deleteAll();
 		if ( blackMarketDeck.size() != 0 )
-			tickerArgs[0] = Locale.get("screen.BlackMarket.DrawTextInfo");
+			infoItem[2].setLabel(Locale.get("screen.BlackMarket.DrawTextInfo"));
 		else
-			tickerArgs[0] = Locale.get("screen.BlackMarket.DeckEmpty");
-		tickerArgs[1] = "" + drawnDeck.size();
-		tickerArgs[2] = "" + blackMarketDeck.size();
-		ticker.setString(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
+			infoItem[2].setLabel(Locale.get("screen.BlackMarket.DeckEmpty"));
+		String tmp = "" + boughtDeck.size();
+		infoItem[0].setLabel(Locale.get("screen.BlackMarket.Cards.Bought", tmp));
+		tmp = "" + blackMarketDeck.size();
+		infoItem[1].setLabel(Locale.get("screen.BlackMarket.Cards.Left", tmp));
 	}
 	
 	private void cancelBuy(boolean show) {
 		if ( show )
-			GameApp.instance().showConfirmation(Locale.get("screen.BlackMarket.CancelBuy") + drawnDeck.lastElement(), this);
+			GameApp.instance().showConfirmation(Locale.get("screen.BlackMarket.CancelBuy") + boughtDeck.lastElement(), this);
 		else {
 			if ( blackMarketDeck.size() == 0 ) {
-				blackMarketDeck.addElement(drawnDeck.lastElement());
+				blackMarketDeck.addElement(boughtDeck.lastElement());
 			} else
-				blackMarketDeck.insertElementAt(drawnDeck.lastElement(), getIndexCard(currentlyReachedCard - 1));
-			drawnDeck.removeElementAt(drawnDeck.size() - 1);
+				blackMarketDeck.insertElementAt(boughtDeck.lastElement(), getIndexCard(currentlyReachedCard - 1));
+			boughtDeck.removeElementAt(boughtDeck.size() - 1);
 		}
 	}
 	
 	private void randomizeDrawn() {
+		randomizeDrawn(-1);
+	}
+	
+	private void randomizeDrawn(int test) {
 		if ( blackMarketDeck.size() == 0 )
 			return;
-		Rand.resetSeed();
-		switch ( Rand.randomInt(6) ) {
+		if ( test == -1 ) {
+			Rand.resetSeed();
+			test = Rand.randomInt(6);
+		}
+		switch ( test ) {
 		case 0:
 			// This means no switching when shuffling
 			break;
@@ -161,21 +180,13 @@ public class BlackMarketForm extends List implements CommandListener {
 			break;
 		case 4:
 			// This means : Put third as first, the first as the second, and the second as third
-			randomizeCardHolder = (String) blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard - 3 + 2));
-			blackMarketDeck.setElementAt(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard - 3)), getIndexCard(currentlyReachedCard - 3 + 2));
-			blackMarketDeck.setElementAt(randomizeCardHolder, getIndexCard(currentlyReachedCard - 3));
-			randomizeCardHolder = (String) blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard - 3 + 2));
-			blackMarketDeck.setElementAt(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard - 3 + 1)), getIndexCard(currentlyReachedCard - 3 + 2));
-			blackMarketDeck.setElementAt(randomizeCardHolder, getIndexCard(currentlyReachedCard - 3 + 1));
+			randomizeDrawn(3);
+			randomizeDrawn(1);
 			break;
 		case 5:
 			// This means : Put third as second, the first as the third, and the second as first
-			randomizeCardHolder = (String) blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard - 3 + 2));
-			blackMarketDeck.setElementAt(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard - 3 + 1)), getIndexCard(currentlyReachedCard - 3 + 2));
-			blackMarketDeck.setElementAt(randomizeCardHolder, getIndexCard(currentlyReachedCard - 3 + 1));
-			randomizeCardHolder = (String) blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard - 3 + 2));
-			blackMarketDeck.setElementAt(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard - 3)), getIndexCard(currentlyReachedCard - 3 + 2));
-			blackMarketDeck.setElementAt(randomizeCardHolder, getIndexCard(currentlyReachedCard - 3));
+			randomizeDrawn(2);
+			randomizeDrawn(1);
 			break;
 		}		
 	}
@@ -192,8 +203,8 @@ public class BlackMarketForm extends List implements CommandListener {
 	}
 	
 	public void setBlackMarketDeck(Cards blackMarketDeck) {
-		deleteAll();
-		drawnDeck = new Vector
+		cardChoice.deleteAll();
+		boughtDeck = new Vector
 		//#if polish.android
 			//#= <String>
 		//#endif
@@ -206,10 +217,11 @@ public class BlackMarketForm extends List implements CommandListener {
 		for ( int i = 0 ; i < blackMarketDeck.size() ; i++ )
 			this.blackMarketDeck.addElement(blackMarketDeck.getName(i));
 		currentlyReachedCard = 0;
-		tickerArgs[0] = Locale.get("screen.BlackMarket.DrawTextInfo");
-		tickerArgs[1] = "" + drawnDeck.size();
-		tickerArgs[2] = "" + blackMarketDeck.size();
-		ticker.setString(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
+		String tmp = "" + boughtDeck.size();
+		infoItem[0].setLabel(Locale.get("screen.BlackMarket.Cards.Bought", tmp));
+		tmp = "" + blackMarketDeck.size();
+		infoItem[1].setLabel(Locale.get("screen.BlackMarket.Cards.Left", tmp));
+		infoItem[2].setLabel(Locale.get("screen.BlackMarket.DrawTextInfo"));
 		updateCommands();
 	}
 	
@@ -219,22 +231,21 @@ public class BlackMarketForm extends List implements CommandListener {
 			System.out.println("adding commands for selecting");
 			removeCommand(drawCardsCmd);
 			removeCommand(cancelBuyCmd);
-			addCommand(selectCardCmd);
-			//#= setSelectCommand(selectCardCmd);
+			cardChoice.addCommand(selectCardCmd);
 		} else {
 			//#debug dominizer
 			System.out.println("adding commands for drawing");
 			removeCommand(drawCardsCmd);
-			removeCommand(selectCardCmd);
+			cardChoice.removeCommand(selectCardCmd);
 			if ( 0 < blackMarketDeck.size() ) {
 				//#debug dominizer
 				System.out.println("adding commands for drawing2");
 				addCommand(drawCardsCmd);
-				//#= setSelectCommand(drawCardsCmd);
+				// setSelectCommand(drawCardsCmd);
 			} else {
 				removeCommand(drawCardsCmd);
 			}
-			if ( 0 < drawnDeck.size() ) {
+			if ( 0 < boughtDeck.size() ) {
 				addCommand(cancelBuyCmd);
 			} else {
 				removeCommand(cancelBuyCmd);
@@ -246,12 +257,13 @@ public class BlackMarketForm extends List implements CommandListener {
 	 * @see javax.microedition.lcdui.CommandListener#commandAction(javax.microedition.lcdui.Command, javax.microedition.lcdui.Displayable)
 	 */
 	public void commandAction(Command cmd, Displayable screen) {
+		String tmp = "" + boughtDeck.size();
 		if ( cmd.equals(drawCardsCmd) ) {
 			drawCards();
-			tickerArgs[0] = "";
-			tickerArgs[1] = "" + drawnDeck.size();
-			tickerArgs[2] = "" + blackMarketDeck.size();
-			ticker.setString(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
+			infoItem[0].setLabel(Locale.get("screen.BlackMarket.Cards.Bought", tmp));
+			tmp = "" + blackMarketDeck.size();
+			infoItem[1].setLabel(Locale.get("screen.BlackMarket.Cards.Left", tmp));
+			infoItem[2].setLabel("");
 		} else if ( cmd.equals(selectCardCmd) ) {
 			selectCard();
 		} else if ( cmd.equals(cancelBuyCmd) ) {
@@ -261,16 +273,16 @@ public class BlackMarketForm extends List implements CommandListener {
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.ok")) ) {
 			cancelBuy(false);
 			GameApp.instance().changeToScreen(this);
-			tickerArgs[0] = Locale.get("screen.BlackMarket.DrawTextInfo");
-			tickerArgs[1] = "" + drawnDeck.size();
-			tickerArgs[2] = "" + blackMarketDeck.size();
-			ticker.setString(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
+			infoItem[0].setLabel(Locale.get("screen.BlackMarket.Cards.Bought", tmp));
+			tmp = "" + blackMarketDeck.size();
+			infoItem[1].setLabel(Locale.get("screen.BlackMarket.Cards.Left", tmp));
+			infoItem[2].setLabel(Locale.get("screen.BlackMarket.DrawTextInfo"));
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel")) ) {
 			GameApp.instance().changeToScreen(this);
-			tickerArgs[0] = Locale.get("screen.BlackMarket.DrawTextInfo");
-			tickerArgs[1] = "" + drawnDeck.size();
-			tickerArgs[2] = "" + blackMarketDeck.size();
-			ticker.setString(Locale.get("screen.BlackMarket.Ticker", tickerArgs));
+			infoItem[0].setLabel(Locale.get("screen.BlackMarket.Cards.Bought", tmp));
+			tmp = "" + blackMarketDeck.size();
+			infoItem[1].setLabel(Locale.get("screen.BlackMarket.Cards.Left", tmp));
+			infoItem[2].setLabel(Locale.get("screen.BlackMarket.DrawTextInfo"));
 		} 
 		updateCommands();
 	}

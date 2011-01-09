@@ -26,6 +26,7 @@ public class PresetList extends List implements CommandListener {
 	private Command infoCmd = new Command( Locale.get("cmd.Preset.ShowInfo"), Command.SCREEN, 2);
 	private Command selectCmd = new Command( Locale.get("polish.command.select"), Command.SCREEN, 6);
 	private Command deleteCmd = new Command( Locale.get("cmd.Preset.DeletePreset"), Command.SCREEN, 7);
+	private Command optionCmd = new Command( Locale.get("cmd.Options.Main"), Command.ITEM, 12);
 	private Command gotoCmd = new Command( Locale.get("cmd.Goto.RandomizeSets"), Command.SCREEN, 8);
 	
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.SCREEN, 10);
@@ -40,6 +41,7 @@ public class PresetList extends List implements CommandListener {
 		addCommand(infoCmd);
 		addCommand(quickRandomizeCardsCmd);
 		addCommand(quitCmd);
+		addCommand(optionCmd);
 		addCommand(gotoCmd);
 		setCommandListener(this);
 		for ( int i = 0 ; i < Dominion.I().presetSize() ; i++ )
@@ -111,6 +113,8 @@ public class PresetList extends List implements CommandListener {
 				GameApp.instance().changeToScreen(CardsList.instance());
 			} else
 				GameApp.instance().showInfo(Locale.get("info.randomized.Sets.NoneCreated"), Alert.FOREVER);
+		} else if ( cmd.equals(this.optionCmd) ) {
+			GameApp.instance().changeToScreen(new OptionForm(""));
 		} else if ( cmd.equals(quitCmd) ) {
 			GameApp.instance().quit();
 		} else if ( cmd.equals(deleteCmd) ) {

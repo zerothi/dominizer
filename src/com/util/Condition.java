@@ -222,7 +222,7 @@ public class Condition {
 	}
 	
 	/**
-	 * @return the initial conditions
+	 * @return the number of initial conditions
 	 */
 	public int getInitialConditions() {
 		return ( preferredCondition >>> 7 );

@@ -21,6 +21,7 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 	
 	private Command randomizeCmd = new Command(Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 	private Command perGaugeCmd = new Command( Locale.get("cmd.Percentage.Gauge"), Command.ITEM, 7);
+	private Command optionCmd = new Command( Locale.get("cmd.Options.Main"), Command.ITEM, 12);
 	private Command gotoCmd = new Command( Locale.get("cmd.Goto.RandomizeSets"), Command.ITEM, 9);
 	
 	//#if debugDominizer
@@ -47,6 +48,7 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 		focus(0);
 		addCommand(randomizeCmd);
 		addCommand(perGaugeCmd);
+		addCommand(optionCmd);
 		addCommand(quitCmd);
 		addCommand(gotoCmd);
 		//#if debugDominizer
@@ -118,6 +120,8 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.ok")) ) {
 			GameApp.instance().changeToScreen(null);
 			setPercentage(getCurrentIndex(), tmp[0], tmp[1], GaugeForm.instance().getGaugeValue());
+		} else if ( cmd.equals(this.optionCmd) ) {
+			GameApp.instance().changeToScreen(new OptionForm(""));
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel")) ) {
 			GameApp.instance().changeToScreen(null);
 		} else if ( cmd.equals(quitCmd) ) {

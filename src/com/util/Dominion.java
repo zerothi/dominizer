@@ -12,14 +12,13 @@ import de.enough.polish.util.Locale;
 public class Dominion {
 	private static Dominion dom = null;
 	public static int TOTAL_CARDS = 25 + 25 + 26 + 12 + 3 + 25;
-	public static final int MAX_SETS = 15;
-	public static final int BASE = 0; // has 25 cards
-	public static final int INTRIGUE = 1; // has 25 cards
-	public static final int SEASIDE = 2; // has 26 cards
-	public static final int ALCHEMY = 3; // has 12 cards (the 13th card Potion is not counted)
+	public static final int BASE = 0;       // has 25 cards
+	public static final int INTRIGUE = 1;   // has 25 cards
+	public static final int SEASIDE = 2;    // has 26 cards
+	public static final int ALCHEMY = 3;    // has 12 cards (the 13th card Potion is not counted)
 	public static final int PROSPERITY = 4; // has 25 cards
-	public static final int PROMO = 5; // has 3 cards
-	public static final int USER = 6; // always have to be the highest number!
+	public static final int PROMO = 5;      // has 3 cards
+	public static final int USER = 6;       // always have to be the highest number!
 	public static final int RAND_EXPANSION_CARDS = 1;
 	public static final int RAND_PERCENTAGE_CARDS = 2;
 	public static final int RAND_CONDITION = 4;
@@ -29,19 +28,16 @@ public class Dominion {
 	public static int SETS_SAVE = 10;
 	public static int CURRENT_SET = 0;
 	
-	//private static ImageCreator imgC = null;
 	public static Cards[] expansions = null;
-	private Cards selectedCards = null;
-	private int selected = 0;
-	public Condition condition = null;
-	public CardPresets[] presets = null;
-	private int numberOfRandomCards = 10;
+	private static Cards selectedCards = null;
+	private static int selected = 0;
+	public static Condition condition = null;
+	public static CardPresets[] presets = null;
+	private static int numberOfRandomCards = 10;
 	
-	public boolean[] playingExpansions = null;
+	public static boolean[] playingExpansions = null;
 	
-	public int[] numberOfCardsFromExp = null;
-
-	private StringBuffer sb;
+	public static int[] numberOfCardsFromExp = null;
 	
 	private Dominion() {
 		//imgC = new ImageCreator();
@@ -311,7 +307,7 @@ public class Dominion {
 	}
 
 	public String getCardsUsedForExpansionAsSave() {
-		sb = new StringBuffer(numberOfCardsFromExp.length);
+		StringBuffer sb = new StringBuffer(numberOfCardsFromExp.length);
 		for ( int i = 0 ; i < numberOfCardsFromExp.length ; i++ )
 			sb.append(numberOfCardsFromExp[i]);
 		return sb.toString();
@@ -323,10 +319,11 @@ public class Dominion {
 		for ( int i = 0; i < expansions.length; i++ )
 			for ( int j = 0; j < expansions[i].size(); j++ )
 				if ( expansions[i].isPlayingSet(j, playingSet) ) {
-					sb.append("" + SettingsRecordStorage.MEDIUM_SPLITTER	+ i + SettingsRecordStorage.SMALL_SPLITTER + j);
+					sb.append("" + SettingsRecordStorage.MEDIUM_SPLITTER + i + SettingsRecordStorage.SMALL_SPLITTER + j);
 					cards++;
 				}
-		if ( sb.toString().trim().length() < 5 || cards != numberOfRandomCards )
+		sb.insert(0, "" + SettingsRecordStorage.MEDIUM_SPLITTER + cards);
+		if ( sb.toString().trim().length() < 7 )
 			return null;
 		return sb.toString().trim();
 	}
@@ -353,7 +350,7 @@ public class Dominion {
 	}
 
 	public String getExpansionPlayingStatesAsSave() {
-		sb = new StringBuffer(playingExpansions.length);
+		StringBuffer sb = new StringBuffer(playingExpansions.length);
 		for ( int i = 0 ; i < numberOfCardsFromExp.length ; i++ )
 			sb.append(playingExpansions[i] ? "1" : "0");
 		return sb.toString();
@@ -629,7 +626,7 @@ public class Dominion {
 	public void randomizeCards(int playingSet, int randomizeMethod, int condition) throws DominionException {
 		//#debug dominizer
 		System.out.println("trying to randomize with " + playingSet + ". With method " + randomizeMethod + " and condition= " + condition);
-		if ( (randomizeMethod & RAND_CONDITION) > 0 && ( condition < 0 || condition >= this.condition.size() ) )
+		if ( (randomizeMethod & RAND_CONDITION) > 0 && ( condition < 0 || condition >= Dominion.condition.size() ) )
 			throw new DominionException(Locale.get("alert.Condition.NoSelection"));
 		int selectedElement = 0, tmpExp = 0, tmpPlayingSet = 0;
 		
@@ -645,7 +642,7 @@ public class Dominion {
 		
 		if ( playingSet < 0 )
 			playingSet = getCurrentSet() + 1;
-		if ( playingSet > MAX_SETS && (randomizeMethod & RAND_PREVENT) == 0 )
+		if ( (randomizeMethod & RAND_PREVENT) == 0 )
 			throw new DominionException(Locale.get("alert.NoMoreSets"));
 		
 		
@@ -673,7 +670,7 @@ public class Dominion {
 						selected++;
 					}
 				}
-				if ( parseCondition(this.condition.getCondition(condition)) ) {
+				if ( parseCondition(Dominion.condition.getCondition(condition)) ) {
 					//#debug dominizer
 					System.out.println("condition succeded");
 					i = Condition.MAX_RUNS + Condition.MAX_RUNS;
@@ -690,7 +687,7 @@ public class Dominion {
 				throw new DominionException(Locale.get("randomize.condition.failed"));
 			}
 			//#debug dominizer
-			System.out.println("condition succeded with condition"+condition+" with name: "+ this.condition.getCondition(condition));
+			System.out.println("condition succeded with condition"+condition+" with name: "+ Dominion.condition.getCondition(condition));
 		} else {
 			//#debug dominizer
 			System.out.println("using randomizing cards with total cards " + TOTAL_CARDS + " selected: " + selected);
@@ -923,13 +920,16 @@ public class Dominion {
 		while ( SettingsRecordStorage.instance().readKey("" + numberSaves ) != null && numberSaves <= SETS_SAVE ) {
 			//#debug dominizer
 			System.out.println("reading from: " + numberSaves + ":" + SettingsRecordStorage.instance().readKey("" + numberSaves));
-			start = -1;
-			for ( i = 0 ; i < getNumberOfRandomCards() ; i++ ) {
+			start = SettingsRecordStorage.instance().readKey("" + numberSaves).indexOf(
+					SettingsRecordStorage.MEDIUM_SPLITTER, -1);
+			int numberOfCards = Integer.parseInt(SettingsRecordStorage.instance().readKey("" + numberSaves).substring(start,
+					SettingsRecordStorage.instance().readKey("" + numberSaves).indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1)));
+			for ( i = 0 ; i < numberOfCards ; i++ ) {
 				start = SettingsRecordStorage.instance().readKey("" + numberSaves).indexOf(
 								SettingsRecordStorage.MEDIUM_SPLITTER,
 								start + 1);
 				if ( start >= 0 ) {
-					if (i == getNumberOfRandomCards() - 1 )
+					if ( i == numberOfCards - 1 )
 						card = getCardInfo(SettingsRecordStorage.instance().readKey("" + numberSaves).substring(start));
 					else
 						card = getCardInfo(SettingsRecordStorage.instance().readKey("" + numberSaves).substring(start,
@@ -1107,8 +1107,6 @@ public class Dominion {
 		
 		if ( playingSet <= 0 )
 			playingSet = getCurrentSet() + 1;
-		if ( playingSet > MAX_SETS )
-			throw new DominionException(Locale.get("alert.NoMoreSets") + " Cur: " + getCurrentSet() + " Playing: " + playingSet);
 		if ( presetDeck >= presets.length )
 			throw new DominionException(Locale.get("alert.preset.WrongInput"));
 		if ( preset >= presets[presetDeck].size() )
@@ -1279,7 +1277,7 @@ public class Dominion {
 	 * @param numberOfRandomCards the numberOfRandomCards to set
 	 */
 	public void setNumberOfRandomCards(int numberOfRandomCards) {
-		this.numberOfRandomCards = numberOfRandomCards;
+		Dominion.numberOfRandomCards = numberOfRandomCards;
 	}
 
 

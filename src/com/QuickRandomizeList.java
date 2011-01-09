@@ -29,6 +29,7 @@ public class QuickRandomizeList extends List implements CommandListener, ItemSta
 
 	private Command quickRandomizeCardsCmd = new Command( Locale.get("cmd.Randomize.Show"), Command.BACK, 0);
 	private Command gaugeCmd = new Command( Locale.get("cmd.SetCards.Gauge"), Command.ITEM, 7);
+	private Command optionCmd = new Command( Locale.get("cmd.Options.Main"), Command.ITEM, 8);
 	private Command gotoCmd = new Command( Locale.get("cmd.Goto.RandomizeSets"), Command.ITEM, 9);
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.ITEM, 16);
 	//#if debugDominizer
@@ -41,17 +42,18 @@ public class QuickRandomizeList extends List implements CommandListener, ItemSta
 		//#style mainScreen
 		super(title, listType);
 		for ( tmp = 0 ; tmp < Dominion.I().getExpansions() ; tmp++ ) {
-			if ( Dominion.I().numberOfCardsFromExp[tmp] > 0 ) {
+			if ( Dominion.numberOfCardsFromExp[tmp] > 0 ) {
 				//#style label
-				append(Dominion.getExpansionName(tmp) + " " + Dominion.I().numberOfCardsFromExp[tmp], Dominion.getExpansionImage(tmp));
+				append(Dominion.getExpansionName(tmp) + " " + Dominion.numberOfCardsFromExp[tmp], Dominion.getExpansionImage(tmp));
 			} else {
 				//#style label
 				append(Dominion.getExpansionName(tmp), Dominion.getExpansionImage(tmp));
 			}
-			setSelectedIndex(tmp, Dominion.I().playingExpansions[tmp]);
+			setSelectedIndex(tmp, Dominion.playingExpansions[tmp]);
 		}
 		addCommand(quickRandomizeCardsCmd);
 		addCommand(gaugeCmd);
+		addCommand(optionCmd);
 		addCommand(quitCmd);
 		addCommand(gotoCmd);
 		//#if debugDominizer
@@ -88,7 +90,7 @@ public class QuickRandomizeList extends List implements CommandListener, ItemSta
 				GaugeForm.instance().setGauge(Locale.get("gauge.expansion.setCards", tmpS), true, Dominion.expansions[Dominion.PROMO].size(), 0);
 			else
 				GaugeForm.instance().setGauge(Locale.get("gauge.expansion.setCards", tmpS), true, Dominion.I().getNumberOfRandomCards(), 0);
-			GaugeForm.instance().setGaugeValue(Dominion.I().numberOfCardsFromExp[tmp]);
+			GaugeForm.instance().setGaugeValue(Dominion.numberOfCardsFromExp[tmp]);
 			GaugeForm.instance().setCommandListener(this);
 			GameApp.instance().changeToScreen(GaugeForm.instance());
 			tmpS = null;
@@ -97,6 +99,8 @@ public class QuickRandomizeList extends List implements CommandListener, ItemSta
 			setCardsFromExpansion(tmp, GaugeForm.instance().getGaugeValue());
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel")) ) {
 			GameApp.instance().changeToScreen(null);
+		} else if ( cmd.equals(this.optionCmd) ) {
+			GameApp.instance().changeToScreen(new OptionForm(""));
 		} else if ( cmd.equals(this.quitCmd) ) {
 			GameApp.instance().quit();
 		}
@@ -146,8 +150,8 @@ public class QuickRandomizeList extends List implements CommandListener, ItemSta
 					//#style label
 					set(exp, Dominion.getExpansionName(exp), getImage(exp));
 				}
-				setSelectedIndex(exp, Dominion.I().playingExpansions[exp]);
-				Dominion.I().numberOfCardsFromExp[exp] = numberOfCards;
+				setSelectedIndex(exp, Dominion.playingExpansions[exp]);
+				Dominion.numberOfCardsFromExp[exp] = numberOfCards;
 			}
 			if ( exp == 0 )
 				UiAccess.setFocusedIndex(this, 1);

@@ -1,14 +1,11 @@
 package com.dominizer;
 
-import java.io.IOException;
-
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Image;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 import javax.microedition.rms.RecordStoreException;
@@ -23,18 +20,12 @@ import com.GaugeForm;
 import com.PresetList;
 import com.QuickRandomizeList;
 import com.TiltedPieChartForm;
-import com.util.Cards;
 import com.util.Dominion;
-import com.util.DominionException;
 import com.util.SettingsRecordStorage;
 
 import de.enough.polish.ui.List;
-import de.enough.polish.ui.Screen;
-import de.enough.polish.ui.TabListener;
 import de.enough.polish.ui.TabbedFormListener;
 import de.enough.polish.ui.TabbedPane;
-import de.enough.polish.ui.splash.ApplicationInitializer;
-import de.enough.polish.ui.splash.InitializerSplashScreen;
 import de.enough.polish.util.Locale;
 /**
  * <p>The main app for Dominizer</p>
@@ -76,9 +67,9 @@ public class GameApp extends MIDlet implements TabbedFormListener
 	public GameApp() {
 		super();
 		app = this;
-		//SettingsRecordStorage.instance().deleteRecordStore(Locale.get("rms.file.preset"));
-		//SettingsRecordStorage.instance().deleteRecordStore(Locale.get("rms.file.settings"));
-		//SettingsRecordStorage.instance().deleteRecordStore(Locale.get("rms.file.condition"));
+		//SettingsRecordStorage.instance().deleteRecordStore("presets");
+		SettingsRecordStorage.instance().deleteRecordStore("settings");
+		//SettingsRecordStorage.instance().deleteRecordStore("condition");
 		//#debug dominizer
 		System.out.println("initialisation done.");
 	}
@@ -104,10 +95,9 @@ public class GameApp extends MIDlet implements TabbedFormListener
 	}
 
 	public void returnToPreviousScreen() {
-		if ( currentTab == SHOWCARDS ) {
-			//changeToScreen(ShowCardsForm.instance());
+		if ( currentTab == SHOWCARDS )
 			changeToScreen(CardsList.instance());
-		} else
+		else
 			changeToScreen(tabbedPane);
 	}
 	
@@ -136,7 +126,7 @@ public class GameApp extends MIDlet implements TabbedFormListener
 		tabbedPane.setTabbedFormListener(this);
 		qrF = new QuickRandomizeList(null, List.MULTIPLE);
 		//#style tabIcon
-		tabbedPane.addTab(qrF, null, Locale.get("app.name"));
+		//#= tabbedPane.addTab(qrF, null, Locale.get("app.name"));
 		ecFL = new EditCardsList(null, List.MULTIPLE);
 		//#style tabIcon
 		//#= tabbedPane.addTab(ecFL, null, Locale.get("tab.EditCards.title"));
@@ -148,12 +138,11 @@ public class GameApp extends MIDlet implements TabbedFormListener
 		//#= tabbedPane.addTab(cF, null, Locale.get("tab.Condition.title"));
 		// # style tabIcon
 		//tabbedPane.addTab(new GameCalendarForm(null), null, Locale.get("screen.Calendar.title"));
-		bmF = new BlackMarketForm(Locale.get("screen.BlackMarket.title"));
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.gui.settings"));
 		SettingsRecordStorage.instance().changeToRecordStore("settings");
 		if ( SettingsRecordStorage.instance().readKey("lasttab") != null )
 			currentTab = Integer.parseInt(SettingsRecordStorage.instance().readKey("lasttab"));
-		if ( currentTab != SHOWCARDS & currentTab > -1 )
+		if ( currentTab != SHOWCARDS && currentTab > -1 )
 			tabbedPane.setFocus(currentTab);
 		//#debug dominizer
 		System.out.println("setting display");
@@ -162,6 +151,7 @@ public class GameApp extends MIDlet implements TabbedFormListener
 		//display.setCurrent(new CardsList("hej", List.MULTIPLE));
 		//display.setCurrent(ConditionTableForm.instance());
 		GaugeForm.instance(false);
+		bmF = new BlackMarketForm(Locale.get("screen.BlackMarket.title"));
 	}
 	
 	public int getCurrentTab() {
@@ -227,8 +217,7 @@ public class GameApp extends MIDlet implements TabbedFormListener
 				SettingsRecordStorage.instance().addData("available", Dominion.I().getAvailableAsSave());
 				SettingsRecordStorage.instance().addData("percentage", Dominion.I().getPercentagesAsSave());
 				SettingsRecordStorage.instance().addData("lasttab", "" + currentTab);
-				SettingsRecordStorage.instance().addData("sort", "" + Cards.COMPARE_PREFERRED);
-				int sets = 0;
+				//SettingsRecordStorage.instance().addData("sort", "" + Cards.COMPARE_PREFERRED);
 				i = 0;
 				//#debug dominizer
 				System.out.println("WRITING OLD SETS");
@@ -237,13 +226,9 @@ public class GameApp extends MIDlet implements TabbedFormListener
 					SettingsRecordStorage.instance().deleteData("" + i);
 					// the data will not be added if the data is null. So no need to test!
 					SettingsRecordStorage.instance().addData("" + i, Dominion.I().getPlayingSetAsSave(i));
-					if ( Dominion.I().getPlayingSetAsSave(i) != null )
-						sets++;
-				} while ( i < Dominion.MAX_SETS );
+				} while ( i < 50 );
 				//#debug dominizer
 				System.out.println("DONE WRITING OLD SETS");
-				// TODO when option allows for setting this variable move it up!
-				//SettingsRecordStorage.instance().addData(Locale.get("rms.randomized.saves"), "" + sets);
 				SettingsRecordStorage.instance().writeData();
 				SettingsRecordStorage.instance().closeRecord();
 			}
@@ -254,19 +239,20 @@ public class GameApp extends MIDlet implements TabbedFormListener
 		try {
 			//SettingsRecordStorage.instance().deleteRecordStore(Locale.get("rms.file.condition"));
 			if ( SettingsRecordStorage.instance().changeToRecordStore("condition") ) {
+				Dominion.I();
 				//#debug dominizer
-				System.out.println("initial " + Dominion.I().condition.getInitialConditions() + " preferred " + Dominion.I().condition.getPreferredCondition());
+				System.out.println("initial " + Dominion.condition.getInitialConditions() + " preferred " + Dominion.condition.getPreferredCondition());
 				//#debug dominizer
 				System.out.println("reached condition writing");
-				SettingsRecordStorage.instance().addData("preferred", "" + Dominion.I().condition.getPreferredCondition());
+				SettingsRecordStorage.instance().addData("preferred", "" + Dominion.condition.getPreferredCondition());
 				//#debug dominizer
-				System.out.println("added the preferred condition: " + Dominion.I().condition.getPreferredCondition());
+				System.out.println("added the preferred condition: " + Dominion.condition.getPreferredCondition());
 				int userCreated = 0;
-				for ( i = Dominion.I().condition.getInitialConditions() ; i < Dominion.I().condition.size() ; i++ ) {
-					SettingsRecordStorage.instance().addData("" + userCreated, Dominion.I().condition.getCondition(i));
-					SettingsRecordStorage.instance().addData("name" + userCreated, Dominion.I().condition.getNameAsSave(i));
+				for ( i = Dominion.condition.getInitialConditions() ; i < Dominion.condition.size() ; i++ ) {
+					SettingsRecordStorage.instance().addData("" + userCreated, Dominion.condition.getCondition(i));
+					SettingsRecordStorage.instance().addData("name" + userCreated, Dominion.condition.getNameAsSave(i));
 					//#debug dominizer
-					System.out.println("added condition: " + Dominion.I().condition.getNameAsSave(i) + " with condition: " + Dominion.I().condition.getCondition(i));
+					System.out.println("added condition: " + Dominion.condition.getNameAsSave(i) + " with condition: " + Dominion.condition.getCondition(i));
 					userCreated++;
 				}
 				//#debug dominizer

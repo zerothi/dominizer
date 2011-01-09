@@ -112,20 +112,19 @@ public class CardsList extends List implements CommandListener {
 		UiAccess.setUiEventListener(this,
 				new UiEventListener() {
 					public void handleUiEvent(UiEvent event, Object source) {
-						if (event instanceof GestureEvent) {
+						if ( event instanceof GestureEvent ) {
 							GestureEvent gesture = (GestureEvent)event;
 							if ( gesture.getGestureId() == GestureEvent.GESTURE_SWIPE_LEFT ) {
 								keyReleased(LEFT);
+								gesture.setHandled();
 							} else if ( gesture.getGestureId() == GestureEvent.GESTURE_SWIPE_RIGHT ) {
 								keyReleased(RIGHT);
+								gesture.setHandled();
 							}
-							// specify that we have consumed this event:
-							gesture.setHandled();
 						}
 					}
 				}
 			);
-		//setItemStateListener(this);
 	}
 	
 	public static CardsList instance() {
