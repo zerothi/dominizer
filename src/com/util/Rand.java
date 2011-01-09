@@ -13,12 +13,10 @@ public class Rand {
 	private static Random rnd = null;
 	private static int i = 0;
 	
-
 	public static void resetSeed() {
-		if ( rnd == null )
-			rnd = new Random();
-		rnd.setSeed(System.currentTimeMillis());
+		resetSeed(System.currentTimeMillis());
 	}
+	
 	public static void resetSeed(long seed) {
 		if ( rnd == null ) 
 			rnd = new Random();

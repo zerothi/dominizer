@@ -241,14 +241,12 @@ public class GameApp extends MIDlet implements TabbedFormListener
 			if ( SettingsRecordStorage.instance().changeToRecordStore("condition") ) {
 				Dominion.I();
 				//#debug dominizer
-				System.out.println("initial " + Dominion.condition.getInitialConditions() + " preferred " + Dominion.condition.getPreferredCondition());
+				System.out.println("initial " + Dominion.condition.initialConditions + " preferred " + Dominion.condition.preferredCondition);
 				//#debug dominizer
 				System.out.println("reached condition writing");
-				SettingsRecordStorage.instance().addData("preferred", "" + Dominion.condition.getPreferredCondition());
-				//#debug dominizer
-				System.out.println("added the preferred condition: " + Dominion.condition.getPreferredCondition());
+				SettingsRecordStorage.instance().addData("preferred", "" + Dominion.condition.preferredCondition);
 				int userCreated = 0;
-				for ( i = Dominion.condition.getInitialConditions() ; i < Dominion.condition.size() ; i++ ) {
+				for ( i = Dominion.condition.initialConditions ; i < Dominion.condition.size() ; i++ ) {
 					SettingsRecordStorage.instance().addData("" + userCreated, Dominion.condition.getCondition(i));
 					SettingsRecordStorage.instance().addData("name" + userCreated, Dominion.condition.getNameAsSave(i));
 					//#debug dominizer

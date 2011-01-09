@@ -61,13 +61,13 @@ public class ConditionList extends List implements CommandListener, ItemStateLis
 		//#debug dominizer
 		System.out.println("initializing conditionTableForm");
 		ptF = new ConditionTableForm();
-		if ( Dominion.condition.getPreferredCondition() < this.size() ) {
-			setSelectedIndex(Dominion.condition.getPreferredCondition(), true);
-			focus(Dominion.condition.getPreferredCondition());
+		if ( Dominion.condition.preferredCondition < this.size() ) {
+			setSelectedIndex(Dominion.condition.preferredCondition, true);
+			focus(Dominion.condition.preferredCondition);
 		}
 		
 		//#debug dominizer
-		System.out.println("done initializing with " + Dominion.condition.getPreferredCondition() + " size= " + this.size());
+		System.out.println("done initializing with " + Dominion.condition.preferredCondition + " size= " + this.size());
 	}
 	
 	public void populateConditions() {
@@ -78,7 +78,7 @@ public class ConditionList extends List implements CommandListener, ItemStateLis
 			if ( Dominion.condition.getName(i) != null ) {
 				//#style label
 				CardItem ci = new CardItem(Dominion.condition.getName(i), listType);
-				if ( i >= Dominion.condition.getInitialConditions() )
+				if ( i >= Dominion.condition.initialConditions )
 					ci.addCommand(deleteCmd);
 				append(ci);
 				//setPercentage(i, Dominion.I().condition.getPercentage(i));
@@ -170,14 +170,14 @@ public class ConditionList extends List implements CommandListener, ItemStateLis
 		default:
 			//#= super.keyPressed(keyCode);
 		}
-		Dominion.condition.setPreferredCondition(getSelectedIndex());
+		Dominion.condition.currentCondition = getSelectedIndex();
 	}
 
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(selectCmd) ) {
 			try {
 				setSelectedIndex(getCurrentIndex(), true);
-				Dominion.condition.setPreferredCondition(getCurrentIndex());
+				Dominion.condition.currentCondition = getCurrentIndex();
 				Dominion.I().randomizeCards(-1, Dominion.RAND_HOLD + Dominion.RAND_CONDITION);
 				//ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
 				CardsList.instance().setCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
@@ -233,8 +233,8 @@ public class ConditionList extends List implements CommandListener, ItemStateLis
 	}
 
 	public void itemStateChanged(Item arg0) {
-		Dominion.condition.setPreferredCondition(getSelectedIndex());
+		Dominion.condition.currentCondition = getSelectedIndex();
 		//#debug dominizer
-		System.out.println("item state changed" + getCurrentIndex() + " and " + getSelectedIndex()+ " current condition is: " + Dominion.condition.getPreferredCondition());
+		System.out.println("item state changed" + getCurrentIndex() + " and " + getSelectedIndex()+ " current condition is: " + Dominion.condition.currentCondition);
 	}
 }

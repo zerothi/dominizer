@@ -9,7 +9,6 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Item;
-import javax.microedition.lcdui.ItemCommandListener;
 import javax.microedition.lcdui.ItemStateListener;
 import javax.microedition.lcdui.Ticker;
 import javax.microedition.rms.RecordStoreException;
@@ -65,17 +64,16 @@ public class OptionForm extends Form implements CommandListener, ItemStateListen
 		info[2] = new String(Locale.get("screen.options.preferredcondition.info"));
 		for (int i = 0 ; i < Dominion.condition.size() ; i++ ) {
 			options[2].append(Dominion.condition.getName(i), null);
-			if ( Dominion.condition.getPreferredCondition() == i )
-				options[2].setSelectedIndex(i, true);
 		}
+		options[2].setSelectedIndex(Dominion.condition.preferredCondition, true);
+		
 		//#style horizontalChoice
 		options[3] = new ChoiceGroup(Locale.get("screen.Options.CardsInSet"), ChoiceGroup.EXCLUSIVE);
 		info[3] = new String(Locale.get("screen.Options.CardsInSet.info"));
-		for ( int i = 5 ; i < 16 ; i++ ) {
-			options[3].append("" + i , null);
-			if ( i == 10 )
-				options[3].setSelectedIndex(i - 5, true);
+		for ( int i = 0 ; i < 11 ; i++ ) {
+			options[3].append("" + (i + 5) , null);
 		}
+		options[3].setSelectedIndex(5, true);
 
 		for (int i = 0 ; i < options.length ; i++ )
 			append(options[i]);
@@ -84,6 +82,7 @@ public class OptionForm extends Form implements CommandListener, ItemStateListen
 		ticker = new Ticker(info[0]);
 		setTicker(ticker);
 		
+		setCommandListener(this);
 		addCommand(saveCmd);
 		addCommand(backCmd);
 	}
@@ -96,7 +95,7 @@ public class OptionForm extends Form implements CommandListener, ItemStateListen
 		if ( cmd.equals(saveCmd) ) {
 			try {
 				if ( SettingsRecordStorage.instance().changeToRecordStore("settings") ) {
-					//#= Cards.COMPARE_PREFERRED = options[0].getSelectedIndex();
+					Cards.COMPARE_PREFERRED = options[0].getSelectedIndex();
 					s += Cards.COMPARE_PREFERRED;
 					SettingsRecordStorage.instance().addData("sort", "" + Cards.COMPARE_PREFERRED);
 					s += "." + options[1].getSelectedIndex();
@@ -109,11 +108,13 @@ public class OptionForm extends Form implements CommandListener, ItemStateListen
 					s += "." + options[2].getSelectedIndex();
 					for ( int i = 0 ; i < Dominion.condition.size() ; i++ ) {
 						if ( Dominion.condition.getName(i).equals(options[2].getString(options[2].getSelectedIndex())) ) {
-							Dominion.condition.setPreferredCondition(i);
+							Dominion.condition.preferredCondition = i;
 							i = Dominion.condition.size();
 						}
 					}
 					SettingsRecordStorage.instance().addData("preferred", "" + options[2].getString(options[2].getSelectedIndex()));
+					SettingsRecordStorage.instance().writeData();
+					SettingsRecordStorage.instance().closeRecord();
 				}
 				GameApp.instance().showInfo(Locale.get("screen.Options.SaveSuccessful"), Alert.FOREVER);
 			} catch (RecordStoreFullException e) {
