@@ -1,24 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src" />
-	<classpathentry kind="lib"
-		path="/home/nick/Programs/J2ME-Polish/lib/enough-j2mepolish-build.jar" />
-	<classpathentry kind="lib"
-		path="/home/nick/Programs/J2ME-Polish/lib/enough-j2mepolish-build-common.jar" />
-	<classpathentry kind="lib"
-		path="/home/nick/.jdk_wireless/lib/jsr75.jar" />
-	<classpathentry kind="lib"
-		path="/home/nick/.jdk_wireless/lib/jsr082.jar" />
-	<classpathentry kind="lib"
-		path="/home/nick/.jdk_wireless/lib/midpapi20.jar" />
-	<classpathentry kind="lib"
-		path="/home/nick/Programs/J2ME-Polish/lib/enough-j2mepolish-build-src.jar" />
-	<classpathentry kind="lib"
-		path="/home/nick/Programs/J2ME-Polish/lib/enough-j2mepolish-client.jar"
-		sourcepath="/home/nick/Programs/J2ME-Polish/j2mepolish-src/j2me" />
-	<classpathentry kind="con"
-		path="org.eclipse.jdt.launching.JRE_CONTAINER" />
-	<classpathentry kind="lib"
-		path="/home/nick/.jdk_wireless/lib/cldcapi11.jar" />
-	<classpathentry kind="output" path="build" />
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="var" path="CLDC1.0"/>
+	<classpathentry kind="var" path="J2MEBuild"/>
+	<classpathentry kind="var" path="J2MEBuildCommon"/>
+	<classpathentry kind="var" path="JSR75"/>
+	<classpathentry kind="var" path="JSR82"/>
+	<classpathentry kind="var" path="MIDP2.0"/>
+	<classpathentry kind="var" path="J2MEClient"/>
+	<classpathentry kind="output" path="build"/>
 </classpath>

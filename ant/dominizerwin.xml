@@ -1,0 +1,340 @@
+<!-- This file controls the build process.                    -->
+<!-- The most important target is the j2mepolish-target,      -->
+<!-- which controls for what devices the application should   -->
+<!-- be created and so on.                                    -->
+<!--                                                          -->
+<!-- Important: when you have no Wireless Toolkit installed   -->
+<!-- you need to define the "preverify"-attribute             -->
+<!-- of the <build>-element of the J2ME Polish task.          -->
+<!--                                                          -->
+<!-- When you call Ant from the command-line, you can         -->
+<!-- call "ant test j2mepolish" to skip the obfuscation       -->
+<!-- and to build the example for fewer handsets.             -->
+<!-- The default target builds and obfuscates the example.    -->
+<!--                                                          -->
+<!-- The full documentation can be found at                   -->
+<!-- http://www.j2mepolish.org                                -->
+<!--                                                          -->
+<!-- Have fun!                                                -->
+<project name="Dominizer" default="j2mepolish" basedir=".">
+
+	<!-- import user specific properties                          -->
+	<!--property file="${user.name}.properties" /-->
+	<property environment="env."/>
+	<!--property name="env.JAVA_HOME" value="C:\Programmer\Java\jdk1.6.0_23"/-->
+	<property file="ant\projectwin.properties" />
+	<!-- import global properties                                 -->
+	<property file="${polish.home}\global.properties" />
+	
+	<property name="debugLang" value="en"/>
+	<property name="single" value="false"/>
+	
+	<taskdef name="j2mepolish" 
+		classname="de.enough.polish.ant.PolishTask"
+		classpath="${polish.home}\lib\enough-j2mepolish-build.jar"
+	/>
+
+	<target name="init">
+		<echo message="OS:      ${os.name}"/>
+		<echo message="Devices: ${devices}"/>
+		<echo message="Device:  ${device}"/>
+		<echo message="Debug:   ${debug}"/>
+		<echo message="D-Debug: ${debugDominizer}"/>
+		<echo message="Single:  ${single}"/>
+	</target>
+	
+	<target name="j2mepolish" 
+		depends="init" 
+		description="This is the controller for the J2ME build process.">
+		<j2mepolish>
+			<!-- Have a look at the <jad>-section for setting specialised attributes.
+		         You can also define localized attributes in the resources/messages.txt files -->
+			<info 
+				name="${app.name}" 
+				version="0.18" 
+				description="A Dominion Card randomizer" 
+				vendorName="Nick Papior Andersen A/S" 
+				infoUrl="http://www.boardgamegeek.com/wiki/page/Dominizer" 
+				jarName="${nospace(polish.vendor)}-${nospace(polish.name)}-${app.name}-${ nospace(polish.locale) }.jar" 
+				jarUrl="${deploy-url}${polish.jarName}" 
+				copyright="Copyright 2009 Nick Papior Andersen A/S. All rights reserved."
+				deleteConfirm="Delete ${app.name}? Nooo? :D"
+				icon="main.png"
+			/>
+			<!-- selection of supported devices -->
+			<!-- In the test mode the application is build only for the  -->
+			<!-- Generic/midp1 phone, but when the test-property is set to false, -->
+			<!-- the second deviceRequirements will be used instead. -->
+			<deviceRequirements if="debug or debugDominizer">
+				<requirement name="Identifier" value="${device}" />
+			</deviceRequirements>
+			<deviceRequirements unless="debug or debugDominizer">
+				<requirement name="Identifier" value="${devices}" />
+			</deviceRequirements>
+			
+			<!-- build settings -->
+			<build symbols="Dominizer"
+				usePolishGui="true" 
+				workDir="${dir.work}"
+				imageLoadStrategy="foreground" 
+				>
+				<!-- imageLoadStrategy should speed up application, suppress memory -->
+				<!-- javacTarget="${javac.target}" -->
+				<!-- preverify="${preverify.file}"
+			midp2Path="${polish.home}/import/midp-2.0.jar"
+				midlets definition -->
+				<midlets>
+					<midlet class="com.dominizer.GameApp" name="${app.name}" icon="main.png" number="1" />
+				</midlets>
+				
+				<sign
+					key="npakey"
+					keystore="ant\npa-release.keystore"
+					password="${password}"
+					if="polish.android or dosign"
+				/>
+				
+				<variables includeAntProperties="true">
+					<variable name="javac.source" value="1.5" if="polish.android"/>
+					<variable name="javac.target" value="1.5" if="polish.android"/>
+					<variable name="javac.source" value="1.3" unless="polish.android"/>
+					<variable name="javac.target" value="1.3" unless="polish.android"/>
+					<variable name="polish.FullScreen" value="false" if="${ isOS( Windows ) }"/><!-- or polish.android-->
+					<variable name="polish.FullScreen" value="menu" unless="${ isOS( Windows ) }"/><!-- or polish.android-->
+					<variable name="polish.TextField.useVirtualKeyboard" value="true" if="polish.android"/>
+					<variable name="polish.TextField.supportSymbolsEntry" value="false"/>
+					<variable name="polish.TextField.Symbols" value="&quot;@#()&lt;&gt;&amp;;,.:!/\~$%^*" />
+					<variable name="polish.TextField.allowNativeModeSwitch" value="true" if="polish.hasPointerEvents or ${ isOS(Windows) } or polish.android"/>
+					<variable name="polish.TextField.useDirectInput" value="true" unless="polish.hasPointerEvents or ${ isOS(Windows) } or polish.android"/>
+					<variable name="polish.DateField.allowNativeModeSwitch" value="true" if="polish.hasPointerEvents or ${ isOS(Windows) } or polish.android"/>
+					<variable name="polish.DateField.useDirectInput" value="true" unless="polish.hasPointerEvents or ${ isOS(Windows) } or polish.android"/>
+					<!--variable name="polish.Item.ShowCommandsOnHold" value="true" /-->
+					<!--variable name="polish.ScreenInfo.enable" value="true"/-->
+					<variable name="polish.MenuBar.useExtendedMenuBar" value="true"/>
+					<variable name="polish.ChoiceGroup.suppressMarkCommands" value="true"/>
+					<variable name="polish.ChoiceGroup.suppressSelectCommand" value="true"/>
+					<variable name="polish.List.suppressMarkCommands" value="false"/> 
+					<variable name="polish.useScrollBar" value="true"/>
+					<variable name="polish.MenuBar.OptionsPosition" value="left"/>
+					<variable name="polish.MenuBar.OkPosition" value="right"/>
+					<variable name="polish.debug.error" value="false" if="final"/>
+					<!--variable name="polish.useDynamicStyles" value="true"/-->
+				</variables>
+				<resources dir="${resource.dir}" defaultexcludes="yes" excludes="readme.txt,icons">
+					<!--root dir="${resource.dir}"/-->
+					<root dir="${resource.dir}\lang"/>
+					<root dir="${resource.dir}\img"/>
+					<root dir="${resource.dir}\img/22x22" if="polish.android"/>
+					<localization if="debug or debugDominizer or single">
+						<locale name="${debugLang}" encoding="UTF-8"/>
+					</localization>
+					<localization unless="debug or debugDominizer or single">
+						<!--locale name="da" encoding="UTF-8"/-->
+						<locale name="en" encoding="UTF-8"/>
+						<locale name="de" encoding="UTF-8"/>
+						<locale name="es" encoding="UTF-8"/>
+						<!--locale name="pl" encoding="UTF-8"/-->
+						<!--locale name="fr" encoding="UTF-8"/>
+						<locale name="zh_CH_SC" encoding="UTF-8"/>
+						<locale name="zh_CH_TC" encoding="UTF-8"/>
+						<locale name="zombinion" encoding="UTF-8"/-->
+						<!--locale name="christmas" encoding="UTF-8"/-->
+					</localization>
+				</resources>
+				
+				<obfuscator name="ProGuard" unless="debug or debugDominizer or polish.blackberry">
+					<parameter name="optimize" value="true" />
+					<parameter name="optimizationpasses" value="3"/>
+					<parameter name="dontskipnonpubliclibraryclasses" value=""/>
+					<parameter name="dontusemixedcaseclassnames" value=""/>
+				</obfuscator>
+				
+				<debug if="debug and not final"
+					showLogOnError="true"
+					verbose="true"
+					level="debug" >
+					<filter package="com.nokia.*" level="fatal"/>
+				</debug>
+				<debug if="debugDominizer and not final"
+					showLogOnError="false"
+					verbose="false"
+					level="error"
+					levels="dominizer">
+				<filter package="com.nokia.*" level="fatal"/>
+				</debug>
+				<debug if="final" showLogOnError="true" level="error">
+				</debug>
+				<!--jad>
+					<attribute name="Nokia-MIDlet-Category" value="Game" if="polish.group.Series40" />
+				</jad-->
+				<finalizer name="antcall" target="androidZipAlign" if="polish.android"/>
+			</build>
+
+			<emulator if="debug or debugDominizer and not polish.android"
+				wait="true"
+				securityDomain="trusted"
+				enableProfiler="false"
+				enableMemoryMonitor="false"
+				enableNetworkMonitor="false">
+			</emulator>
+		</j2mepolish>
+	</target>
+
+	<target name="clean" description="allows a clean build. You should call [ant clean] whenever you made changes to devices.xml, vendors.xml or groups.xml">
+		<delete dir="build" />
+		<delete dir="dist" />
+		<delete dir="tmp**"/>
+	</target>
+	
+	<target name="emuGeneric"
+		description="invokes the emulator">
+		<exec executable="${wtk.runmidlet}" dir=".\${dist.root.dir}" spawn="true">
+		    <arg value=".\Generic-AnyPhone-Dominizer-${debugLang}.jad"/>
+		</exec>
+	</target>
+	
+	<target name="emuNokia"
+		description="invokes the emulator">
+		<exec executable="${wtk.runmidlet}" dir=".\${dist.root.dir}" spawn="true">
+		    <arg value=".\Nokia-6303_classic-Dominizer-${debugLang}.jad"/>
+		</exec>
+	</target>
+	
+	<target name="emuAndroid"
+		description="invokes the emulator">
+		<exec executable="${android.home}/tools/adb" dir="./${dist.root.dir}" spawn="true">
+			<arg value="install .\Generic-android-Dominizer-${debugLang}.apk"/>
+		</exec>
+	</target>
+	
+	<target name="compileAllNonAndroid" depends="enableFinal, enableAll, j2mepolish" />
+	<target name="compileGeneric" description="Builds Generic Device" depends="enableFinal, enableGeneric, j2mepolish" />
+	<target name="compileNokia" description="Builds Nokia" depends="enableFinal, enableNokia, j2mepolish" />
+	<target name="compileAndroid" description="Builds Android" depends="enableFinal, enableAndroid, j2mepolish" />
+	<target name="compileiPhone" description="Builds iPhone" depends="enableFinal, enableiPhone, j2mepolish" />
+	<target name="compileTouch" description="Builds Touch" depends="enableFinal, enableTouch, j2mepolish" />
+	<target name="compileWindows" description="Builds Windows" depends="enableFinal, enableWindows, j2mepolish" />
+	<target name="compile6303" description="Builds Nokia 6303" depends="enableFinal, enable6303, j2mepolish" />
+	<target name="compileSpecialTargets" description="Builds Without Tickers for users" depends="enableFinal, enableSpecialTargets, j2mepolish" />
+	
+	<target name="debugAndroid" description="debug Android" depends="enableDebugDominizer, enableAndroid, j2mepolish" />
+	<target name="debugNokia" description="debug Nokia" depends="enableDebugDominizer, enableNokia, j2mepolish" />
+	<target name="debugNokia60" description="debug Nokia" depends="enableDebugDominizer, enableNokia, j2mepolish" />
+	<target name="debugNokiaNonTicker" description="debug Nokia" depends="enableDebugDominizer, enableNokia, j2mepolish" />
+	<target name="debugGeneric" description="debug Generic" depends="enableDebugDominizer, enableGeneric, j2mepolish" />
+	<target name="debugTouch" description="debug Touch" depends="enableDebugDominizer, enableTouch, j2mepolish" />
+	
+	<target name="enableAll" depends="donotsign"> <!-- Generic/AnyTouch_320x480 /-->
+		<property name="devices" value="Generic/AnyPhone,Nokia/Series40E3,Nokia/Series60E2FP2,Sony-Ericsson/JavaPlatform7"/>
+	</target>
+	
+	<target name="enableGeneric" depends="donotsign">
+		<property name="devices" value="Generic/AnyPhone"/>
+		<property name="device" value="Generic/debug"/>
+	</target>
+	
+	<target name="enableNokia" depends="donotsign">
+		<property name="devices" value="Nokia/Series40E3,Nokia/Series60E2FP2,Nokia/Series60E3"/>
+		<property name="device" value="Nokia/Series40E3"/>
+	</target>
+	
+	<target name="enable6303" depends="donotsign">
+		<property name="devices" value="Nokia/6303_classic"/>
+	</target>
+	
+	<target name="enableiPhone" depends="dosign">
+		<property name="devices" value="Native/iPhone"/>
+	</target>
+	
+	<target name="enableAndroid" depends="dosign">
+		<property name="devices" value="Generic/Android1.5"/>
+		<property name="device" value="Generic/Android1.5"/>
+	</target>
+	
+	<target name="enableSpecialTargets" depends="donotsign">
+		<property name="devices" value="Nokia/N95,Nokia/6120,Nokia/6120_classic"/>
+		<property name="device" value="Nokia/N95"/>
+	</target>
+	
+	<target name="enableTouch" depends="donotsign">
+		<property name="devices" value="Generic/AnyTouch_240x248,Generic/AnyTouch_320x480,Generic/AnyTouch_480x800"/>
+		<property name="device" value="Generic/AnyTouch_320x480"/>
+	</target>
+	<target name="enableWindows" depends="donotsign">
+		<property name="devices" value="Dom/WindowsMobile5.0,Dom/WindowsMobile6.0,Dom/WindowsMobile6.5"/>
+	</target>
+	<target name="donotsign">
+		<property name="dosign" value="false"/>
+	</target>
+	<target name="dosign">
+		<property name="dosign" value="true"/>
+	</target>
+		
+	<!-- Call this target first to skip the obfuscation step, call the emulator and start the debugger, e.g. ant enableDebug j2mepolish-->
+	<target name="enableDebug">
+		<property name="debug" value="true" />
+	</target>
+	
+	<target name="enableDebugDominizer">
+		<property name="debug" value="false" />
+		<property name="debugDominizer" value="true" />
+	</target>
+	
+	<target name="enableFinal"> 
+		<property name="final" value="true" />
+	</target>
+	
+	<target name="androidZipAlign">
+		<property name="finalizefile" value="${polish.vendor}-${polish.name}-${app.name}-${polish.locale}.apk"/>
+		<property name="finalize2file" value="${polish.name}-${app.name}-${polish.locale}.apk"/>
+		<echo message="Will now finalize: ${finalizefile}"/>
+		<echo message="To the file      : ${finalize2file}"/>
+		<exec executable="${android.home}\tools\zipalign" dir=".\${dist.root.dir}" spawn="false">
+			<arg value="-f"/>
+			<arg value="-v"/>
+			<arg value="4"/>
+			<arg value="${finalizefile}"/>
+			<arg value="${finalize2file}"/>
+		</exec>
+		<!--exec executable="${android.home}/tools/zipalign" dir="./${dist.root.dir}" spawn="false">
+			<arg value="-c"/>
+			<arg value="-v"/> This is not needed as it will check when aligning!
+			<arg value="4"/>
+			<arg value="${finalize2file}"/>
+		</exec-->
+		<exec executable="del" dir=".\${dist.root.dir}" spawn="false">
+			<arg value="${finalizefile}"/>
+		</exec>
+		<exec executable="move" dir=".\${dist.root.dir}" spawn="false">
+			<arg value="${finalize2file}"/>
+			<arg value="${finalizefile}"/>
+		</exec>
+	</target>
+	
+	<target name="compileAll" depends="clean" description="Builds All">
+		<subant target="compileAllNonAndroid" 
+			description="Builds All Non-Android Devices" 
+			buildpath="." 
+			genericantfile="dominizer.xml" 
+			inheritall="false" 
+			/>
+		<subant target="compileAndroid"
+			description="Builds All Android Devices"
+			buildpath="." 
+			genericantfile="dominizer.xml" 
+			inheritall="false" 
+			/>
+	</target>
+	<target name="compileAllNonTicker" depends="clean" description="Builds All">
+		<subant target="compileAllNonAndroid" 
+			description="Builds All Non-Android Devices" 
+			buildpath="." 
+			genericantfile="dominizer.xml" 
+			inheritall="false" />
+		<subant target="compileAndroid"
+			description="Builds All Android Devices"
+			buildpath="." 
+			genericantfile="dominizer.xml" 
+			inheritall="false" />
+	</target>
+</project>
