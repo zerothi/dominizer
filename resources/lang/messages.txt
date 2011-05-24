@@ -115,6 +115,7 @@ expansion.intrigue          = Intrigue
 expansion.promo             = Promo
 expansion.promo.BlackMarket = Black Market
 expansion.prosperity        = Prosperity
+expansion.cornucopia        = Cornucopia
 expansion.seaside           = Seaside
 expansion.user              = User Cards
 
@@ -196,6 +197,7 @@ preset.seaside.HighSeas                 = High Seas
 preset.seaside.ReachForTomorrow         = Reach For Tomorrow
 preset.seaside.Repetition               = Repetition
 preset.seaside.Shipwrecks               = Shipwrecks
+preset.cornucopia.          = 
 
 randomize.condition.failed = Dominizer failed to find a suitable set of cards to fulfill your condition. Try again.
 

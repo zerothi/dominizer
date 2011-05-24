@@ -11,14 +11,21 @@ import de.enough.polish.util.Locale;
 
 public class Dominion {
 	private static Dominion dom = null;
-	public static int TOTAL_CARDS = 25 + 25 + 26 + 12 + 3 + 25;
+	public static int TOTAL_CARDS = 25 + // BASE 
+									25 + // INTRIGUE
+									26 + // SEASIDE
+									12 + // ALCHEMY
+									25 + // PROSPERITY
+									13 + // CORNUCOPIA
+									3; // PROMOS
 	public static final int BASE = 0;       // has 25 cards
 	public static final int INTRIGUE = 1;   // has 25 cards
 	public static final int SEASIDE = 2;    // has 26 cards
 	public static final int ALCHEMY = 3;    // has 12 cards (the 13th card Potion is not counted)
 	public static final int PROSPERITY = 4; // has 25 cards
-	public static final int PROMO = 5;      // has 3 cards
-	public static final int USER = 6;       // always have to be the highest number!
+	public static final int CORNUCOPIA = 5; // has 13 cards
+	public static final int PROMO = 6;      // has 3 cards
+	public static final int USER = PROMO + 1;       // always have to be the highest number!
 	public static final int RAND_EXPANSION_CARDS = 1;
 	public static final int RAND_PERCENTAGE_CARDS = 2;
 	public static final int RAND_CONDITION = 4;
@@ -155,6 +162,11 @@ public class Dominion {
 		presets[PROSPERITY].setPreset(8, Locale.get("preset.prosperity.LuckySeven"), new int[][] {
 			new int[] { 1,  2 }, new int[] { 1,  3 }, new int[] { 1, 19 }, new int[] { 1, 22 }, new int[] { 1, 24 }, 
 			new int[] { 4,  0 }, new int[] { 4,  5 }, new int[] { 4,  6 }, new int[] { 4, 10 }, new int[] { 4, 21 } });
+		presets[CORNUCOPIA] = new CardPresets(1);
+		presets[CORNUCOPIA].setExpansion(CORNUCOPIA);
+		presets[CORNUCOPIA].setPreset(0, Locale.get("preset.prosperity.Beginners"), new int[][] {
+			new int[] { 4,  0 }, new int[] { 4,  4 }, new int[] { 4,  5 }, new int[] { 4,  7 }, new int[] { 4, 13 }, 
+			new int[] { 4, 17 }, new int[] { 4, 18 }, new int[] { 4, 22 }, new int[] { 4, 23 }, new int[] { 4, 24 } });
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.base"));
 		//#debug dominizer
 		System.out.println("reading base");
@@ -185,6 +197,12 @@ public class Dominion {
 		readResource(PROSPERITY, "prosperity", 25);
 		//#debug dominizer
 		System.out.println("size prosperity: " + expansions[PROSPERITY].size());
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.cornucopia"));
+		//#debug dominizer
+		System.out.println("reading cornucopia");
+		readResource(CORNUCOPIA, "cornucopia", 13);
+		//#debug dominizer
+		System.out.println("size cornucopia: " + expansions[CORNUCOPIA].size());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.promo"));
 		//#debug dominizer
 		System.out.println("reading promo");
@@ -1256,6 +1274,8 @@ public class Dominion {
 			return "se";
 		case ALCHEMY:
 			return "al";
+		case CORNUCOPIA:
+			return "co";
 		case PROSPERITY:
 			return "pr";
 		case PROMO:
@@ -1279,6 +1299,8 @@ public class Dominion {
 			return Locale.get("expansion.seaside");
 		case ALCHEMY:
 			return Locale.get("expansion.alchemy");
+		case CORNUCOPIA:
+			return Locale.get("expansion.cornucopia");
 		case PROSPERITY:
 			return Locale.get("expansion.prosperity");
 		case USER:
