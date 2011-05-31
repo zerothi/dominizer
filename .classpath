@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="var" path="J2MEClient"/>
 	<classpathentry kind="var" path="CLDC1.0"/>
 	<classpathentry kind="var" path="J2MEBuild"/>
 	<classpathentry kind="var" path="J2MEBuildCommon"/>
 	<classpathentry kind="var" path="JSR75"/>
 	<classpathentry kind="var" path="JSR82"/>
 	<classpathentry kind="var" path="MIDP2.0"/>
-	<classpathentry kind="var" path="J2MEClient"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_23"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

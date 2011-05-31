@@ -53,7 +53,7 @@ public class QuickRandomizeList extends List implements CommandListener, ItemSta
 		}
 		addCommand(quickRandomizeCardsCmd);
 		addCommand(gaugeCmd);
-		addCommand(optionCmd);
+		//addCommand(optionCmd);
 		addCommand(quitCmd);
 		addCommand(gotoCmd);
 		//#if debugDominizer

@@ -48,7 +48,7 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 		focus(0);
 		addCommand(randomizeCmd);
 		addCommand(perGaugeCmd);
-		addCommand(optionCmd);
+		//addCommand(optionCmd);
 		addCommand(quitCmd);
 		addCommand(gotoCmd);
 		//#if debugDominizer

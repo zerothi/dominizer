@@ -203,6 +203,8 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 			//#style tableCell
 			tableItem.set(Dominion.PROSPERITY, new MessageItem("" + (Dominion.PROSPERITY+1), Locale.get("expansion.prosperity")));
 			//#style tableCell
+			tableItem.set(Dominion.CORNUCOPIA, new MessageItem("" + (Dominion.CORNUCOPIA+1), Locale.get("expansion.cornucopia")));
+			//#style tableCell
 			tableItem.set(Dominion.PROMO, new MessageItem("" + (Dominion.PROMO+1), Locale.get("expansion.promo")));
 			//#style tableCell
 			tableItem.set(Dominion.USER, new MessageItem("" + (Dominion.USER+1), Locale.get("expansion.user")));			

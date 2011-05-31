@@ -22,8 +22,4 @@ public class TiltedPieChartForm extends Form {
 		//#= repaint();
 		
 	}
-	
-	
-	
-
 }

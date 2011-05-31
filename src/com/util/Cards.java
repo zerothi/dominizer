@@ -17,6 +17,7 @@ public class Cards {
 	/*
 	 * 1 = Is Selected for availability
 	 * 2 = Is Black Market available
+	 * 4 = Is Bane Card
 	 */
 	private short[] isGamingRelated = null; 
 	private short[] cost = null;
@@ -37,10 +38,10 @@ public class Cards {
 	 * #4 = Adds # Trash
 	 * #5 = Adds # Curse
 	 * #6 = Adds # Potions
+	 * #7 = Adds # Victory Points
 	 */
 	private int[][] addsInfo = null;
 	private int[] percentage = null;
-	private static int i, k;
 
 	public Cards(int size, int isSet) {
 		if ( size > 0 ) {
@@ -56,16 +57,17 @@ public class Cards {
 				expansion = new short[size];
 			expansion[0] = -1;
 			percentage = new int[size];
-			for ( i = 0 ; i < size ; i++ ) {
+			for ( int i = 0 ; i < size ; i++ ) {
 				name[i] = null;
 				cost[i] = 0;
 				playing[i] = 0;
 				/*
 				 * Adding 1 makes it selected for availability
 				 * Adding 2 makes it selectable for the Black Market deck
+				 * Adding 4 makes it a Bane card, so no need for that!
 				 */
 				isGamingRelated[i] = 1 + 2;
-				for ( k = 0 ; k < addsInfo[i].length ; k++ )
+				for ( int k = 0 ; k < addsInfo[i].length ; k++ )
 					addsInfo[i][k] = 0;
 				if ( isSet == IS_NOT_SET )
 					expansion[i] = -1;
@@ -174,6 +176,8 @@ public class Cards {
 	 */
 	public void setPlaying(int index, int playing) {
 		this.playing[index] = (short) playing;
+		if ( playing == 0 )
+			setBaneCard(index, false);
 	}
 	
 	/**
@@ -182,6 +186,14 @@ public class Cards {
 	 */
 	public int getPotionCost(int index) {
 		return (cost[index] >>> 5);
+	}
+	
+	/**
+	 * @param index the index of the card in the list
+	 * @return how much the card costs in potions
+	 */
+	public int getTotalCost(int index) {
+		return getCost(index) + getPotionCost(index);
 	}
 	
 	/**
@@ -206,7 +218,7 @@ public class Cards {
 	 * @param the new hold state of the card
 	 */
 	public void setHoldCard(String name, boolean hold) {
-		for ( i = 0 ; i < playing.length ; i++ )
+		for ( int i = 0 ; i < playing.length ; i++ )
 			if ( this.name[i].equals(name) ) {
 				setHoldCard(i, hold);
 				return;
@@ -265,6 +277,25 @@ public class Cards {
 			isGamingRelated[index] = (short) (isGamingRelated[index] | 2);
 		else
 			isGamingRelated[index] -= (short) (isGamingRelated[index] & 2) ;
+	}
+	
+	/**
+	 * @param index the index of the card in the list
+	 * @return whether the card is a Bane card
+	 */
+	public boolean isBaneCard(int index) {
+		return (isGamingRelated[index] & 4) > 0;
+	}
+	
+	/**
+	 * @param index the index of the card in the list
+	 * @param isBane the state of the Bane possibility
+	 */
+	public void setBaneCard(int index, boolean isBane) {
+		if ( isBane )
+			isGamingRelated[index] = (short) (isGamingRelated[index] | 4);
+		else
+			isGamingRelated[index] -= (short) (isGamingRelated[index] & 4) ;
 	}
 
 	/**
@@ -397,7 +428,7 @@ public class Cards {
 	
 	public int fromExpansion(int exp) {
 		int tmp = 0;
-		for ( i = 0 ; i < size() ; i++ ) {
+		for ( int i = 0 ; i < size() ; i++ ) {
 			if ( getExpansion(i) > -1 && getExpansion(i) == exp )
 				tmp++;
 		}
@@ -407,7 +438,7 @@ public class Cards {
 	public void setCard(int index, Object[] cardInfo) {
 		if ( cardInfo.length == 0 ) 
 			return;
-		for ( i = 0 ; i < cardInfo.length ; i++ ) {
+		for ( int i = 0 ; i < cardInfo.length ; i++ ) {
 			if ( cardInfo[i] == null ) {
 				//#debug dominizer 
 				System.out.println("cardinfo " + i + " is null ");
@@ -477,7 +508,7 @@ public class Cards {
 	public boolean contains(String cardName) {
 		if ( cardName == null )
 			return false;
-		for ( i = 0 ; i < size() ; i++ )
+		for ( int i = 0 ; i < size() ; i++ )
 			if ( cardName.equals(getName(i)) )
 				return true;
 		return false;
@@ -498,10 +529,18 @@ public class Cards {
 	
 	public Image getCostImage(int card) {
 		try {
-			if ( getPotionCost(card) > 0 ) {
-				return Image.createImage("/t" + getCost(card) + "P.png");
+			if ( isBaneCard(card) ) {
+				if ( getPotionCost(card) > 0 ) {
+					return Image.createImage("/tB" + getCost(card) + "P.png");
+				} else {
+					return Image.createImage("/tB" + getCost(card) + ".png");
+				}
 			} else {
-				return Image.createImage("/t" + getCost(card) + ".png");
+				if ( getPotionCost(card) > 0 ) {
+					return Image.createImage("/t" + getCost(card) + "P.png");
+				} else {
+					return Image.createImage("/t" + getCost(card) + ".png");
+				}
 			}
 		} catch (IOException exp) {
 			return null;
@@ -538,6 +577,48 @@ public class Cards {
 		for ( int i = 0 ; i < size() ; i++ )
 			sum += getAddInfo(i, addInfo);
 		return sum;
+	}
+	
+	public void increaseSize(int bySize) {
+		name = cloneArray(name, bySize);
+		playing = cloneArray(playing, bySize);
+		isGamingRelated = cloneArray(isGamingRelated, bySize);
+		cost = cloneArray(cost, bySize);
+		isSpecific = cloneArray(isSpecific, bySize);
+		addsInfo = cloneArray(addsInfo, bySize);
+		if ( expansion.length > 1 )
+			expansion = cloneArray(expansion, bySize);
+		percentage = cloneArray(percentage, bySize);
+	}
+	
+	private static int[] cloneArray(int[] array, int bySize) {
+		int[] tmp = new int[array.length + bySize];
+		for ( int i = 0 ; i < array.length ; i++ ) {
+			tmp[i] = array[i];
+		}
+		return tmp;
+	}
+	private static String[] cloneArray(String[] array, int bySize) {
+		String[] tmp = new String[array.length + bySize];
+		for ( int i = 0 ; i < array.length ; i++ ) {
+			tmp[i] = array[i];
+		}
+		return tmp;
+	}
+	private static short[] cloneArray(short[] array, int bySize) {
+		short[] tmp = new short[array.length + bySize];
+		for ( int i = 0 ; i < array.length ; i++ ) {
+			tmp[i] = array[i];
+		}
+		return tmp;
+	}
+	private static int[][] cloneArray(int[][] array, int bySize) {
+		int[][] tmp = new int[array.length + bySize][array[0].length];
+		for ( int i = 0 ; i < array.length ; i++ ) {
+			for ( int j = 0 ; j < array[i].length ; j++ )
+				tmp[i][j] = array[i][j];
+		}
+		return tmp;
 	}
 	
 	public int[][][] getTypeInfo() {

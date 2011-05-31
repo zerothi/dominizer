@@ -10,7 +10,7 @@ import javax.microedition.rms.RecordStoreNotFoundException;
 import javax.microedition.rms.RecordStoreNotOpenException;
 
 public class SettingsRecordStorage {
-	
+
 	private static SettingsRecordStorage srs = null;
 	public static final char BIG_SPLITTER = ':';
 	public static final char MEDIUM_SPLITTER = ';';
@@ -22,21 +22,21 @@ public class SettingsRecordStorage {
 	//#if polish.android
 		//#= <String>
 	//#endif
-		data = null;
+	data = null;
 	private static RecordStore store = null;
 	private static byte[] tmpByte = null;
 
-	
+
 	private SettingsRecordStorage() {
 		super();
 	}
-	
+
 	public static SettingsRecordStorage instance() {
 		if ( srs == null )
 			srs = new SettingsRecordStorage();
 		return srs;
 	}
-	
+
 	public boolean changeToRecordStore(String recordStore) {
 		try {
 			if ( store != null && !store.getName().equals(recordStore) ) {
@@ -72,7 +72,7 @@ public class SettingsRecordStorage {
 		}
 		return false;
 	}
-	
+
 	public String readKey(String key) {
 		if ( data == null )
 			return null;
@@ -86,15 +86,15 @@ public class SettingsRecordStorage {
 	//#if polish.android
 		//#= <String>
 	//#endif
-		data() {
-			return data;
+	data() {
+		return data;
 	}
-	
+
 	private Vector
 	//#if polish.android
 		//#= <String>
 	//#endif
-			readData() throws RecordStoreFullException, RecordStoreException {
+	readData() throws RecordStoreFullException, RecordStoreException {
 		data = null;
 		if ( store == null )
 			return data;
@@ -109,7 +109,7 @@ public class SettingsRecordStorage {
 			//#if polish.android
 				//#= <String>
 			//#endif
-				(store.getNumRecords());
+			(store.getNumRecords());
 			while ( re.hasNextElement() ) {
 				tmpByte = re.nextRecord();
 				if ( tmpByte != null ) {
@@ -125,7 +125,7 @@ public class SettingsRecordStorage {
 		}
 		return data;
 	}
-	
+
 	public void addData(String key, String record) {
 		if ( record == null )
 			return;
@@ -134,7 +134,7 @@ public class SettingsRecordStorage {
 			//#if polish.android
 				//#= <String>
 			//#endif
-				(1);
+			(1);
 		}
 		for ( int i = 0 ; i < data.size() ; i++ ) {
 			if ( key != null ) {
@@ -180,7 +180,7 @@ public class SettingsRecordStorage {
 		}
 		return succes;
 	}
-	
+
 	public void closeRecord() {
 		if ( store != null ) {
 			data = null;
@@ -193,7 +193,7 @@ public class SettingsRecordStorage {
 			}
 		}
 	}
-	
+
 	public boolean deleteData(String key) {
 		if ( data == null )
 			return false;

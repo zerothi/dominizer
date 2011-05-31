@@ -139,7 +139,7 @@
 					</localization>
 				</resources>
 				
-				<obfuscator name="ProGuard" unless="debug or debugDominizer or polish.blackberry">
+				<obfuscator name="ProGuard" unless="debug or polish.blackberry">
 					<parameter name="optimize" value="true" />
 					<parameter name="optimizationpasses" value="3"/>
 					<parameter name="dontskipnonpubliclibraryclasses" value=""/>
@@ -216,7 +216,6 @@
 	
 	<target name="debugAndroid" description="debug Android" depends="enableDebugDominizer, enableAndroid, j2mepolish" />
 	<target name="debugNokia" description="debug Nokia" depends="enableDebugDominizer, enableNokia, j2mepolish" />
-	<target name="debugNokiaNonTicker" description="debug Nokia" depends="enableDebugDominizer, enableNokia, j2mepolish" />
 	<target name="debugGeneric" description="debug Generic" depends="enableDebugDominizer, enableGeneric, j2mepolish" />
 	<target name="debugTouch" description="debug Touch" depends="enableDebugDominizer, enableTouch, j2mepolish" />
 	

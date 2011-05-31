@@ -194,7 +194,7 @@ public class CardsList extends List implements CommandListener {
 	}
 	
 	//#if polish.android
-	@Override
+		//#= @Override
 	//#endif
 	public void commandAction(Command cmd, Displayable disp) {
 		if ( cmd.equals(backCmd) ) {

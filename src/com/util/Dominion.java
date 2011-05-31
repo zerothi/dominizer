@@ -274,7 +274,7 @@ public class Dominion {
 	
 	public Cards getBlackMarketDeck() {
 		int total = 0;
-		int j = 0, i = 0;
+		int j, i;
 		for ( i = 0; i < expansions.length; i++)
 			for ( j = 0; j < expansions[i].size(); j++)
 				if (expansions[i].isBlackMarketAvailable(j)	&& 
@@ -350,9 +350,19 @@ public class Dominion {
 	public Cards getSelectedCards(int playingSet) throws DominionException {
 		return getSelectedCards(playingSet, Cards.COMPARE_PREFERRED);
 	}
+	public int getSelectedCardsSize(int playingSet) {
+		int card = 0;
+		for ( int i = 0 ; i < expansions.length ; i++ ) {
+			for ( int j = 0 ; j < expansions[i].size() ; j++ ) {
+				if ( expansions[i].isPlayingSet(j, playingSet) )
+					card++;
+			}
+		}
+		return card;
+	}
 
 	public Cards getSelectedCards(int playingSet, int sortMethod) throws DominionException {
-		selectedCards = new Cards(numberOfRandomCards, Cards.IS_NOT_SET);
+		selectedCards = new Cards(getSelectedCardsSize(playingSet), Cards.IS_NOT_SET);
 		int card = 0;
 		for ( int i = 0 ; i < expansions.length ; i++ ) {
 			for ( int j = 0 ; j < expansions[i].size() ; j++ ) {
@@ -360,7 +370,7 @@ public class Dominion {
 					selectedCards.setCard(card++, expansions[i].getCard(j) );
 			}
 		}
-		if ( card != numberOfRandomCards ) {
+		if ( card < numberOfRandomCards ) {
 			removePlayingSet(playingSet);
 			// TODO fix exception to handle correct!	
 			throw new DominionException(Locale.get("alert.NotEnoughSelectedCards"));
@@ -746,12 +756,49 @@ public class Dominion {
 				}
 			playingSet = tmpPlayingSet;
 		}
-		if ( selected != numberOfRandomCards ) {
+		if ( selected < numberOfRandomCards ) {
 			removePlayingSet(playingSet);
 			throw new DominionException(Locale.get("alert.NotEnoughSelectedCards"));
 		}
+		randomizeBaneDeck(playingSet);
 		//#debug dominizer
 		System.out.println("exiting randomize method. found " + selected + " cards");
+	}
+	
+	private void randomizeBaneDeck(int playingSet) throws DominionException {
+		if ( expansions[CORNUCOPIA].isPlayingSet(12, playingSet) ) {
+			//#debug dominizer
+			System.out.println("adding a Bane Kingdom pile for set" + playingSet);
+			int possible = 0;
+			for ( int i = 0 ; i < expansions.length ; i++ ) {
+				for ( int j = 0 ; j < expansions.length ; j++ ) {
+					if ( expansions[i].isAvailable(j) && ( expansions[i].getTotalCost(j) == 2 || expansions[i].getTotalCost(j) == 3 ) )
+						possible++;
+				}
+			}
+			if ( possible < 1 )
+				throw new DominionException(Locale.get("alert.NotEnoughSelectedCards"));
+			else {
+				selectedCards.increaseSize(1);
+				int selectedElement, tmpExp;
+				while ( selected < numberOfRandomCards + 1 ) {
+					selectedElement = Rand.randomInt(TOTAL_CARDS);
+					tmpExp = getLinearExpansionIndex(selectedElement);
+					selectedElement = getLinearCardIndex(selectedElement);
+					if ( selectedCards.fromExpansion(ALCHEMY) > 3 && ( expansions[tmpExp].getTotalCost(selectedElement) == 2 || expansions[tmpExp].getTotalCost(selectedElement) == 3 ) ) {
+						if ( selectCard(playingSet, tmpExp, selectedElement, selected) ) {
+							selectedCards.setBaneCard(selected, true);
+							selected++;
+						}
+					} else if ( expansions[tmpExp].getPotionCost(selectedElement) == 0 && ( expansions[tmpExp].getCost(selectedElement) == 2 || expansions[tmpExp].getCost(selectedElement) == 3 ) ) {
+						if ( selectCard(playingSet, tmpExp, selectedElement, selected) ) {
+							selectedCards.setBaneCard(selected, true);
+							selected++;
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	private void readResource(int exp, String fileName, int totalCards) {
