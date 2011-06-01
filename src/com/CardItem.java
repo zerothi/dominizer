@@ -31,6 +31,8 @@ public class CardItem extends ChoiceItem {
 	//#if polish.usePolishGui
 	//#= public CardItem( String label, int listType, Style style ) {
 	//#=	super( label, null, listType, style );
+	//#=	//#debug dominizer
+	//#=	System.out.println("Called From Style");
 	//#=    choiceType = listType;
 	//#= }
 	//#endif

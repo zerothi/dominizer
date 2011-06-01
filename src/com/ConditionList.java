@@ -52,7 +52,7 @@ public class ConditionList extends List implements CommandListener, ItemStateLis
 		addCommand(newCmd);
 		addCommand(showCmd);
 		addCommand(gotoCmd);
-		addCommand(optionCmd);
+		//addCommand(optionCmd);
 		//addCommand(perGaugeCmd);
 		//addCommand(deleteCmd);
 		addCommand(quitCmd);

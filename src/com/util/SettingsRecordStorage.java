@@ -47,28 +47,27 @@ public class SettingsRecordStorage {
 			// Already closed
 		} catch (RecordStoreException e) {
 			// TODO Use GameApp.showAlert in this section!
-		} finally {
-			try {
-				//#debug dominizer
-				System.out.println("opening record store '" + recordStore + "'");
-				store = RecordStore.openRecordStore(recordStore, true);
-				currentStore = recordStore;
-				data = readData();
-				store.closeRecordStore();
-				return true;
-			} catch (RecordStoreFullException e) {
-				store = null;
-				//#debug dominizer
-				System.out.println("error read");
-			} catch (RecordStoreNotFoundException e) {
-				store = null;
-				//#debug dominizer
-				System.out.println("error read");
-			} catch (RecordStoreException e) {
-				store = null;
-				//#debug dominizer
-				System.out.println("error read");
-			}
+		}
+		try {
+			//#debug dominizer
+			System.out.println("opening record store '" + recordStore + "'");
+			store = RecordStore.openRecordStore(recordStore, true);
+			currentStore = recordStore;
+			data = readData();
+			store.closeRecordStore();
+			return true;
+		} catch (RecordStoreFullException e) {
+			store = null;
+			//#debug dominizer
+			System.out.println("error read");
+		} catch (RecordStoreNotFoundException e) {
+			store = null;
+			//#debug dominizer
+			System.out.println("error read");
+		} catch (RecordStoreException e) {
+			store = null;
+			//#debug dominizer
+			System.out.println("error read");
 		}
 		return false;
 	}

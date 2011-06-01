@@ -193,7 +193,7 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 				Dominion.I().getLinearCardIndex(index), isAvailable);
 	}
 //#if polish.android
-	@Override
+	//#= @Override
 //#endif
 	public void itemStateChanged(Item it) {
 		changeCard(getCurrentIndex(), isSelected(getCurrentIndex()));

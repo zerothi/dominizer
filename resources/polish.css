@@ -99,7 +99,8 @@ label {
 .labelCard extends label {
 	layout: expand | left;
 }
-.labelCard:hover extends focused {
+/* have removed "extends focused" from below */
+.labelCard:hover {
 	padding: 2;
 	background: selectedBg;
 	font {
@@ -107,7 +108,7 @@ label {
 		color: selectedFontColor;
 		size: small;
 	}
-	layout: expand | left;
+	layout: expand | center;
 }
 
 /**

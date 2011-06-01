@@ -41,7 +41,7 @@ public class PresetList extends List implements CommandListener {
 		addCommand(infoCmd);
 		addCommand(quickRandomizeCardsCmd);
 		addCommand(quitCmd);
-		addCommand(optionCmd);
+		//addCommand(optionCmd);
 		addCommand(gotoCmd);
 		setCommandListener(this);
 		for ( int i = 0 ; i < Dominion.I().presetSize() ; i++ )
