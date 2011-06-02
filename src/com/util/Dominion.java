@@ -771,13 +771,13 @@ public class Dominion {
 			System.out.println("adding a Bane Kingdom pile for set" + playingSet);
 			int possible = 0;
 			for ( int i = 0 ; i < expansions.length ; i++ ) {
-				for ( int j = 0 ; j < expansions.length ; j++ ) {
+				for ( int j = 0 ; j < expansions[i].size() ; j++ ) {
 					if ( expansions[i].isAvailable(j) && ( expansions[i].getTotalCost(j) == 2 || expansions[i].getTotalCost(j) == 3 ) )
 						possible++;
 				}
 			}
 			if ( possible < 1 )
-				throw new DominionException(Locale.get("alert.NotEnoughSelectedCards"));
+				throw new DominionException(Locale.get("alert.NoCardsForBanePile"));
 			else {
 				selectedCards.increaseSize(1);
 				int selectedElement, tmpExp;
@@ -785,13 +785,16 @@ public class Dominion {
 					selectedElement = Rand.randomInt(TOTAL_CARDS);
 					tmpExp = getLinearExpansionIndex(selectedElement);
 					selectedElement = getLinearCardIndex(selectedElement);
-					if ( selectedCards.fromExpansion(ALCHEMY) > 3 && ( expansions[tmpExp].getTotalCost(selectedElement) == 2 || expansions[tmpExp].getTotalCost(selectedElement) == 3 ) ) {
+					// TODO decide whether this is correct way of doing it
+					if ( selectedCards.fromExpansion(ALCHEMY) > 1 && ( expansions[tmpExp].getTotalCost(selectedElement) == 1 || expansions[tmpExp].getTotalCost(selectedElement) == 2 ) ) {
 						if ( selectCard(playingSet, tmpExp, selectedElement, selected) ) {
+							expansions[tmpExp].setBaneCard(selectedElement, true);
 							selectedCards.setBaneCard(selected, true);
 							selected++;
 						}
 					} else if ( expansions[tmpExp].getPotionCost(selectedElement) == 0 && ( expansions[tmpExp].getCost(selectedElement) == 2 || expansions[tmpExp].getCost(selectedElement) == 3 ) ) {
 						if ( selectCard(playingSet, tmpExp, selectedElement, selected) ) {
+							expansions[tmpExp].setBaneCard(selectedElement, true);
 							selectedCards.setBaneCard(selected, true);
 							selected++;
 						}
@@ -808,6 +811,8 @@ public class Dominion {
 		} else {
 			expansions[exp] = new Cards(totalCards, Cards.IS_SET);
 		}
+		if ( totalCards == 0 )
+			return;
 		StringBuffer sb = new StringBuffer();
 		String tmp = "      ";
 		InputStreamReader isr = null;
@@ -864,6 +869,7 @@ public class Dominion {
 					expansions[exp].setAddInfo(cardRead, Cards.ADDS_POTIONS, parseInformation(tmp , Cards.ADDS_POTIONS));
 					sb.delete(0, sb.toString().length());
 					start = 0;
+					/*
 					//#debug dominizer
 					System.out.println("expansions[" + exp + "].name("
 							+ cardRead + "): "
@@ -878,6 +884,7 @@ public class Dominion {
 							+ expansions[exp].isType(cardRead, Cards.TYPE_TREASURY)
 							+ ". Duration? "
 							+ expansions[exp].isType(cardRead, Cards.TYPE_DURATION));
+					 */
 					cardRead++;
 				} else if ((char) ch == '\n') {
 					sb.delete(0, sb.toString().length() - 1);
@@ -897,11 +904,11 @@ public class Dominion {
 		int numberSaves = 0;
 		if (SettingsRecordStorage.instance().data() == null) {
 			//#debug dominizer
-			System.out.println("Read user settings: settings is null");
+			System.out.println("Read user presets: presets is null");
 			presets[PROMO] = null;
 		} else {
 			//#debug dominizer
-			System.out.println("Read user settings: settings is size=" + SettingsRecordStorage.instance().data().size());
+			System.out.println("Read user presets: presets is size=" + SettingsRecordStorage.instance().data().size());
 			presets[PROMO] = new CardPresets(SettingsRecordStorage.instance().data().size());
 			int[][] preset;
 			int k;

@@ -12,6 +12,8 @@ import com.util.Dominion;
 import com.util.DominionException;
 
 import de.enough.polish.ui.Alert;
+import de.enough.polish.ui.Choice;
+import de.enough.polish.ui.ChoiceItem;
 import de.enough.polish.ui.Item;
 import de.enough.polish.ui.ItemStateListener;
 import de.enough.polish.ui.List;
@@ -135,20 +137,14 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 	}
 	
 	public void setPercentage(int index, int exp, int card, int deciPercentage) {
-		CardItem ci = null;
 		if ( deciPercentage > 0 ) {
-			//#style label
-			ci = new CardItem(Dominion.expansions[exp].getName(card) + " " + deciPercentage * 10 + "%", List.MULTIPLE);
-			//set(index, Dominion.expansions[exp].getName(card) + " " + deciPercentage * 10 + "%", getImage(index));
 			Dominion.expansions[exp].setPercentage(card, deciPercentage);
 		} else {
-			//#style label
-			ci = new CardItem(Dominion.expansions[exp].getName(card), List.MULTIPLE);
 			Dominion.expansions[exp].setPercentage(card, 0);
 		}
-		ci.setLeftImage(Dominion.expansions[exp].getCardTypeImage(card));
-		ci.setRightImage(Dominion.expansions[exp].getCostImage(card));
-		set(index, ci);
+		set(index, getCardItem(Dominion.expansions[exp].getName(card) + ( deciPercentage > 0 ? " " + deciPercentage * 10 + "%" : ""), 
+				Dominion.expansions[exp].getCardTypeImage(card), 
+				Dominion.expansions[exp].getCostImage(card)));
 		setSelectedIndex(index, Dominion.expansions[exp].isAvailable(card));
 		if ( index > 0 )
 			focus(index - 1);
@@ -157,12 +153,17 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 		focus(index);
 	}
 	
-	private void appendCard(String cardName, Image expImage, Image costImage) {
+	private ChoiceItem getCardItem(String cardName, Image expImage, Image costImage) {
 		//#style label
-		CardItem ci = new CardItem(cardName, List.MULTIPLE);
+		CardItem ci = new CardItem(cardName, Choice.MULTIPLE);
 		ci.setLeftImage(expImage);
 		ci.setRightImage(costImage);
-		append(ci);
+		ci.setBothSides(true);
+		return ci;
+	}
+	
+	private void appendCard(String cardName, Image expImage, Image costImage) {
+		append(getCardItem(cardName, expImage, costImage));
 	}
 	
 	public void updateCards(int specific) {

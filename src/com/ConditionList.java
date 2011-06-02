@@ -65,7 +65,6 @@ public class ConditionList extends List implements CommandListener, ItemStateLis
 			setSelectedIndex(Dominion.condition.preferredCondition, true);
 			focus(Dominion.condition.preferredCondition);
 		}
-		
 		//#debug dominizer
 		System.out.println("done initializing with " + Dominion.condition.preferredCondition + " size= " + this.size());
 	}
@@ -84,7 +83,6 @@ public class ConditionList extends List implements CommandListener, ItemStateLis
 				//setPercentage(i, Dominion.I().condition.getPercentage(i));
 			}
 		}
-		//updateCards(false, -1);
 	}
 	
 	public void setPercentage(int index, int deciPercentage) {

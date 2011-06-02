@@ -11,7 +11,7 @@ screen.BlackMarket.Cards.Select			= Select card:
 screen.Options.SaveSuccessful			= Successfully saved options.
 screen.Options.CardsInSet               = Cards in Set:
 screen.Options.CardsInSet.info          = How many cards that should be randomized in the current set.
-
+alert.NoCardsForBanePile				= There are no more cards available for a Bane card pile.
 #######
 #
 # Version 0.18 translations

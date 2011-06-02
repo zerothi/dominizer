@@ -146,8 +146,10 @@ public class CardsList extends List implements CommandListener {
 			cI.setRightImage(cards.getCostImage(i));
 			cI.setBothSides(false);
 			append(cI);
+			/*
 			//#debug dominizer
 			System.out.println("appending to list with card " + cards.getName(i) + " index " + i + " is hold: " + cards.isHold(i) + " on set " + currentCardSet);
+			*/
 		}
 		if ( cards.fromExpansion(Dominion.PROSPERITY) > 0 )
 			addCommand(prosperityDiceCmd);

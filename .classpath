@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="var" path="J2MEClient"/>
+	<classpathentry kind="var" path="J2MEClient" sourcepath="/J2MEClient_SRC"/>
 	<classpathentry kind="var" path="CLDC1.0"/>
 	<classpathentry kind="var" path="J2MEBuild"/>
 	<classpathentry kind="var" path="J2MEBuildCommon"/>

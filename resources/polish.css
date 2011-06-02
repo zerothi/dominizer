@@ -7,10 +7,10 @@ colors {
 	eevenBrightColor: 				rgb(40,70,95);
 	borderSelectedColor:  			argb(100, 145,175,247);
 	
-	titleFontColor: 					rgb(175,210,247);
-	fontColor: 							rgb( 76, 95,160);
-	darkFontColor: 						rgb( 26, 45,110);
-	selectedFontColor:  				argb(130, 165,190,247);
+	titleFontColor: 				rgb(175,210,247);
+	fontColor: 						rgb( 76, 95,160);
+	darkFontColor: 					rgb( 26, 45,110);
+	selectedFontColor:  			argb(130, 165,190,247);
 }
 
 backgrounds {
@@ -73,7 +73,6 @@ title {
 	layout: center;
 }
 
-
 label {
 	background {
 		color: darkBGColor;
@@ -83,11 +82,11 @@ label {
 		color: fontColor;
 		size: small;
 	}
-	layout: center | expand;
 	checkbox-plain: url( ch0.png );
 	checkbox-selected: url( ch1.png );
 	radiobox-plain: url( ra0.png );
 	radiobox-selected: url( ra1.png );
+	layout: expand | center;
 }
 
 @media touchscreen {
@@ -97,18 +96,13 @@ label {
 }
 
 .labelCard extends label {
+	padding: 2;
 	layout: expand | left;
 }
-/* have removed "extends focused" from below */
 .labelCard:hover {
-	padding: 2;
+	/*padding: 2;*/
 	background: selectedBg;
-	font {
-		style: bold;
-		color: selectedFontColor;
-		size: small;
-	}
-	layout: expand | center;
+	font-color: selectedFontColor;
 }
 
 /**
@@ -141,6 +135,7 @@ focused {
 	layout: horizontal-expand | horizontal-center | vertical-center;
 	font-color: selectedFontColor;
 	background: titleGradient;
+	/*expand-items: true;*/
 }
 .mainScreen:landscape {}
 
@@ -193,7 +188,7 @@ listItem {
 .mainCommand {
 	padding: 0;
 	padding-vertical: 8;
-	layout: center | vertical-center | newline-after;
+	layout: expand | center | vertical-center | newline-after;
 	min-height: 30%;
 	font-size: small;
 	font-color: fontColor;
@@ -271,22 +266,11 @@ info {
 	background-color: borderSelectedColor;
 }
 
-.choiceItem {
-	font-color: fontColor;
-	text-wrap: false;
-}
-
-.choiceItem:hover {
-	font-color: fontColor;
-	font-style: bold;
-}
-
 .choiceGroupLabel {
 	font-style: italic;
 	font-size: small;
 	layout: newline-after;
 }
-
 
 /*************   MENU BAR     *************/
 
@@ -407,9 +391,6 @@ menuItem:hover {
 		padding-top: 4px;
 		padding-bottom: 4px;
 		font-size: medium;
-		background: selectedSmallArcBg;
-		font-color: selectedFontColor;
-		layout: left | horizontal-expand;
 	}
 }
 
@@ -535,15 +516,7 @@ messagetext {
 }
 @media touchscreen {
 	.tabIcon {
-		margin: 1px;
-		padding: 2px;
-		max-width: 33.3%;
-		min-width: 10%;
-		layout: expand | center | vertical-center;
-		font-size: small;
-		font-color: fontColor;
-		padding-top: 4px;
-		padding-bottom: 4px;
+		padding: 4px;
 		font-size: medium;
 	}
 }
@@ -561,23 +534,11 @@ messagetext {
 		color: borderSelectedColor;
 	}
 	font-color: titleFontColor;
+	font-size: small;
 }
 @media touchscreen {
 	.tabIcon:hover {
-		padding: 1px;
-		background {
-			type: round-rect;
-			arc: 8;
-			color: selectionBGColor;
-		}
-		border {
-			type: round-rect;
-			arc: 8;
-			color: borderSelectedColor;
-		}
-		font-color: titleFontColor;
-		padding-top: 4px;
-		padding-bottom: 4px;
+		padding: 4px;
 		font-size: medium;
 	}
 }

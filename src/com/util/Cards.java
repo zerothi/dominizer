@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import javax.microedition.lcdui.Image;
 
+import com.dominizer.GameApp;
+
 
 /**
  * @author nick
@@ -40,8 +42,8 @@ public class Cards {
 	 * #6 = Adds # Potions
 	 * #7 = Adds # Victory Points
 	 */
-	private int[][] addsInfo = null;
-	private int[] percentage = null;
+	private short[][] addsInfo = null;
+	private short[] percentage = null;
 
 	public Cards(int size, int isSet) {
 		if ( size > 0 ) {
@@ -50,13 +52,13 @@ public class Cards {
 			isGamingRelated = new short[size];
 			cost = new short[size];
 			isSpecific = new short[size];
-			addsInfo = new int[size][8];
+			addsInfo = new short[size][8];
 			if ( isSet == IS_SET )
 				expansion = new short[1];
 			else
 				expansion = new short[size];
 			expansion[0] = -1;
-			percentage = new int[size];
+			percentage = new short[size];
 			for ( int i = 0 ; i < size ; i++ ) {
 				name[i] = null;
 				cost[i] = 0;
@@ -399,7 +401,7 @@ public class Cards {
 	}
 	
 	public void setAddInfo(int index, int whichAddInfo, int info) {
-		addsInfo[index][whichAddInfo] = info;
+		addsInfo[index][whichAddInfo] = (short) info;
 	}
 	
 	public int getAddInfo(int index, int whichAddInfo) {
@@ -407,22 +409,21 @@ public class Cards {
 	}
 	
 	public Object[] getCard(int index) {
-		Object[] tmp = new Object[15];
+		Object[] tmp = new Object[14];
 		tmp[0] = getName(index);
 		tmp[1] = new Short((short) getExpansion(index));
 		tmp[2] = new Short((short) ((getPotionCost(index) << 5) + getCost(index)));
 		tmp[3] = new Short(isSpecific[index]);
-		tmp[4] = new Integer(isPlaying(index));
-		tmp[5] = new Boolean(isAvailable(index));
-		tmp[6] = new Boolean(isBlackMarketAvailable(index));
-		tmp[7] = new Integer(getAddInfo(index, ADDS_CARDS));
-		tmp[8] = new Integer(getAddInfo(index, ADDS_ACTIONS));
-		tmp[9] = new Integer(getAddInfo(index, ADDS_BUYS));
-		tmp[10] = new Integer(getAddInfo(index, ADDS_COINS));
-		tmp[11] = new Integer(getAddInfo(index, ADDS_TRASH));
-		tmp[12] = new Integer(getAddInfo(index, ADDS_CURSE));
-		tmp[13] = new Integer(getAddInfo(index, ADDS_POTIONS));
-		tmp[14] = new Integer(getAddInfo(index, ADDS_VICTORY_POINTS));
+		tmp[4] = new Short((short) isPlaying(index));
+		tmp[5] = new Short(isGamingRelated[index]);
+		tmp[6] = new Integer(getAddInfo(index, ADDS_CARDS));
+		tmp[7] = new Integer(getAddInfo(index, ADDS_ACTIONS));
+		tmp[8] = new Integer(getAddInfo(index, ADDS_BUYS));
+		tmp[9] = new Integer(getAddInfo(index, ADDS_COINS));
+		tmp[10] = new Integer(getAddInfo(index, ADDS_TRASH));
+		tmp[11] = new Integer(getAddInfo(index, ADDS_CURSE));
+		tmp[12] = new Integer(getAddInfo(index, ADDS_POTIONS));
+		tmp[13] = new Integer(getAddInfo(index, ADDS_VICTORY_POINTS));
 		return tmp;
 	}
 	
@@ -449,20 +450,19 @@ public class Cards {
 			System.out.println("cardinfo 0 is null ");
 		}
 		setName(index, cardInfo[0].toString());
-		setExpansion(index, ((Short)cardInfo[1]).shortValue());
-		this.cost[index] = ((Short)cardInfo[2]).shortValue(); // simply to bypass the potion cost.
+		setExpansion(index, ((Short) cardInfo[1]).shortValue());
+		this.cost[index] = ((Short) cardInfo[2]).shortValue(); // simply to bypass the potion cost.
 		isSpecific[index] = ((Short) cardInfo[3]).shortValue();
-		setPlaying(index, ((Integer)cardInfo[4]).intValue());
-		setAvailable(index, ((Boolean)cardInfo[5]).booleanValue());
-		setBlackMarketAvailable(index, ((Boolean)cardInfo[6]).booleanValue());
-		setAddInfo(index, ADDS_CARDS, ((Integer)cardInfo[7]).intValue());
-		setAddInfo(index, ADDS_ACTIONS, ((Integer)cardInfo[8]).intValue());
-		setAddInfo(index, ADDS_BUYS, ((Integer)cardInfo[9]).intValue());
-		setAddInfo(index, ADDS_COINS, ((Integer)cardInfo[10]).intValue());
-		setAddInfo(index, ADDS_TRASH, ((Integer)cardInfo[11]).intValue());
-		setAddInfo(index, ADDS_CURSE, ((Integer)cardInfo[12]).intValue());
-		setAddInfo(index, ADDS_POTIONS, ((Integer)cardInfo[13]).intValue());
-		setAddInfo(index, ADDS_VICTORY_POINTS, ((Integer)cardInfo[14]).intValue());
+		setPlaying(index, ((Short) cardInfo[4]).shortValue());
+		isGamingRelated[index] = ((Short) cardInfo[5]).shortValue();
+		setAddInfo(index, ADDS_CARDS, ((Integer)cardInfo[6]).intValue());
+		setAddInfo(index, ADDS_ACTIONS, ((Integer)cardInfo[7]).intValue());
+		setAddInfo(index, ADDS_BUYS, ((Integer)cardInfo[8]).intValue());
+		setAddInfo(index, ADDS_COINS, ((Integer)cardInfo[9]).intValue());
+		setAddInfo(index, ADDS_TRASH, ((Integer)cardInfo[10]).intValue());
+		setAddInfo(index, ADDS_CURSE, ((Integer)cardInfo[11]).intValue());
+		setAddInfo(index, ADDS_POTIONS, ((Integer)cardInfo[12]).intValue());
+		setAddInfo(index, ADDS_VICTORY_POINTS, ((Integer)cardInfo[13]).intValue());
 	}
 	
 	public static int compare(Object[] first, Object[] compareTo, int method) {
@@ -530,18 +530,10 @@ public class Cards {
 	public Image getCostImage(int card) {
 		try {
 			if ( isBaneCard(card) ) {
-				if ( getPotionCost(card) > 0 ) {
-					return Image.createImage("/tB" + getCost(card) + "P.png");
-				} else {
-					return Image.createImage("/tB" + getCost(card) + ".png");
-				}
-			} else {
-				if ( getPotionCost(card) > 0 ) {
-					return Image.createImage("/t" + getCost(card) + "P.png");
-				} else {
-					return Image.createImage("/t" + getCost(card) + ".png");
-				}
+				//#debug dominizer
+				System.out.println("We have a BANE CARD!");
 			}
+			return Image.createImage("/t" + ( isBaneCard(card) ? "B" : "" ) + getCost(card) + ( getPotionCost(card) > 0 ? "P" : "" ) + ".png");
 		} catch (IOException exp) {
 			return null;
 		}
@@ -612,8 +604,8 @@ public class Cards {
 		}
 		return tmp;
 	}
-	private static int[][] cloneArray(int[][] array, int bySize) {
-		int[][] tmp = new int[array.length + bySize][array[0].length];
+	private static short[][] cloneArray(short[][] array, int bySize) {
+		short[][] tmp = new short[array.length + bySize][array[0].length];
 		for ( int i = 0 ; i < array.length ; i++ ) {
 			for ( int j = 0 ; j < array[i].length ; j++ )
 				tmp[i][j] = array[i][j];
