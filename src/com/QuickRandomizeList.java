@@ -11,6 +11,7 @@ import com.util.Dominion;
 import com.util.DominionException;
 
 import de.enough.polish.ui.Alert;
+import de.enough.polish.ui.Display;
 import de.enough.polish.ui.Item;
 import de.enough.polish.ui.ItemStateListener;
 import de.enough.polish.ui.List;
@@ -112,6 +113,23 @@ public class QuickRandomizeList extends List implements CommandListener, ItemSta
 	}
 
 	public void keyPressed(int keyCode) {
+		//#ifdef polish.hasPointerEvents
+		if ( !Display.getInstance().hasPointerEvents() ) {
+		//#endif
+			int gameAction = 0;
+			try {
+				gameAction = getGameAction(keyCode);
+			} catch (Exception e) {
+				// ignore
+			}
+			if ( gameAction == Canvas.RIGHT ) {
+				//#debug dominizer
+				System.out.println("HELLO");
+				GameApp.instance().ecFL.loadCards();
+			}
+		//#ifdef polish.hasPointerEvents
+		} 
+		//#endif
 		switch (keyCode) {
 		case Canvas.KEY_NUM0:
 		case Canvas.KEY_NUM1:

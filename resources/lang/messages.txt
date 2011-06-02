@@ -12,6 +12,7 @@ screen.Options.SaveSuccessful			= Successfully saved options.
 screen.Options.CardsInSet               = Cards in Set:
 screen.Options.CardsInSet.info          = How many cards that should be randomized in the current set.
 alert.NoCardsForBanePile				= There are no more cards available for a Bane card pile.
+
 #######
 #
 # Version 0.18 translations
@@ -197,7 +198,7 @@ preset.seaside.HighSeas                 = High Seas
 preset.seaside.ReachForTomorrow         = Reach For Tomorrow
 preset.seaside.Repetition               = Repetition
 preset.seaside.Shipwrecks               = Shipwrecks
-preset.cornucopia.          = 
+preset.cornucopia.         		 = 
 
 randomize.condition.failed = Dominizer failed to find a suitable set of cards to fulfill your condition. Try again.
 

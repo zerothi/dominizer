@@ -19,18 +19,13 @@ public class GaugeForm extends Form {
 	private static GaugeForm domG = null;
 	private Gauge g = null;
 	private Command okCmd = new Command(Locale.get("polish.command.ok"), Command.OK, 0);
-	private Command cancelCmd = new Command(Locale.get("polish.command.cancel"), Command.BACK, 1);
-	/**
-	 * @param label
-	 * @param interactive
-	 * @param maxValue
-	 * @param initialValue
-	 */
+	private Command cancelCmd = new Command(Locale.get("polish.command.cancel"), Command.BACK, 1);	
+
 	private GaugeForm() {
 		//#style loadForm
 		super(null);
 		//#style loadingGauge
-		g = new Gauge(null, false, Gauge.INDEFINITE,Gauge.CONTINUOUS_RUNNING);
+		g = new Gauge(null, false, Gauge.INDEFINITE, Gauge.CONTINUOUS_RUNNING);
 		append(g);
 	}
 	
@@ -38,7 +33,7 @@ public class GaugeForm extends Form {
 		//#style inputGaugeForm
 		super(null);
 		//#style loadingGauge
-		g = new Gauge(null, false, Gauge.INDEFINITE,Gauge.CONTINUOUS_RUNNING);
+		g = new Gauge(null, false, Gauge.INDEFINITE, Gauge.CONTINUOUS_RUNNING);
 		append(g);
 	}
 	

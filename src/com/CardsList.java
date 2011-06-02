@@ -141,9 +141,7 @@ public class CardsList extends List implements CommandListener {
 			return;
 		for ( int i = 0 ; i < cards.size() ; i++ ) {
 			//#style labelCard
-			CardItem cI = new CardItem(" " + cards.getName(i), Choice.MULTIPLE);
-			cI.setLeftImage(cards.getCardTypeImage(i));
-			cI.setRightImage(cards.getCostImage(i));
+			CardItem cI = new CardItem(" " + cards.getName(i), cards.getCardTypeImage(i), cards.getCostImage(i), Choice.MULTIPLE);
 			cI.setBothSides(false);
 			append(cI);
 			/*
@@ -403,18 +401,21 @@ public class CardsList extends List implements CommandListener {
 					// TODO Auto-generated catch block
 				}
 				return;
-			} else if ( gameAction == KEY_STAR && keytimer ) {
-				commandAction(deleteSetCmd, this);
-				timer = -1;
-				return;
-			} else if ( gameAction == KEY_POUND ) {
-				commandAction(prosperityDiceCmd, this);
-				timer = -1;
-				return;
 			}
 		//#ifdef polish.hasPointerEvents
 		} 
 		//#endif
-		super.keyReleased(keyCode);	
+		switch (keyCode) {
+		case Canvas.KEY_POUND:
+			commandAction(prosperityDiceCmd, this);
+			timer = -1;
+			return;
+		case Canvas.KEY_STAR:
+			if ( keytimer ) commandAction(deleteSetCmd, this);
+			timer = -1;
+			return;
+		default:
+			super.keyPressed(keyCode);
+		}
 	}
 }

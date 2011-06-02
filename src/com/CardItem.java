@@ -25,13 +25,28 @@ public class CardItem extends ChoiceItem {
 	 * @param label
 	 */
 	public CardItem(String label, int listType) {
+		this(label, null, null, listType);
+	}
+	
+	/**
+	 * @param label
+	 */
+	public CardItem(String label, Image lI, Image rI, int listType) {
 		super(label, null, listType);
+		this.lI = lI;
+		this.rI = rI;
 		choiceType = listType;
 	}
 	
 	//#if polish.usePolishGui
 	public CardItem( String label, int listType, Style style ) {
+		this(label, null, null, listType, style);
+	}
+
+	public CardItem( String label, Image lI, Image rI, int listType, Style style ) {
 		super( label, null, listType, style );
+		this.lI = lI;
+		this.rI = rI;
 	    choiceType = listType;
 	}
 	//#endif
@@ -63,14 +78,6 @@ public class CardItem extends ChoiceItem {
 			g.drawImage( this.rI, x + super.availContentWidth - this.rI.getWidth() / 4, y, Graphics.TOP | Graphics.RIGHT);
 		}
 		
-	}
-	
-	public void setLeftImage(Image img) {
-		this.lI = img;
-	}
-	
-	public void setRightImage(Image img) {
-		this.rI = img;
 	}
 	
 	public void setBothSides(boolean isBothSides) {

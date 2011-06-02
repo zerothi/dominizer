@@ -63,9 +63,9 @@ public class BlackMarketForm extends FramedForm implements CommandListener {
 		append(Graphics.TOP, infoItem[0]);
 		append(Graphics.TOP, infoItem[1]);
 		append(Graphics.TOP, infoItem[2]);
-		cardChoice = new ChoiceGroup(Locale.get("screen.BlackMarket.Cards.Select"), Choice.EXCLUSIVE);
+		cardChoice = new ChoiceGroup(Locale.get("screen.BlackMarket.Cards.Select"), Choice.IMPLICIT);
 		cardChoice.addCommand(selectCardCmd);
-		append(Graphics.BOTTOM, cardChoice);
+		append(Graphics.TOP, cardChoice);
 	}
 	
 	public void drawCards() {
@@ -73,7 +73,7 @@ public class BlackMarketForm extends FramedForm implements CommandListener {
 		//#debug dominizer
 		System.out.println("new drawing");
 		//#style label
-		CardItem cI = new CardItem(Locale.get("screen.BlackMarket.ChooseNone"), Choice.EXCLUSIVE);
+		CardItem cI = new CardItem(Locale.get("screen.BlackMarket.ChooseNone"), Choice.IMPLICIT);
 		cI.setBothSides(true);
 		cardChoice.add(cI);
 		addNextCard(1);
@@ -95,10 +95,11 @@ public class BlackMarketForm extends FramedForm implements CommandListener {
 			int[] tmp = Dominion.I().getCardLocation(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard)).toString());
 			if ( tmp[0] > -1 ) { 
 				//#style label
-				CardItem cI = new CardItem(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard)).toString(), Choice.IMPLICIT);
+				CardItem cI = new CardItem(blackMarketDeck.elementAt(getIndexCard(currentlyReachedCard)).toString(), 
+						Dominion.expansions[tmp[0]].getCardTypeImage(tmp[1]),
+						Dominion.expansions[tmp[0]].getCostImage(tmp[1]),
+						Choice.IMPLICIT);
 				cI.setBothSides(true);
-				cI.setLeftImage(Dominion.expansions[tmp[0]].getCardTypeImage(tmp[1]));
-				cI.setRightImage(Dominion.expansions[tmp[0]].getCostImage(tmp[1]));
 				cardChoice.add(cI);
 				currentlyReachedCard++;
 			}
@@ -113,14 +114,19 @@ public class BlackMarketForm extends FramedForm implements CommandListener {
 	
 	private void selectCard() {
 		if ( 0 < cardChoice.getSelectedIndex() ) {
+			//#debug dominizer
+			System.out.println("we have found a card which could be used" + cardChoice.getString(cardChoice.getSelectedIndex()).trim());
 			for ( int i = 0 ; i < blackMarketDeck.size() ; i++ ) {
-				if ( cardChoice.getString(cardChoice.getSelectedIndex()).equals(blackMarketDeck.elementAt(i)) ) {
+				if ( cardChoice.getString(cardChoice.getSelectedIndex()).trim().equals(((String) blackMarketDeck.elementAt(i)).trim()) ) {
 					GameApp.instance().showInfo(Locale.get("screen.BlackMarket.InfoMessage") + "\n" + blackMarketDeck.elementAt(i).toString() + ".", 2000);
 					boughtDeck.addElement(blackMarketDeck.elementAt(i));
 					blackMarketDeck.removeElementAt(i);
 					i = blackMarketDeck.size() + 1;
 				}
 			}
+		} else {
+			//#debug dominizer
+			System.out.println("we have found not selected a card: " + cardChoice.getSelectedIndex());
 		}
 		cardChoice.deleteAll();
 		if ( blackMarketDeck.size() != 0 )
@@ -226,7 +232,7 @@ public class BlackMarketForm extends FramedForm implements CommandListener {
 	}
 	
 	private void updateCommands() {
-		if ( 0 < size() ) {
+		if ( 0 < cardChoice.size() ) {
 			//#debug dominizer
 			System.out.println("adding commands for selecting");
 			removeCommand(drawCardsCmd);

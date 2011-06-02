@@ -333,7 +333,7 @@ public class Dominion {
 	}
 
 	public String getPlayingSetAsSave(int playingSet) {
-		StringBuffer sb = new StringBuffer(50);
+		StringBuffer sb = new StringBuffer(66);
 		int cards = 0;
 		for ( int i = 0; i < expansions.length; i++ )
 			for ( int j = 0; j < expansions[i].size(); j++ )
@@ -341,7 +341,7 @@ public class Dominion {
 					sb.append("" + SettingsRecordStorage.MEDIUM_SPLITTER + i + SettingsRecordStorage.SMALL_SPLITTER + j);
 					cards++;
 				}
-		sb.insert(0, "" + SettingsRecordStorage.MEDIUM_SPLITTER + cards);
+		sb.append(SettingsRecordStorage.MEDIUM_SPLITTER);
 		if ( sb.toString().trim().length() < 7 )
 			return null;
 		return sb.toString().trim();
@@ -1006,26 +1006,18 @@ public class Dominion {
 		while ( SettingsRecordStorage.instance().readKey("" + numberSaves ) != null && numberSaves <= SETS_SAVE ) {
 			//#debug dominizer
 			System.out.println("reading from: " + numberSaves + ":" + SettingsRecordStorage.instance().readKey("" + numberSaves));
-			start = SettingsRecordStorage.instance().readKey("" + numberSaves).indexOf(
-					SettingsRecordStorage.MEDIUM_SPLITTER, -1);
-			int numberOfCards = Integer.parseInt(SettingsRecordStorage.instance().readKey("" + numberSaves).substring(start,
-					SettingsRecordStorage.instance().readKey("" + numberSaves).indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1)));
-			for ( i = 0 ; i < numberOfCards ; i++ ) {
+			start = 0;
+			String save = SettingsRecordStorage.instance().readKey("" + numberSaves ).trim();
+			while ( start >= 0 && start < save.length() - 1 ) {//for ( i = 0 ; i < numberOfCards ; i++ ) {
+				card = getCardInfo(save.substring(start, save.indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1)));
+				if ( expansions[card[0]].isPlaying(card[1]) > 0 ) {
+					// Should never happen...
+					//#debug dominizer
+					System.out.println("READING AN ALREADY SET CARD: " + card[0] + " and " + card[1]);
+				} else
+					expansions[card[0]].setPlaying(card[1], numberSaves);
 				start = SettingsRecordStorage.instance().readKey("" + numberSaves).indexOf(
-								SettingsRecordStorage.MEDIUM_SPLITTER,
-								start + 1);
-				if ( start >= 0 ) {
-					if ( i == numberOfCards - 1 )
-						card = getCardInfo(SettingsRecordStorage.instance().readKey("" + numberSaves).substring(start));
-					else
-						card = getCardInfo(SettingsRecordStorage.instance().readKey("" + numberSaves).substring(start,
-								SettingsRecordStorage.instance().readKey("" + numberSaves).indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1)));
-					if ( expansions[card[0]].isPlaying(card[1]) > 0 ) {
-						//#debug dominizer
-						System.out.println("READING AN ALREADY SET CARD: " + card[0] + " and " + card[1]);
-					} else
-						expansions[card[0]].setPlaying(card[1], numberSaves);
-				}
+					SettingsRecordStorage.MEDIUM_SPLITTER, start + 1);
 			}
 			numberSaves++;
 		}

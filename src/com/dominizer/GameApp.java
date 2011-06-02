@@ -68,7 +68,7 @@ public class GameApp extends MIDlet implements TabbedFormListener
 		super();
 		app = this;
 		//SettingsRecordStorage.instance().deleteRecordStore("presets");
-		SettingsRecordStorage.instance().deleteRecordStore("settings");
+		//SettingsRecordStorage.instance().deleteRecordStore("settings");
 		//SettingsRecordStorage.instance().deleteRecordStore("condition");
 		//#debug dominizer
 		System.out.println("initialisation done.");
@@ -90,8 +90,12 @@ public class GameApp extends MIDlet implements TabbedFormListener
 		currentTab = getCurrentTab();
 		if ( displayable == null )
 			changeToScreen(tabbedPane);
-		else
+		else {
+			if ( displayable instanceof GaugeForm )
+				display.setCurrent(null);
 			display.setCurrent(displayable);
+		}
+			
 	}
 
 	public void returnToPreviousScreen() {
@@ -116,7 +120,7 @@ public class GameApp extends MIDlet implements TabbedFormListener
 
 	protected void startApp() throws MIDletStateChangeException {
 		display = Display.getDisplay(this);
-		display.setCurrent(GaugeForm.instance());
+		display.setCurrent(GaugeForm.instance(true));
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.cards"));
 		Dominion.I().getExpansions();
 		//ShowCardsForm.instance();
@@ -142,14 +146,14 @@ public class GameApp extends MIDlet implements TabbedFormListener
 		SettingsRecordStorage.instance().changeToRecordStore("settings");
 		if ( SettingsRecordStorage.instance().readKey("lasttab") != null )
 			currentTab = Integer.parseInt(SettingsRecordStorage.instance().readKey("lasttab"));
+		if ( currentTab == TAB_EDIT )
+			ecFL.loadCards();
 		if ( currentTab != SHOWCARDS && currentTab > -1 )
 			tabbedPane.setFocus(currentTab);
 		//#debug dominizer
 		System.out.println("setting display");
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.finished"));
 		display.setCurrent(tabbedPane);
-		//display.setCurrent(new CardsList("hej", List.MULTIPLE));
-		//display.setCurrent(ConditionTableForm.instance());
 		GaugeForm.instance(false);
 		bmF = new BlackMarketForm(Locale.get("screen.BlackMarket.title"));
 	}
@@ -266,6 +270,8 @@ public class GameApp extends MIDlet implements TabbedFormListener
 	}
 		
 	public void changeToTab(int tab) {
+		if ( tab == TAB_EDIT )
+			ecFL.loadCards();
 		tabbedPane.setFocus(tab);
 		currentTab = tab;
 	}
@@ -273,10 +279,14 @@ public class GameApp extends MIDlet implements TabbedFormListener
 	public void notifyTabChangeCompleted(int from, int to) {
 		if ( to == SHOWCARDS )
 			return;
+		if ( to == TAB_EDIT )
+			ecFL.loadCards();
 		currentTab = to;
 	}
 
 	public boolean notifyTabChangeRequested(int oldTabIndex, int newTabIndex) {
+		if ( newTabIndex == TAB_EDIT )
+			ecFL.loadCards();
 		// TODO Auto-generated method stub
 		return true;
 	}

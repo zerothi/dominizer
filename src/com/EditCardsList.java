@@ -32,22 +32,13 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 	
 	private Command quitCmd = new Command( Locale.get("cmd.Quit"), Command.ITEM, 11);
 	private int[] tmp = new int[] { 0, 0};
+	private boolean isLoaded = false;
+	
 	
 	public EditCardsList(String title, int listType) {
 		//#style mainScreen
 		super(title, listType);
-		for ( int i = 0 ; i < Dominion.I().getExpansions() ; i++ ){
-			for ( int cardNumber = 0 ; cardNumber < Dominion.expansions[i].size() ; cardNumber++ ) {
-				appendCard(Dominion.expansions[i].getName(cardNumber),
-						Dominion.expansions[i].getCardTypeImage(cardNumber),
-						Dominion.expansions[i].getCostImage(cardNumber));
-				/*//#style label
-				append(Dominion.I().getExpansion(i).getName(cardNumber), Dominion.I().getExpansion(i).getCardTypeImage(cardNumber));*/
-				setSelectedIndex(size() - 1, Dominion.expansions[i].isAvailable(cardNumber));
-				setPercentage(size() - 1, i, cardNumber, Dominion.expansions[i].getPercentage(cardNumber));
-			}
-		}
-		focus(0);
+		isLoaded = false;
 		addCommand(randomizeCmd);
 		addCommand(perGaugeCmd);
 		//addCommand(optionCmd);
@@ -58,6 +49,30 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 		//#endif
 		setCommandListener(this);
 		setItemStateListener(this);
+	}
+	
+	public void loadCards() {
+		if ( isLoaded )
+			return;
+		//#debug dominizer
+		System.out.println("we are loading the cards now. Initializing the loading gauge");
+		isLoaded = true;
+		int cardNumber;
+		//GaugeForm.instance().setGauge(Locale.get("gauge.loading.expansion"), false, Dominion.expansions.length, 0);
+		//GameApp.instance().changeToScreen(GaugeForm.instance());
+		for ( int i = 0 ; i < Dominion.I().getExpansions() ; i++ ){
+			//GaugeForm.instance().setGaugeValue(i + 1);
+			//GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.expansion") + " " + Dominion.getExpansionName(i));
+			for ( cardNumber = 0 ; cardNumber < Dominion.expansions[i].size() ; cardNumber++ ) {
+				appendCard(Dominion.expansions[i].getName(cardNumber),
+						Dominion.expansions[i].getCardTypeImage(cardNumber),
+						Dominion.expansions[i].getCostImage(cardNumber));
+				setSelectedIndex(size() - 1, Dominion.expansions[i].isAvailable(cardNumber));
+				setPercentage(size() - 1, i, cardNumber, Dominion.expansions[i].getPercentage(cardNumber));
+			}
+		}
+		//GameApp.instance().changeToScreen(null);
+		focus(0);
 	}
 	
 	public void keyPressed(int keyCode) {
@@ -155,9 +170,7 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 	
 	private ChoiceItem getCardItem(String cardName, Image expImage, Image costImage) {
 		//#style label
-		CardItem ci = new CardItem(cardName, Choice.MULTIPLE);
-		ci.setLeftImage(expImage);
-		ci.setRightImage(costImage);
+		CardItem ci = new CardItem(cardName, expImage, costImage, Choice.MULTIPLE);
 		ci.setBothSides(true);
 		return ci;
 	}

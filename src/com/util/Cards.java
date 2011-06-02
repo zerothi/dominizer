@@ -267,7 +267,7 @@ public class Cards {
 	 * @return true if the card is available for the Black Market
 	 */
 	public boolean isBlackMarketAvailable(int index) {
-		return ((isGamingRelated[index] >>> 1) & 1) > 0;
+		return (isGamingRelated[index] & 2) > 0;
 	}
 
 	/**
