@@ -178,7 +178,7 @@ public class ConditionList extends List implements CommandListener, ItemStateLis
 				Dominion.condition.currentCondition = getCurrentIndex();
 				Dominion.I().randomizeCards(-1, Dominion.RAND_HOLD + Dominion.RAND_CONDITION);
 				//ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
-				CardsList.instance().setCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
+				CardsList.instance().setCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()), Dominion.I().getCurrentSet());
 				//GameApp.instance().changeToScreen(ShowCardsForm.instance());
 				GameApp.instance().changeToScreen(CardsList.instance());
 			} catch (DominionException e) {

@@ -46,6 +46,9 @@ public class BlackMarketForm extends FramedForm implements CommandListener {
 		//private String[] tickerArgs = null;
 	private int currentlyReachedCard = 0;
 	
+	// Checks for the back command. 
+	private boolean wantToReturn = false;
+	
 	/**
 	 * @param title
 	 */
@@ -148,6 +151,7 @@ public class BlackMarketForm extends FramedForm implements CommandListener {
 			} else
 				blackMarketDeck.insertElementAt(boughtDeck.lastElement(), getIndexCard(currentlyReachedCard - 1));
 			boughtDeck.removeElementAt(boughtDeck.size() - 1);
+			boughtDeck.trimToSize();
 		}
 	}
 	
@@ -209,6 +213,7 @@ public class BlackMarketForm extends FramedForm implements CommandListener {
 	}
 	
 	public void setBlackMarketDeck(Cards blackMarketDeck) {
+		wantToReturn = false;
 		cardChoice.deleteAll();
 		boughtDeck = new Vector
 		//#if polish.android
@@ -275,15 +280,23 @@ public class BlackMarketForm extends FramedForm implements CommandListener {
 		} else if ( cmd.equals(cancelBuyCmd) ) {
 			cancelBuy(true);
 		} else if ( cmd.equals(backCmd) ) {
-			GameApp.instance().returnToPreviousScreen();
+			wantToReturn = true;
+			GameApp.instance().showConfirmation(Locale.get("screen.BlackMarket.ReturnScreen"), this);
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.ok")) ) {
+			if ( wantToReturn ) {
+				GameApp.instance().returnToPreviousScreen();
+				wantToReturn = false;
+				return;
+			}
 			cancelBuy(false);
 			GameApp.instance().changeToScreen(this);
+			tmp = "" + boughtDeck.size();
 			infoItem[0].setLabel(Locale.get("screen.BlackMarket.Cards.Bought", tmp));
 			tmp = "" + blackMarketDeck.size();
 			infoItem[1].setLabel(Locale.get("screen.BlackMarket.Cards.Left", tmp));
 			infoItem[2].setLabel(Locale.get("screen.BlackMarket.DrawTextInfo"));
 		} else if ( cmd.getLabel().equals(Locale.get("polish.command.cancel")) ) {
+			wantToReturn = false;
 			GameApp.instance().changeToScreen(this);
 			infoItem[0].setLabel(Locale.get("screen.BlackMarket.Cards.Bought", tmp));
 			tmp = "" + blackMarketDeck.size();

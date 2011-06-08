@@ -72,7 +72,7 @@ public class QuickRandomizeList extends List implements CommandListener, ItemSta
 			try {
 				Dominion.I().randomizeCards();
 				//ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
-				CardsList.instance().setCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
+				CardsList.instance().setCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()), Dominion.I().getCurrentSet());
 				//GameApp.instance().changeToScreen(ShowCardsForm.instance());
 				GameApp.instance().changeToScreen(CardsList.instance());
 			} catch (DominionException e) {
@@ -122,9 +122,7 @@ public class QuickRandomizeList extends List implements CommandListener, ItemSta
 			} catch (Exception e) {
 				// ignore
 			}
-			if ( gameAction == Canvas.RIGHT ) {
-				//#debug dominizer
-				System.out.println("HELLO");
+			if ( gameAction == Canvas.LEFT ) {
 				GameApp.instance().ecFL.loadCards();
 			}
 		//#ifdef polish.hasPointerEvents

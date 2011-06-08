@@ -10,16 +10,28 @@ package com.util;
  */
 public class CardPresets {
 	private int[][][] presets = null;
+	private int[][] baneCard = null;
 	private String[] presetNames = null;
 	private int expansion = -1;
 
 	public CardPresets(int size) {
 		if ( 0 < size ) {
 			presets = new int[size][10][2];
+			baneCard = new int[size][2];
 			presetNames = new String[size];
+			for ( int i = 0 ; i < size ; i++ )
+				baneCard[i] = new int[] { -1 , -1};
 		} 
 	}
 	
+	public int[] getBaneCard(int preset ) {
+		return baneCard[preset];
+	}
+
+	public void setBaneCard(int preset, int[] baneCard) {
+		this.baneCard[preset]= baneCard;
+	}
+
 	/**
 	 * @return the expansion
 	 */

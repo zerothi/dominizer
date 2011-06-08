@@ -1,6 +1,27 @@
 Hi all
 
 Release info:
+This new version of Dominizer (0.19) has some new features as well as a great deal of bug fixes.
+
+* Black Market handling has improved. 
+** The interface is more clear and is more informative.
+* The Black Market command on the randomized cards screen now works all the time. (bug fix)
+* Cornucopia has been implemented
+* Bane cards is implemented
+* Saving of which cards are Hold and which are Bane cards is now accomplished. 
+* Restructured main screen.
+* The program has a lot faster load time. This is due to the "Edit cards" screen which is first loaded when needed! Therefore it is placed to the left of the first tab. It will "stall" when entering this tab, sadly i have problems showing a loading message, but it will take up to 3-4 seconds to load.
+* The app has been ported to the new J2MEPolish, this i hope should resolve some problems of some users (I have PM each of them and hope that I can manage to find a working solution for them as well!)
+* The Tabs now slides to the Condition tab as well! Please comment on it! I think it is awesome! And if there is any problems or difficulties please tell me! :D
+
+
+Kind regards Nick
+
+
+#####################################
+Hi all
+
+Release info:
 This new version of Dominizer (0.18) has some new features! I think I have remembered them all below!
 
 * You have the possibility of creating several simultaneous sets. Only limited by the number of cards in the database!

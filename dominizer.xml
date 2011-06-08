@@ -33,12 +33,18 @@
 	/>
 
 	<target name="init">
-		<echo message="Devices: ${devices}"/>
-		<echo message="Device:  ${device}"/>
-		<echo message="Debug:   ${debug}"/>
-		<echo message="D-Debug: ${debugDominizer}"/>
-		<echo message="Single:  ${single}"/>
-		<echo message="Final:   ${final}"/>
+		<condition property="jar.add.name" value="">
+		   <not>  
+		      <isset property="jar.add.name"/>
+		   </not>
+		</condition>
+		<echo message="Devices:         ${devices}"/>
+		<echo message="Device:          ${device}"/>
+		<echo message="Debug:           ${debug}"/>
+		<echo message="D-Debug:         ${debugDominizer}"/>
+		<echo message="Single:          ${single}"/>
+		<echo message="Final:           ${final}"/>
+		<echo message="jar.add.name:    ${jar.add.name}"/>
 	</target>
 	
 	<target name="j2mepolish" 
@@ -53,7 +59,7 @@
 				description="A Dominion Card randomizer" 
 				vendorName="Nick Papior Andersen A/S" 
 				infoUrl="http://www.boardgamegeek.com/wiki/page/Dominizer" 
-				jarName="${nospace(polish.vendor)}-${nospace(polish.name)}-${app.name}-${ nospace(polish.locale) }.jar" 
+				jarName="${nospace(polish.vendor)}-${nospace(polish.name)}-${app.name}-${nospace(polish.locale)}${jar.add.name}.jar" 
 				jarUrl="${deploy-url}${polish.jarName}" 
 				copyright="Copyright 2011 Nick Papior Andersen A/S. All rights reserved."
 				deleteConfirm="Delete ${app.name}? Nooo? :D"
@@ -140,7 +146,7 @@
 					</localization>
 				</resources>
 				
-				<obfuscator name="ProGuard" unless="debug or debugDominizer or polish.blackberry">
+				<obfuscator name="ProGuard" unless="debug or debugDominizer or polish.blackberry and not special">
 					<parameter name="optimize" value="true" />
 					<parameter name="optimizationpasses" value="3"/>
 					<parameter name="dontskipnonpubliclibraryclasses" value=""/>
@@ -202,7 +208,8 @@
 	<target name="compileTouch" description="Builds Touch" depends="enableFinal, enableTouch, j2mepolish" />
 	<target name="compileWindows" description="Builds Windows" depends="enableFinal, enableWindows, j2mepolish" />
 	<target name="compile6303" description="Builds Nokia 6303" depends="enableFinal, enable6303, j2mepolish" />
-	<target name="compileSpecialTargets" description="Builds Without Tickers for users" depends="enableFinal, enableSpecialTargets, j2mepolish" />
+	<target name="compileSpecial" description="Builds Without Tickers for users" depends="enableFinal, enableSpecial, j2mepolish" />
+	<target name="compileSpecialDebug" description="Builds Without Tickers for users" depends="enableFinal, enableSpecialDebug, j2mepolish" />
 	
 	<target name="debugAndroid" description="debug Android" depends="enableDebugDominizer, enableAndroid, j2mepolish" />
 	<target name="debugNokia" description="debug Nokia" depends="clean, enableDebugDominizer, enableNokia, j2mepolish" />
@@ -236,9 +243,18 @@
 		<property name="device" value="Generic/Android1.5"/>
 	</target>
 	
-	<target name="enableSpecialTargets" depends="donotsign">
-		<property name="devices" value="Nokia/N95,Nokia/6120,Nokia/6120_classic"/>
+	<target name="enableSpecial" depends="donotsign">
+		<property name="devices" value="Nokia/E71,Nokia/E90_Communicator,Nokia/N70,Nokia/N78,Nokia/N82,Nokia/N95,Nokia/6120,Nokia/6120_classic"/>
 		<property name="device" value="Nokia/N95"/>
+		<property name="single" value="true"/>
+		<property name="special" value="true"/>
+	</target>
+	<target name="enableSpecialDebug" depends="donotsign">
+		<property name="devices" value="Nokia/E71,Nokia/E90_Communicator,Nokia/N70,Nokia/N78,Nokia/N82,Nokia/N95,Nokia/6120,Nokia/6120_classic"/>
+		<property name="device" value="Nokia/N95"/>
+		<property name="debugLevel" value="dominizer"/>
+		<property name="special" value="true"/>
+		<property name="jar.add.name" value="-debug"/>
 	</target>
 	
 	<target name="enableTouch" depends="donotsign">

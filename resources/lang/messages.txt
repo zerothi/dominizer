@@ -8,10 +8,18 @@
 screen.BlackMarket.Cards.Bought			= Bought: {0}
 screen.BlackMarket.Cards.Left			= Left: {0}
 screen.BlackMarket.Cards.Select			= Select card:
+screen.BlackMarket.ReturnScreen			= Would you like to discard your drawn cards and return to previous screen?
 screen.Options.SaveSuccessful			= Successfully saved options.
 screen.Options.CardsInSet               = Cards in Set:
 screen.Options.CardsInSet.info          = How many cards that should be randomized in the current set.
 alert.NoCardsForBanePile				= There are no more cards available for a Bane card pile.
+preset.cornucopia.BountyoftheHunt		= Bounty of the Hunt
+preset.cornucopia.BadOmens				= Bad Omens
+preset.cornucopia.TheJestersWorkshop	= The Jester's Workshop
+preset.cornucopia.LastLaughs			= Last Laughs
+preset.cornucopia.TheSpiceofLife		= The Spice of Life
+preset.cornucopia.SmallVictories		= Small Victories
+
 
 #######
 #
@@ -198,7 +206,7 @@ preset.seaside.HighSeas                 = High Seas
 preset.seaside.ReachForTomorrow         = Reach For Tomorrow
 preset.seaside.Repetition               = Repetition
 preset.seaside.Shipwrecks               = Shipwrecks
-preset.cornucopia.         		 = 
+
 
 randomize.condition.failed = Dominizer failed to find a suitable set of cards to fulfill your condition. Try again.
 

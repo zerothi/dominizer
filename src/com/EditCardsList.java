@@ -58,11 +58,11 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 		System.out.println("we are loading the cards now. Initializing the loading gauge");
 		isLoaded = true;
 		int cardNumber;
-		//GaugeForm.instance().setGauge(Locale.get("gauge.loading.expansion"), false, Dominion.expansions.length, 0);
-		//GameApp.instance().changeToScreen(GaugeForm.instance());
+		GaugeForm.instance().setGauge("Loading: ", false, Dominion.expansions.length, 0);
+		GameApp.instance().changeToScreen(GaugeForm.instance());
 		for ( int i = 0 ; i < Dominion.I().getExpansions() ; i++ ){
-			//GaugeForm.instance().setGaugeValue(i + 1);
-			//GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.expansion") + " " + Dominion.getExpansionName(i));
+			GaugeForm.instance().setGaugeValue(i + 1); // Locale.get("gauge.loading.expansion")
+			GaugeForm.instance().setGaugeLabel("Loading: " + Dominion.getExpansionName(i));
 			for ( cardNumber = 0 ; cardNumber < Dominion.expansions[i].size() ; cardNumber++ ) {
 				appendCard(Dominion.expansions[i].getName(cardNumber),
 						Dominion.expansions[i].getCardTypeImage(cardNumber),
@@ -71,7 +71,7 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 				setPercentage(size() - 1, i, cardNumber, Dominion.expansions[i].getPercentage(cardNumber));
 			}
 		}
-		//GameApp.instance().changeToScreen(null);
+		GameApp.instance().changeToScreen(null);
 		focus(0);
 	}
 	
@@ -114,7 +114,7 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 		if ( cmd.equals(randomizeCmd) ) {
 			try {
 				Dominion.I().randomizeCards();
-				CardsList.instance().setCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
+				CardsList.instance().setCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()), Dominion.I().getCurrentSet());
 				GameApp.instance().changeToScreen(CardsList.instance());
 			} catch (DominionException e) {
 				GameApp.instance().showAlert(e.toString());

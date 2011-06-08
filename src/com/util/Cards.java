@@ -529,10 +529,6 @@ public class Cards {
 	
 	public Image getCostImage(int card) {
 		try {
-			if ( isBaneCard(card) ) {
-				//#debug dominizer
-				System.out.println("We have a BANE CARD!");
-			}
 			return Image.createImage("/t" + ( isBaneCard(card) ? "B" : "" ) + getCost(card) + ( getPotionCost(card) > 0 ? "P" : "" ) + ".png");
 		} catch (IOException exp) {
 			return null;

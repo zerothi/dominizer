@@ -38,8 +38,6 @@ public class CardsList extends List implements CommandListener {
 	
 	private static Command anotherSetCmd = new Command( Locale.get("cmd.AnotherSet"), Command.ITEM, 1);
 	
-	private static Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.ITEM, 15);
-	
 	private static Command randSetPreventCmd = new Command( Locale.get("cmd.Randomize.SetPrevent"), Command.ITEM, 4);
 	private static Command randConditionCmd = new Command( Locale.get("cmd.Randomize.Condition"), Command.ITEM, 8);
 	private static Command randPureCmd = new Command( Locale.get("cmd.Randomize.Pure"), Command.ITEM, 9);
@@ -58,6 +56,7 @@ public class CardsList extends List implements CommandListener {
 	private static Command sortCostExpCmd = new Command( Locale.get("cmd.Sort.CostExp"), Command.ITEM, 39);
 	
 	private static Command prosperityDiceCmd = new Command( Locale.get("cmd.Prosperity.Dice"), Command.ITEM, 45);
+	private static Command blackMarketCmd = new Command( Locale.get("cmd.BlackMarket"), Command.ITEM, 44);
 	private static Command backCmd = new Command( Locale.get("cmd.Back"), Command.ITEM, 50);
 	
 	private CardsList(int cardSet) {
@@ -136,6 +135,10 @@ public class CardsList extends List implements CommandListener {
 	}
 	
 	public void setCards(Cards cards) {
+		setCards(cards, currentCardSet);
+	}
+	
+	public void setCards(Cards cards, int cardSet) {
 		deleteAll();
 		if ( cards == null )
 			return;
@@ -149,32 +152,25 @@ public class CardsList extends List implements CommandListener {
 			System.out.println("appending to list with card " + cards.getName(i) + " index " + i + " is hold: " + cards.isHold(i) + " on set " + currentCardSet);
 			*/
 		}
-		if ( cards.fromExpansion(Dominion.PROSPERITY) > 0 )
-			addCommand(prosperityDiceCmd);
 		updateCards(false);
 		setBlackMarket(Dominion.I().isBlackMarketPlaying());
-		setTitle("" + currentCardSet + "/" + Dominion.I().getCurrentSet());
+		currentCardSet = cardSet;
+		setTitle("" + cardSet + "/" + Dominion.I().getCurrentSet());
+		if ( cards.fromExpansion(Dominion.PROSPERITY) > 0 )
+			addCommand(prosperityDiceCmd);
 	}
 	
 	public void setBlackMarket(boolean isPlaying) {
 		if ( isPlaying && !hasBlackMarketCmd ) {
-		//#if !polish.android
-			UiAccess.addSubCommand(blackMarketCmd, optionsCmd, this);
-		//#else
+			//#debug dominizer
+			System.out.println("adding BlackMarket command");
+			hasBlackMarketCmd = true;
 			addCommand(blackMarketCmd);
-		//#endif
-			hasBlackMarketCmd = isPlaying;
 		} else if ( !isPlaying && hasBlackMarketCmd ) {
-		//#if !polish.android
-			try {
-				//#= UiAccess.removeSubCommand(blackMarketCmd, optionsCmd, this);
-			} catch ( Exception e) {
-				// Do nothing
-			}
-		//#else
+			//#debug dominizer
+			System.out.println("removing BlackMarket command");
+			hasBlackMarketCmd = false;
 			removeCommand(blackMarketCmd);
-		//#endif
-			hasBlackMarketCmd = isPlaying;
 		}
 	}
 	public void updateCards(boolean formCorrect) {

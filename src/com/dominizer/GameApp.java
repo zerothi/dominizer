@@ -24,6 +24,8 @@ import com.util.Dominion;
 import com.util.SettingsRecordStorage;
 
 import de.enough.polish.ui.List;
+import de.enough.polish.ui.Screen;
+import de.enough.polish.ui.TabListener;
 import de.enough.polish.ui.TabbedFormListener;
 import de.enough.polish.ui.TabbedPane;
 import de.enough.polish.util.Locale;
@@ -38,14 +40,14 @@ import de.enough.polish.util.Locale;
  * </pre>
  * @author Nick Papior Andersen, nickpapior@gmail.com
  */
-public class GameApp extends MIDlet implements TabbedFormListener
+public class GameApp extends MIDlet
 //#if !polish.classes.ApplicationInitializer:defined
 //	, ApplicationInitializer
 //#endif
 	{
 	
-	public static final int TAB_QUICK = 0;
-	public static final int TAB_EDIT = 1;
+	public static final int TAB_QUICK = 1;
+	public static final int TAB_EDIT = 0;
 	public static final int TAB_PRESET = 2;
 	public static final int TAB_CONDITION = 3;
 	public static final int SHOWCARDS= 20;
@@ -55,7 +57,7 @@ public class GameApp extends MIDlet implements TabbedFormListener
 	private Alert alert = null;
 	private TabbedPane tabbedPane = null;
 	
-	private int currentTab = 0;
+	private int currentTab = TAB_QUICK;
 	
 	public QuickRandomizeList qrF = null;
 	public EditCardsList ecFL = null;
@@ -127,13 +129,30 @@ public class GameApp extends MIDlet implements TabbedFormListener
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.gui"));
 		//#style tabbedPane
 		tabbedPane = new TabbedPane(null);
-		tabbedPane.setTabbedFormListener(this);
-		qrF = new QuickRandomizeList(null, List.MULTIPLE);
-		//#style tabIcon
-		//#= tabbedPane.addTab(qrF, null, Locale.get("app.name"));
+		tabbedPane.addTabListener(new TabListener() {
+			//#if polish.android
+			@Override
+			//#endif
+			public void tabChangeEvent(Screen tab) {
+				//#debug dominizer
+				System.out.println("We are in the tabChangeEvent: " + tab.getClass().getName());
+				if ( tab instanceof EditCardsList ) {
+					ecFL.loadCards();
+					currentTab = TAB_EDIT;
+				} else if ( tab instanceof QuickRandomizeList )
+					currentTab = TAB_QUICK;
+				else if ( tab instanceof PresetList )
+					currentTab = TAB_PRESET;
+				else if ( tab instanceof ConditionList)
+					currentTab = TAB_CONDITION;
+			}
+		});
 		ecFL = new EditCardsList(null, List.MULTIPLE);
 		//#style tabIcon
 		//#= tabbedPane.addTab(ecFL, null, Locale.get("tab.EditCards.title"));
+		qrF = new QuickRandomizeList(null, List.MULTIPLE);
+		//#style tabIcon
+		//#= tabbedPane.addTab(qrF, null, Locale.get("app.name"));
 		pFL = new PresetList(null, List.IMPLICIT);
 		//#style tabIcon
 		//#= tabbedPane.addTab(pFL, null, Locale.get("tab.Preset.title"));
@@ -146,10 +165,8 @@ public class GameApp extends MIDlet implements TabbedFormListener
 		SettingsRecordStorage.instance().changeToRecordStore("settings");
 		if ( SettingsRecordStorage.instance().readKey("lasttab") != null )
 			currentTab = Integer.parseInt(SettingsRecordStorage.instance().readKey("lasttab"));
-		if ( currentTab == TAB_EDIT )
-			ecFL.loadCards();
 		if ( currentTab != SHOWCARDS && currentTab > -1 )
-			tabbedPane.setFocus(currentTab);
+			changeToTab(currentTab);
 		//#debug dominizer
 		System.out.println("setting display");
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.finished"));
@@ -274,20 +291,5 @@ public class GameApp extends MIDlet implements TabbedFormListener
 			ecFL.loadCards();
 		tabbedPane.setFocus(tab);
 		currentTab = tab;
-	}
-
-	public void notifyTabChangeCompleted(int from, int to) {
-		if ( to == SHOWCARDS )
-			return;
-		if ( to == TAB_EDIT )
-			ecFL.loadCards();
-		currentTab = to;
-	}
-
-	public boolean notifyTabChangeRequested(int oldTabIndex, int newTabIndex) {
-		if ( newTabIndex == TAB_EDIT )
-			ecFL.loadCards();
-		// TODO Auto-generated method stub
-		return true;
 	}
 }

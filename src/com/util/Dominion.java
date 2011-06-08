@@ -162,11 +162,28 @@ public class Dominion {
 		presets[PROSPERITY].setPreset(8, Locale.get("preset.prosperity.LuckySeven"), new int[][] {
 			new int[] { 1,  2 }, new int[] { 1,  3 }, new int[] { 1, 19 }, new int[] { 1, 22 }, new int[] { 1, 24 }, 
 			new int[] { 4,  0 }, new int[] { 4,  5 }, new int[] { 4,  6 }, new int[] { 4, 10 }, new int[] { 4, 21 } });
-		presets[CORNUCOPIA] = new CardPresets(1);
+		presets[CORNUCOPIA] = new CardPresets(6);
 		presets[CORNUCOPIA].setExpansion(CORNUCOPIA);
-		presets[CORNUCOPIA].setPreset(0, Locale.get("preset.prosperity.Beginners"), new int[][] {
-			new int[] { 4,  0 }, new int[] { 4,  4 }, new int[] { 4,  5 }, new int[] { 4,  7 }, new int[] { 4, 13 }, 
-			new int[] { 4, 17 }, new int[] { 4, 18 }, new int[] { 4, 22 }, new int[] { 4, 23 }, new int[] { 4, 24 } });
+		presets[CORNUCOPIA].setPreset(0, Locale.get("preset.cornucopia.BountyoftheHunt"), new int[][] {
+			new int[] { 5,  4 }, new int[] { 5,  5 }, new int[] { 5,  7 }, new int[] { 5,  9 }, new int[] { 5, 11 }, 
+			new int[] { 0,  2 }, new int[] { 0,  7 }, new int[] { 0, 12 }, new int[] { 0, 15 }, new int[] { 0, 17 } });
+		presets[CORNUCOPIA].setPreset(1, Locale.get("preset.cornucopia.BadOmens"), new int[][] {
+			new int[] { 5,  2 }, new int[] { 5,  3 }, new int[] { 5,  5 }, new int[] { 5,  8 }, new int[] { 5, 10 }, 
+			new int[] { 0,  0 }, new int[] { 0,  1 }, new int[] { 0,  9 }, new int[] { 0, 18 }, new int[] { 0, 20 } });
+		presets[CORNUCOPIA].setPreset(2, Locale.get("preset.cornucopia.TheJestersWorkshop"), new int[][] {
+			new int[] { 5,  0 }, new int[] { 5,  1 }, new int[] { 5,  6 }, new int[] { 5,  8 }, new int[] { 5, 12 }, 
+			new int[] { 0,  6 }, new int[] { 0,  9 }, new int[] { 0, 11 }, new int[] { 0, 16 }, new int[] { 0, 24 } });
+		presets[CORNUCOPIA].setBaneCard(2, new int[] { 0 , 3 });
+		presets[CORNUCOPIA].setPreset(3, Locale.get("preset.cornucopia.LastLaughs"), new int[][] {
+			new int[] { 5,  1 }, new int[] { 5,  4 }, new int[] { 5,  6 }, new int[] { 5,  7 }, new int[] { 5, 8 }, 
+			new int[] { 1, 11 }, new int[] { 1, 12 }, new int[] { 1, 13 }, new int[] { 1, 18 }, new int[] { 1, 19 } });
+		presets[CORNUCOPIA].setPreset(4, Locale.get("preset.cornucopia.TheSpiceofLife"), new int[][] {
+			new int[] { 5,  0 }, new int[] { 5,  5 }, new int[] { 5, 10 }, new int[] { 5, 11 }, new int[] { 5, 12 }, 
+			new int[] { 1,  3 }, new int[] { 1,  4 }, new int[] { 1,  6 }, new int[] { 1, 10 }, new int[] { 1, 22 } });
+		presets[CORNUCOPIA].setBaneCard(4, new int[] { 1 , 25 });
+		presets[CORNUCOPIA].setPreset(5, Locale.get("preset.cornucopia.SmallVictories"), new int[][] {
+			new int[] { 5,  2 }, new int[] { 5,  3 }, new int[] { 5,  7 }, new int[] { 5, 10 }, new int[] { 5, 11 }, 
+			new int[] { 1,  2 }, new int[] { 1,  5 }, new int[] { 1,  6 }, new int[] { 1,  7 }, new int[] { 1, 13 } });
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.base"));
 		//#debug dominizer
 		System.out.println("reading base");
@@ -241,28 +258,6 @@ public class Dominion {
 			throw new DominionException(Locale.get("alert.Randomization.TotalAvailability", t));
 		}
 	}
-
-	public int ensurePercentageCards(int playingSet, int exp) {
-		int selected = 0;
-		Rand.resetSeed();
-		for ( int i = 0 ; i < expansions[exp].size() ; i++ ) { 
-			switch ( expansions[exp].getPercentage(i) ) {
-			case 10:
-				if ( selectCard(playingSet, exp, i, -1) )
-					selected++;
-			case 0:
-				break;
-			default:
-				if ( Rand.randomInt(10) < expansions[exp].getPercentage(i) )
-					if ( selectCard(playingSet, exp, i, -1) )
-						selected++;
-			}
-		}
-		//#debug dominizer
-		System.out.println("used " + selected + " from expansion: " + exp);
-		return selected;
-	}
-
 	
 	public String getAvailableAsSave() {
 		StringBuffer sb = new StringBuffer(TOTAL_CARDS);
@@ -302,17 +297,17 @@ public class Dominion {
 			return new int[] {
 					Integer.valueOf(card.substring(
 							card.indexOf(SettingsRecordStorage.MEDIUM_SPLITTER) + 1,
-							card.indexOf(SettingsRecordStorage.SMALL_SPLITTER))).intValue(),
+							card.indexOf(SettingsRecordStorage.SMALL_SPLITTER)).trim()).intValue(),
 					Integer.valueOf(card.substring(
 							card.indexOf(SettingsRecordStorage.SMALL_SPLITTER) + 1,
-							card.indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, card.indexOf(SettingsRecordStorage.MEDIUM_SPLITTER) + 1))).intValue() };
+							card.indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, card.indexOf(SettingsRecordStorage.MEDIUM_SPLITTER) + 1)).trim()).intValue() };
 		} else {
 			return new int[] {
 					Integer.valueOf(card.substring(
 							card.indexOf(SettingsRecordStorage.MEDIUM_SPLITTER) + 1,
-							card.indexOf(SettingsRecordStorage.SMALL_SPLITTER))).intValue(),
+							card.indexOf(SettingsRecordStorage.SMALL_SPLITTER)).trim()).intValue(),
 					Integer.valueOf(card.substring(
-							card.indexOf(SettingsRecordStorage.SMALL_SPLITTER) + 1)).intValue() };
+							card.indexOf(SettingsRecordStorage.SMALL_SPLITTER) + 1).trim()).intValue() };
 		}
 	}
 
@@ -338,7 +333,7 @@ public class Dominion {
 		for ( int i = 0; i < expansions.length; i++ )
 			for ( int j = 0; j < expansions[i].size(); j++ )
 				if ( expansions[i].isPlayingSet(j, playingSet) ) {
-					sb.append("" + SettingsRecordStorage.MEDIUM_SPLITTER + i + SettingsRecordStorage.SMALL_SPLITTER + j);
+					sb.append("" + SettingsRecordStorage.MEDIUM_SPLITTER + ( expansions[i].isHold(j) ? "H" : "" ) + ( expansions[i].isBaneCard(j) ? "B" : "" ) + i + SettingsRecordStorage.SMALL_SPLITTER + j);
 					cards++;
 				}
 		sb.append(SettingsRecordStorage.MEDIUM_SPLITTER);
@@ -447,6 +442,8 @@ public class Dominion {
 			sb.append("" + expansions[presets[presetDeck].getPreset(preset)[i][0]].getName(
 					presets[presetDeck].getPreset(preset)[i][1]) + "\n");
 		}
+		if ( presets[presetDeck].getBaneCard(preset)[0] != -1 )
+			sb.append("" + expansions[presets[presetDeck].getBaneCard(preset)[0]].getName(presets[presetDeck].getBaneCard(preset)[1]));
 		return sb.toString();
 	}
 	
@@ -681,12 +678,9 @@ public class Dominion {
 		checkAvailability();
 		selectedCards = new Cards(numberOfRandomCards, Cards.IS_NOT_SET);
 		selected = 0;
-		
+		Rand.resetSeed();
 		if ( playingSet < 0 )
 			playingSet = getCurrentSet() + 1;
-		/*if ( (randomizeMethod & RAND_PREVENT) == 0 && )
-			throw new DominionException(Locale.get("alert.NoMoreSets"));
-		*/
 		
 		/**
 		 * RandomizeMethod contains a bit number 0 + 1 + 2 + 4 + 8...
@@ -703,7 +697,6 @@ public class Dominion {
 			for ( i = 0 ; i < Condition.MAX_RUNS ; i++ ) {
 				//#debug dominizer
 				System.out.println("condition tried for the '"+i+"' time.");
-				Rand.resetSeed();
 				while ( selected < numberOfRandomCards ) {
 					selectedElement = Rand.randomInt(TOTAL_CARDS);
 					tmpExp = getLinearExpansionIndex(selectedElement);
@@ -733,7 +726,6 @@ public class Dominion {
 		} else {
 			//#debug dominizer
 			System.out.println("using randomizing cards with total cards " + TOTAL_CARDS + " selected: " + selected);
-			Rand.resetSeed();
 			while ( selected < numberOfRandomCards ) {
 				selectedElement = Rand.randomInt(TOTAL_CARDS);
 				tmpExp = getLinearExpansionIndex(selectedElement);
@@ -766,7 +758,7 @@ public class Dominion {
 	}
 	
 	private void randomizeBaneDeck(int playingSet) throws DominionException {
-		if ( expansions[CORNUCOPIA].isPlayingSet(12, playingSet) ) {
+		if ( expansions[CORNUCOPIA].isPlayingSet(12, playingSet) || ( expansions[PROMO].isPlayingSet(0, playingSet) && expansions[CORNUCOPIA].isBlackMarketAvailable(12) ) ) {
 			//#debug dominizer
 			System.out.println("adding a Bane Kingdom pile for set" + playingSet);
 			int possible = 0;
@@ -787,17 +779,11 @@ public class Dominion {
 					selectedElement = getLinearCardIndex(selectedElement);
 					// TODO decide whether this is correct way of doing it
 					if ( selectedCards.fromExpansion(ALCHEMY) > 1 && ( expansions[tmpExp].getTotalCost(selectedElement) == 1 || expansions[tmpExp].getTotalCost(selectedElement) == 2 ) ) {
-						if ( selectCard(playingSet, tmpExp, selectedElement, selected) ) {
-							expansions[tmpExp].setBaneCard(selectedElement, true);
-							selectedCards.setBaneCard(selected, true);
+						if ( selectBaneCard(playingSet, tmpExp, selectedElement, selected) )
 							selected++;
-						}
 					} else if ( expansions[tmpExp].getPotionCost(selectedElement) == 0 && ( expansions[tmpExp].getCost(selectedElement) == 2 || expansions[tmpExp].getCost(selectedElement) == 3 ) ) {
-						if ( selectCard(playingSet, tmpExp, selectedElement, selected) ) {
-							expansions[tmpExp].setBaneCard(selectedElement, true);
-							selectedCards.setBaneCard(selected, true);
+						if ( selectBaneCard(playingSet, tmpExp, selectedElement, selected) )
 							selected++;
-						}
 					}
 				}
 			}
@@ -1008,14 +994,25 @@ public class Dominion {
 			System.out.println("reading from: " + numberSaves + ":" + SettingsRecordStorage.instance().readKey("" + numberSaves));
 			start = 0;
 			String save = SettingsRecordStorage.instance().readKey("" + numberSaves ).trim();
+			boolean isHold, isBane;
 			while ( start >= 0 && start < save.length() - 1 ) {//for ( i = 0 ; i < numberOfCards ; i++ ) {
-				card = getCardInfo(save.substring(start, save.indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1)));
+				String cardInfo= save.substring(start, save.indexOf(SettingsRecordStorage.MEDIUM_SPLITTER, start + 1));
+				isHold = parseSaveSetting(cardInfo, 'H');
+				isBane = parseSaveSetting(cardInfo, 'B');
+				cardInfo = cardInfo.replace('H', ' ');
+				cardInfo = cardInfo.replace('B', ' ');
+				//#debug dominizer
+				System.out.println("SEE HERE: " + cardInfo);
+				card = getCardInfo(cardInfo);
 				if ( expansions[card[0]].isPlaying(card[1]) > 0 ) {
 					// Should never happen...
 					//#debug dominizer
 					System.out.println("READING AN ALREADY SET CARD: " + card[0] + " and " + card[1]);
-				} else
+				} else {
 					expansions[card[0]].setPlaying(card[1], numberSaves);
+					expansions[card[0]].setHoldCard(card[1], isHold);
+					expansions[card[0]].setBaneCard(card[1], isBane);
+				}
 				start = SettingsRecordStorage.instance().readKey("" + numberSaves).indexOf(
 					SettingsRecordStorage.MEDIUM_SPLITTER, start + 1);
 			}
@@ -1106,6 +1103,11 @@ public class Dominion {
 		System.out.println("finished reading conditions succesfully");
 	}
 
+	private boolean parseSaveSetting(String cardSave, char in) {
+		return cardSave.indexOf(in) >= 0;
+	}
+
+
 	public void removePlayingSet(int playingSet) {
 		if ( playingSet <= 0 )
 			return;
@@ -1126,6 +1128,8 @@ public class Dominion {
 				}
 			}
 		}
+		if ( playingSet == CURRENT_SET )
+			CURRENT_SET--;
 	}
 
 	public void resetIsPlaying(int playingSet) {
@@ -1161,6 +1165,19 @@ public class Dominion {
 		return false;
 	}
 	
+	public boolean selectBaneCard(int playingSet, int exp, int card, int placement) {
+		// # debug dominizer
+		//System.out.println("try: " + exp + " - " + card);
+		if ( exp == -1 )
+			return false;
+		if ( selectCard(playingSet, exp, card, placement ) ) {
+			expansions[exp].setBaneCard(card, true);
+			selectedCards.setBaneCard(placement, true);
+			return true;
+		}
+		return false;
+	}
+	
 	public int getCurrentSet() {
 		int tmp = 0;
 		for ( int i = 0 ; i < expansions.length ; i++ ) {
@@ -1179,16 +1196,16 @@ public class Dominion {
 		System.out.println("fetching preset: " + presetDeck + " and " + preset);
 		if ( playingSet > 0 )
 			resetIsPlaying(playingSet);
-		checkAvailability();
-		selectedCards = new Cards(numberOfRandomCards, Cards.IS_NOT_SET);
-		selected = 0;
-		
-		if ( playingSet <= 0 )
+		else
 			playingSet = getCurrentSet() + 1;
+		checkAvailability();
 		if ( presetDeck >= presets.length )
 			throw new DominionException(Locale.get("alert.preset.WrongInput"));
 		if ( preset >= presets[presetDeck].size() )
 			throw new DominionException(Locale.get("alert.preset.WrongInput"));
+		selectedCards = new Cards(presets[presetDeck].size(preset), Cards.IS_NOT_SET);
+		selected = 0;
+		
 		for (int i = 0; i < presets[presetDeck].size(preset); i++) {
 			//#debug dominizer
 			System.out.println("selecting expansion: " + presets[presetDeck].getPresetCardExpansion(preset, i) + " and card: " + presets[presetDeck].getPresetCardPlacement(preset, i));
@@ -1197,15 +1214,19 @@ public class Dominion {
 			if ( selectCard(playingSet, presets[presetDeck].getPresetCardExpansion(preset, i), presets[presetDeck].getPresetCardPlacement(preset, i), -1) )
 				selected++;
 		}
-		if ( selected != numberOfRandomCards ) {
+		// This is necessary as cards could have been chosen in other set!		
+		if ( selected < 10 ) {
 			removePlayingSet(playingSet);
 			//#debug dominizer
 			System.out.println("selecting selected: " + selected);
 			throw new DominionException(Locale.get("alert.preset.CardAlreadyUsed") + " Cur: " + getCurrentSet() + " Playing: " + playingSet);
 		}
-		//if ( playingSet > CURRENT_SET )
-			//CURRENT_SET = playingSet;//TODO what if playingSet == CURRENT_SET + 2 
-		//return sortCards(selectedCards, Cards.COMPARE_PREFERRED);
+		if ( presets[presetDeck].getBaneCard(preset)[0] >= 0 ) {
+			selectedCards.increaseSize(1);
+			if ( selectBaneCard(playingSet, presets[presetDeck].getBaneCard(preset)[0], presets[presetDeck].getBaneCard(preset)[1], -1) ) {
+				selected++;
+			}
+		}
 	}
 
 	public void selectPreset(int playingSet, String presetName) throws DominionException {
@@ -1296,8 +1317,26 @@ public class Dominion {
 	public void usePercentageCards(int playingSet) {
 		//#debug dominizer
 		System.out.println("using percentage cards");
-		for ( int i = 0 ; i < expansions.length ; i++ )
-			selected += ensurePercentageCards(playingSet, i);
+		Rand.resetSeed();
+		for ( int i = 0 ; i < expansions.length ; i++ ) {
+			int tmpSel = 0;
+			for ( int j = 0 ; j < expansions[i].size() ; j++ ) { 
+				switch ( expansions[i].getPercentage(j) ) {
+				case 10:
+					if ( selectCard(playingSet, i, j, -1) )
+						tmpSel++;
+				case 0:
+					break;
+				default:
+					if ( Rand.randomInt(10) < expansions[i].getPercentage(j) )
+						if ( selectCard(playingSet, i, j, -1) )
+							tmpSel++;
+				}
+			}
+			//#debug dominizer
+			System.out.println("used " + tmpSel + " from expansion: " + i);
+			selected += tmpSel;
+		}
 	}
 		
 	public static Image getExpansionImage(int expansion) {

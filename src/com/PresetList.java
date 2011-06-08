@@ -101,7 +101,7 @@ public class PresetList extends List implements CommandListener {
 			try {
 				Dominion.I().selectPreset(-1, getString(getCurrentIndex()));
 				//ShowCardsForm.instance().addNewCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
-				CardsList.instance().setCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()));
+				CardsList.instance().setCards(Dominion.I().getSelectedCards(Dominion.I().getCurrentSet()), Dominion.I().getCurrentSet());
 				//GameApp.instance().changeToScreen(ShowCardsForm.instance());
 				GameApp.instance().changeToScreen(CardsList.instance());
 			} catch (DominionException e) {
