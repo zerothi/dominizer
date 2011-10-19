@@ -20,13 +20,13 @@ import com.GaugeForm;
 import com.PresetList;
 import com.QuickRandomizeList;
 import com.TiltedPieChartForm;
+import com.util.Cards;
 import com.util.Dominion;
 import com.util.SettingsRecordStorage;
 
 import de.enough.polish.ui.List;
 import de.enough.polish.ui.Screen;
 import de.enough.polish.ui.TabListener;
-import de.enough.polish.ui.TabbedFormListener;
 import de.enough.polish.ui.TabbedPane;
 import de.enough.polish.util.Locale;
 /**
@@ -131,7 +131,7 @@ public class GameApp extends MIDlet
 		tabbedPane = new TabbedPane(null);
 		tabbedPane.addTabListener(new TabListener() {
 			//#if polish.android
-			@Override
+			//#= @Override
 			//#endif
 			public void tabChangeEvent(Screen tab) {
 				//#debug dominizer
@@ -238,7 +238,7 @@ public class GameApp extends MIDlet
 				SettingsRecordStorage.instance().addData("available", Dominion.I().getAvailableAsSave());
 				SettingsRecordStorage.instance().addData("percentage", Dominion.I().getPercentagesAsSave());
 				SettingsRecordStorage.instance().addData("lasttab", "" + currentTab);
-				//SettingsRecordStorage.instance().addData("sort", "" + Cards.COMPARE_PREFERRED);
+				SettingsRecordStorage.instance().addData("sort", "" + Cards.COMPARE_PREFERRED);
 				i = 0;
 				//#debug dominizer
 				System.out.println("WRITING OLD SETS");

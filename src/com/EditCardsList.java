@@ -71,7 +71,7 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 				setPercentage(size() - 1, i, cardNumber, Dominion.expansions[i].getPercentage(cardNumber));
 			}
 		}
-		GameApp.instance().changeToScreen(null);
+		GameApp.instance().changeToScreen(this);
 		focus(0);
 	}
 	

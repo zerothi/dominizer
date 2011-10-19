@@ -360,6 +360,8 @@ public class Cards {
 				return TYPE_TREASURY_VICTORY;
 			if ( isType(index, TYPE_ACTION) )
 				return TYPE_ACTION_TREASURY;
+			if ( isType(index, TYPE_REACTION) )
+				return TYPE_REACTION_TREASURY;
 			return TYPE_TREASURY;
 		} else if ( isType(index, TYPE_ATTACK) ) {
 			if ( isType(index, TYPE_VICTORY) )

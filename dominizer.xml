@@ -19,13 +19,13 @@
 <project name="Dominizer" default="j2mepolish" basedir=".">
 
 	<!-- import user specific properties                          -->
-	<property file="${user.name}.properties" />
+	<!--property file="${user.name}.properties" /-->
 	<property file="ant/project.properties" />
 	<!-- import global properties                                 -->
 	<property file="${polish.home}/global.properties" />
 	
 	<property name="debugLang" value="en"/>
-	<property name="single" value="true"/>
+	<property name="single" value="false"/>
 	
 	<taskdef name="j2mepolish" 
 		classname="de.enough.polish.ant.PolishTask"
@@ -34,7 +34,7 @@
 
 	<target name="init">
 		<condition property="jar.add.name" value="">
-		   <not>  
+		   <not>
 		      <isset property="jar.add.name"/>
 		   </not>
 		</condition>
@@ -133,7 +133,7 @@
 						<!--locale name="da" encoding="UTF-8"/-->
 						<locale name="en" encoding="UTF-8"/>
 						<locale name="de" encoding="UTF-8"/>
-						<locale name="es" encoding="UTF-8"/>
+						<!--locale name="es" encoding="UTF-8"/-->
 						<!--locale name="pl" encoding="UTF-8"/-->
 						<!--locale name="fr" encoding="UTF-8"/>
 						<locale name="zh_CH_SC" encoding="UTF-8"/>
@@ -235,23 +235,24 @@
 	</target>
 	
 	<target name="enableiPhone" depends="dosign">
-		<property name="devices" value="Native/iPhone"/>
+		<property name="devices" value="Native/iPhone"/> 
 	</target>
 	
 	<target name="enableAndroid" depends="dosign">
 		<property name="devices" value="Generic/Android1.5"/>
 		<property name="device" value="Generic/Android1.5"/>
+		
 	</target>
 	
 	<target name="enableSpecial" depends="donotsign">
-		<property name="devices" value="Nokia/E71,Nokia/E90_Communicator,Nokia/N70,Nokia/N78,Nokia/N82,Nokia/N95,Nokia/6120,Nokia/6120_classic"/>
-		<property name="device" value="Nokia/N95"/>
+		<property name="devices" value="Nokia/E71,Nokia/E90_Communicator,Nokia/N70,Nokia/N78,Nokia/N82,Nokia/N95,Nokia/3220,Nokia/6120,Nokia/6120_classic"/>
+		<property name="device" value="Nokia/3220"/>
 		<property name="single" value="true"/>
 		<property name="special" value="true"/>
 	</target>
 	<target name="enableSpecialDebug" depends="donotsign">
-		<property name="devices" value="Nokia/E71,Nokia/E90_Communicator,Nokia/N70,Nokia/N78,Nokia/N82,Nokia/N95,Nokia/6120,Nokia/6120_classic"/>
-		<property name="device" value="Nokia/N95"/>
+		<property name="devices" value="Nokia/E71,Nokia/E90_Communicator,Nokia/N70,Nokia/N78,Nokia/N82,Nokia/N95,Nokia/3220,Nokia/6120,Nokia/6120_classic"/>
+		<property name="device" value="Nokia/3220"/>
 		<property name="debugLevel" value="dominizer"/>
 		<property name="special" value="true"/>
 		<property name="jar.add.name" value="-debug"/>
@@ -321,17 +322,5 @@
 			genericantfile="dominizer.xml" 
 			inheritall="false" 
 			/>
-	</target>
-	<target name="compileAllNonTicker" depends="clean" description="Builds All">
-		<subant target="compileAllNonAndroid" 
-			description="Builds All Non-Android Devices" 
-			buildpath="." 
-			genericantfile="dominizer.xml" 
-			inheritall="false" />
-		<subant target="compileAndroid"
-			description="Builds All Android Devices"
-			buildpath="." 
-			genericantfile="dominizer.xml" 
-			inheritall="false" />
 	</target>
 </project>

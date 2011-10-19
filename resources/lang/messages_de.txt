@@ -4,6 +4,23 @@
 # App Specific translations
 #
 ################
+
+screen.BlackMarket.Cards.Bought			= Gekauft: {0}
+screen.BlackMarket.Cards.Left			= Verbleibend: {0}
+screen.BlackMarket.Cards.Select			= Wähle eine Karte:
+screen.BlackMarket.ReturnScreen			= Sollen die gezogenen Karten abgelegt werden um zum vorherigen Bildschirm zurück zu kehren?
+screen.Options.SaveSuccessful			= Die Optionen wurden gespeichert.
+screen.Options.CardsInSet               = Karten in diesem Satz:
+screen.Options.CardsInSet.info          = Wie viele Karten dieses Satz sollen zufällig bestimmt werden.
+alert.NoCardsForBanePile				= Es gibt keine Karten mehr, die als Bannstapel verwendet werden können.
+preset.cornucopia.BountyoftheHunt		= Kopfgeld
+preset.cornucopia.BadOmens				= Böses Omen
+preset.cornucopia.TheJestersWorkshop	= Wanderzirkus
+preset.cornucopia.LastLaughs			= Wer zuletzt lacht
+preset.cornucopia.TheSpiceofLife		= Würze des Lebens
+preset.cornucopia.SmallVictories		= Kleine Siege
+expansion.cornucopia					= Reiche Ernte
+
 #######
 #
 # Version 0.18 translations

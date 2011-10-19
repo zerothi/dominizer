@@ -51,7 +51,7 @@
 		         You can also define localized attributes in the resources/messages.txt files -->
 			<info 
 				name="${app.name}" 
-				version="0.19" 
+				version="0.20" 
 				description="A Dominion Card randomizer" 
 				vendorName="Nick Papior Andersen A/S" 
 				infoUrl="http://www.boardgamegeek.com/wiki/page/Dominizer" 

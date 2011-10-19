@@ -17,14 +17,16 @@ public class Dominion {
 									12 + // ALCHEMY
 									25 + // PROSPERITY
 									13 + // CORNUCOPIA
-									3; // PROMOS
+									26 + // HINTERLANDS
+									4; // PROMOS
 	public static final int BASE = 0;       // has 25 cards
 	public static final int INTRIGUE = 1;   // has 25 cards
 	public static final int SEASIDE = 2;    // has 26 cards
 	public static final int ALCHEMY = 3;    // has 12 cards (the 13th card Potion is not counted)
 	public static final int PROSPERITY = 4; // has 25 cards
 	public static final int CORNUCOPIA = 5; // has 13 cards
-	public static final int PROMO = 6;      // has 3 cards
+	public static final int HINTERLANDS = 6; // has 13 cards
+	public static final int PROMO = 7;      // has 3 cards
 	public static final int USER = PROMO + 1;       // always have to be the highest number!
 	public static final int RAND_EXPANSION_CARDS = 1;
 	public static final int RAND_PERCENTAGE_CARDS = 2;
@@ -184,6 +186,56 @@ public class Dominion {
 		presets[CORNUCOPIA].setPreset(5, Locale.get("preset.cornucopia.SmallVictories"), new int[][] {
 			new int[] { 5,  2 }, new int[] { 5,  3 }, new int[] { 5,  7 }, new int[] { 5, 10 }, new int[] { 5, 11 }, 
 			new int[] { 1,  2 }, new int[] { 1,  5 }, new int[] { 1,  6 }, new int[] { 1,  7 }, new int[] { 1, 13 } });
+		presets[HINTERLANDS] = new CardPresets(16);
+		presets[HINTERLANDS].setExpansion(HINTERLANDS);
+		presets[HINTERLANDS].setPreset(0, Locale.get("preset.hinterlands.Introduction"), new int[][] {
+			new int[] { 6,  1 }, new int[] { 6,  3 }, new int[] { 6,  4 }, new int[] { 6,  9 }, new int[] { 6, 13 }, 
+			new int[] { 6, 15 }, new int[] { 6, 17 }, new int[] { 6, 18 }, new int[] { 6, 22 }, new int[] { 6, 23 } });
+		presets[HINTERLANDS].setPreset(1, Locale.get("preset.hinterlands.FairTrades"), new int[][] {
+			new int[] { 6,  0 }, new int[] { 6,  2 }, new int[] { 6,  4 }, new int[] { 6,  5 }, new int[] { 6, 7 }, 
+			new int[] { 6, 11 }, new int[] { 6, 16 }, new int[] { 6, 21 }, new int[] { 6, 23 }, new int[] { 6, 24 } });
+		presets[HINTERLANDS].setPreset(2, Locale.get("preset.hinterlands.Bargains"), new int[][] {
+			new int[] { 6,  0 }, new int[] { 6,  1 }, new int[] { 6,  5 }, new int[] { 6,  8 }, new int[] { 6,  9 }, 
+			new int[] { 6, 10 }, new int[] { 6, 17 }, new int[] { 6, 20 }, new int[] { 6, 22 }, new int[] { 6, 24 } });
+		presets[HINTERLANDS].setPreset(3, Locale.get("preset.hinterlands.Gambits"), new int[][] {
+			new int[] { 6,  2 }, new int[] { 6,  3 }, new int[] { 6,  6 }, new int[] { 6, 12 }, new int[] { 6, 13 }, 
+			new int[] { 6, 14 }, new int[] { 6, 17 }, new int[] { 6, 18 }, new int[] { 6, 19 }, new int[] { 6, 25 } });
+		presets[HINTERLANDS].setPreset(4, Locale.get("preset.hinterlands.HighwayRobbery"), new int[][] {
+			new int[] { 6, 10 }, new int[] { 6, 12 }, new int[] { 6, 15 }, new int[] { 6, 16 }, new int[] { 6, 18 }, 
+			new int[] { 0,  2 }, new int[] { 0, 10 }, new int[] { 0, 15 }, new int[] { 0, 20 }, new int[] { 0, 24 } });
+		presets[HINTERLANDS].setPreset(5, Locale.get("preset.hinterlands.AdventuresAbroad"), new int[][] {
+			new int[] { 6,  3 }, new int[] { 6,  7 }, new int[] { 6,  8 }, new int[] { 6, 19 }, new int[] { 6, 22 }, 
+			new int[] { 0,  0 }, new int[] { 0,  3 }, new int[] { 0,  7 }, new int[] { 0,  9 }, new int[] { 0, 16 } });
+		presets[HINTERLANDS].setPreset(6, Locale.get("preset.hinterlands.MoneyForNothing"), new int[][] {
+			new int[] { 6,  1 }, new int[] { 6,  2 }, new int[] { 6, 13 }, new int[] { 6, 21 }, new int[] { 6, 25 }, 
+			new int[] { 1,  3 }, new int[] { 1,  6 }, new int[] { 1, 13 }, new int[] { 1, 17 }, new int[] { 1, 20 } });
+		presets[HINTERLANDS].setPreset(7, Locale.get("preset.hinterlands.TheDukesBall"), new int[][] {
+			new int[] { 6,  5 }, new int[] { 6,  9 }, new int[] { 6, 12 }, new int[] { 6, 16 }, new int[] { 6, 20 }, 
+			new int[] { 1,  2 }, new int[] { 1,  5 }, new int[] { 1,  7 }, new int[] { 1,  9 }, new int[] { 1, 23 } });
+		presets[HINTERLANDS].setPreset(8, Locale.get("preset.hinterlands.Travelers"), new int[][] {
+			new int[] { 6,  2 }, new int[] { 6,  3 }, new int[] { 6,  7 }, new int[] { 6, 21 }, new int[] { 6, 23 }, 
+			new int[] { 2,  3 }, new int[] { 2,  9 }, new int[] { 2, 11 }, new int[] { 2, 12 }, new int[] { 2, 24 } });
+		presets[HINTERLANDS].setPreset(9, Locale.get("preset.hinterlands.Diplomacy"), new int[][] {
+			new int[] { 6,  6 }, new int[] { 6,  7 }, new int[] { 6, 11 }, new int[] { 6, 16 }, new int[] { 6, 24 }, 
+			new int[] { 2,  0 }, new int[] { 2,  1 }, new int[] { 2,  2 }, new int[] { 2,  4 }, new int[] { 2, 20 } });
+		presets[HINTERLANDS].setPreset(10, Locale.get("preset.hinterlands.SchemesAndDreams"), new int[][] {
+			new int[] { 6,  5 }, new int[] { 6,  8 }, new int[] { 6, 11 }, new int[] { 6, 13 }, new int[] { 6, 20 }, 
+			new int[] { 3,  1 }, new int[] { 3,  2 }, new int[] { 3,  5 }, new int[] { 3,  6 }, new int[] { 3,  9 } });
+		presets[HINTERLANDS].setPreset(11, Locale.get("preset.hinterlands.WineCountry"), new int[][] {
+			new int[] { 6,  3 }, new int[] { 6,  7 }, new int[] { 6,  9 }, new int[] { 6, 10 }, new int[] { 6, 17 }, 
+			new int[] { 3,  2 }, new int[] { 3,  3 }, new int[] { 3,  4 }, new int[] { 3, 10 }, new int[] { 3, 11 } });
+		presets[HINTERLANDS].setPreset(12, Locale.get("preset.hinterlands.InstantGratification"), new int[][] {
+			new int[] { 6,  7 }, new int[] { 6,  9 }, new int[] { 6, 11 }, new int[] { 6, 16 }, new int[] { 6, 24 }, 
+			new int[] { 4,  1 }, new int[] { 4,  5 }, new int[] { 4,  9 }, new int[] { 4, 12 }, new int[] { 4, 23 } });
+		presets[HINTERLANDS].setPreset(13, Locale.get("preset.hinterlands.TreasureTrove"), new int[][] {
+			new int[] { 6,  1 }, new int[] { 6,  4 }, new int[] { 6,  8 }, new int[] { 6, 11 }, new int[] { 6, 14 }, 
+			new int[] { 4,  0 }, new int[] { 4, 13 }, new int[] { 4, 18 }, new int[] { 4, 20 }, new int[] { 4, 22 } });
+		presets[HINTERLANDS].setPreset(14, Locale.get("preset.hinterlands.BlueHarvest"), new int[][] {
+			new int[] { 6,  8 }, new int[] { 6, 14 }, new int[] { 6, 16 }, new int[] { 6, 24 }, new int[] { 6, 25 }, 
+			new int[] { 5,  3 }, new int[] { 5,  5 }, new int[] { 5,  6 }, new int[] { 5,  8 }, new int[] { 5, 11 } });
+		presets[HINTERLANDS].setPreset(15, Locale.get("preset.hinterlands.TravelingCircus"), new int[][] {
+			new int[] { 6,  0 }, new int[] { 6,  6 }, new int[] { 6,  8 }, new int[] { 6, 17 }, new int[] { 6, 18 }, 
+			new int[] { 5,  0 }, new int[] { 5,  1 }, new int[] { 5,  7 }, new int[] { 5,  8 }, new int[] { 5,  9 } });
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.base"));
 		//#debug dominizer
 		System.out.println("reading base");
@@ -220,10 +272,16 @@ public class Dominion {
 		readResource(CORNUCOPIA, "cornucopia", 13);
 		//#debug dominizer
 		System.out.println("size cornucopia: " + expansions[CORNUCOPIA].size());
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.hinterlands"));
+		//#debug dominizer
+		System.out.println("reading hinterlands");
+		readResource(HINTERLANDS, "hinterlands", 26);
+		//#debug dominizer
+		System.out.println("size hinterlands: " + expansions[HINTERLANDS].size());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.promo"));
 		//#debug dominizer
 		System.out.println("reading promo");
-		readResource(PROMO, "promo", 3);
+		readResource(PROMO, "promo", 4);
 		//#debug dominizer
 		System.out.println("size promo: " + expansions[PROMO].size());
 		//#debug dominizer
@@ -758,7 +816,8 @@ public class Dominion {
 	}
 	
 	private void randomizeBaneDeck(int playingSet) throws DominionException {
-		if ( expansions[CORNUCOPIA].isPlayingSet(12, playingSet) || ( expansions[PROMO].isPlayingSet(0, playingSet) && expansions[CORNUCOPIA].isBlackMarketAvailable(12) ) ) {
+		if ( expansions[CORNUCOPIA].isPlayingSet(12, playingSet) || 
+				( expansions[PROMO].isPlayingSet(0, playingSet) && expansions[CORNUCOPIA].isBlackMarketAvailable(12) && expansions[CORNUCOPIA].isPlaying(12) == 0 ) ) {
 			//#debug dominizer
 			System.out.println("adding a Bane Kingdom pile for set" + playingSet);
 			int possible = 0;
@@ -1363,6 +1422,8 @@ public class Dominion {
 			return "co";
 		case PROSPERITY:
 			return "pr";
+		case HINTERLANDS:
+			return "hi";
 		case PROMO:
 			return "p";
 		case USER:
@@ -1388,6 +1449,8 @@ public class Dominion {
 			return Locale.get("expansion.cornucopia");
 		case PROSPERITY:
 			return Locale.get("expansion.prosperity");
+		case HINTERLANDS:
+			return Locale.get("expansion.hinterlands");
 		case USER:
 			return Locale.get("expansion.user");
 		default:

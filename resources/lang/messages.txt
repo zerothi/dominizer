@@ -2,6 +2,31 @@
 
 #######
 #
+# Version 0.20 translation
+#
+#######
+preset.hinterlands.Introduction			= Introduction
+preset.hinterlands.FairTrades			= Fair Trades
+preset.hinterlands.Bargains				= Bargains
+preset.hinterlands.Gambits				= Gambits
+
+preset.hinterlands.HighwayRobbery		= Highway Robbery
+preset.hinterlands.AdventuresAbroad		= Adventures Abroad
+
+preset.hinterlands.MoneyForNothing		= Money For Nothing
+preset.hinterlands.TheDukesBall			= The Duke's Ball
+preset.hinterlands.Travelers			= Travelers
+preset.hinterlands.Diplomacy			= Diplomacy
+preset.hinterlands.SchemesAndDreams		= Schemes and Dreams
+preset.hinterlands.WineCountry			= Wine Country
+preset.hinterlands.InstantGratification	= Instant Gratification
+preset.hinterlands.TreasureTrove		= Treasure Trove
+preset.hinterlands.BlueHarvest			= Blue Harvest
+preset.hinterlands.TravelingCircus		= Traveling Circus
+
+
+#######
+#
 # Version 0.19 translation
 #
 #######
@@ -125,6 +150,7 @@ expansion.promo             = Promo
 expansion.promo.BlackMarket = Black Market
 expansion.prosperity        = Prosperity
 expansion.cornucopia        = Cornucopia
+expansion.hinterlands       = Hinterlands
 expansion.seaside           = Seaside
 expansion.user              = User Cards
 
