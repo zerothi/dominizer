@@ -362,6 +362,8 @@ public class Cards {
 				return TYPE_ACTION_TREASURY;
 			if ( isType(index, TYPE_REACTION) )
 				return TYPE_REACTION_TREASURY;
+			if ( isType(index, TYPE_DURATION) )
+				return TYPE_DURATION_TREASURY;
 			return TYPE_TREASURY;
 		} else if ( isType(index, TYPE_ATTACK) ) {
 			if ( isType(index, TYPE_VICTORY) )

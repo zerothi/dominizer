@@ -9,10 +9,8 @@ preset.hinterlands.Introduction			= Introduction
 preset.hinterlands.FairTrades			= Fair Trades
 preset.hinterlands.Bargains				= Bargains
 preset.hinterlands.Gambits				= Gambits
-
 preset.hinterlands.HighwayRobbery		= Highway Robbery
 preset.hinterlands.AdventuresAbroad		= Adventures Abroad
-
 preset.hinterlands.MoneyForNothing		= Money For Nothing
 preset.hinterlands.TheDukesBall			= The Duke's Ball
 preset.hinterlands.Travelers			= Travelers
