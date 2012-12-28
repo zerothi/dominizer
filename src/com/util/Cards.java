@@ -413,7 +413,7 @@ public class Cards {
 	}
 	
 	public Object[] getCard(int index) {
-		Object[] tmp = new Object[14];
+		Object[] tmp = new Object[15];
 		tmp[0] = getName(index);
 		tmp[1] = new Short((short) getExpansion(index));
 		tmp[2] = new Short((short) ((getPotionCost(index) << 5) + getCost(index)));
@@ -428,6 +428,7 @@ public class Cards {
 		tmp[11] = new Integer(getAddInfo(index, ADDS_CURSE));
 		tmp[12] = new Integer(getAddInfo(index, ADDS_POTIONS));
 		tmp[13] = new Integer(getAddInfo(index, ADDS_VICTORY_POINTS));
+		tmp[14] = new Integer(getAddInfo(index, ADDS_GAIN));
 		return tmp;
 	}
 	
@@ -467,6 +468,7 @@ public class Cards {
 		setAddInfo(index, ADDS_CURSE, ((Integer)cardInfo[11]).intValue());
 		setAddInfo(index, ADDS_POTIONS, ((Integer)cardInfo[12]).intValue());
 		setAddInfo(index, ADDS_VICTORY_POINTS, ((Integer)cardInfo[13]).intValue());
+		setAddInfo(index, ADDS_GAIN, ((Integer)cardInfo[14]).intValue());
 	}
 	
 	public static int compare(Object[] first, Object[] compareTo, int method) {
@@ -637,7 +639,7 @@ public class Cards {
 	public int[][][] getAddsInfo() {
 		if ( size() == 0 )
 			return null;
-		int[][][] tmp = new int[2][1][8];
+		int[][][] tmp = new int[2][1][9];
 		tmp[0][0][0] = getTypes(ADDS_CARDS);
 		tmp[0][0][1] = getTypes(ADDS_ACTIONS);
 		tmp[0][0][2] = getTypes(ADDS_BUYS);
@@ -646,6 +648,7 @@ public class Cards {
 		tmp[0][0][5] = getTypes(ADDS_CURSE);
 		tmp[0][0][6] = getTypes(ADDS_VICTORY_POINTS);
 		tmp[0][0][7] = getTypes(ADDS_POTIONS);
+		tmp[0][0][8] = getTypes(ADDS_GAIN);
 		
 		tmp[1][0][0] =  40 << 16 |  86 << 8 | 141;
 		tmp[1][0][1] = 198 << 16 | 211 << 8 | 227;
@@ -655,6 +658,7 @@ public class Cards {
 		tmp[1][0][5] = 202 << 16 |   6 << 8 | 193;
 		tmp[1][0][6] = 234 << 16 | 227 << 8 | 227;
 		tmp[1][0][7] =  25 << 16 | 131 << 8 | 255;
+		tmp[1][0][8] =  25 << 16 | 131 << 8 | 255; // TODO
 		return tmp;
 	}
 	
@@ -712,6 +716,7 @@ public class Cards {
 	public static final int ADDS_CURSE = 5;
 	public static final int ADDS_VICTORY_POINTS = 6;
 	public static final int ADDS_POTIONS = 7;
+	public static final int ADDS_GAIN = 8;
 	
 	public static final int COST_POTIONS = 100;
 	

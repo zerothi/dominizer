@@ -191,6 +191,8 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 			tableItem.set(Cards.ADDS_VICTORY_POINTS, new MessageItem("" + (Cards.ADDS_VICTORY_POINTS+1), "Potions"));
 			//#style tableCell
 			tableItem.set(Cards.ADDS_POTIONS, new MessageItem("" + (Cards.ADDS_POTIONS+1), "Potions"));
+			//#style tableCell
+			tableItem.set(Cards.ADDS_GAIN, new MessageItem("" + (Cards.ADDS_GAIN+1), "Gain"));
 		} else if ( currentTableType == TABLE_EXPANSIONS ) {
 			//#style tableCell
 			tableItem.set(Dominion.BASE, new MessageItem("" + (Dominion.BASE+1), Locale.get("expansion.base")));
@@ -206,6 +208,8 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 			tableItem.set(Dominion.CORNUCOPIA, new MessageItem("" + (Dominion.CORNUCOPIA+1), Locale.get("expansion.cornucopia")));
 			//#style tableCell
 			tableItem.set(Dominion.HINTERLANDS, new MessageItem("" + (Dominion.HINTERLANDS+1), Locale.get("expansion.hinterlands")));
+			//#style tableCell
+			tableItem.set(Dominion.DARK_AGES, new MessageItem("" + (Dominion.DARK_AGES+1), Locale.get("expansion.darkages")));
 			//#style tableCell
 			tableItem.set(Dominion.PROMO, new MessageItem("" + (Dominion.PROMO+1), Locale.get("expansion.promo")));
 			//#style tableCell
@@ -305,6 +309,9 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 				case Cards.ADDS_VICTORY_POINTS:
 					GaugeForm.instance().setGauge(Locale.get("card.adds.victorypoints"), true, 10, 1);
 					option += "v";break;
+				case Cards.ADDS_GAIN:
+					GaugeForm.instance().setGauge(Locale.get("card.adds.gain"), true, 10, 1);
+					option += "g";break;
 				default: return;
 				}
 				changeToTable(TABLE_NUMBER);break;

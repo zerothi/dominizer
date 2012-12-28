@@ -1,0 +1,45 @@
+Altar:6:C:tg;
+Armory:4:C:g;
+Band of Misfits:5:C:;
+Bandit Camp:5:C:da2s;
+Beggar:2:CR:g;
+Catacombs:5:C:d3;
+Count:5:C:gc3t;
+Counterfeit:5:T:cb;
+Cultist:5:CA:d2r;
+>Knigts<:5:CA:datg;
+Death Cart:4:C:c5tr;
+Feodum:4:V:g;
+Forager:3:C:abt;
+Fortress:4:C:a2d;
+Graverobber:5:C:gt;
+Hermit:3:C:t;
+Hunting Grounds:6:C:d4;
+Ironmonger:4:C:dac;
+Junk Dealer:5:C:adct;
+Marauder:4:CA:sr;
+Market Square:3:CR:adb;
+Mystic:5:C:ac2;
+Pillage:5:CA:gs;
+Poor House:1:C:c4;
+Procession:4:C:tg;
+Rats:4:C:dat;
+Rebuild:5:C:atg;
+Rogue:5:CA:c2;
+Sage:3:C:a;
+Scavenger:4:C:c2;
+Squire:2:C:ca2b2;
+Storeroom:3:C:b;
+Urchin:3:CA:da;
+Vagrant:2:C:da;
+Wandering Minstrel:4:C:da2;
+
+The shelters
+Hovel:1:RS:;
+Necropolis:1:CS:a2;
+Overgrown Estate:1:VS:;
+
+The speciality cards
+Madman:0:C:a2d;
+Mercenary:0:CA:td2c2;
+

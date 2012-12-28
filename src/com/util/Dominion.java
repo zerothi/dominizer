@@ -18,7 +18,8 @@ public class Dominion {
 									25 + // PROSPERITY
 									13 + // CORNUCOPIA
 									26 + // HINTERLANDS
-									4; // PROMOS
+									35 + // DARK AGES
+									5; // PROMOS
 	public static final int BASE = 0;       // has 25 cards
 	public static final int INTRIGUE = 1;   // has 25 cards
 	public static final int SEASIDE = 2;    // has 26 cards
@@ -26,7 +27,8 @@ public class Dominion {
 	public static final int PROSPERITY = 4; // has 25 cards
 	public static final int CORNUCOPIA = 5; // has 13 cards
 	public static final int HINTERLANDS = 6; // has 13 cards
-	public static final int PROMO = 7;      // has 3 cards
+	public static final int DARK_AGES = 7; // has 13 cards
+	public static final int PROMO = 8;      // has 3 cards
 	public static final int USER = PROMO + 1;       // always have to be the highest number!
 	public static final int RAND_EXPANSION_CARDS = 1;
 	public static final int RAND_PERCENTAGE_CARDS = 2;
@@ -278,10 +280,16 @@ public class Dominion {
 		readResource(HINTERLANDS, "hinterlands", 26);
 		//#debug dominizer
 		System.out.println("size hinterlands: " + expansions[HINTERLANDS].size());
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.darkages"));
+		//#debug dominizer
+		System.out.println("reading dark ages");
+		readResource(DARK_AGES, "darkages", 35);
+		//#debug dominizer
+		System.out.println("size dark ages: " + expansions[DARK_AGES].size());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.promo"));
 		//#debug dominizer
 		System.out.println("reading promo");
-		readResource(PROMO, "promo", 4);
+		readResource(PROMO, "promo", 5);
 		//#debug dominizer
 		System.out.println("size promo: " + expansions[PROMO].size());
 		//#debug dominizer
@@ -535,7 +543,8 @@ public class Dominion {
 		sb.append("+ Trash   :  " + selectedCards.getAdds(Cards.ADDS_TRASH) + "\n");
 		sb.append("+ Curse   :  " + selectedCards.getAdds(Cards.ADDS_CURSE) + "\n");
 		sb.append("+ Victory :  " + selectedCards.getAdds(Cards.ADDS_VICTORY_POINTS) + "\n");
-		sb.append("+ Potions :  " + selectedCards.getAdds(Cards.ADDS_POTIONS));
+		sb.append("+ Potions :  " + selectedCards.getAdds(Cards.ADDS_POTIONS) + "\n");
+		sb.append("+ Gain    :  " + selectedCards.getAdds(Cards.ADDS_GAIN));
 		return sb.toString();
 	}
 	
@@ -575,6 +584,8 @@ public class Dominion {
 				return parseInt(information.substring(information.indexOf("p")));
 			else if ( whichInfo == Cards.ADDS_VICTORY_POINTS && -1 < information.indexOf("v") )
 				return parseInt(information.substring(information.indexOf("v")));
+			else if ( whichInfo == Cards.ADDS_GAIN && -1 < information.indexOf("g") )
+				return parseInt(information.substring(information.indexOf("g")));
 			else if ( whichInfo == Cards.COST_POTIONS && -1 < information.indexOf("P") )
 				return parseInt(information.substring(information.indexOf("P")));
 		} catch (Exception e) {return 1;}
@@ -868,7 +879,9 @@ public class Dominion {
 			int ch;
 			while ((ch = isr.read()) > -1) {
 				sb.append((char) ch);
-				if ( exp == USER && totalCards == -1 && (char) ch == ';' ) {
+				if ( cardRead == totalCards ) {
+					// do nothing keep reading until the end...
+				} else if ( exp == USER && totalCards == -1 && (char) ch == ';' ) {
 					if (isr != null)
 						isr.close();
 					//#debug dominizer
@@ -912,6 +925,7 @@ public class Dominion {
 					expansions[exp].setAddInfo(cardRead, Cards.ADDS_TRASH, parseInformation(tmp , Cards.ADDS_TRASH));
 					expansions[exp].setAddInfo(cardRead, Cards.ADDS_CURSE, parseInformation(tmp , Cards.ADDS_CURSE));
 					expansions[exp].setAddInfo(cardRead, Cards.ADDS_POTIONS, parseInformation(tmp , Cards.ADDS_POTIONS));
+					expansions[exp].setAddInfo(cardRead, Cards.ADDS_GAIN, parseInformation(tmp , Cards.ADDS_GAIN));
 					sb.delete(0, sb.toString().length());
 					start = 0;
 					/*
@@ -1424,6 +1438,8 @@ public class Dominion {
 			return "pr";
 		case HINTERLANDS:
 			return "hi";
+		case DARK_AGES:
+			return "da";
 		case PROMO:
 			return "p";
 		case USER:
@@ -1451,6 +1467,8 @@ public class Dominion {
 			return Locale.get("expansion.prosperity");
 		case HINTERLANDS:
 			return Locale.get("expansion.hinterlands");
+		case DARK_AGES:
+			return Locale.get("expansion.darkages");
 		case USER:
 			return Locale.get("expansion.user");
 		default:
