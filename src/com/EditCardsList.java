@@ -58,10 +58,10 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 		System.out.println("we are loading the cards now. Initializing the loading gauge");
 		isLoaded = true;
 		int cardNumber;
-		GaugeForm.instance().setGauge("Loading: ", false, Dominion.expansions.length, 0);
-		GameApp.instance().changeToScreen(GaugeForm.instance());
+		//GaugeForm.instance().setGauge("Loading: ", false, Dominion.expansions.length, 0);
+		GameApp.instance().changeToScreen(GaugeForm.instance(true));
 		for ( int i = 0 ; i < Dominion.I().getExpansions() ; i++ ){
-			GaugeForm.instance().setGaugeValue(i + 1); // Locale.get("gauge.loading.expansion")
+			//GaugeForm.instance().setGaugeValue(i + 1); // Locale.get("gauge.loading.expansion")
 			GaugeForm.instance().setGaugeLabel("Loading: " + Dominion.getExpansionName(i));
 			for ( cardNumber = 0 ; cardNumber < Dominion.expansions[i].size() ; cardNumber++ ) {
 				appendCard(Dominion.expansions[i].getName(cardNumber),
@@ -71,8 +71,11 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 				setPercentage(size() - 1, i, cardNumber, Dominion.expansions[i].getPercentage(cardNumber));
 			}
 		}
-		GameApp.instance().changeToScreen(this);
+		// set focus in this frame..
 		focus(0);
+		GameApp.instance().returnToPreviousScreen();
+		GameApp.instance().changeToTab(GameApp.TAB_EDIT);
+		GaugeForm.instance(false);
 	}
 	
 	public void keyPressed(int keyCode) {

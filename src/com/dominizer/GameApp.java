@@ -93,8 +93,6 @@ public class GameApp extends MIDlet
 		if ( displayable == null )
 			changeToScreen(tabbedPane);
 		else {
-			if ( displayable instanceof GaugeForm )
-				display.setCurrent(null);
 			display.setCurrent(displayable);
 		}
 			
