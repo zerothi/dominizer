@@ -132,7 +132,7 @@
 					<localization unless="debug or debugDominizer or single">
 						<!--locale name="da" encoding="UTF-8"/-->
 						<locale name="en" encoding="UTF-8"/>
-						<locale name="de" encoding="UTF-8"/>
+						<!--locale name="de" encoding="UTF-8"/-->
 						<!--locale name="es" encoding="UTF-8"/-->
 						<!--locale name="pl" encoding="UTF-8"/-->
 						<!--locale name="fr" encoding="UTF-8"/>

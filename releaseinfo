@@ -1,7 +1,13 @@
 Hi all
 
 Release info:
-This new version of Dominizer (0.20) has only added the Hinterlands expansion as well as the Walled Village and Governor Promo.
+This new version of Dominizer (0.20) has only added the Hinterlands expansion, the Dark Ages expansion as well as the Walled Village and Governor Promo.
+The Dark Ages expansion, introduces some additional cards which has not been fully implemented. However, all the cards should be there.
+
+I have not added the presets for the Dark Ages expansion.
+
+Bugfixes:
+:star: Edit cards tab now works properly
 
 Kind regards Nick
 
