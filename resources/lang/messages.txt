@@ -6,6 +6,7 @@
 #
 #######
 card.adds.gain         = Gain
+card.looter            = Looter
 
 #######
 #

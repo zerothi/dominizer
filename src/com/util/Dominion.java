@@ -27,7 +27,7 @@ public class Dominion {
 	public static final int PROSPERITY = 4; // has 25 cards
 	public static final int CORNUCOPIA = 5; // has 13 cards
 	public static final int HINTERLANDS = 6; // has 13 cards
-	public static final int DARK_AGES = 7; // has 13 cards
+	public static final int DARK_AGES = 7; // has 35 cards
 	public static final int PROMO = 8;      // has 3 cards
 	public static final int USER = PROMO + 1;       // always have to be the highest number!
 	public static final int RAND_EXPANSION_CARDS = 1;
@@ -243,7 +243,7 @@ public class Dominion {
 		System.out.println("reading base");
 		readResource(BASE, "base", 25);
 		//#debug dominizer
-		System.out.println("size ba " + expansions[BASE].size());
+		System.out.println("size base " + expansions[BASE].size());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.intrigue"));
 		//#debug dominizer
 		System.out.println("reading intrigue");
@@ -892,7 +892,7 @@ public class Dominion {
 					start = 1; // this ensures that it is not encountered twice!
 					TOTAL_CARDS += totalCards;
 				} else if ((char) ch == ';' ) {
-					// # debug dominizer
+					//#debug dominizer
 					//System.out.println("processing " + sb.toString());
 					expansions[exp].setName(cardRead, sb.toString().substring(
 							start, sb.toString().indexOf(":", start)).trim());
@@ -916,6 +916,7 @@ public class Dominion {
 					expansions[exp].setType(cardRead, Cards.TYPE_TREASURY, parseType(tmp, Cards.TYPE_TREASURY));
 					expansions[exp].setType(cardRead, Cards.TYPE_REACTION, parseType(tmp, Cards.TYPE_REACTION));
 					expansions[exp].setType(cardRead, Cards.TYPE_DURATION, parseType(tmp, Cards.TYPE_DURATION));
+					expansions[exp].setType(cardRead, Cards.TYPE_LOOTER, parseType(tmp, Cards.TYPE_LOOTER));
 					start = sb.toString().indexOf(":", start) + 1;
 					tmp = sb.toString().substring(start, sb.toString().indexOf(";", start));
 					expansions[exp].setAddInfo(cardRead, Cards.ADDS_CARDS, parseInformation(tmp , Cards.ADDS_CARDS));
@@ -928,7 +929,7 @@ public class Dominion {
 					expansions[exp].setAddInfo(cardRead, Cards.ADDS_GAIN, parseInformation(tmp , Cards.ADDS_GAIN));
 					sb.delete(0, sb.toString().length());
 					start = 0;
-					/*
+					//
 					//#debug dominizer
 					System.out.println("expansions[" + exp + "].name("
 							+ cardRead + "): "
@@ -943,7 +944,7 @@ public class Dominion {
 							+ expansions[exp].isType(cardRead, Cards.TYPE_TREASURY)
 							+ ". Duration? "
 							+ expansions[exp].isType(cardRead, Cards.TYPE_DURATION));
-					 */
+					 //
 					cardRead++;
 				} else if ((char) ch == '\n') {
 					sb.delete(0, sb.toString().length() - 1);

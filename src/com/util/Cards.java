@@ -52,7 +52,7 @@ public class Cards {
 			isGamingRelated = new short[size];
 			cost = new short[size];
 			isSpecific = new short[size];
-			addsInfo = new short[size][8];
+			addsInfo = new short[size][9];
 			if ( isSet == IS_SET )
 				expansion = new short[1];
 			else
@@ -618,13 +618,14 @@ public class Cards {
 	public int[][][] getTypeInfo() {
 		if ( size() == 0 )
 			return null;
-		int[][][] tmp = new int[2][1][6];
+		int[][][] tmp = new int[2][1][7];
 		tmp[0][0][0] = getTypes(TYPE_ACTION);
 		tmp[0][0][1] = getTypes(TYPE_ATTACK);
 		tmp[0][0][2] = getTypes(TYPE_REACTION);
 		tmp[0][0][3] = getTypes(TYPE_TREASURY);
 		tmp[0][0][4] = getTypes(TYPE_VICTORY);
 		tmp[0][0][5] = getTypes(TYPE_DURATION);
+		tmp[0][0][6] = getTypes(TYPE_LOOTER);
 		
 		tmp[1][0][0] = 234 << 16 | 227 << 8 | 227;
 		tmp[1][0][1] = 209 << 16 |  25 << 8 |  25;
@@ -632,6 +633,7 @@ public class Cards {
 		tmp[1][0][3] =   8 << 16 | 176 << 8 |  18;
 		tmp[1][0][4] = 234 << 16 | 227 << 8 | 227;
 		tmp[1][0][5] = 228 << 16 | 126 << 8 |  13;
+		tmp[1][0][6] = 228 << 16 | 126 << 8 |  13; //TODO
 		
 		return tmp;
 	}
@@ -685,6 +687,7 @@ public class Cards {
 	public static final int TYPE_ATTACK = 3;
 	public static final int TYPE_REACTION = 4;
 	public static final int TYPE_DURATION = 5;
+	public static final int TYPE_LOOTER = 6;
 	
 	public static final int TYPE_ACTION_VICTORY = 21;
 	public static final int TYPE_ACTION_TREASURY = 22;

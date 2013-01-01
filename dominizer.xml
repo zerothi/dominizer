@@ -55,13 +55,13 @@
 		         You can also define localized attributes in the resources/messages.txt files -->
 			<info 
 				name="${app.name}" 
-				version="0.19" 
+				version="0.20" 
 				description="A Dominion Card randomizer" 
 				vendorName="Nick Papior Andersen A/S" 
 				infoUrl="http://www.boardgamegeek.com/wiki/page/Dominizer" 
 				jarName="${nospace(polish.vendor)}-${nospace(polish.name)}-${app.name}-${nospace(polish.locale)}${jar.add.name}.jar" 
 				jarUrl="${deploy-url}${polish.jarName}" 
-				copyright="Copyright 2011 Nick Papior Andersen A/S. All rights reserved."
+				copyright="Copyright 2013 Nick Papior Andersen A/S. All rights reserved."
 				deleteConfirm="Delete ${app.name}? Nooo? :D"
 				icon="main.png"
 			/>

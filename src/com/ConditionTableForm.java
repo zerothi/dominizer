@@ -173,7 +173,7 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 			//#style tableCell
 			tableItem.set(Cards.TYPE_DURATION, new MessageItem("" + (Cards.TYPE_DURATION+1), "Duration"));
 			// # style tableCell
-			//tableItem.set(Cards.TYPE_POTION, new MessageItem("" + (Cards.TYPE_POTION+1), "Potion"));
+			tableItem.set(Cards.TYPE_LOOTER, new MessageItem("" + (Cards.TYPE_LOOTER+1), "Looter"));
 		} else if ( currentTableType == TABLE_ADDS ) {
 			//#style tableCell
 			tableItem.set(Cards.ADDS_CARDS, new MessageItem("" + (Cards.ADDS_CARDS+1), "Cards"));
@@ -280,6 +280,9 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 				case Cards.TYPE_DURATION:
 					GaugeForm.instance().setGauge(Locale.get("card.duration"), true, 10, 1);
 					option += "D";break;
+				case Cards.TYPE_LOOTER:
+					GaugeForm.instance().setGauge(Locale.get("card.looter"), true, 10, 1);
+					option += "L";break;
 				default: return;
 				}
 				changeToTable(TABLE_NUMBER);break;
