@@ -238,6 +238,9 @@ public class Dominion {
 		presets[HINTERLANDS].setPreset(15, Locale.get("preset.hinterlands.TravelingCircus"), new int[][] {
 			new int[] { 6,  0 }, new int[] { 6,  6 }, new int[] { 6,  8 }, new int[] { 6, 17 }, new int[] { 6, 18 }, 
 			new int[] { 5,  0 }, new int[] { 5,  1 }, new int[] { 5,  7 }, new int[] { 5,  8 }, new int[] { 5,  9 } });
+		// Add an empty preset...
+		presets[DARK_AGES] = new CardPresets(0);
+		presets[DARK_AGES].setExpansion(DARK_AGES);
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.base"));
 		//#debug dominizer
 		System.out.println("reading base");

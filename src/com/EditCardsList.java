@@ -17,6 +17,7 @@ import de.enough.polish.ui.ChoiceItem;
 import de.enough.polish.ui.Item;
 import de.enough.polish.ui.ItemStateListener;
 import de.enough.polish.ui.List;
+import de.enough.polish.ui.UiAccess;
 import de.enough.polish.util.Locale;
 
 public class EditCardsList extends List implements CommandListener, ItemStateListener {
@@ -58,8 +59,9 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 		System.out.println("we are loading the cards now. Initializing the loading gauge");
 		isLoaded = true;
 		int cardNumber;
+		GaugeForm.instance(true);
 		//GaugeForm.instance().setGauge("Loading: ", false, Dominion.expansions.length, 0);
-		GameApp.instance().changeToScreen(GaugeForm.instance(true));
+		GameApp.instance().changeToScreen(GaugeForm.instance());
 		for ( int i = 0 ; i < Dominion.I().getExpansions() ; i++ ){
 			//GaugeForm.instance().setGaugeValue(i + 1); // Locale.get("gauge.loading.expansion")
 			GaugeForm.instance().setGaugeLabel("Loading: " + Dominion.getExpansionName(i));
@@ -208,6 +210,12 @@ public class EditCardsList extends List implements CommandListener, ItemStateLis
 				Dominion.I().getLinearCardIndex(index), isAvailable);
 		Dominion.expansions[Dominion.I().getLinearExpansionIndex(index)].setBlackMarketAvailable(
 				Dominion.I().getLinearCardIndex(index), isAvailable);
+		// Hackery to update the screen.on Android
+		if ( index == 0 )
+			UiAccess.setFocusedIndex(this, 1);
+		else 
+			UiAccess.setFocusedIndex(this, 0);
+		UiAccess.setFocusedIndex(this, index);
 	}
 //#if polish.android
 	//#= @Override

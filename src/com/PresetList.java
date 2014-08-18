@@ -64,15 +64,17 @@ public class PresetList extends List implements CommandListener {
 	}
 	
 	public void keyPressed(int keyCode) {
+		int tmp;
 		switch (keyCode) {
 		case Canvas.KEY_STAR:
-			if (getCurrentIndex() + 3 < size() )
-				focus(getCurrentIndex() + 3);
+			tmp = getCurrentIndex() + 3;
+			if (tmp < size() )
+				focus(tmp);
 			else
 				focus(0);
 			break;
 		case Canvas.KEY_POUND:
-			int tmp = 0;
+			tmp = 0;
 			for ( int i = 0 ; i < Dominion.I().presetSize() - 1 ; i++ ) {
 				tmp += Dominion.I().getPreset(i).size();
 				if ( tmp > getCurrentIndex() && tmp < size() ) {

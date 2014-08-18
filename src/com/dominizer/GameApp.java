@@ -23,6 +23,9 @@ import com.TiltedPieChartForm;
 import com.util.Cards;
 import com.util.Dominion;
 import com.util.SettingsRecordStorage;
+//#if dominizer.calendar
+//#= import tests.GameCalendarForm;
+//#endif
 
 import de.enough.polish.ui.List;
 import de.enough.polish.ui.Screen;
@@ -143,6 +146,8 @@ public class GameApp extends MIDlet
 					currentTab = TAB_PRESET;
 				else if ( tab instanceof ConditionList)
 					currentTab = TAB_CONDITION;
+				//#debug dominizer
+				System.out.println("We are done with the tabChangeEvent: " + tab.getClass().getName());
 			}
 		});
 		ecFL = new EditCardsList(null, List.MULTIPLE);
@@ -158,7 +163,9 @@ public class GameApp extends MIDlet
 		//#style tabIcon
 		//#= tabbedPane.addTab(cF, null, Locale.get("tab.Condition.title"));
 		// # style tabIcon
-		//tabbedPane.addTab(new GameCalendarForm(null), null, Locale.get("screen.Calendar.title"));
+		//#if dominizer.calendar
+		//#= tabbedPane.addTab(new GameCalendarForm(null), null, Locale.get("screen.Calendar.title"));
+		//#endif
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading.gui.settings"));
 		SettingsRecordStorage.instance().changeToRecordStore("settings");
 		if ( SettingsRecordStorage.instance().readKey("lasttab") != null )

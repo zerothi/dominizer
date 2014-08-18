@@ -122,9 +122,6 @@ public class QuickRandomizeList extends List implements CommandListener, ItemSta
 			} catch (Exception e) {
 				// ignore
 			}
-			if ( gameAction == Canvas.LEFT ) {
-				GameApp.instance().ecFL.loadCards();
-			}
 		//#ifdef polish.hasPointerEvents
 		} 
 		//#endif

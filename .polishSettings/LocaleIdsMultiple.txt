@@ -1,0 +1,3 @@
+info.delete.set=1
+info.randomized.Prosperity=2
+screen.BlackMarket.Ticker=3

@@ -327,6 +327,8 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
 				case 5:
 				case 6:
 				case 7:
+				case 8:
+				case 9:
 					GaugeForm.instance().setGauge(Dominion.getExpansionName(keyCode - Canvas.KEY_NUM1), true, 10, 1);
 					option += "" + (keyCode - Canvas.KEY_NUM1);break;
 				default: return;
@@ -395,5 +397,7 @@ public class ConditionTableForm extends Form implements CommandListener, ItemCom
      */
     public void commandAction(de.enough.polish.ui.Command cmd, Item arg1) {
 		keyPressed(tableItem.getSelectedColumn() + 1 + tableItem.getSelectedRow() * 3 + Canvas.KEY_NUM0);
+		//#debug dominizer
+		System.out.println("Have pressed key: " + tableItem.getSelectedColumn() + 1 + tableItem.getSelectedRow() * 3 + Canvas.KEY_NUM0);
     }
 }
