@@ -55,13 +55,13 @@
 		         You can also define localized attributes in the resources/messages.txt files -->
 			<info 
 				name="${app.name}" 
-				version="0.20" 
+				version="0.22" 
 				description="A Dominion Card randomizer" 
 				vendorName="Nick Papior Andersen A/S" 
 				infoUrl="http://www.boardgamegeek.com/wiki/page/Dominizer" 
 				jarName="${nospace(polish.vendor)}-${nospace(polish.name)}-${app.name}-${nospace(polish.locale)}${jar.add.name}.jar" 
 				jarUrl="${deploy-url}${polish.jarName}" 
-				copyright="Copyright 2013 Nick Papior Andersen A/S. All rights reserved."
+				copyright="Copyright 2015 Nick Papior Andersen A/S. All rights reserved."
 				deleteConfirm="Delete ${app.name}? Nooo? :D"
 				icon="main.png"
 			/>
@@ -197,7 +197,7 @@
 	
 	<target name="emuAndroid"
 		description="invokes the emulator">
-		<exec executable="${android.home}/platform-tools/adb" dir="./${dist.root.dir}" spawn="true">
+		<exec executable="${android.home}/platforms/android-3/tools/adb" dir="./${dist.root.dir}" spawn="true">
 			<arg value="install ./Generic-android1.5-Dominizer-${debugLang}.apk"/>
 		</exec>
 	</target>
@@ -241,8 +241,8 @@
 	</target>
 	
 	<target name="enableAndroid" depends="dosign">
-		<property name="devices" value="Generic/android1.5"/>
-		<property name="device" value="Generic/android1.5"/>
+		<property name="devices" value="Generic/android2.3.3"/>
+		<property name="device" value="Generic/android2.3.3"/>
 	</target>
 	
 	<target name="enableSpecial" depends="donotsign">

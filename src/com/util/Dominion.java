@@ -313,6 +313,7 @@ public class Dominion {
 		readResource(ADVENTURES, "adventures", 30);
 		//#debug dominizer
 		System.out.println("size adventures: " + expansions[ADVENTURES].size());
+		
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.promo"));
 		//#debug dominizer
 		System.out.println("reading promo");
@@ -737,6 +738,8 @@ public class Dominion {
 		else if ( whichInfo == Cards.TYPE_REACTION && -1 < type.indexOf("R") )
 			return true;
 		else if ( whichInfo == Cards.TYPE_DURATION && -1 < type.indexOf("D") )
+			return true;
+		else if ( whichInfo == Cards.TYPE_LOOTER && -1 < type.indexOf("L") )
 			return true;
 		return false;
 	}
@@ -1468,6 +1471,10 @@ public class Dominion {
 			return "hi";
 		case DARK_AGES:
 			return "da";
+		case GUILDS:
+			return "gu";
+		case ADVENTURES:
+			return "ad";
 		case PROMO:
 			return "p";
 		case USER:
@@ -1497,6 +1504,10 @@ public class Dominion {
 			return Locale.get("expansion.hinterlands");
 		case DARK_AGES:
 			return Locale.get("expansion.darkages");
+		case GUILDS:
+			return Locale.get("expansion.guilds");
+		case ADVENTURES:
+			return Locale.get("expansion.adventures");
 		case USER:
 			return Locale.get("expansion.user");
 		default:

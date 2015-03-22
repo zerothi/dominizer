@@ -3,12 +3,13 @@
 # This file will make the relase for the Dominizer Application.
 
 if [ "$#" -eq "0" ]; then
-	echo "You have not supplied the version number, please do."
-	exit 1
+    echo "You have not supplied the version number, please do."
+    exit 1
 fi
-export JAVA_HOME=~/.jdk1.6.0_23
+export JAVA_HOME=~/.jdk
 
 ant -f dominizer.xml clean
+ant -f dominizer.xml compile6303
 ant -f dominizer.xml compileAllNonAndroid
 echo "Done compiling Non-Android devices"
 zip -9 DominizerJVM$1.zip dist/*.jad dist/*.jar

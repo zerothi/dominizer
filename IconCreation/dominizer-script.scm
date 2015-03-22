@@ -7,7 +7,7 @@
       For the development of Dominizer"               ;copyright notice
     "September 3, 2010"                               ;date created
     ""                                                ;image type that the script works on
-    SF-FILENAME    "Image"  "/home/nick/programming"
+    SF-FILENAME    "Image"  "/home/nicpa/programming"
     SF-STRING      "Image names"          "ba 0 1 2 3 4 5 11"       ;a string variable
     ;;SF-FONT        "Font"          "Charter"        ;a font variable
     ;;SF-ADJUSTMENT  "Font size"     '(50 1 1000 1 10 0 1)

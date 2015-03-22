@@ -17,31 +17,33 @@ function emv {
 
 rm -rf nokia android
 
+_icons=icons.xcf
+
 for si in 16 22; do 
     echo "Creates in size ${si}x${si}"
     rm *.png
     gimp -i \
-	-b '(dominizer-create "icons.xcf" "ba 0 1 23 24" '${si}')' \
-	-b '(dominizer-create "icons.xcf" "in 0 1 21 22 23 24 31" '${si}')' \
-	-b '(dominizer-create "icons.xcf" "se 0 1 21 22 23 25" '${si}')' \
-	-b '(dominizer-create "icons.xcf" "al 0 1 2 23" '${si}')' \
-	-b '(dominizer-create "icons.xcf" "pr 0 2 23 24" '${si}')' \
-	-b '(dominizer-create "icons.xcf" "co 0 1 2 23 24" '${si}')' \
-	-b '(dominizer-create "icons.xcf" "hi 0 1 2 4 23 24 51 52" '${si}')' \
-	-b '(dominizer-create "icons.xcf" "da 0 1 2 4 23 24" '${si}')' \
-	-b '(dominizer-create "icons.xcf" "p0 0" '${si}')' \
-	-b '(dominizer-create "icons.xcf" "p1 0" '${si}')' \
-	-b '(dominizer-create "icons.xcf" "p2 2" '${si}')' \
-	-b '(dominizer-create "icons.xcf" "p3 0" '${si}')' \
-	-b '(dominizer-create "icons.xcf" "p4 0" '${si}')' \
-	-b '(dominizer-create "icons.xcf" "us 0 1 2 21 22 23 24 25 31 41 42 44 45 51 52 55 61 62" '${si}')' \
+	-b '(dominizer-create "'$_icons'" "ba 0 1 23 24" '${si}')' \
+	-b '(dominizer-create "'$_icons'" "in 0 1 21 22 23 24 31" '${si}')' \
+	-b '(dominizer-create "'$_icons'" "se 0 1 21 22 23 25" '${si}')' \
+	-b '(dominizer-create "'$_icons'" "al 0 1 2 23" '${si}')' \
+	-b '(dominizer-create "'$_icons'" "pr 0 2 23 24" '${si}')' \
+	-b '(dominizer-create "'$_icons'" "co 0 1 2 23 24" '${si}')' \
+	-b '(dominizer-create "'$_icons'" "hi 0 1 2 4 23 24 51 52" '${si}')' \
+	-b '(dominizer-create "'$_icons'" "da 0 1 2 23 24" '${si}')' \
+	-b '(dominizer-create "'$_icons'" "gu 0 2 23" '${si}')' \
+	-b '(dominizer-create "'$_icons'" "p0 0" '${si}')' \
+	-b '(dominizer-create "'$_icons'" "p1 0" '${si}')' \
+	-b '(dominizer-create "'$_icons'" "p2 2" '${si}')' \
+	-b '(dominizer-create "'$_icons'" "p3 0" '${si}')' \
+	-b '(dominizer-create "'$_icons'" "p4 0" '${si}')' \
+	-b '(dominizer-create "'$_icons'" "p5 0" '${si}')' \
+	-b '(dominizer-create "'$_icons'" "us 0 1 2 21 22 23 24 25 31 41 42 44 45 51 52 55 61 62" '${si}')' \
 	-b '(gimp-quit 0)' --verbose
-    emv p00.png p0.png
-    emv p10.png p1.png
-    emv p22.png p2.png
-    emv p30.png p3.png
-    emv p40.png p4.png
-    
+    for i in 0 1 2 3 4 5 ; do
+	emv p${i}0.png p$i.png
+    done
+
     gimp -i \
 	-b '(dominizer-create "coins.xcf" "t r0 P0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12" '${si}')' \
 	-b '(dominizer-create "coins.xcf" "tB P0 r2 r3" '${si}')' \
