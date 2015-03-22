@@ -12,23 +12,27 @@ import de.enough.polish.util.Locale;
 public class Dominion {
 	private static Dominion dom = null;
 	public static int TOTAL_CARDS = 25 + // BASE 
-									25 + // INTRIGUE
-									26 + // SEASIDE
-									12 + // ALCHEMY
-									25 + // PROSPERITY
-									13 + // CORNUCOPIA
-									26 + // HINTERLANDS
-									35 + // DARK AGES
-									5; // PROMOS
-	public static final int BASE = 0;       // has 25 cards
-	public static final int INTRIGUE = 1;   // has 25 cards
-	public static final int SEASIDE = 2;    // has 26 cards
-	public static final int ALCHEMY = 3;    // has 12 cards (the 13th card Potion is not counted)
-	public static final int PROSPERITY = 4; // has 25 cards
-	public static final int CORNUCOPIA = 5; // has 13 cards
+	    25 + // INTRIGUE
+	    26 + // SEASIDE
+	    12 + // ALCHEMY
+	    25 + // PROSPERITY
+	    13 + // CORNUCOPIA
+	    26 + // HINTERLANDS
+	    35 + // DARK AGES
+	    13 + // GUILDS
+	    30 + // ADVENTURES
+	    5; // PROMOS
+	public static final int BASE = 0;        // has 25 cards
+	public static final int INTRIGUE = 1;    // has 25 cards
+	public static final int SEASIDE = 2;     // has 26 cards
+	public static final int ALCHEMY = 3;     // has 12 cards (the 13th card Potion is not counted)
+	public static final int PROSPERITY = 4;  // has 25 cards
+	public static final int CORNUCOPIA = 5;  // has 13 cards
 	public static final int HINTERLANDS = 6; // has 13 cards
-	public static final int DARK_AGES = 7; // has 35 cards
-	public static final int PROMO = 8;      // has 3 cards
+	public static final int DARK_AGES = 7;   // has 35 cards
+	public static final int GUILDS = 8;      // has 13 cards
+	public static final int ADVENTURES = 9;  // has 30 cards
+	public static final int PROMO = 10;      // has 5 cards
 	public static final int USER = PROMO + 1;       // always have to be the highest number!
 	public static final int RAND_EXPANSION_CARDS = 1;
 	public static final int RAND_PERCENTAGE_CARDS = 2;
@@ -238,9 +242,17 @@ public class Dominion {
 		presets[HINTERLANDS].setPreset(15, Locale.get("preset.hinterlands.TravelingCircus"), new int[][] {
 			new int[] { 6,  0 }, new int[] { 6,  6 }, new int[] { 6,  8 }, new int[] { 6, 17 }, new int[] { 6, 18 }, 
 			new int[] { 5,  0 }, new int[] { 5,  1 }, new int[] { 5,  7 }, new int[] { 5,  8 }, new int[] { 5,  9 } });
+
 		// Add an empty preset...
 		presets[DARK_AGES] = new CardPresets(0);
 		presets[DARK_AGES].setExpansion(DARK_AGES);
+
+		presets[GUILDS] = new CardPresets(0);
+		presets[GUILDS].setExpansion(GUILDS);
+
+		presets[ADVENTURES] = new CardPresets(0);
+		presets[ADVENTURES].setExpansion(ADVENTURES);
+
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.base"));
 		//#debug dominizer
 		System.out.println("reading base");
@@ -289,6 +301,18 @@ public class Dominion {
 		readResource(DARK_AGES, "darkages", 35);
 		//#debug dominizer
 		System.out.println("size dark ages: " + expansions[DARK_AGES].size());
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.guilds"));
+		//#debug dominizer
+		System.out.println("reading guilds");
+		readResource(GUILDS, "guilds", 13);
+		//#debug dominizer
+		System.out.println("size guilds: " + expansions[GUILDS].size());
+		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.adventures"));
+		//#debug dominizer
+		System.out.println("reading adventures");
+		readResource(ADVENTURES, "adventures", 30);
+		//#debug dominizer
+		System.out.println("size adventures: " + expansions[ADVENTURES].size());
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.promo"));
 		//#debug dominizer
 		System.out.println("reading promo");
