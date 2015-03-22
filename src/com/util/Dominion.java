@@ -20,7 +20,7 @@ public class Dominion {
 	    26 + // HINTERLANDS
 	    35 + // DARK AGES
 	    13 + // GUILDS
-	    30 + // ADVENTURES
+	    0 + // ADVENTURES
 	    5; // PROMOS
 	public static final int BASE = 0;        // has 25 cards
 	public static final int INTRIGUE = 1;    // has 25 cards
@@ -310,7 +310,7 @@ public class Dominion {
 		GaugeForm.instance().setGaugeLabel(Locale.get("gauge.loading") + " " + Locale.get("expansion.adventures"));
 		//#debug dominizer
 		System.out.println("reading adventures");
-		readResource(ADVENTURES, "adventures", 30);
+		readResource(ADVENTURES, "adventures", 0);
 		//#debug dominizer
 		System.out.println("size adventures: " + expansions[ADVENTURES].size());
 		
