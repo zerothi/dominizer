@@ -1,0 +1,14 @@
+#
+# Installation for building Dominizer
+
+1. Download JSE SDK (JDK) and install:
+    
+2. Download Java Wireless Toolkit (the JME SDK is not available for UNIX)
+
+3. Install Eclipse
+
+4. Pull in project (using git)
+
+5. Add the script path to GIMP (IconCreation)
+
+6. Run image creation (if new images should be added)
